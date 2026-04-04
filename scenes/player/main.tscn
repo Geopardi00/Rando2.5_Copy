@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://dcevi8nppjkfc"]
+
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="1_s4h7g"]
+[ext_resource type="Script" uid="uid://ch38c7lx75j12" path="res://scripts/player/player.gd" id="2_5l0vc"]
+[ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_51pqh"]
+[ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="4_51pqh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
+size = Vector2(769, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
+size = Vector2(36, 162)
+
+[node name="Main" type="Node2D" unique_id=1127604851]
+
+[node name="TestRoom" type="Node2D" parent="." unique_id=574496171]
+
+[node name="Floor" type="StaticBody2D" parent="TestRoom" unique_id=1749241888]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestRoom/Floor" unique_id=945145100]
+position = Vector2(9, 167)
+shape = SubResource("RectangleShape2D_51pqh")
+
+[node name="ColorRect" type="ColorRect" parent="TestRoom/Floor/CollisionShape2D" unique_id=1609027165]
+offset_left = -386.0
+offset_top = -1.0
+offset_right = 383.0
+offset_bottom = 39.0
+
+[node name="Wall" type="StaticBody2D" parent="TestRoom" unique_id=2126375314]
+position = Vector2(-165, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestRoom/Wall" unique_id=1001762205]
+position = Vector2(8, 20)
+shape = SubResource("RectangleShape2D_4q130")
+
+[node name="ColorRect" type="ColorRect" parent="TestRoom/Wall/CollisionShape2D" unique_id=1454706437]
+offset_left = -19.0
+offset_top = -81.0
+offset_right = 18.0
+offset_bottom = 77.0
+
+[node name="Player" parent="TestRoom" unique_id=1487025887 instance=ExtResource("1_s4h7g")]
+script = ExtResource("2_5l0vc")
+bullet_scene = ExtResource("3_51pqh")
+
+[node name="Bullet" parent="TestRoom" unique_id=1682380724 instance=ExtResource("3_51pqh")]
+
+[node name="Enemy" parent="TestRoom" unique_id=83899896 instance=ExtResource("4_51pqh")]
+position = Vector2(211, 32)

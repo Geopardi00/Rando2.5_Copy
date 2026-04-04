@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ceifui4sii3jr"]
+
+[ext_resource type="Texture2D" uid="uid://cki17q5esm2vm" path="res://art/characters/player.png" id="1_8afob"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8afob"]
+size = Vector2(20, 37)
+
+[node name="Player" type="CharacterBody2D" unique_id=1487025887]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=529171582]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_8afob")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1484781241]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_8afob")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2029278347]
+
+[node name="FireRateTimer" type="Timer" parent="." unique_id=1567559696]
+one_shot = true
