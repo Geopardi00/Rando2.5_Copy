@@ -7,6 +7,9 @@ extends CharacterBody2D
 @export var coyote_time: float = 0.10
 @export var jump_buffer_time: float = 0.10
 
+@export var enable_double_jump: bool = true
+@export var extra_jumps: int = 1
+
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 0.2
 @export var bullet_offset: Vector2 = Vector2(16, -4)
@@ -20,6 +23,7 @@ extends CharacterBody2D
 var facing: int = 1
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
+var air_jumps_left: int = 0
 
 
 func _ready() -> void:
@@ -28,9 +32,12 @@ func _ready() -> void:
 
 	hurtbox.body_entered.connect(_on_hurtbox_body_entered)
 
+	air_jumps_left = extra_jumps
+
 
 func _physics_process(delta: float) -> void:
 	var input_axis := Input.get_axis("move_left", "move_right")
+	var jump_pressed := Input.is_action_just_pressed("jump")
 
 	# Facing + visual flip
 	if input_axis > 0:
@@ -52,30 +59,36 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = 0
 
-	# Coyote time
+	# Ground reset
 	if is_on_floor():
 		coyote_timer = coyote_time
+		air_jumps_left = extra_jumps
 	else:
 		coyote_timer -= delta
 
 	# Jump buffer
-	if Input.is_action_just_pressed("jump"):
+	if jump_pressed:
 		jump_buffer_timer = jump_buffer_time
 	else:
 		jump_buffer_timer -= delta
 
-	# Jump
+	# Ground / coyote jump
 	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
 		velocity.y = jump_velocity
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
+
+	# Double jump
+	elif jump_pressed and enable_double_jump and not is_on_floor() and air_jumps_left > 0:
+		velocity.y = jump_velocity
+		air_jumps_left -= 1
+		jump_buffer_timer = 0.0
 
 	# Shooting
 	if Input.is_action_just_pressed("shoot"):
 		try_shoot()
 
 	move_and_slide()
-	_push_player_state()
 
 
 func try_shoot() -> void:
@@ -97,10 +110,6 @@ func fire_bullet() -> void:
 	bullet.global_position = spawn_pos
 	bullet.direction = facing
 
-	var state := _get_state_of_game()
-	if state != null and state.has_method("register_shot_fired"):
-		state.register_shot_fired()
-
 
 func _on_hurtbox_body_entered(body: Node) -> void:
 	if not body.is_in_group("enemy"):
@@ -111,19 +120,6 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 
 func die() -> void:
 	print("player died")
-	var state := _get_state_of_game()
-	if state != null and state.has_method("register_player_died"):
-		state.register_player_died(respawn_position)
-
 	global_position = respawn_position
 	velocity = Vector2.ZERO
-
-
-func _push_player_state() -> void:
-	var state := _get_state_of_game()
-	if state != null and state.has_method("update_player_snapshot"):
-		state.update_player_snapshot(global_position, velocity, facing)
-
-
-func _get_state_of_game() -> Node:
-	return get_node_or_null("/root/StateOfGame")
+	air_jumps_left = extra_jumps
