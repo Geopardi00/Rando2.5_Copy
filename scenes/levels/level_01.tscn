@@ -10,11 +10,20 @@
 [ext_resource type="Texture2D" uid="uid://0w4h40pcyyhs" path="res://art/tiles/b01_pillar_01.png" id="8_cwffn"]
 [ext_resource type="Texture2D" uid="uid://cqc3s6yufhg03" path="res://art/tiles/b01_pillar_02.png" id="9_e6lid"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="10_r72dd"]
+[ext_resource type="Texture2D" uid="uid://bxaoyqms8w6wd" path="res://art/tiles/heropillar01.png" id="11_cwffn"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="11_jmes4"]
 [ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="12_07lms"]
 [ext_resource type="Script" uid="uid://onylvomacabe" path="res://scripts/goal.gd" id="12_gi8m4"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="12_tyxjt"]
 [ext_resource type="Script" uid="uid://dcw16xyksu2lm" path="res://scripts/levels/level_01.gd" id="13_84s7n"]
+[ext_resource type="Texture2D" uid="uid://oy8w5qultnja" path="res://art/tiles/plant01.png" id="17_e6lid"]
+[ext_resource type="Texture2D" uid="uid://qc2djjlhns7l" path="res://art/tiles/plant02.png" id="18_3g50r"]
+[ext_resource type="Texture2D" uid="uid://cjkbdxfc8dfnx" path="res://art/tiles/stone01.png" id="18_cywot"]
+[ext_resource type="Texture2D" uid="uid://bl0ysgvg583wd" path="res://art/tiles/moss01.png" id="20_vrcmr"]
+[ext_resource type="Texture2D" uid="uid://bgpjfi6n5tfk6" path="res://art/tiles/vines01.png" id="21_vrcmr"]
+[ext_resource type="Texture2D" uid="uid://dim43ce7laej2" path="res://art/tiles/stone02.png" id="22_1b0o8"]
+[ext_resource type="Texture2D" uid="uid://018rgqb0o4f6" path="res://art/tiles/plant03.png" id="23_w4kkx"]
+[ext_resource type="Texture2D" uid="uid://0o81p0p6rv2i" path="res://art/tiles/vines02.png" id="24_w4kkx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3g50r"]
 size = Vector2(689, 80)
@@ -40,11 +49,11 @@ size = Vector2(72.5, 58)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4kkx"]
 size = Vector2(115, 333)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mhiu8"]
-size = Vector2(64, 64)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cwffn"]
+size = Vector2(150, 451)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lswbx"]
-size = Vector2(60, 35)
+size = Vector2(69, 92)
 
 [node name="Level01" type="Node2D" unique_id=1698746909]
 script = ExtResource("13_84s7n")
@@ -102,18 +111,12 @@ position = Vector2(2648, 9)
 position = Vector2(675.5, 143.5)
 shape = SubResource("RectangleShape2D_w4kkx")
 
-[node name="GoalPillar" type="StaticBody2D" parent="Platforms" unique_id=723306944]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GoalPillar" unique_id=513360001]
-position = Vector2(3201, 289)
-shape = SubResource("RectangleShape2D_mhiu8")
-
 [node name="LedgeRight" type="Sprite2D" parent="Platforms" unique_id=1998981607]
-position = Vector2(879, 395)
+position = Vector2(880, 394)
 texture = ExtResource("1_kfebt")
 
 [node name="GrassPlatform01" type="Sprite2D" parent="Platforms" unique_id=645498509]
-position = Vector2(180, 319)
+position = Vector2(179, 313)
 texture = ExtResource("2_r72dd")
 
 [node name="GrassPlatform03" type="Sprite2D" parent="Platforms" unique_id=1357978621]
@@ -121,15 +124,15 @@ position = Vector2(1329, 402)
 texture = ExtResource("2_r72dd")
 
 [node name="GrassPlatform04" type="Sprite2D" parent="Platforms" unique_id=288839791]
-position = Vector2(2960, 354)
+position = Vector2(2953, 350)
 texture = ExtResource("2_r72dd")
 
 [node name="GrassPlatform02" type="Sprite2D" parent="Platforms" unique_id=1183798729]
-position = Vector2(534, 319)
+position = Vector2(537, 317)
 texture = ExtResource("3_ijn0p")
 
 [node name="LedgeRight2" type="Sprite2D" parent="Platforms" unique_id=178029346]
-position = Vector2(2621, 382)
+position = Vector2(2623, 380)
 texture = ExtResource("4_jmes4")
 
 [node name="StoneChunk06" type="Sprite2D" parent="Platforms" unique_id=227888063]
@@ -147,13 +150,28 @@ position = Vector2(1847, 504)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_07lms")
 
+[node name="StoneChunk14" type="Sprite2D" parent="Platforms" unique_id=94959631]
+position = Vector2(-49, -32)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_07lms")
+
+[node name="StoneChunk13" type="Sprite2D" parent="Platforms" unique_id=249562155]
+position = Vector2(-66, 183)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_07lms")
+
+[node name="StoneChunk15" type="Sprite2D" parent="Platforms" unique_id=1151317725]
+position = Vector2(-86, 78)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_tyxjt")
+
 [node name="StoneChunk09" type="Sprite2D" parent="Platforms" unique_id=1190368447]
 position = Vector2(1972, 504)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_07lms")
 
 [node name="Pillar03" type="Sprite2D" parent="Platforms" unique_id=1809918122]
-position = Vector2(3202, 301)
+position = Vector2(1627, 592)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_cwffn")
 
@@ -164,6 +182,11 @@ texture = ExtResource("6_07lms")
 
 [node name="StoneChunk11" type="Sprite2D" parent="Platforms" unique_id=1208085356]
 position = Vector2(2332, 403)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_07lms")
+
+[node name="StoneChunk12" type="Sprite2D" parent="Platforms" unique_id=623637414]
+position = Vector2(-55, 301)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_07lms")
 
@@ -217,7 +240,20 @@ position = Vector2(2012, 316.00003)
 scale = Vector2(0.45703125, 0.37109375)
 texture = ExtResource("9_e6lid")
 
+[node name="Heropillar" type="Sprite2D" parent="Platforms" unique_id=1840932197]
+position = Vector2(3017, 318)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("11_cwffn")
+flip_h = true
+
+[node name="LeftWall" type="StaticBody2D" parent="Platforms" unique_id=587180911]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/LeftWall" unique_id=1648282643]
+position = Vector2(-72, 132)
+shape = SubResource("RectangleShape2D_cwffn")
+
 [node name="Enemies" type="Node2D" parent="." unique_id=357755226]
+z_index = 1
 
 [node name="Enemy" parent="Enemies" unique_id=83899896 instance=ExtResource("10_r72dd")]
 position = Vector2(937, 292)
@@ -235,7 +271,7 @@ collision_mask = 2
 script = ExtResource("12_gi8m4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1735324981]
-position = Vector2(3, -9.5)
+position = Vector2(7.5, 19)
 shape = SubResource("RectangleShape2D_lswbx")
 
 [node name="Player" parent="." unique_id=1487025887 instance=ExtResource("11_jmes4")]
@@ -244,3 +280,109 @@ script = ExtResource("12_07lms")
 bullet_scene = ExtResource("12_tyxjt")
 
 [node name="Bullet" parent="." unique_id=1682380724 instance=ExtResource("12_tyxjt")]
+
+[node name="Terrain" type="Node2D" parent="." unique_id=1738878424]
+
+[node name="Plant01" type="Sprite2D" parent="Terrain" unique_id=1489829339]
+z_index = 2
+position = Vector2(39, 263)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("17_e6lid")
+
+[node name="Plant02" type="Sprite2D" parent="Terrain" unique_id=1842249911]
+position = Vector2(339, 270)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("17_e6lid")
+
+[node name="Stone01" type="Sprite2D" parent="Terrain" unique_id=1356943391]
+position = Vector2(1018, 316)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("18_cywot")
+
+[node name="plant03" type="Sprite2D" parent="Terrain" unique_id=1392318310]
+position = Vector2(1000, 319)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("18_3g50r")
+
+[node name="Moss01" type="Sprite2D" parent="Terrain" unique_id=1602696733]
+position = Vector2(1617.0001, 371)
+scale = Vector2(0.29531288, 0.2)
+texture = ExtResource("20_vrcmr")
+
+[node name="Moss02" type="Sprite2D" parent="Terrain" unique_id=239372000]
+position = Vector2(2304, 361)
+scale = Vector2(0.43125, 0.27109367)
+texture = ExtResource("20_vrcmr")
+
+[node name="Vines01" type="Sprite2D" parent="Terrain" unique_id=77563090]
+position = Vector2(434, 355)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("21_vrcmr")
+
+[node name="Vines02" type="Sprite2D" parent="Terrain" unique_id=1529856079]
+position = Vector2(1000, 401.00003)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("21_vrcmr")
+
+[node name="Vines03" type="Sprite2D" parent="Terrain" unique_id=1794319284]
+position = Vector2(2510.0002, 389)
+scale = Vector2(0.328907, 0.48125002)
+texture = ExtResource("21_vrcmr")
+
+[node name="Stone02" type="Sprite2D" parent="Terrain" unique_id=580957546]
+position = Vector2(2672.0002, 297.00003)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("22_1b0o8")
+
+[node name="Stone03" type="Sprite2D" parent="Terrain" unique_id=735576783]
+position = Vector2(1441, 351)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("22_1b0o8")
+
+[node name="Plant06" type="Sprite2D" parent="Terrain" unique_id=1463740039]
+position = Vector2(1434, 358)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("23_w4kkx")
+
+[node name="Plant04" type="Sprite2D" parent="Terrain" unique_id=1836867029]
+position = Vector2(1419, 362)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("23_w4kkx")
+
+[node name="Plant05" type="Sprite2D" parent="Terrain" unique_id=1316883573]
+position = Vector2(1426, 367)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("23_w4kkx")
+
+[node name="Vines04" type="Sprite2D" parent="Terrain" unique_id=2126277354]
+position = Vector2(732, 404)
+rotation = 0.0003402708
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("24_w4kkx")
+
+[node name="Vines05" type="Sprite2D" parent="Terrain" unique_id=2078760825]
+position = Vector2(1800.0001, 406)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("24_w4kkx")
+
+[node name="Vines06" type="Sprite2D" parent="Terrain" unique_id=2064815758]
+position = Vector2(2787, 389)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("24_w4kkx")
+
+[node name="World" type="Node2D" parent="." unique_id=1990906156]
+
+[node name="BackgroundFar" type="Parallax2D" parent="World" unique_id=1947046472]
+scroll_scale = Vector2(0.15, 0.15)
+
+[node name="BackgroundMid" type="Parallax2D" parent="World" unique_id=1134878916]
+scroll_scale = Vector2(0.35, 0.35)
+
+[node name="BackgroundNear" type="Parallax2D" parent="World" unique_id=943356567]
+scroll_scale = Vector2(0.6, 0.6)
+
+[node name="ForegroundSoft" type="Parallax2D" parent="World" unique_id=1811413843]
+scroll_scale = Vector2(1.05, 1)
+
+[node name="ForegroundNear" type="Parallax2D" parent="World" unique_id=1314364671]
+scroll_scale = Vector2(1.15, 1)
