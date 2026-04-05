@@ -47,4 +47,12 @@ func turn_around() -> void:
 
 
 func take_damage(_amount: int) -> void:
+	var state := _get_state_of_game()
+	if state != null and state.has_method("register_enemy_defeated"):
+		state.register_enemy_defeated()
+
 	queue_free()
+
+
+func _get_state_of_game() -> Node:
+	return get_node_or_null("/root/StateOfGame")

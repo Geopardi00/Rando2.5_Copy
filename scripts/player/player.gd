@@ -75,6 +75,7 @@ func _physics_process(delta: float) -> void:
 		try_shoot()
 
 	move_and_slide()
+	_push_player_state()
 
 
 func try_shoot() -> void:
@@ -96,6 +97,10 @@ func fire_bullet() -> void:
 	bullet.global_position = spawn_pos
 	bullet.direction = facing
 
+	var state := _get_state_of_game()
+	if state != null and state.has_method("register_shot_fired"):
+		state.register_shot_fired()
+
 
 func _on_hurtbox_body_entered(body: Node) -> void:
 	if not body.is_in_group("enemy"):
@@ -106,5 +111,19 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 
 func die() -> void:
 	print("player died")
+	var state := _get_state_of_game()
+	if state != null and state.has_method("register_player_died"):
+		state.register_player_died(respawn_position)
+
 	global_position = respawn_position
 	velocity = Vector2.ZERO
+
+
+func _push_player_state() -> void:
+	var state := _get_state_of_game()
+	if state != null and state.has_method("update_player_snapshot"):
+		state.update_player_snapshot(global_position, velocity, facing)
+
+
+func _get_state_of_game() -> Node:
+	return get_node_or_null("/root/StateOfGame")

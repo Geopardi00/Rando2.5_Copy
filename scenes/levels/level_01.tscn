@@ -12,7 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="10_r72dd"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="11_jmes4"]
 [ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="12_07lms"]
+[ext_resource type="Script" uid="uid://onylvomacabe" path="res://scripts/goal.gd" id="12_gi8m4"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="12_tyxjt"]
+[ext_resource type="Script" uid="uid://dcw16xyksu2lm" path="res://scripts/levels/level_01.gd" id="13_84s7n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3g50r"]
 size = Vector2(689, 80)
@@ -32,6 +34,9 @@ size = Vector2(615.5, 55)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1b0o8"]
 size = Vector2(896, 64)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gi8m4"]
+size = Vector2(72.5, 58)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4kkx"]
 size = Vector2(115, 333)
 
@@ -39,9 +44,10 @@ size = Vector2(115, 333)
 size = Vector2(64, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lswbx"]
-size = Vector2(60, 8)
+size = Vector2(60, 35)
 
 [node name="Level01" type="Node2D" unique_id=1698746909]
+script = ExtResource("13_84s7n")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=2031184102]
 
@@ -81,6 +87,13 @@ shape = SubResource("RectangleShape2D_svp4f")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_06" unique_id=1197449290]
 position = Vector2(2911, 350)
 shape = SubResource("RectangleShape2D_1b0o8")
+
+[node name="Platform_07" type="StaticBody2D" parent="Platforms" unique_id=1119758303]
+position = Vector2(1972, 291)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_07" unique_id=992394956]
+position = Vector2(39.75, 28)
+shape = SubResource("RectangleShape2D_gi8m4")
 
 [node name="EndWall" type="StaticBody2D" parent="Platforms" unique_id=2024604548]
 position = Vector2(2648, 9)
@@ -200,9 +213,8 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_cwffn")
 
 [node name="Pillar02" type="Sprite2D" parent="Platforms" unique_id=944889522]
-visible = false
-position = Vector2(465.99997, 299)
-scale = Vector2(0.5, 0.5)
+position = Vector2(2012, 316.00003)
+scale = Vector2(0.45703125, 0.37109375)
 texture = ExtResource("9_e6lid")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=357755226]
@@ -218,9 +230,12 @@ position = Vector2(116, 238)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1748658046]
 position = Vector2(3199, 247)
+collision_layer = 64
+collision_mask = 2
+script = ExtResource("12_gi8m4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1735324981]
-position = Vector2(3, 6)
+position = Vector2(3, -9.5)
 shape = SubResource("RectangleShape2D_lswbx")
 
 [node name="Player" parent="." unique_id=1487025887 instance=ExtResource("11_jmes4")]

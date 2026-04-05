@@ -24,4 +24,12 @@ func _on_area_entered(area: Area2D) -> void:
 	if enemy != null and enemy.has_method("take_damage"):
 		enemy.take_damage(1)
 
+	var state := _get_state_of_game()
+	if state != null and state.has_method("register_bullet_hit"):
+		state.register_bullet_hit()
+
 	queue_free()
+
+
+func _get_state_of_game() -> Node:
+	return get_node_or_null("/root/StateOfGame")
