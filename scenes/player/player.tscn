@@ -21,7 +21,7 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_8afob")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2029278347]
-position = Vector2(54, -85)
+position = Vector2(50, -133)
 
 [node name="FireRateTimer" type="Timer" parent="." unique_id=1567559696]
 one_shot = true

@@ -24,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://dim43ce7laej2" path="res://art/tiles/stone02.png" id="22_1b0o8"]
 [ext_resource type="Texture2D" uid="uid://018rgqb0o4f6" path="res://art/tiles/plant03.png" id="23_w4kkx"]
 [ext_resource type="Texture2D" uid="uid://0o81p0p6rv2i" path="res://art/tiles/vines02.png" id="24_w4kkx"]
+[ext_resource type="Texture2D" uid="uid://d17kda1ytyfhs" path="res://art/parallax/background_far.png" id="25_mhiu8"]
+[ext_resource type="Texture2D" uid="uid://bpfim1vjq34sx" path="res://art/parallax/background_middle.png" id="26_lswbx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3g50r"]
 size = Vector2(689, 80)
@@ -275,7 +277,7 @@ position = Vector2(7.5, 19)
 shape = SubResource("RectangleShape2D_lswbx")
 
 [node name="Player" parent="." unique_id=1487025887 instance=ExtResource("11_jmes4")]
-position = Vector2(116, 235)
+position = Vector2(397, 237)
 script = ExtResource("12_07lms")
 bullet_scene = ExtResource("12_tyxjt")
 
@@ -373,10 +375,23 @@ texture = ExtResource("24_w4kkx")
 [node name="World" type="Node2D" parent="." unique_id=1990906156]
 
 [node name="BackgroundFar" type="Parallax2D" parent="World" unique_id=1947046472]
+z_index = -4
 scroll_scale = Vector2(0.15, 0.15)
+repeat_size = Vector2(2048, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/BackgroundFar" unique_id=2131792947]
+z_index = -9
+texture = ExtResource("25_mhiu8")
+centered = false
 
 [node name="BackgroundMid" type="Parallax2D" parent="World" unique_id=1134878916]
 scroll_scale = Vector2(0.35, 0.35)
+repeat_size = Vector2(2048, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/BackgroundMid" unique_id=1097768199]
+z_index = -4
+texture = ExtResource("26_lswbx")
+centered = false
 
 [node name="BackgroundNear" type="Parallax2D" parent="World" unique_id=943356567]
 scroll_scale = Vector2(0.6, 0.6)
@@ -386,3 +401,4 @@ scroll_scale = Vector2(1.05, 1)
 
 [node name="ForegroundNear" type="Parallax2D" parent="World" unique_id=1314364671]
 scroll_scale = Vector2(1.15, 1)
+scroll_offset = Vector2(86, 1)
