@@ -7,6 +7,8 @@ extends CharacterBody2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var wall_check_left: RayCast2D = $WallCheckLeft
 @onready var wall_check_right: RayCast2D = $WallCheckRight
+@onready var floor_check_left: RayCast2D = $FloorCheckLeft
+@onready var floor_check_right: RayCast2D = $FloorCheckRight
 
 
 func _physics_process(delta: float) -> void:
@@ -15,16 +17,29 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = 0
 
+	if should_turn_around():
+		turn_around()
+
 	velocity.x = move_direction * move_speed
-
-	if move_direction < 0 and wall_check_left.is_colliding():
-		turn_around()
-	elif move_direction > 0 and wall_check_right.is_colliding():
-		turn_around()
-
 	move_and_slide()
 
 	sprite.flip_h = move_direction > 0
+
+
+func should_turn_around() -> bool:
+	if move_direction < 0:
+		if wall_check_left.is_colliding():
+			return true
+		if not floor_check_left.is_colliding():
+			return true
+
+	if move_direction > 0:
+		if wall_check_right.is_colliding():
+			return true
+		if not floor_check_right.is_colliding():
+			return true
+
+	return false
 
 
 func turn_around() -> void:

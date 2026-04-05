@@ -16,19 +16,21 @@ size = Vector2(36, 162)
 [node name="TestRoom" type="Node2D" parent="." unique_id=574496171]
 
 [node name="Floor" type="StaticBody2D" parent="TestRoom" unique_id=1749241888]
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TestRoom/Floor" unique_id=945145100]
 position = Vector2(9, 167)
 shape = SubResource("RectangleShape2D_51pqh")
 
 [node name="ColorRect" type="ColorRect" parent="TestRoom/Floor/CollisionShape2D" unique_id=1609027165]
-offset_left = -386.0
-offset_top = -1.0
-offset_right = 383.0
-offset_bottom = 39.0
+offset_left = -384.0
+offset_top = -10.0
+offset_right = 385.0
+offset_bottom = 30.0
 
 [node name="Wall" type="StaticBody2D" parent="TestRoom" unique_id=2126375314]
 position = Vector2(-165, 64)
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TestRoom/Wall" unique_id=1001762205]
 position = Vector2(8, 20)
