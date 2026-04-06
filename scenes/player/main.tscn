@@ -47,6 +47,7 @@ script = ExtResource("2_5l0vc")
 bullet_scene = ExtResource("3_51pqh")
 
 [node name="Bullet" parent="TestRoom" unique_id=1682380724 instance=ExtResource("3_51pqh")]
+position = Vector2(-187, 10)
 
 [node name="Enemy" parent="TestRoom" unique_id=83899896 instance=ExtResource("4_51pqh")]
 position = Vector2(211, 32)
