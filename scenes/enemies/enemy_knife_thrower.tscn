@@ -3,6 +3,11 @@
 [ext_resource type="Texture2D" uid="uid://cxqtyr0osq71f" path="res://art/enemies/Enemy2.png" id="1_e4yay"]
 [ext_resource type="Script" uid="uid://snvn84vsd1km" path="res://scripts/enemies/enemy_knife_thrower.gd" id="1_o6rux"]
 [ext_resource type="PackedScene" uid="uid://bxpf17ic5m3mv" path="res://scenes/Weapons/knife_projectile.tscn" id="2_6f5w2"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="3_6f5w2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n0xlh"]
+shader = ExtResource("3_6f5w2")
+shader_parameter/flash_amount = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ac8cj"]
 size = Vector2(19, 36)
@@ -16,6 +21,7 @@ script = ExtResource("1_o6rux")
 knife_scene = ExtResource("2_6f5w2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=928285763]
+material = SubResource("ShaderMaterial_n0xlh")
 position = Vector2(-3.0517578e-05, -1.0000038)
 scale = Vector2(0.09, 0.09)
 texture = ExtResource("1_e4yay")

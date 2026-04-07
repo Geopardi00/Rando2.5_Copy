@@ -12,20 +12,16 @@ Last updated: 2026-04-07
 - Player respawns on hit
 
 ## Current Checkpoint Snapshot
-- Updated project config: `project.godot`
-- Updated level scene: `scenes/levels/level_01.tscn`
-- Updated player scenes and scripts:
-  - `scenes/player/main.tscn`
-  - `scenes/player/player.tscn`
-  - `scenes/player/player.gd`
-  - `scripts/player/player.gd`
-- Updated enemy logic: `scripts/enemies/enemy.gd`
-- Added hazard kill zone:
-  - `scenes/Hazards/fall_kill_zone.tscn`
-  - `scripts/Hazards/fall_kill_zone.gd`
-- Added environment art:
-  - `art/props/tree01.png`
-  - `art/tiles/sand.png`
+- Updated enemy scenes:
+  - `scenes/enemies/enemy.tscn`
+  - `scenes/enemies/enemy_dog.tscn`
+  - `scenes/enemies/enemy_knife_thrower.tscn`
+- Updated enemy scripts:
+  - `scripts/enemies/enemy.gd`
+  - `scripts/enemies/enemy_dog.gd`
+  - `scripts/enemies/enemy_knife_thrower.gd`
+- Added shader effects:
+  - `shaders/hit_flash.gdshader`
 
 ## Notes
 - Runtime state tracking lives in `scripts/state_of_game.gd`.

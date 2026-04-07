@@ -28,6 +28,11 @@ func _ready() -> void:
 
 	player = get_tree().get_first_node_in_group("player") as Node2D
 
+	# Make sure each thrower instance has its own shader material.
+	if sprite.material != null:
+		sprite.material = sprite.material.duplicate()
+		_set_flash_amount(0.0)
+
 
 func _physics_process(delta: float) -> void:
 	# Stay grounded
@@ -55,7 +60,9 @@ func _physics_process(delta: float) -> void:
 
 
 func update_facing(dir: int) -> void:
-	# Assumes enemy art faces RIGHT by default
+	# Assumes enemy art faces LEFT by default.
+	# If your art faces RIGHT by default, change this to:
+	# sprite.flip_h = dir < 0
 	sprite.flip_h = dir > 0
 
 
@@ -66,7 +73,7 @@ func throw_knife(dir: int) -> void:
 	var knife = knife_scene.instantiate()
 	knife.direction = dir
 
-	var spawn_pos := global_position + Vector2(throw_offset.x * dir, throw_offset.y)
+	var spawn_pos: Vector2 = global_position + Vector2(throw_offset.x * dir, throw_offset.y)
 	knife.global_position = spawn_pos
 
 	get_tree().current_scene.add_child(knife)
@@ -75,8 +82,35 @@ func throw_knife(dir: int) -> void:
 
 func take_damage(amount: int = 1) -> void:
 	hp -= amount
+	flash_hit()
+
 	if hp <= 0:
 		die()
+
+
+func flash_hit() -> void:
+	if sprite.material == null:
+		return
+
+	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	if mat == null:
+		return
+
+	mat.set_shader_parameter("flash_amount", 1.0)
+
+	var tween := create_tween()
+	tween.tween_method(_set_flash_amount, 1.0, 0.0, 0.08)
+
+
+func _set_flash_amount(value: float) -> void:
+	if sprite.material == null:
+		return
+
+	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	if mat == null:
+		return
+
+	mat.set_shader_parameter("flash_amount", value)
 
 
 func die() -> void:

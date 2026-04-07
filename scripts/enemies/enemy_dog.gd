@@ -32,6 +32,11 @@ func _ready() -> void:
 	hp = max_hp
 	player = get_tree().get_first_node_in_group("player") as Node2D
 
+	# Make sure each dog instance has its own shader material.
+	if sprite.material != null:
+		sprite.material = sprite.material.duplicate()
+		_set_flash_amount(0.0)
+
 
 func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
@@ -134,11 +139,37 @@ func update_visual() -> void:
 	sprite.flip_h = move_direction > 0
 
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int = 1) -> void:
 	hp -= amount
+	flash_hit()
 
 	if hp <= 0:
 		die()
+
+
+func flash_hit() -> void:
+	if sprite.material == null:
+		return
+
+	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	if mat == null:
+		return
+
+	mat.set_shader_parameter("flash_amount", 1.0)
+
+	var tween := create_tween()
+	tween.tween_method(_set_flash_amount, 1.0, 0.0, 0.08)
+
+
+func _set_flash_amount(value: float) -> void:
+	if sprite.material == null:
+		return
+
+	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	if mat == null:
+		return
+
+	mat.set_shader_parameter("flash_amount", value)
 
 
 func die() -> void:

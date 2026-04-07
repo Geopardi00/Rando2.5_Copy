@@ -1,10 +1,15 @@
 [gd_scene format=3 uid="uid://bxrxxajgkoae7"]
 
 [ext_resource type="Script" uid="uid://ljck7scgry5c" path="res://scripts/enemies/enemy_dog.gd" id="1_h8v6i"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_a3t4t"]
 [ext_resource type="Texture2D" uid="uid://b31tv1uqxah3h" path="res://art/enemies/enemy_dog.png" id="2_hibgo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
 size = Vector2(45, 27)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vrqf2"]
+shader = ExtResource("2_a3t4t")
+shader_parameter/flash_amount = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a3t4t"]
 size = Vector2(41, 25)
@@ -18,6 +23,7 @@ position = Vector2(-0.5, 2.5)
 shape = SubResource("RectangleShape2D_hibgo")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=584324635]
+material = SubResource("ShaderMaterial_vrqf2")
 scale = Vector2(0.08, 0.08)
 texture = ExtResource("2_hibgo")
 
