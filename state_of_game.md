@@ -13,24 +13,15 @@ Last updated: 2026-04-07
 
 ## Current Checkpoint Snapshot
 - Updated level scene: `scenes/levels/level_01.tscn`
-- Updated player scene and scripts:
-  - `scenes/player/main.tscn`
+- Updated player scene: `scenes/player/main.tscn`
+- Updated player scripts:
   - `scenes/player/player.gd`
   - `scripts/player/player.gd`
-- Added enemy content:
-  - `scenes/enemies/enemy_knife_thrower.tscn`
-  - `scripts/enemies/enemy_knife_thrower.gd`
-  - `art/enemies/Enemy2.png`
-- Added hazards content:
-  - `scenes/Hazards/`
-  - `scripts/Hazards/`
-- Added weapons content:
-  - `art/Weapons/`
-  - `scenes/Weapons/`
-  - `scripts/Weapons/`
-- Added foreground parallax art:
-  - `art/parallax/foreground_plant01.png`
-  - `art/parallax/foreground_vines01.png`
+- Updated knife-thrower enemy logic: `scripts/enemies/enemy_knife_thrower.gd`
+- Added dog enemy content:
+  - `art/enemies/enemy_dog.png`
+  - `scenes/enemies/enemy_dog.tscn`
+  - `scripts/enemies/enemy_dog.gd`
 
 ## Notes
 - Runtime state tracking lives in `scripts/state_of_game.gd`.

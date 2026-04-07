@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_rwwc7"]
 [ext_resource type="PackedScene" uid="uid://bxpf17ic5m3mv" path="res://scenes/Weapons/knife_projectile.tscn" id="7_isen5"]
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="8_visir"]
+[ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="9_visir"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -75,3 +76,6 @@ position = Vector2(397, -139)
 
 [node name="EnemyKnifeThrower" parent="." unique_id=1748288799 instance=ExtResource("8_visir")]
 position = Vector2(306, 134)
+
+[node name="Enemy_dog" parent="." unique_id=363953011 instance=ExtResource("9_visir")]
+position = Vector2(112, 113)

@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var gravity: float = 1100.0
 @export var max_hp: int = 3
 
-@export var attack_range: float = 260.0
+@export var attack_range: float = 360.0
 @export var vertical_tolerance: float = 56.0
 @export var throw_cooldown: float = 1.2
 

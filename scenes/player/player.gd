@@ -12,7 +12,7 @@ extends CharacterBody2D
 
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 0.2
-@export var bullet_offset: Vector2 = Vector2(16, -4)
+@export var bullet_offset: Vector2 = Vector2(16, 12)
 
 @export var respawn_position: Vector2 = Vector2(0, -100)
 

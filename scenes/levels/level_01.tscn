@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://dcw16xyksu2lm" path="res://scripts/levels/level_01.gd" id="13_84s7n"]
 [ext_resource type="Texture2D" uid="uid://dn7vxxugntcmp" path="res://art/tiles/wood_pillar_long.png" id="13_qy4h0"]
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="15_5t8rk"]
+[ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="16_cag23"]
 [ext_resource type="Texture2D" uid="uid://oy8w5qultnja" path="res://art/tiles/plant01.png" id="17_e6lid"]
 [ext_resource type="Texture2D" uid="uid://qc2djjlhns7l" path="res://art/tiles/plant02.png" id="18_3g50r"]
 [ext_resource type="Texture2D" uid="uid://cjkbdxfc8dfnx" path="res://art/tiles/stone01.png" id="18_cywot"]
@@ -389,13 +390,19 @@ position = Vector2(937, 292)
 position = Vector2(2530, 285)
 
 [node name="Enemy3" parent="Enemies" unique_id=1685862996 instance=ExtResource("10_r72dd")]
-position = Vector2(2899, 279)
+position = Vector2(1911, 315)
 
 [node name="Enemy4" parent="Enemies" unique_id=1626571097 instance=ExtResource("10_r72dd")]
 position = Vector2(3887, 272)
 
 [node name="EnemyKnifeThrower" parent="Enemies" unique_id=1748288799 instance=ExtResource("15_5t8rk")]
 position = Vector2(2331, 323)
+
+[node name="Enemy_dog" parent="Enemies" unique_id=363953011 instance=ExtResource("16_cag23")]
+position = Vector2(3140, 274)
+
+[node name="EnemyKnifeThrower2" parent="Enemies" unique_id=347898558 instance=ExtResource("15_5t8rk")]
+position = Vector2(3990, 283)
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=492750461]
 position = Vector2(116, 238)

@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bxrxxajgkoae7"]
+
+[ext_resource type="Script" uid="uid://ljck7scgry5c" path="res://scripts/enemies/enemy_dog.gd" id="1_h8v6i"]
+[ext_resource type="Texture2D" uid="uid://b31tv1uqxah3h" path="res://art/enemies/enemy_dog.png" id="2_hibgo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
+size = Vector2(45, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3t4t"]
+size = Vector2(41, 25)
+
+[node name="Enemy_dog" type="CharacterBody2D" unique_id=363953011 groups=["enemy"]]
+collision_layer = 4
+script = ExtResource("1_h8v6i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=594483582]
+position = Vector2(-0.5, 2.5)
+shape = SubResource("RectangleShape2D_hibgo")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=584324635]
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("2_hibgo")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1296359984 groups=["enemy_hurtbox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=85107015]
+position = Vector2(0.5, 2.5)
+shape = SubResource("RectangleShape2D_a3t4t")
+
+[node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=1351524003]
+position = Vector2(-20, 0)
+target_position = Vector2(-4, 0)
+
+[node name="WallCheckRight" type="RayCast2D" parent="." unique_id=1632988245]
+position = Vector2(16, 1)
+target_position = Vector2(5, 0)
+
+[node name="FloorCheckLeft" type="RayCast2D" parent="." unique_id=1778318311]
+position = Vector2(-14, 12)
+target_position = Vector2(0, 7)
+
+[node name="FloorCheckRight" type="RayCast2D" parent="." unique_id=235536923]
+position = Vector2(17, 11)
+target_position = Vector2(0, 8)
