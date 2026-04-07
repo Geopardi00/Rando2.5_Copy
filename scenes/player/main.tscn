@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="8_visir"]
 [ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="9_visir"]
 [ext_resource type="PackedScene" uid="uid://dm32l8wkliqrx" path="res://scenes/Hazards/fall_kill_zone.tscn" id="10_8o13m"]
+[ext_resource type="PackedScene" uid="uid://pkyrpjm7c04p" path="res://scenes/fx/blood_burst.tscn" id="11_grjmi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -83,3 +84,5 @@ position = Vector2(112, 113)
 
 [node name="Fall_KillZone" parent="." unique_id=606477228 instance=ExtResource("10_8o13m")]
 position = Vector2(8, 233)
+
+[node name="BloodBurst" parent="." unique_id=1227169166 instance=ExtResource("11_grjmi")]

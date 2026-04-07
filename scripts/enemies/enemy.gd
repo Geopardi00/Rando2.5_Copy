@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
+
 @export var move_speed: float = 100.0
 @export var gravity: float = 1000.0
 @export var move_direction: int = -1
@@ -95,11 +97,22 @@ func _set_flash_amount(value: float) -> void:
 
 
 func die() -> void:
+	spawn_death_fx()
+
 	var state: Node = _get_state_of_game()
 	if state != null and state.has_method("register_enemy_defeated"):
 		state.register_enemy_defeated()
 
 	queue_free()
+
+
+func spawn_death_fx() -> void:
+	if BLOOD_BURST_SCENE == null:
+		return
+
+	var fx = BLOOD_BURST_SCENE.instantiate()
+	fx.global_position = global_position
+	get_tree().current_scene.add_child(fx)
 
 
 func _get_state_of_game() -> Node:

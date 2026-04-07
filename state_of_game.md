@@ -1,6 +1,6 @@
 # State of Game
 
-Last updated: 2026-04-07
+Last updated: 2026-04-08
 
 ## Implemented Features
 - Level 01 layout
@@ -12,16 +12,15 @@ Last updated: 2026-04-07
 - Player respawns on hit
 
 ## Current Checkpoint Snapshot
-- Updated enemy scenes:
-  - `scenes/enemies/enemy.tscn`
-  - `scenes/enemies/enemy_dog.tscn`
-  - `scenes/enemies/enemy_knife_thrower.tscn`
+- Updated player scene: `scenes/player/main.tscn`
 - Updated enemy scripts:
   - `scripts/enemies/enemy.gd`
   - `scripts/enemies/enemy_dog.gd`
   - `scripts/enemies/enemy_knife_thrower.gd`
-- Added shader effects:
-  - `shaders/hit_flash.gdshader`
+- Added blood FX assets and scene:
+  - `art/FX/blood.png`
+  - `scenes/fx/blood_burst.tscn`
+  - `scenes/fx/blood_burst.gd`
 
 ## Notes
 - Runtime state tracking lives in `scripts/state_of_game.gd`.

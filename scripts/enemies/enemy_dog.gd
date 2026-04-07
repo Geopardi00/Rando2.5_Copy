@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
+
 enum State {
 	PATROL,
 	CHASE
@@ -173,11 +175,22 @@ func _set_flash_amount(value: float) -> void:
 
 
 func die() -> void:
+	spawn_death_fx()
+
 	var state_node: Node = _get_state_of_game()
 	if state_node != null and state_node.has_method("register_enemy_defeated"):
 		state_node.register_enemy_defeated()
 
 	queue_free()
+
+
+func spawn_death_fx() -> void:
+	if BLOOD_BURST_SCENE == null:
+		return
+
+	var fx = BLOOD_BURST_SCENE.instantiate()
+	fx.global_position = global_position
+	get_tree().current_scene.add_child(fx)
 
 
 func _get_state_of_game() -> Node:

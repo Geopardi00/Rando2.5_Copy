@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
+
 @export var knife_scene: PackedScene
 
 @export var gravity: float = 1100.0
@@ -14,8 +16,8 @@ extends CharacterBody2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var cooldown_timer: Timer = $CooldownTimer
 
-var hp: int
-var player: Node2D
+var hp: int = 0
+var player: Node2D = null
 
 
 func _ready() -> void:
@@ -114,4 +116,14 @@ func _set_flash_amount(value: float) -> void:
 
 
 func die() -> void:
+	spawn_death_fx()
 	queue_free()
+
+
+func spawn_death_fx() -> void:
+	if BLOOD_BURST_SCENE == null:
+		return
+
+	var fx = BLOOD_BURST_SCENE.instantiate()
+	fx.global_position = global_position
+	get_tree().current_scene.add_child(fx)
