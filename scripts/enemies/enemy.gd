@@ -4,12 +4,21 @@ extends CharacterBody2D
 @export var gravity: float = 1000.0
 @export var move_direction: int = -1
 
+@export var max_hp: int = 2
+
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var wall_check_left: RayCast2D = $WallCheckLeft
 @onready var wall_check_right: RayCast2D = $WallCheckRight
 @onready var floor_check_left: RayCast2D = $FloorCheckLeft
 @onready var floor_check_right: RayCast2D = $FloorCheckRight
 
+var hp: int 
+var player: Node2D
+
+func _ready() -> void:
+	add_to_group("enemy")
+	hp = max_hp
+	player = get_tree().get_first_node_in_group("player") as Node2D
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -46,10 +55,13 @@ func turn_around() -> void:
 	move_direction *= -1
 
 
-func take_damage(_amount: int) -> void:
-	var state := _get_state_of_game()
-	if state != null and state.has_method("register_enemy_defeated"):
-		state.register_enemy_defeated()
+func take_damage(amount: int = 1) -> void:
+	hp -= amount
+	if hp <= 0:
+		die()
+
+
+func die() -> void:
 
 	queue_free()
 

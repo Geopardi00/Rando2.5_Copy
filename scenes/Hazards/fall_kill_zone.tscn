@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dm32l8wkliqrx"]
+
+[ext_resource type="Script" uid="uid://k2kj5whm03iu" path="res://scripts/Hazards/fall_kill_zone.gd" id="1_1e2cn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1e2cn"]
+size = Vector2(5445, 20)
+
+[node name="Fall_KillZone" type="Area2D" unique_id=606477228]
+collision_mask = 2
+script = ExtResource("1_1e2cn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1747798998]
+position = Vector2(1761.5, 1)
+shape = SubResource("RectangleShape2D_1e2cn")

@@ -14,8 +14,6 @@ extends CharacterBody2D
 @export var fire_rate: float = 0.2
 @export var bullet_offset: Vector2 = Vector2(16, 12)
 
-@export var respawn_position: Vector2 = Vector2(0, -100)
-
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
@@ -24,9 +22,12 @@ var facing: int = 1
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
 var air_jumps_left: int = 0
+var is_dead: bool = false
 
 
 func _ready() -> void:
+	add_to_group("player")
+
 	fire_timer.wait_time = fire_rate
 	fire_timer.one_shot = true
 
@@ -36,28 +37,31 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var input_axis := Input.get_axis("move_left", "move_right")
-	var jump_pressed := Input.is_action_just_pressed("jump")
+	if is_dead:
+		return
+
+	var input_axis: float = Input.get_axis("move_left", "move_right")
+	var jump_pressed: bool = Input.is_action_just_pressed("jump")
 
 	# Facing + visual flip
-	if input_axis > 0:
+	if input_axis > 0.0:
 		facing = 1
-	elif input_axis < 0:
+	elif input_axis < 0.0:
 		facing = -1
 
 	sprite.flip_h = facing < 0
 
 	# Horizontal movement
-	if input_axis != 0:
+	if input_axis != 0.0:
 		velocity.x = input_axis * move_speed
 	else:
-		velocity.x = 0
+		velocity.x = 0.0
 
 	# Gravity
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
-		velocity.y = 0
+		velocity.y = 0.0
 
 	# Ground reset
 	if is_on_floor():
@@ -106,7 +110,7 @@ func fire_bullet() -> void:
 	var bullet = bullet_scene.instantiate()
 	get_tree().current_scene.add_child(bullet)
 
-	var spawn_pos := global_position + Vector2(bullet_offset.x * facing, bullet_offset.y)
+	var spawn_pos: Vector2 = global_position + Vector2(bullet_offset.x * facing, bullet_offset.y)
 	bullet.global_position = spawn_pos
 	bullet.direction = facing
 
@@ -119,10 +123,13 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 
 
 func die() -> void:
+	if is_dead:
+		return
+
+	is_dead = true
 	print("player died")
-	respawn()
+	call_deferred("respawn")
+
 
 func respawn() -> void:
-	global_position = respawn_position
-	velocity = Vector2.ZERO
-	air_jumps_left = extra_jumps
+	get_tree().reload_current_scene()

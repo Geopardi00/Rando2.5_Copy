@@ -10,6 +10,7 @@ size = Vector2(18, 35)
 
 [node name="Player" type="CharacterBody2D" unique_id=1487025887]
 z_index = 1
+position = Vector2(44, -72)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=529171582]
@@ -21,7 +22,8 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_8afob")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2029278347]
-position = Vector2(50, -133)
+position = Vector2(52, -137)
+zoom = Vector2(1.5, 1.5)
 
 [node name="FireRateTimer" type="Timer" parent="." unique_id=1567559696]
 one_shot = true
