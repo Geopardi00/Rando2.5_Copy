@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="12_tyxjt"]
 [ext_resource type="Script" uid="uid://dcw16xyksu2lm" path="res://scripts/levels/level_01.gd" id="13_84s7n"]
 [ext_resource type="Texture2D" uid="uid://dn7vxxugntcmp" path="res://art/tiles/wood_pillar_long.png" id="13_qy4h0"]
+[ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="15_5t8rk"]
 [ext_resource type="Texture2D" uid="uid://oy8w5qultnja" path="res://art/tiles/plant01.png" id="17_e6lid"]
 [ext_resource type="Texture2D" uid="uid://qc2djjlhns7l" path="res://art/tiles/plant02.png" id="18_3g50r"]
 [ext_resource type="Texture2D" uid="uid://cjkbdxfc8dfnx" path="res://art/tiles/stone01.png" id="18_cywot"]
@@ -30,6 +31,8 @@
 [ext_resource type="Texture2D" uid="uid://bpfim1vjq34sx" path="res://art/parallax/background_middle.png" id="26_lswbx"]
 [ext_resource type="Texture2D" uid="uid://bg7vmefvqju3o" path="res://art/parallax/background_near.png" id="27_uujh0"]
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="30_e5bmj"]
+[ext_resource type="Texture2D" uid="uid://33os8d3nof8q" path="res://art/parallax/foreground_vines01.png" id="30_iqf6e"]
+[ext_resource type="PackedScene" uid="uid://dwyjpymnf7mcs" path="res://scenes/Hazards/spike_hazard_kill_zone.tscn" id="32_stkom"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3g50r"]
 size = Vector2(689, 80)
@@ -75,6 +78,9 @@ size = Vector2(266.5, 34)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lswbx"]
 size = Vector2(69, 92)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3pila"]
+size = Vector2(59, 16)
 
 [node name="Level01" type="Node2D" unique_id=1698746909]
 script = ExtResource("13_84s7n")
@@ -328,8 +334,8 @@ scale = Vector2(0.45703125, 0.37109375)
 texture = ExtResource("9_e6lid")
 
 [node name="Heropillar" type="Sprite2D" parent="Platforms" unique_id=1840932197]
-position = Vector2(4306, 264)
-scale = Vector2(0.19160675, 0.205108)
+position = Vector2(4314.0005, 263.99997)
+scale = Vector2(0.21396747, 0.21876493)
 texture = ExtResource("11_cwffn")
 flip_h = true
 
@@ -380,13 +386,16 @@ z_index = 1
 position = Vector2(937, 292)
 
 [node name="Enemy2" parent="Enemies" unique_id=373038677 instance=ExtResource("10_r72dd")]
-position = Vector2(2175, 308)
+position = Vector2(2530, 285)
 
 [node name="Enemy3" parent="Enemies" unique_id=1685862996 instance=ExtResource("10_r72dd")]
 position = Vector2(2899, 279)
 
 [node name="Enemy4" parent="Enemies" unique_id=1626571097 instance=ExtResource("10_r72dd")]
 position = Vector2(3887, 272)
+
+[node name="EnemyKnifeThrower" parent="Enemies" unique_id=1748288799 instance=ExtResource("15_5t8rk")]
+position = Vector2(2331, 323)
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=492750461]
 position = Vector2(116, 238)
@@ -401,7 +410,7 @@ script = ExtResource("12_gi8m4")
 position = Vector2(7.5, 19)
 shape = SubResource("RectangleShape2D_lswbx")
 
-[node name="Player" parent="." unique_id=1487025887 instance=ExtResource("11_jmes4")]
+[node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("11_jmes4")]
 position = Vector2(397, 237)
 script = ExtResource("12_07lms")
 bullet_scene = ExtResource("12_tyxjt")
@@ -536,9 +545,20 @@ centered = false
 [node name="ForegroundSoft" type="Parallax2D" parent="World" unique_id=1811413843]
 scroll_scale = Vector2(1.05, 1)
 
+[node name="Sprite2D" type="Sprite2D" parent="World/ForegroundSoft" unique_id=176933644]
+position = Vector2(418.00003, -169)
+scale = Vector2(1.5, 1.9481875)
+texture = ExtResource("30_iqf6e")
+
 [node name="ForegroundNear" type="Parallax2D" parent="World" unique_id=1314364671]
 scroll_scale = Vector2(1.15, 1)
 scroll_offset = Vector2(86, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/ForegroundNear" unique_id=1578620493]
+position = Vector2(3295, -180.3)
+scale = Vector2(1.8, 2.3804688)
+texture = ExtResource("30_iqf6e")
+flip_h = true
 
 [node name="Hazards" type="Node2D" parent="." unique_id=1405875161]
 
@@ -556,3 +576,23 @@ texture = ExtResource("30_e5bmj")
 position = Vector2(3641, 476)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("30_e5bmj")
+
+[node name="SpikeHazard_KillZone" parent="Hazards" unique_id=948084110 instance=ExtResource("32_stkom")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/SpikeHazard_KillZone" unique_id=1707681208]
+position = Vector2(3422.5, 461)
+shape = SubResource("RectangleShape2D_3pila")
+
+[node name="SpikeHazard_KillZone2" parent="Hazards" unique_id=2072934207 instance=ExtResource("32_stkom")]
+position = Vector2(111, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/SpikeHazard_KillZone2" unique_id=1996278021]
+position = Vector2(3422.5, 461)
+shape = SubResource("RectangleShape2D_3pila")
+
+[node name="SpikeHazard_KillZone3" parent="Hazards" unique_id=1609932790 instance=ExtResource("32_stkom")]
+position = Vector2(221, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/SpikeHazard_KillZone3" unique_id=699196526]
+position = Vector2(3422.5, 461)
+shape = SubResource("RectangleShape2D_3pila")

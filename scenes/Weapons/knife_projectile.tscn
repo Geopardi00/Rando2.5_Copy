@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bxpf17ic5m3mv"]
+
+[ext_resource type="Script" uid="uid://c5fhjn0cfq6xl" path="res://scripts/Weapons/knife_projectile.gd" id="1_dgbpl"]
+[ext_resource type="Texture2D" uid="uid://c38nf8h3rg4u0" path="res://art/Weapons/Knife01.png" id="1_kr1vc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgbpl"]
+size = Vector2(11, 4)
+
+[node name="KnifeProjectile" type="Area2D" unique_id=1218282864]
+collision_mask = 3
+script = ExtResource("1_dgbpl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1231752784]
+position = Vector2(3.0000076, 3.8146973e-06)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_kr1vc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=445819850]
+position = Vector2(-6.5, 0)
+shape = SubResource("RectangleShape2D_dgbpl")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1297643599]
+position = Vector2(1, 0)

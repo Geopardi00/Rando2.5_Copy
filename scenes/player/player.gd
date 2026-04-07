@@ -120,6 +120,9 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 
 func die() -> void:
 	print("player died")
+	respawn()
+
+func respawn() -> void:
 	global_position = respawn_position
 	velocity = Vector2.ZERO
 	air_jumps_left = extra_jumps

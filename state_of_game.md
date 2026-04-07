@@ -1,6 +1,6 @@
 # State of Game
 
-Last updated: 2026-04-06
+Last updated: 2026-04-07
 
 ## Implemented Features
 - Level 01 layout
@@ -12,13 +12,25 @@ Last updated: 2026-04-06
 - Player respawns on hit
 
 ## Current Checkpoint Snapshot
-- Updated player scene: `scenes/player/main.tscn`
 - Updated level scene: `scenes/levels/level_01.tscn`
-- Updated bullet sprite: `art/characters/bullet.png`
-- Added hazard art folder: `art/hazards/`
-- Added parallax background near layer: `art/parallax/background_near.png`
-- Added tile art: `art/tiles/b01_stonechunk_flat_04.png`
-- Added tile art: `art/tiles/wood_pillar_long.png`
+- Updated player scene and scripts:
+  - `scenes/player/main.tscn`
+  - `scenes/player/player.gd`
+  - `scripts/player/player.gd`
+- Added enemy content:
+  - `scenes/enemies/enemy_knife_thrower.tscn`
+  - `scripts/enemies/enemy_knife_thrower.gd`
+  - `art/enemies/Enemy2.png`
+- Added hazards content:
+  - `scenes/Hazards/`
+  - `scripts/Hazards/`
+- Added weapons content:
+  - `art/Weapons/`
+  - `scenes/Weapons/`
+  - `scripts/Weapons/`
+- Added foreground parallax art:
+  - `art/parallax/foreground_plant01.png`
+  - `art/parallax/foreground_vines01.png`
 
 ## Notes
 - Runtime state tracking lives in `scripts/state_of_game.gd`.

@@ -4,12 +4,19 @@
 [ext_resource type="Script" uid="uid://ch38c7lx75j12" path="res://scripts/player/player.gd" id="2_5l0vc"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_51pqh"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="4_51pqh"]
+[ext_resource type="PackedScene" uid="uid://dwyjpymnf7mcs" path="res://scenes/Hazards/spike_hazard_kill_zone.tscn" id="5_4q130"]
+[ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_rwwc7"]
+[ext_resource type="PackedScene" uid="uid://bxpf17ic5m3mv" path="res://scenes/Weapons/knife_projectile.tscn" id="7_isen5"]
+[ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="8_visir"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
 size = Vector2(36, 162)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isen5"]
+size = Vector2(31, 9)
 
 [node name="Main" type="Node2D" unique_id=1127604851]
 
@@ -42,7 +49,7 @@ offset_top = -81.0
 offset_right = 18.0
 offset_bottom = 77.0
 
-[node name="Player" parent="TestRoom" unique_id=1487025887 instance=ExtResource("1_s4h7g")]
+[node name="Player" parent="TestRoom" unique_id=1487025887 groups=["player"] instance=ExtResource("1_s4h7g")]
 script = ExtResource("2_5l0vc")
 bullet_scene = ExtResource("3_51pqh")
 
@@ -51,3 +58,20 @@ position = Vector2(-187, 10)
 
 [node name="Enemy" parent="TestRoom" unique_id=83899896 instance=ExtResource("4_51pqh")]
 position = Vector2(211, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="TestRoom" unique_id=368010161]
+position = Vector2(351, 152.00002)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_rwwc7")
+
+[node name="SpikeHazard_KillZone" parent="." unique_id=948084110 groups=["enemy"] instance=ExtResource("5_4q130")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpikeHazard_KillZone" unique_id=1773692503]
+position = Vector2(352.5, 146.5)
+shape = SubResource("RectangleShape2D_isen5")
+
+[node name="KnifeProjectile" parent="." unique_id=1218282864 instance=ExtResource("7_isen5")]
+position = Vector2(397, -139)
+
+[node name="EnemyKnifeThrower" parent="." unique_id=1748288799 instance=ExtResource("8_visir")]
+position = Vector2(306, 134)

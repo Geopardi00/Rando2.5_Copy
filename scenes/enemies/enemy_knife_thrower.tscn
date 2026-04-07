@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://7r6butmsjild"]
+
+[ext_resource type="Texture2D" uid="uid://cxqtyr0osq71f" path="res://art/enemies/Enemy2.png" id="1_e4yay"]
+[ext_resource type="Script" uid="uid://snvn84vsd1km" path="res://scripts/enemies/enemy_knife_thrower.gd" id="1_o6rux"]
+[ext_resource type="PackedScene" uid="uid://bxpf17ic5m3mv" path="res://scenes/Weapons/knife_projectile.tscn" id="2_6f5w2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ac8cj"]
+size = Vector2(19, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6rux"]
+size = Vector2(16, 34)
+
+[node name="EnemyKnifeThrower" type="CharacterBody2D" unique_id=1748288799 groups=["enemy"]]
+position = Vector2(326, 78)
+script = ExtResource("1_o6rux")
+knife_scene = ExtResource("2_6f5w2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=928285763]
+position = Vector2(-3.0517578e-05, -1.0000038)
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("1_e4yay")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1484088456]
+position = Vector2(3, 1)
+shape = SubResource("RectangleShape2D_ac8cj")
+
+[node name="CooldownTimer" type="Timer" parent="." unique_id=958227915]
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=1394739961 groups=["enemy_hurtbox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=468608857]
+position = Vector2(3, 1)
+shape = SubResource("RectangleShape2D_o6rux")

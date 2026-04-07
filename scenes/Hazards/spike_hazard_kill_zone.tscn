@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dwyjpymnf7mcs"]
+
+[ext_resource type="Script" uid="uid://d4dydysuxsnkm" path="res://scripts/Hazards/spike_hazard_kill_zone.gd" id="1_4ana0"]
+
+[node name="SpikeHazard_KillZone" type="Area2D" unique_id=948084110]
+collision_mask = 2
+script = ExtResource("1_4ana0")
