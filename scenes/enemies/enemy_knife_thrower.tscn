@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://snvn84vsd1km" path="res://scripts/enemies/enemy_knife_thrower.gd" id="1_o6rux"]
 [ext_resource type="PackedScene" uid="uid://bxpf17ic5m3mv" path="res://scenes/Weapons/knife_projectile.tscn" id="2_6f5w2"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="3_6f5w2"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="5_n0xlh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n0xlh"]
 shader = ExtResource("3_6f5w2")
@@ -19,6 +20,12 @@ size = Vector2(16, 34)
 position = Vector2(326, 78)
 script = ExtResource("1_o6rux")
 knife_scene = ExtResource("2_6f5w2")
+gravity = null
+max_hp = null
+attack_range = null
+vertical_tolerance = null
+throw_cooldown = null
+throw_offset = null
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=928285763]
 material = SubResource("ShaderMaterial_n0xlh")
@@ -37,3 +44,7 @@ shape = SubResource("RectangleShape2D_ac8cj")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=468608857]
 position = Vector2(3, 1)
 shape = SubResource("RectangleShape2D_o6rux")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=83865021]
+stream = ExtResource("5_n0xlh")
+volume_db = -21.585

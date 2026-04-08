@@ -23,6 +23,7 @@ enum State {
 @onready var wall_check_right: RayCast2D = $WallCheckRight
 @onready var floor_check_left: RayCast2D = $FloorCheckLeft
 @onready var floor_check_right: RayCast2D = $FloorCheckRight
+@onready var hit_sound: AudioStreamPlayer2D = $HitSound
 
 var state: State = State.PATROL
 var hp: int = 0
@@ -144,6 +145,7 @@ func update_visual() -> void:
 func take_damage(amount: int = 1) -> void:
 	hp -= amount
 	flash_hit()
+	spawn_hit_sound()
 
 	if hp <= 0:
 		die()
@@ -182,6 +184,23 @@ func die() -> void:
 		state_node.register_enemy_defeated()
 
 	queue_free()
+	
+func spawn_hit_sound() -> void:
+	if hit_sound == null:
+		return
+
+	if hit_sound.stream == null:
+		return
+
+	var sfx := AudioStreamPlayer2D.new()
+	sfx.stream = hit_sound.stream
+	sfx.volume_db = hit_sound.volume_db
+	sfx.pitch_scale = hit_sound.pitch_scale
+	sfx.global_position = global_position
+
+	get_tree().current_scene.add_child(sfx)
+	sfx.finished.connect(sfx.queue_free)
+	sfx.play()
 
 
 func spawn_death_fx() -> void:

@@ -12,6 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://dm32l8wkliqrx" path="res://scenes/Hazards/fall_kill_zone.tscn" id="10_8o13m"]
 [ext_resource type="PackedScene" uid="uid://pkyrpjm7c04p" path="res://scenes/fx/blood_burst.tscn" id="11_grjmi"]
 [ext_resource type="PackedScene" uid="uid://bu7rnolespf13" path="res://scenes/ui/main_menu.tscn" id="12_ebi4x"]
+[ext_resource type="PackedScene" uid="uid://csb6pe6j60wyq" path="res://scenes/fx/one_shot_sound_2d.tscn" id="13_35xhr"]
+[ext_resource type="Script" uid="uid://doohh1kf8qvtd" path="res://scripts/fx/one_shot_sound_2d.gd" id="14_rvktu"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="15_rvktu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -89,3 +92,10 @@ position = Vector2(8, 233)
 [node name="BloodBurst" parent="." unique_id=1227169166 instance=ExtResource("11_grjmi")]
 
 [node name="Control" parent="." unique_id=1331571085 instance=ExtResource("12_ebi4x")]
+
+[node name="OneShotSound2D" parent="." unique_id=1059604468 instance=ExtResource("13_35xhr")]
+script = ExtResource("14_rvktu")
+
+[node name="Bullethitenemy" type="AudioStreamPlayer" parent="." unique_id=392160146]
+stream = ExtResource("15_rvktu")
+volume_db = -2.761

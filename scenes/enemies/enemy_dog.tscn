@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ljck7scgry5c" path="res://scripts/enemies/enemy_dog.gd" id="1_h8v6i"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_a3t4t"]
 [ext_resource type="Texture2D" uid="uid://b31tv1uqxah3h" path="res://art/enemies/enemy_dog.png" id="2_hibgo"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_vrqf2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
 size = Vector2(45, 27)
@@ -32,6 +33,10 @@ texture = ExtResource("2_hibgo")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=85107015]
 position = Vector2(0.5, 2.5)
 shape = SubResource("RectangleShape2D_a3t4t")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=896312044]
+stream = ExtResource("4_vrqf2")
+volume_db = -21.585
 
 [node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=1351524003]
 position = Vector2(-20, 0)

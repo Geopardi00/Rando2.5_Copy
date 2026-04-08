@@ -38,7 +38,8 @@ shape = SubResource("RectangleShape2D_lu5c6")
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=26482080]
 stream = ExtResource("4_fcftc")
-volume_db = -16.68
+volume_db = -21.586
+pitch_scale = 0.99
 
 [node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=1976922095]
 position = Vector2(-10, 0)
