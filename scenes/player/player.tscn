@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ceifui4sii3jr"]
 
 [ext_resource type="Texture2D" uid="uid://dhjcx2p1hl5xf" path="res://art/characters/player02.png" id="1_8afob"]
+[ext_resource type="AudioStream" uid="uid://cfcy5pd5md51w" path="res://audio/sfx/gunshot1.wav" id="2_dovo2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8afob"]
 size = Vector2(20, 37)
@@ -35,3 +36,7 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=897226263]
 position = Vector2(0, 6.5)
 shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=988886553]
+stream = ExtResource("2_dovo2")
+volume_db = -9.517

@@ -13,6 +13,8 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 @onready var floor_check_left: RayCast2D = $FloorCheckLeft
 @onready var floor_check_right: RayCast2D = $FloorCheckRight
 
+@onready var hit_sound: AudioStreamPlayer2D = $HitSound
+
 var hp: int = 0
 
 
@@ -66,6 +68,9 @@ func turn_around() -> void:
 func take_damage(amount: int = 1) -> void:
 	hp -= amount
 	flash_hit()
+	
+	if hit_sound != null:
+		hit_sound.play()
 
 	if hp <= 0:
 		die()
@@ -98,6 +103,7 @@ func _set_flash_amount(value: float) -> void:
 
 func die() -> void:
 	spawn_death_fx()
+	
 
 	var state: Node = _get_state_of_game()
 	if state != null and state.has_method("register_enemy_defeated"):

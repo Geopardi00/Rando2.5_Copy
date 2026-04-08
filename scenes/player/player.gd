@@ -18,6 +18,8 @@ extends CharacterBody2D
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
 
+@onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
+
 var facing: int = 1
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
@@ -113,6 +115,8 @@ func fire_bullet() -> void:
 	var spawn_pos: Vector2 = global_position + Vector2(bullet_offset.x * facing, bullet_offset.y)
 	bullet.global_position = spawn_pos
 	bullet.direction = facing
+	
+	shoot_sound.play()
 
 
 func _on_hurtbox_body_entered(body: Node) -> void:
