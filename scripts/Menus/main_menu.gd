@@ -9,6 +9,7 @@ extends Control
 @onready var close_button: TextureButton = $OptionsPanel/VBoxContainer/CloseButton
 
 @onready var click_sound: AudioStreamPlayer2D = $ClickSound
+@onready var menu_music: AudioStreamPlayer = $MainMenuMusic
 
 @onready var background: TextureRect = $Background
 @onready var darken: ColorRect = $Darken
@@ -40,6 +41,9 @@ func _ready() -> void:
 	
 	options_panel.visible = false
 
+	if not menu_music.playing:
+		menu_music.play()
+
 	await get_tree().process_frame
 
 	prepare_button(start_button)
@@ -54,6 +58,7 @@ func _ready() -> void:
 	options_button.pressed.connect(_on_options_pressed)
 	exit_button.pressed.connect(_on_exit_pressed)
 	close_button.pressed.connect(_on_close_options_pressed)
+
 
 func prepare_button(button: TextureButton) -> void:
 	button.pivot_offset = button.size * 0.5
@@ -93,7 +98,6 @@ func _on_start_pressed() -> void:
 	animate_button_press(start_button)
 	await get_tree().create_timer(0.10).timeout
 	get_tree().change_scene_to_file(start_scene_path)
-	
 
 
 func _on_options_pressed() -> void:
@@ -108,6 +112,7 @@ func _on_exit_pressed() -> void:
 	animate_button_press(exit_button)
 	await get_tree().create_timer(0.10).timeout
 	get_tree().quit()
+
 
 func _on_close_options_pressed() -> void:
 	animate_button_press(close_button)

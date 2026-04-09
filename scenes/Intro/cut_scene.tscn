@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://cgt62fqky0qjv"]
+
+[ext_resource type="Script" uid="uid://c8rrmfxnun8ir" path="res://scripts/Intro/cut_scene.gd" id="1_xb7jx"]
+[ext_resource type="Texture2D" uid="uid://drigem63vbibb" path="res://art/intro/pic1.png" id="2_hwm30"]
+[ext_resource type="Texture2D" uid="uid://dkok6ohce0hxy" path="res://art/intro/pic2.png" id="3_mdohm"]
+[ext_resource type="Texture2D" uid="uid://dlhmxn35umi3k" path="res://art/intro/pic3.png" id="4_ttjw7"]
+[ext_resource type="Texture2D" uid="uid://fab1jxefm8mf" path="res://art/intro/pic4.png" id="5_1jfas"]
+[ext_resource type="Texture2D" uid="uid://cxgc3hdb1l85p" path="res://art/intro/pic5.png" id="6_xi716"]
+[ext_resource type="AudioStream" uid="uid://dvb77pa3ju3qd" path="res://audio/intro/opening_monologue.wav" id="7_hwm30"]
+
+[node name="CutScene" type="Control" unique_id=1704074574]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xb7jx")
+slides = Array[Texture2D]([ExtResource("2_hwm30"), ExtResource("3_mdohm"), ExtResource("4_ttjw7"), ExtResource("5_1jfas"), ExtResource("6_xi716")])
+slide_durations = Array[float]([8.0, 9.5, 12.0, 10.0, 7.0])
+fade_time = 1.0
+next_scene_path = "uid://bu7rnolespf13"
+
+[node name="SlideHolder" type="Control" parent="." unique_id=1952743191]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="SlideHolder" unique_id=1297639823]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2015037045]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Voice" type="AudioStreamPlayer" parent="." unique_id=767689164]
+stream = ExtResource("7_hwm30")
+
+[node name="SkipLabel" type="Label" parent="." unique_id=1308100843]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -79.0
+offset_top = -65.0
+offset_right = 93.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Press spacebar to skip"

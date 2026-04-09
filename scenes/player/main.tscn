@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://csb6pe6j60wyq" path="res://scenes/fx/one_shot_sound_2d.tscn" id="13_35xhr"]
 [ext_resource type="Script" uid="uid://doohh1kf8qvtd" path="res://scripts/fx/one_shot_sound_2d.gd" id="14_rvktu"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="15_rvktu"]
+[ext_resource type="PackedScene" uid="uid://cgt62fqky0qjv" path="res://scenes/Intro/cut_scene.tscn" id="16_77dtu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -99,3 +100,5 @@ script = ExtResource("14_rvktu")
 [node name="Bullethitenemy" type="AudioStreamPlayer" parent="." unique_id=392160146]
 stream = ExtResource("15_rvktu")
 volume_db = -2.761
+
+[node name="CutScene" parent="." unique_id=1704074574 instance=ExtResource("16_77dtu")]
