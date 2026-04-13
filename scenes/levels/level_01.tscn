@@ -11,8 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://cqc3s6yufhg03" path="res://art/tiles/b01_pillar_02.png" id="9_e6lid"]
 [ext_resource type="Texture2D" uid="uid://dqmdhldpihmjc" path="res://art/tiles/b01_stonechunk_flat_04.png" id="10_3t34l"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="10_r72dd"]
-[ext_resource type="Texture2D" uid="uid://bxaoyqms8w6wd" path="res://art/tiles/heropillar01.png" id="11_cwffn"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="11_jmes4"]
+[ext_resource type="Texture2D" uid="uid://b4758l3kh40yg" path="res://art/props/tunneldoor.png" id="12_1uvka"]
 [ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="12_07lms"]
 [ext_resource type="Script" uid="uid://onylvomacabe" path="res://scripts/goal.gd" id="12_gi8m4"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="12_tyxjt"]
@@ -440,12 +440,6 @@ position = Vector2(3341, 287)
 scale = Vector2(0.34411, 0.36694634)
 texture = ExtResource("9_e6lid")
 
-[node name="Heropillar" type="Sprite2D" parent="Platforms" unique_id=1840932197]
-position = Vector2(4641.0005, -199)
-scale = Vector2(0.21396747, 0.21876493)
-texture = ExtResource("11_cwffn")
-flip_h = true
-
 [node name="LeftWall" type="StaticBody2D" parent="Platforms" unique_id=587180911]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/LeftWall" unique_id=1648282643]
@@ -598,13 +592,13 @@ position = Vector2(3990, 283)
 position = Vector2(286, 200)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1748658046]
-position = Vector2(4661, -267)
+position = Vector2(4663, -272)
 collision_layer = 64
 collision_mask = 2
 script = ExtResource("12_gi8m4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1735324981]
-position = Vector2(1000, 366)
+position = Vector2(1002, 369)
 shape = SubResource("RectangleShape2D_lswbx")
 
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("11_jmes4")]
@@ -844,6 +838,11 @@ position = Vector2(5252, 4)
 scale = Vector2(0.27, 0.27)
 texture = ExtResource("24_w4kkx")
 flip_h = true
+
+[node name="TunnelDoor" type="Sprite2D" parent="Terrain" unique_id=1579213452]
+position = Vector2(5656, 108)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_1uvka")
 
 [node name="World" type="Node2D" parent="." unique_id=1990906156]
 

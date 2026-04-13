@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://crphvg2go1hnk"]
+
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="1_knmjg"]
+[ext_resource type="Script" uid="uid://ch38c7lx75j12" path="res://scripts/player/player.gd" id="2_asmw1"]
+[ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_sa601"]
+[ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="4_ff50h"]
+[ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
+size = Vector2(769, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
+size = Vector2(36, 162)
+
+[node name="TestRoom" type="Node2D" unique_id=1808438456]
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=2017400494]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1427477057]
+position = Vector2(9, 167)
+shape = SubResource("RectangleShape2D_51pqh")
+
+[node name="ColorRect" type="ColorRect" parent="Floor/CollisionShape2D" unique_id=1561013991]
+offset_left = -384.0
+offset_top = -10.0
+offset_right = 385.0
+offset_bottom = 30.0
+
+[node name="Wall" type="StaticBody2D" parent="." unique_id=1635101776]
+position = Vector2(-165, 64)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall" unique_id=680740463]
+position = Vector2(8, 20)
+shape = SubResource("RectangleShape2D_4q130")
+
+[node name="ColorRect" type="ColorRect" parent="Wall/CollisionShape2D" unique_id=1778711859]
+offset_left = -19.0
+offset_top = -81.0
+offset_right = 18.0
+offset_bottom = 77.0
+
+[node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("1_knmjg")]
+script = ExtResource("2_asmw1")
+bullet_scene = ExtResource("3_sa601")
+
+[node name="Bullet" parent="." unique_id=1682380724 instance=ExtResource("3_sa601")]
+position = Vector2(-187, 10)
+
+[node name="Enemy" parent="." unique_id=83899896 instance=ExtResource("4_ff50h")]
+position = Vector2(211, 32)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1897742829]
+position = Vector2(351, 152.00002)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("5_s3biy")

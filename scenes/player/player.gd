@@ -14,10 +14,9 @@ extends CharacterBody2D
 @export var fire_rate: float = 0.2
 @export var bullet_offset: Vector2 = Vector2(16, 12)
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
-
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
 
 var facing: int = 1
@@ -45,13 +44,13 @@ func _physics_process(delta: float) -> void:
 	var input_axis: float = Input.get_axis("move_left", "move_right")
 	var jump_pressed: bool = Input.is_action_just_pressed("jump")
 
-	# Facing + visual flip
+	# Facing
 	if input_axis > 0.0:
 		facing = 1
 	elif input_axis < 0.0:
 		facing = -1
 
-	sprite.flip_h = facing < 0
+	animated_sprite.flip_h = facing < 0
 
 	# Horizontal movement
 	if input_axis != 0.0:
@@ -95,6 +94,46 @@ func _physics_process(delta: float) -> void:
 		try_shoot()
 
 	move_and_slide()
+	update_animation()
+
+
+func play_animation_safe(name: StringName, fallback: StringName = &"idle") -> void:
+	var frames: SpriteFrames = animated_sprite.sprite_frames
+
+	if frames == null:
+		return
+
+	if frames.has_animation(name):
+		if animated_sprite.animation != name:
+			animated_sprite.play(name)
+		return
+
+	if frames.has_animation(fallback):
+		if animated_sprite.animation != fallback:
+			animated_sprite.play(fallback)
+
+
+func update_animation() -> void:
+	if is_dead:
+		animated_sprite.speed_scale = 1.0
+		play_animation_safe(&"death", &"idle")
+		return
+
+	if not is_on_floor():
+		animated_sprite.speed_scale = 1.0
+
+		if velocity.y < 0.0:
+			play_animation_safe(&"jump", &"idle")
+		else:
+			play_animation_safe(&"fall", &"jump")
+		return
+
+	if abs(velocity.x) > 5.0:
+		play_animation_safe(&"walk", &"idle")
+		animated_sprite.speed_scale = clamp(abs(velocity.x) / move_speed, 0.85, 1.15)
+	else:
+		play_animation_safe(&"idle")
+		animated_sprite.speed_scale = 1.0
 
 
 func try_shoot() -> void:
@@ -115,7 +154,7 @@ func fire_bullet() -> void:
 	var spawn_pos: Vector2 = global_position + Vector2(bullet_offset.x * facing, bullet_offset.y)
 	bullet.global_position = spawn_pos
 	bullet.direction = facing
-	
+
 	shoot_sound.play()
 
 
@@ -131,8 +170,14 @@ func die() -> void:
 		return
 
 	is_dead = true
-	print("player died")
-	call_deferred("respawn")
+	velocity = Vector2.ZERO
+	play_animation_safe(&"death", &"idle")
+	respawn_after_delay()
+
+
+func respawn_after_delay() -> void:
+	await get_tree().create_timer(0.4).timeout
+	respawn()
 
 
 func respawn() -> void:
