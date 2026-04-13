@@ -1,41 +1,65 @@
 [gd_scene format=3 uid="uid://ceifui4sii3jr"]
 
 [ext_resource type="Texture2D" uid="uid://50jny7nrlbu7" path="res://art/characters/animations/idle/frame0000.png" id="1_fm80t"]
+[ext_resource type="Texture2D" uid="uid://dcvnqwjqbj7ne" path="res://art/characters/animations/death/frame0000.png" id="1_lclul"]
 [ext_resource type="AudioStream" uid="uid://cfcy5pd5md51w" path="res://audio/sfx/gunshot1.wav" id="2_dovo2"]
+[ext_resource type="Texture2D" uid="uid://wff47g3q6pga" path="res://art/characters/animations/death/frame0001.png" id="2_ej2d6"]
 [ext_resource type="Texture2D" uid="uid://blybpeem7yfwl" path="res://art/characters/animations/idle/frame0001.png" id="2_gx1jg"]
+[ext_resource type="Texture2D" uid="uid://7jo0syuimrjb" path="res://art/characters/animations/death/frame0002.png" id="3_fvjb1"]
 [ext_resource type="Texture2D" uid="uid://dfw3gconlrfuj" path="res://art/characters/animations/idle/frame0002.png" id="3_ugbui"]
+[ext_resource type="Texture2D" uid="uid://cb1s2n1e1v3dr" path="res://art/characters/animations/death/frame0003.png" id="4_bysbl"]
 [ext_resource type="Texture2D" uid="uid://w6ctoqoouee0" path="res://art/characters/animations/idle/frame0003.png" id="4_fcs02"]
+[ext_resource type="Texture2D" uid="uid://db6l0xl5gx2nt" path="res://art/characters/animations/death/frame0004.png" id="5_2wy34"]
 [ext_resource type="Texture2D" uid="uid://bk7vb3aeqblb0" path="res://art/characters/animations/idle/frame0004.png" id="5_myrg7"]
 [ext_resource type="Texture2D" uid="uid://djcehuk4dpyhh" path="res://art/characters/animations/idle/frame0005.png" id="6_kvlxm"]
+[ext_resource type="Texture2D" uid="uid://cpw3xjpkb0p68" path="res://art/characters/animations/death/frame0005.png" id="6_ymths"]
+[ext_resource type="Texture2D" uid="uid://bo63m352f1vnr" path="res://art/characters/animations/death/frame0006.png" id="7_3p0jd"]
 [ext_resource type="Texture2D" uid="uid://vad7wflyrnh3" path="res://art/characters/animations/idle/frame0006.png" id="7_uf5tr"]
+[ext_resource type="Texture2D" uid="uid://dlbtmg6m8m7uv" path="res://art/characters/animations/death/frame0007.png" id="8_7nf13"]
 [ext_resource type="Texture2D" uid="uid://crc7r4486e30o" path="res://art/characters/animations/idle/frame0007.png" id="8_lgqa7"]
+[ext_resource type="Texture2D" uid="uid://bmkar7aa5ffff" path="res://art/characters/animations/death/frame0008.png" id="9_0y4ya"]
 [ext_resource type="Texture2D" uid="uid://dmihlld6drfub" path="res://art/characters/animations/idle/frame0008.png" id="9_8ydkj"]
 [ext_resource type="Texture2D" uid="uid://cgmlr4xesgvin" path="res://art/characters/animations/idle/frame0009.png" id="10_3j4b4"]
+[ext_resource type="Texture2D" uid="uid://2fkvk6hhd4oc" path="res://art/characters/animations/death/frame0009.png" id="10_s050l"]
+[ext_resource type="Texture2D" uid="uid://ba8o5f0qy4out" path="res://art/characters/animations/death/frame0010.png" id="11_4sw5w"]
 [ext_resource type="Texture2D" uid="uid://byjt7fxuc6dan" path="res://art/characters/animations/idle/frame0010.png" id="11_yj68g"]
 [ext_resource type="Texture2D" uid="uid://cmd2vxbng3d1b" path="res://art/characters/animations/jump/frame0000.png" id="12_iwuka"]
+[ext_resource type="Texture2D" uid="uid://d37kd8o3axrgd" path="res://art/characters/animations/death/frame0011.png" id="12_s4k4a"]
 [ext_resource type="Texture2D" uid="uid://bmsfvshv0ol17" path="res://art/characters/animations/walk/frame0000.png" id="12_uniwh"]
 [ext_resource type="Texture2D" uid="uid://s2pagp0pj0jt" path="res://art/characters/animations/jump/frame0001.png" id="13_hyqqp"]
 [ext_resource type="Texture2D" uid="uid://dhm2wrpmksbju" path="res://art/characters/animations/walk/frame0001.png" id="13_iqsei"]
+[ext_resource type="Texture2D" uid="uid://cgtnrct8outmc" path="res://art/characters/animations/death/frame0012.png" id="13_vkc6f"]
+[ext_resource type="Texture2D" uid="uid://bklilxpfioiaq" path="res://art/characters/animations/death/frame0013.png" id="14_21yht"]
 [ext_resource type="Texture2D" uid="uid://stkn4miaj2ee" path="res://art/characters/animations/jump/frame0002.png" id="14_ds1xl"]
 [ext_resource type="Texture2D" uid="uid://nsk1ibgwo2o4" path="res://art/characters/animations/walk/frame0002.png" id="14_tffgl"]
 [ext_resource type="Texture2D" uid="uid://gxk4gjmaq1jk" path="res://art/characters/animations/jump/frame0003.png" id="15_1u1sw"]
 [ext_resource type="Texture2D" uid="uid://bso1icyod8p7s" path="res://art/characters/animations/walk/frame0003.png" id="15_pk8ii"]
+[ext_resource type="Texture2D" uid="uid://djjmmf23rydm1" path="res://art/characters/animations/death/frame0014.png" id="15_trum3"]
 [ext_resource type="Texture2D" uid="uid://cfgni5s88ctao" path="res://art/characters/animations/jump/frame0004.png" id="16_2t3bg"]
+[ext_resource type="Texture2D" uid="uid://66kcts1ylqf6" path="res://art/characters/animations/death/frame0015.png" id="16_4b1ex"]
 [ext_resource type="Texture2D" uid="uid://42bko06ixig3" path="res://art/characters/animations/walk/frame0004.png" id="16_5mf0n"]
 [ext_resource type="Texture2D" uid="uid://cu7m3jjoqif82" path="res://art/characters/animations/walk/frame0005.png" id="17_4hvnv"]
 [ext_resource type="Texture2D" uid="uid://b74llaln2c3y3" path="res://art/characters/animations/jump/frame0005.png" id="17_jrbya"]
+[ext_resource type="Texture2D" uid="uid://bekj3hmwvt431" path="res://art/characters/animations/death/frame0016.png" id="17_v8cnd"]
 [ext_resource type="Texture2D" uid="uid://brncm34hjhb5" path="res://art/characters/animations/jump/frame0006.png" id="18_ahqnk"]
 [ext_resource type="Texture2D" uid="uid://defpkabep1y0g" path="res://art/characters/animations/walk/frame0006.png" id="18_bbmj2"]
+[ext_resource type="Texture2D" uid="uid://b4lumvvntntvk" path="res://art/characters/animations/death/frame0017.png" id="18_wuxn4"]
+[ext_resource type="Texture2D" uid="uid://bvijmqpk336b4" path="res://art/characters/animations/death/frame0018.png" id="19_46q5t"]
 [ext_resource type="Texture2D" uid="uid://bw8ce5ymopf05" path="res://art/characters/animations/walk/frame0007.png" id="19_kxw46"]
 [ext_resource type="Texture2D" uid="uid://3mi422tq2msp" path="res://art/characters/animations/jump/frame0007.png" id="19_vb1ce"]
 [ext_resource type="Texture2D" uid="uid://b4fj4lbipnte1" path="res://art/characters/animations/jump/frame0008.png" id="20_0ncpa"]
+[ext_resource type="Texture2D" uid="uid://jib05mmeykat" path="res://art/characters/animations/death/frame0019.png" id="20_5miun"]
 [ext_resource type="Texture2D" uid="uid://chtdabpw6nwhl" path="res://art/characters/animations/walk/frame0008.png" id="20_8qxvo"]
 [ext_resource type="Texture2D" uid="uid://dv60tum6tcmym" path="res://art/characters/animations/walk/frame0009.png" id="21_5q8fn"]
+[ext_resource type="Texture2D" uid="uid://botwr20m5y6yh" path="res://art/characters/animations/death/frame0020.png" id="21_7u1tp"]
 [ext_resource type="Texture2D" uid="uid://cv0ty2ql3pxv6" path="res://art/characters/animations/jump/frame0009.png" id="21_upxxc"]
 [ext_resource type="Texture2D" uid="uid://fmuou8wnakgu" path="res://art/characters/animations/jump/frame0010.png" id="22_ln3h3"]
+[ext_resource type="Texture2D" uid="uid://cbh8r485b5r3" path="res://art/characters/animations/death/frame0021.png" id="22_pq1ih"]
 [ext_resource type="Texture2D" uid="uid://bjwkd2cwohv8d" path="res://art/characters/animations/walk/frame0010.png" id="22_wva7c"]
 [ext_resource type="Texture2D" uid="uid://dtvab2qt81kjx" path="res://art/characters/animations/walk/frame0011.png" id="23_7obkq"]
+[ext_resource type="Texture2D" uid="uid://b2pv0c1miep76" path="res://art/characters/animations/death/frame0022.png" id="23_31ki0"]
 [ext_resource type="Texture2D" uid="uid://c06lt5iqi657" path="res://art/characters/animations/jump/frame0011.png" id="23_uygh0"]
+[ext_resource type="Texture2D" uid="uid://cb1wux88utk3" path="res://art/characters/animations/death/frame0023.png" id="24_hf5gj"]
 [ext_resource type="Texture2D" uid="uid://sibd3lbvxm5q" path="res://art/characters/animations/jump/frame0012.png" id="24_t1aof"]
 [ext_resource type="Texture2D" uid="uid://b1ur2u2gv4ed3" path="res://art/characters/animations/walk/frame0012.png" id="24_vo27k"]
 [ext_resource type="Texture2D" uid="uid://nj2auvl85s0s" path="res://art/characters/animations/walk/frame0013.png" id="25_genst"]
@@ -52,6 +76,83 @@ size = Vector2(20, 37)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ioxgp"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_lclul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ej2d6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fvjb1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bysbl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2wy34")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ymths")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_3p0jd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7nf13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0y4ya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_s050l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4sw5w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_s4k4a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_vkc6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_21yht")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_trum3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_4b1ex")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_v8cnd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_wuxn4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_46q5t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_5miun")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_7u1tp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_pq1ih")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_31ki0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_hf5gj")
+}],
+"loop": false,
+"name": &"death",
+"speed": 33.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_fm80t")
@@ -218,9 +319,7 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"jump"
-frame = 16
-frame_progress = 1.0
+animation = &"death"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2029278347]
 position = Vector2(52, -137)

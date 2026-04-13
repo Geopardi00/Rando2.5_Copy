@@ -108,7 +108,7 @@ size = Vector2(289, 109)
 size = Vector2(519, 116)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6gto5"]
-size = Vector2(239.5, 20)
+size = Vector2(300, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qcx6o"]
 size = Vector2(200, 98)
@@ -183,7 +183,7 @@ position = Vector2(51, 76)
 shape = SubResource("RectangleShape2D_e5bmj")
 
 [node name="EndWall" type="StaticBody2D" parent="Platforms" unique_id=2024604548]
-position = Vector2(5049, 4)
+position = Vector2(5091, 3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/EndWall" unique_id=318918510]
 position = Vector2(705, 21)
@@ -555,7 +555,7 @@ texture = ExtResource("10_3t34l")
 [node name="StaticBody2D" type="StaticBody2D" parent="Platforms" unique_id=164082404]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D" unique_id=131590985]
-position = Vector2(5580.75, 143)
+position = Vector2(5611, 143)
 shape = SubResource("RectangleShape2D_6gto5")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="Platforms" unique_id=1263197339]
@@ -598,7 +598,7 @@ collision_mask = 2
 script = ExtResource("12_gi8m4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1735324981]
-position = Vector2(1002, 369)
+position = Vector2(1067, 372)
 shape = SubResource("RectangleShape2D_lswbx")
 
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("11_jmes4")]
@@ -840,8 +840,8 @@ texture = ExtResource("24_w4kkx")
 flip_h = true
 
 [node name="TunnelDoor" type="Sprite2D" parent="Terrain" unique_id=1579213452]
-position = Vector2(5656, 108)
-scale = Vector2(0.2, 0.2)
+position = Vector2(5734, 85)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("12_1uvka")
 
 [node name="World" type="Node2D" parent="." unique_id=1990906156]

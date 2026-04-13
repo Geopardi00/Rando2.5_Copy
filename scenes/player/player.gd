@@ -176,7 +176,7 @@ func die() -> void:
 
 
 func respawn_after_delay() -> void:
-	await get_tree().create_timer(0.4).timeout
+	await get_tree().create_timer(1.0).timeout
 	respawn()
 
 
