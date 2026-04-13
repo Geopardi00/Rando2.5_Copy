@@ -15,6 +15,7 @@ enum State {
 @export var aggro_range: float = 220.0
 @export var lose_range: float = 320.0
 @export var vertical_tolerance: float = 90.0
+@export var chase_reacquire_delay: float = 1.1
 
 @export var max_hp: int = 2
 
@@ -28,6 +29,7 @@ enum State {
 var state: State = State.PATROL
 var hp: int = 0
 var player: Node2D = null
+var chase_lock_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -42,6 +44,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if chase_lock_timer > 0.0:
+		chase_lock_timer -= delta
+
 	apply_gravity(delta)
 	refresh_player_reference()
 	update_state()
@@ -78,7 +83,7 @@ func update_state() -> void:
 
 	match state:
 		State.PATROL:
-			if abs(dx) <= aggro_range and dy <= vertical_tolerance:
+			if chase_lock_timer <= 0.0 and abs(dx) <= aggro_range and dy <= vertical_tolerance:
 				state = State.CHASE
 
 		State.CHASE:
@@ -108,6 +113,7 @@ func run_chase() -> void:
 
 	if should_turn_around():
 		state = State.PATROL
+		chase_lock_timer = chase_reacquire_delay
 		turn_around()
 		velocity.x = move_direction * patrol_speed
 		return
@@ -184,7 +190,8 @@ func die() -> void:
 		state_node.register_enemy_defeated()
 
 	queue_free()
-	
+
+
 func spawn_hit_sound() -> void:
 	if hit_sound == null:
 		return
