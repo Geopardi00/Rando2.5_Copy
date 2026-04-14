@@ -2,18 +2,102 @@
 
 [ext_resource type="Script" uid="uid://ljck7scgry5c" path="res://scripts/enemies/enemy_dog.gd" id="1_h8v6i"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_a3t4t"]
-[ext_resource type="Texture2D" uid="uid://b31tv1uqxah3h" path="res://art/enemies/enemy_dog.png" id="2_hibgo"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_vrqf2"]
+[ext_resource type="Texture2D" uid="uid://b234lc1yfiae" path="res://art/enemies/animations/enemy_dog/charge/frame0000.png" id="5_tgpt4"]
+[ext_resource type="Texture2D" uid="uid://p58fymnws36n" path="res://art/enemies/animations/enemy_dog/charge/frame0001.png" id="6_yvawq"]
+[ext_resource type="Texture2D" uid="uid://e282x0ehsqsp" path="res://art/enemies/animations/enemy_dog/charge/frame0002.png" id="7_0xkhw"]
+[ext_resource type="Texture2D" uid="uid://blqupip08m3hj" path="res://art/enemies/animations/enemy_dog/charge/frame0003.png" id="8_beac8"]
+[ext_resource type="Texture2D" uid="uid://bj2l1lv7uo5dd" path="res://art/enemies/animations/enemy_dog/charge/frame0004.png" id="9_1n46b"]
+[ext_resource type="Texture2D" uid="uid://dtc8xmnunt2d0" path="res://art/enemies/animations/enemy_dog/charge/frame0005.png" id="10_qgiua"]
+[ext_resource type="Texture2D" uid="uid://bx2dmhvf1och3" path="res://art/enemies/animations/enemy_dog/charge/frame0006.png" id="11_j62a5"]
+[ext_resource type="Texture2D" uid="uid://pbulj1n1yivm" path="res://art/enemies/animations/enemy_dog/charge/frame0007.png" id="12_8aldu"]
+[ext_resource type="Texture2D" uid="uid://cujlbma4wohho" path="res://art/enemies/animations/enemy_dog/charge/frame0008.png" id="13_0f7xk"]
+[ext_resource type="Texture2D" uid="uid://c86uuib1tuxys" path="res://art/enemies/animations/enemy_dog/charge/frame0009.png" id="14_y5sxt"]
+[ext_resource type="Texture2D" uid="uid://2t6uciq25563" path="res://art/enemies/animations/enemy_dog/walk/frame0000.png" id="15_51tlq"]
+[ext_resource type="Texture2D" uid="uid://cp665ed5a4rux" path="res://art/enemies/animations/enemy_dog/walk/frame0001.png" id="16_arsur"]
+[ext_resource type="Texture2D" uid="uid://cym2306qaiw76" path="res://art/enemies/animations/enemy_dog/walk/frame0002.png" id="17_unfv4"]
+[ext_resource type="Texture2D" uid="uid://c8raa58alqo37" path="res://art/enemies/animations/enemy_dog/walk/frame0003.png" id="18_bmb5r"]
+[ext_resource type="Texture2D" uid="uid://cnufk5uj5bu2a" path="res://art/enemies/animations/enemy_dog/walk/frame0004.png" id="19_tbb1i"]
+[ext_resource type="Texture2D" uid="uid://b74nv3hurk5a8" path="res://art/enemies/animations/enemy_dog/walk/frame0005.png" id="20_4y376"]
+[ext_resource type="Texture2D" uid="uid://d3f1c512gy7r4" path="res://art/enemies/animations/enemy_dog/walk/frame0006.png" id="21_d3143"]
+[ext_resource type="Texture2D" uid="uid://du0wofmfre0x" path="res://art/enemies/animations/enemy_dog/walk/frame0007.png" id="22_b6tg7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
 size = Vector2(45, 27)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vrqf2"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3t4t"]
+size = Vector2(41, 25)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tgpt4"]
 shader = ExtResource("2_a3t4t")
 shader_parameter/flash_amount = 0.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3t4t"]
-size = Vector2(41, 25)
+[sub_resource type="SpriteFrames" id="SpriteFrames_mo3q2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_tgpt4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_yvawq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_0xkhw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_beac8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_1n46b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_qgiua")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_j62a5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_8aldu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_0f7xk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_y5sxt")
+}],
+"loop": true,
+"name": &"charge",
+"speed": 21.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_51tlq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_arsur")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_unfv4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_bmb5r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_tbb1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_4y376")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_d3143")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_b6tg7")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 15.0
+}]
 
 [node name="Enemy_dog" type="CharacterBody2D" unique_id=363953011 groups=["enemy"]]
 collision_layer = 4
@@ -22,11 +106,6 @@ script = ExtResource("1_h8v6i")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=594483582]
 position = Vector2(-0.5, 2.5)
 shape = SubResource("RectangleShape2D_hibgo")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=584324635]
-material = SubResource("ShaderMaterial_vrqf2")
-scale = Vector2(0.08, 0.08)
-texture = ExtResource("2_hibgo")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1296359984 groups=["enemy_hurtbox"]]
 
@@ -53,3 +132,10 @@ target_position = Vector2(0, 9)
 [node name="FloorCheckRight" type="RayCast2D" parent="." unique_id=235536923]
 position = Vector2(21, 12)
 target_position = Vector2(0, 10)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=127278705]
+material = SubResource("ShaderMaterial_tgpt4")
+scale = Vector2(0.08, 0.08)
+sprite_frames = SubResource("SpriteFrames_mo3q2")
+animation = &"charge"
+frame_progress = 0.29331654

@@ -19,7 +19,7 @@ enum State {
 
 @export var max_hp: int = 2
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var wall_check_left: RayCast2D = $WallCheckLeft
 @onready var wall_check_right: RayCast2D = $WallCheckRight
 @onready var floor_check_left: RayCast2D = $FloorCheckLeft
@@ -37,10 +37,12 @@ func _ready() -> void:
 	hp = max_hp
 	player = get_tree().get_first_node_in_group("player") as Node2D
 
-	# Make sure each dog instance has its own shader material.
-	if sprite.material != null:
-		sprite.material = sprite.material.duplicate()
+	# Give this dog instance its own flash material.
+	if animated_sprite.material != null:
+		animated_sprite.material = animated_sprite.material.duplicate()
 		_set_flash_amount(0.0)
+
+	update_animation()
 
 
 func _physics_process(delta: float) -> void:
@@ -59,6 +61,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	update_visual()
+	update_animation()
 
 
 func apply_gravity(delta: float) -> void:
@@ -142,10 +145,19 @@ func turn_around() -> void:
 
 
 func update_visual() -> void:
-	# Assumes dog sprite faces LEFT by default.
+	# Assumes dog art faces LEFT by default.
 	# If your art faces RIGHT by default, change this to:
-	# sprite.flip_h = move_direction < 0
-	sprite.flip_h = move_direction > 0
+	# animated_sprite.flip_h = move_direction < 0
+	animated_sprite.flip_h = move_direction > 0
+
+
+func update_animation() -> void:
+	if state == State.CHASE:
+		if animated_sprite.animation != "charge":
+			animated_sprite.play("charge")
+	else:
+		if animated_sprite.animation != "walk":
+			animated_sprite.play("walk")
 
 
 func take_damage(amount: int = 1) -> void:
@@ -158,10 +170,10 @@ func take_damage(amount: int = 1) -> void:
 
 
 func flash_hit() -> void:
-	if sprite.material == null:
+	if animated_sprite.material == null:
 		return
 
-	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	var mat: ShaderMaterial = animated_sprite.material as ShaderMaterial
 	if mat == null:
 		return
 
@@ -172,10 +184,10 @@ func flash_hit() -> void:
 
 
 func _set_flash_amount(value: float) -> void:
-	if sprite.material == null:
+	if animated_sprite.material == null:
 		return
 
-	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	var mat: ShaderMaterial = animated_sprite.material as ShaderMaterial
 	if mat == null:
 		return
 

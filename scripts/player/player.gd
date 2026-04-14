@@ -39,6 +39,15 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		velocity.x = 0.0
+
+		if not is_on_floor():
+			velocity.y += gravity * delta
+		else:
+			velocity.y = 0.0
+
+		move_and_slide()
+		update_animation()
 		return
 
 	var input_axis: float = Input.get_axis("move_left", "move_right")
@@ -170,7 +179,12 @@ func die() -> void:
 		return
 
 	is_dead = true
-	velocity = Vector2.ZERO
+	hurtbox.monitoring = false
+	velocity.x = 0.0
+
+	if velocity.y < 0.0:
+		velocity.y = 0.0
+
 	play_animation_safe(&"death", &"idle")
 	respawn_after_delay()
 

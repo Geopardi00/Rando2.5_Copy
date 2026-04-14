@@ -1,6 +1,6 @@
 # State of Game
 
-Last updated: 2026-04-09
+Last updated: 2026-04-13
 
 ## High-Level Status
 - Level 01 is in a good playable state.
@@ -10,6 +10,7 @@ Last updated: 2026-04-09
 - A main menu scene now exists with working scene flow into Level 01.
 - Intro slideshow flow is now implemented.
 - Main menu music is now implemented.
+- Player animation flow is now active (idle/walk/jump/death).
 
 ## Implemented Features
 
@@ -24,6 +25,8 @@ Last updated: 2026-04-09
 - Player dies in one hit
 - Player death reloads the current scene
 - Scene reload resets enemies, hazards, bullets, and temporary level state
+- AnimatedSprite2D-based player animation state handling
+- Player uses idle/walk/jump/death animations in gameplay
 
 ### Combat
 - Player bullets spawn correctly based on facing direction
@@ -89,6 +92,8 @@ Last updated: 2026-04-09
 - Hazard and enemy reset behavior is correct because level reloads on player death
 - Parallax background near layer added
 - Tile art integration started
+- Test room scene added for focused gameplay iteration
+- Tunnel door prop art added
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
@@ -136,12 +141,17 @@ Last updated: 2026-04-09
 - Added intro art sequence: `art/intro/pic1.png` to `art/intro/pic5.png`
 - Added intro voiceover: `audio/intro/opening_monologue.wav`
 - Added main menu music: `audio/music/Shadow Over Hope.mp3`
+- Added player animation frames: `art/characters/animations/idle`, `walk`, `jump`, `death`
+- Added test room scene: `scenes/levels/test_room.tscn`
+- Added tunnel door prop: `art/props/tunneldoor.png`
 
 ## Important Scenes / Scripts
 
 ### Player
 - `scenes/player/main.tscn`
 - `player.gd`
+- `scenes/player/player.tscn`
+- `scripts/player/player.gd`
 
 ### Enemies
 - `enemy.gd` (basic patrol enemy)
@@ -176,7 +186,8 @@ Last updated: 2026-04-09
 - Player dies in one hit
 - Enemies respawn because the scene reloads on player death
 - No health bar / hearts system yet
-- No player or enemy animations yet
+- Player animations are in progress and now active in-game
+- Enemy animation pass is still pending
 - Enemy behavior is intentionally simple and production-friendly
 - Avoid overbuilding enemy architecture at this stage
 - Menu/UI implementation should stay lightweight and presentation-focused for now
@@ -192,10 +203,13 @@ Last updated: 2026-04-09
 - Button spacing and menu positioning tuned
 - Menu fog visibility/debug issues solved
 - Enemy hit sound cutting off on death solved by code-spawned one-shot audio playback
+- Player idle/walk/jump/death animation sets imported and wired into player logic
+- Player death animation integrated into death flow
 
 ## Recommended Next Steps
 - Level 01 polish pass
 - Add remaining core sound effects (shoot, throw, UI click, ambient)
+- Enemy animation pass
 - Simple camera / combat juice
 - Goal / level-complete presentation polish
 - Clean game flow between menu and gameplay
@@ -203,6 +217,6 @@ Last updated: 2026-04-09
 
 ## Notes
 - Current development priority has been: gameplay first, polish second.
-- Full animation work has intentionally been postponed.
+- Full animation polish is still selective; player animation is now active while enemy animation remains pending.
 - Current enemy set is enough for meaningful Level 01 gameplay.
 - Main menu is now good enough to support a cleaner presentation loop for the project.

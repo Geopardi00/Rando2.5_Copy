@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_sa601"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="4_ff50h"]
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
+[ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="6_asmw1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -55,3 +56,6 @@ position = Vector2(211, 32)
 position = Vector2(351, 152.00002)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("5_s3biy")
+
+[node name="Enemy_dog" parent="." unique_id=363953011 instance=ExtResource("6_asmw1")]
+position = Vector2(343, 79)
