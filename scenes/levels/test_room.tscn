@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="4_ff50h"]
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
 [ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="6_asmw1"]
+[ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
+[ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -59,3 +61,19 @@ texture = ExtResource("5_s3biy")
 
 [node name="Enemy_dog" parent="." unique_id=363953011 instance=ExtResource("6_asmw1")]
 position = Vector2(343, 79)
+
+[node name="dirt" type="Sprite2D" parent="." unique_id=1257646690]
+position = Vector2(107.99999, 204)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("7_ff50h")
+
+[node name="dirt2" type="Sprite2D" parent="." unique_id=1929353305]
+position = Vector2(312, 205)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("7_ff50h")
+flip_h = true
+
+[node name="grassplatform01" type="Sprite2D" parent="." unique_id=613646469]
+position = Vector2(140, 177)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("8_op2op")
