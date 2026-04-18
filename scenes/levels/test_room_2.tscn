@@ -340,6 +340,9 @@ size = Vector2(59, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lixxo"]
 size = Vector2(62, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dd7cg"]
+size = Vector2(135, 20)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gc2gi"]
 size = Vector2(711, 20)
 
@@ -362,7 +365,7 @@ tile_map_data = PackedByteArray("AAABAP//AAAAAAAAAAABAP7/AAAAAAAAAAACAP7/AAAAAAA
 tile_set = SubResource("TileSet_ya6n0")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=373639691]
-position = Vector2(3402, 93)
+position = Vector2(2983, 1428)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1193094583]
 position = Vector2(1441, 1419)
@@ -574,19 +577,63 @@ scale = Vector2(0.3, 0.3)
 texture = ExtResource("16_lixxo")
 flip_h = true
 
-[node name="SpikeHazard_KillZone" type="Area2D" parent="Hazards" unique_id=1264158994]
+[node name="LowerLevelSpikes" type="Node2D" parent="Hazards/Spikes" unique_id=239932715]
+
+[node name="Spikes01" type="Sprite2D" parent="Hazards/Spikes/LowerLevelSpikes" unique_id=789425037]
+position = Vector2(2818, 1781)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_64imb")
+
+[node name="Spikes02" type="Sprite2D" parent="Hazards/Spikes/LowerLevelSpikes" unique_id=548438022]
+position = Vector2(2558, 1781)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_e8ejq")
+
+[node name="Spikes03" type="Sprite2D" parent="Hazards/Spikes/LowerLevelSpikes" unique_id=1843592760]
+position = Vector2(2299, 1791)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("13_q2ypb")
+
+[node name="SpikeHazard_KillZone3" type="Area2D" parent="Hazards/Spikes" unique_id=1038970907]
+position = Vector2(2689, 1803)
+collision_mask = 2
+script = ExtResource("14_etqni")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone3" unique_id=1140988160]
+position = Vector2(125, -34)
+shape = SubResource("RectangleShape2D_dd7cg")
+
+[node name="SpikeHazard_KillZone4" type="Area2D" parent="Hazards/Spikes" unique_id=358749534]
+position = Vector2(2179, 1803)
+collision_mask = 2
+script = ExtResource("14_etqni")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone4" unique_id=2117265931]
+position = Vector2(125, -34)
+shape = SubResource("RectangleShape2D_dd7cg")
+
+[node name="SpikeHazard_KillZone" type="Area2D" parent="Hazards/Spikes" unique_id=1264158994]
 position = Vector2(1511, -253)
 collision_mask = 2
 script = ExtResource("14_etqni")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/SpikeHazard_KillZone" unique_id=74765478]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone" unique_id=74765478]
 position = Vector2(313, -30)
 shape = SubResource("RectangleShape2D_gc2gi")
 
-[node name="SpikeHazard_KillZone2" type="Area2D" parent="Hazards" unique_id=1331301610]
+[node name="SpikeHazard_KillZone2" type="Area2D" parent="Hazards/Spikes" unique_id=1331301610]
 collision_mask = 2
 script = ExtResource("14_etqni")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/SpikeHazard_KillZone2" unique_id=1592858299]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone2" unique_id=1592858299]
 position = Vector2(2785, 301)
 shape = SubResource("RectangleShape2D_k553b")
+
+[node name="SpikeHazard_KillZone5" type="Area2D" parent="Hazards/Spikes" unique_id=1492756973]
+position = Vector2(2432, 1803)
+collision_mask = 2
+script = ExtResource("14_etqni")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone5" unique_id=190097736]
+position = Vector2(125, -34)
+shape = SubResource("RectangleShape2D_dd7cg")
