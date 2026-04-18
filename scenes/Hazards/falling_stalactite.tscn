@@ -3,22 +3,23 @@
 [ext_resource type="Texture2D" uid="uid://yvt8uv8nkdle" path="res://art/level02/stalactite_01.png" id="1_m684c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8juhs"]
-size = Vector2(16, 217)
+size = Vector2(16, 128)
 
 [node name="FallingStalactite" type="Node2D" unique_id=260383511]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2144650501]
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("1_m684c")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=674041588]
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=881486889]
-position = Vector2(2, -1.5)
+position = Vector2(2, 0)
 shape = SubResource("RectangleShape2D_8juhs")
 
 [node name="GroundCheck" type="RayCast2D" parent="." unique_id=603405917]
 position = Vector2(1, -107)
-target_position = Vector2(1, 224)
+target_position = Vector2(0, 177)
 
 [node name="WarningTimer" type="Timer" parent="." unique_id=1211632764]

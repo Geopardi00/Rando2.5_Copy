@@ -1,6 +1,6 @@
 # State of Game
 
-Last updated: 2026-04-13
+Last updated: 2026-04-17
 
 ## High-Level Status
 - Level 01 is in a good playable state.
@@ -11,6 +11,7 @@ Last updated: 2026-04-13
 - Intro slideshow flow is now implemented.
 - Main menu music is now implemented.
 - Player animation flow is now active (idle/walk/jump/death).
+- Level 02 building has started.
 
 ## Implemented Features
 
@@ -86,6 +87,10 @@ Last updated: 2026-04-13
   - Invisible `Area2D` below level
   - Kills player if they fall off the level
 
+- **Falling stalactite hazard**
+  - First Level 02 hazard has been added
+  - Designed as an overhead falling threat for traversal pressure
+
 ### Level / World
 - Level 01 layout exists and is playable
 - Level 01 enemy and hazard playtests are working well
@@ -94,6 +99,9 @@ Last updated: 2026-04-13
 - Tile art integration started
 - Test room scene added for focused gameplay iteration
 - Tunnel door prop art added
+- Level 02 building has started
+- TileMapLayer setup for gameplay/collision is ready
+- TileMapLayer setup for background is ready
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
@@ -144,6 +152,10 @@ Last updated: 2026-04-13
 - Added player animation frames: `art/characters/animations/idle`, `walk`, `jump`, `death`
 - Added test room scene: `scenes/levels/test_room.tscn`
 - Added tunnel door prop: `art/props/tunneldoor.png`
+- Level 02 building started
+- TileMapLayer for gameplay/collision is ready
+- TileMapLayer for background is ready
+- Added first new Level 02 hazard: falling stalactite
 
 ## Important Scenes / Scripts
 
@@ -165,6 +177,7 @@ Last updated: 2026-04-13
 ### Hazards
 - Spike hazard scene / script
 - Fall killzone scene / script
+- Falling stalactite hazard (Level 02)
 
 ### UI
 - `scenes/ui/main_menu.tscn`
@@ -205,6 +218,9 @@ Last updated: 2026-04-13
 - Enemy hit sound cutting off on death solved by code-spawned one-shot audio playback
 - Player idle/walk/jump/death animation sets imported and wired into player logic
 - Player death animation integrated into death flow
+- Level 02 building started
+- TileMapLayer setup for gameplay/collision and background completed
+- First Level 02 hazard (falling stalactite) added
 
 ## Recommended Next Steps
 - Level 01 polish pass
