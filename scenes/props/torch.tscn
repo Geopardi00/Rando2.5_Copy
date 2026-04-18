@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://b8mb1736qqexw"]
+
+[ext_resource type="Texture2D" uid="uid://bi2a4kejjke21" path="res://art/tilemaps/backgroundtile.png" id="1_3dyab"]
+[ext_resource type="Texture2D" uid="uid://b87b2thtbiddo" path="res://art/props/animations/torch/frame0000.png" id="1_u6r2k"]
+[ext_resource type="Texture2D" uid="uid://clqovi1d7di0h" path="res://art/props/animations/torch/frame0001.png" id="2_3dyab"]
+[ext_resource type="Texture2D" uid="uid://prnve1upprd8" path="res://art/props/animations/torch/frame0002.png" id="3_vrkam"]
+[ext_resource type="Texture2D" uid="uid://b6ar02gpspmnc" path="res://art/props/animations/torch/frame0003.png" id="4_5lm7u"]
+[ext_resource type="Texture2D" uid="uid://s1bp2dcufmim" path="res://art/props/animations/torch/frame0004.png" id="5_ixgdu"]
+[ext_resource type="Texture2D" uid="uid://ckarij0tdjrue" path="res://art/props/animations/torch/frame0005.png" id="6_ye0sk"]
+[ext_resource type="Texture2D" uid="uid://b2dgiioxwc8pt" path="res://art/props/animations/torch/frame0006.png" id="7_wa8ay"]
+[ext_resource type="Texture2D" uid="uid://c8yr0p5buuu6u" path="res://art/props/animations/torch/frame0007.png" id="8_f8t36"]
+[ext_resource type="Texture2D" uid="uid://b2og2a7ijqv3k" path="res://art/props/animations/torch/frame0008.png" id="9_21csd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yfuop"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_u6r2k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_3dyab")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vrkam")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5lm7u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ixgdu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ye0sk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wa8ay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_f8t36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_21csd")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_u6r2k"]
+offsets = PackedFloat32Array(0, 0.56875)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3dyab"]
+gradient = SubResource("Gradient_u6r2k")
+fill = 1
+fill_from = Vector2(0.50438595, 0.50438595)
+
+[node name="Torch" type="Node2D" unique_id=1845595865]
+scale = Vector2(0.5, 0.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2018300383]
+visible = false
+modulate = Color(0.3254902, 0.40392157, 0.5137255, 1)
+position = Vector2(3.9999943, -41)
+scale = Vector2(1.171875, 1.1640625)
+texture = ExtResource("1_3dyab")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1411005610]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_yfuop")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.8725535
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1913179842]
+position = Vector2(-0.9999771, 22.400421)
+scale = Vector2(23.468752, 15.961915)
+color = Color(0.99999994, 0.78632474, 0.1235353, 1)
+energy = 1.12
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_3dyab")
+offset = Vector2(0, -10)
