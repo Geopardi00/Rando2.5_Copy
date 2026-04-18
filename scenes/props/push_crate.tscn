@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c4ostpck37pmk"]
+
+[ext_resource type="Script" uid="uid://brylaki68igof" path="res://scripts/props/push_crate.gd" id="1_rf3t3"]
+[ext_resource type="PhysicsMaterial" uid="uid://bbspmibg22yuq" path="res://physics/crate_physics.tres" id="1_vmgvp"]
+[ext_resource type="Texture2D" uid="uid://cubgct2y3tcf6" path="res://art/props/crate01.png" id="2_vmgvp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rf3t3"]
+size = Vector2(80, 44)
+
+[node name="Crate" type="RigidBody2D" unique_id=131320726 groups=["Crate"]]
+collision_layer = 2
+collision_mask = 2
+mass = 2.0
+physics_material_override = ExtResource("1_vmgvp")
+sleeping = true
+lock_rotation = true
+linear_damp = 6.0
+script = ExtResource("1_rf3t3")
+max_horizontal_speed = 220.0
+stop_threshold = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1046788030]
+texture = ExtResource("2_vmgvp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1565135467]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_rf3t3")

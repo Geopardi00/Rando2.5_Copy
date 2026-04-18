@@ -4,6 +4,9 @@ extends CharacterBody2D
 @export var jump_velocity: float = -400.0
 @export var gravity: float = 1100.0
 
+const PUSH_FORCE = 100
+const BLOCK_MAX_VELOCITY = 180
+
 @export var coyote_time: float = 0.10
 @export var jump_buffer_time: float = 0.10
 
@@ -101,6 +104,13 @@ func _physics_process(delta: float) -> void:
 	# Shooting
 	if Input.is_action_just_pressed("shoot"):
 		try_shoot()
+
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collision_crate = collision.get_collider()
+		if collision_crate.is_in_group("Crate") and abs(collision_crate.linear_velocity.x) < BLOCK_MAX_VELOCITY:
+			collision_crate.apply_central_impulse(collision.get_normal() * -PUSH_FORCE)
+
 
 	move_and_slide()
 	update_animation()

@@ -319,7 +319,7 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"death"
+animation = &"idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2029278347]
 position = Vector2(52, -137)
