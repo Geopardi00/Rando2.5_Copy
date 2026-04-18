@@ -7,6 +7,9 @@
 [ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="3_pw5fa"]
 [ext_resource type="Script" uid="uid://b76vve6eggmei" path="res://scenes/levels/goal.gd" id="4_siir5"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="5_7ptk6"]
+[ext_resource type="PackedScene" uid="uid://b0ka34mljyuk6" path="res://scripts/props/stone.tscn" id="6_k553b"]
+[ext_resource type="PhysicsMaterial" uid="uid://bbspmibg22yuq" path="res://physics/crate_physics.tres" id="7_sp205"]
+[ext_resource type="Script" uid="uid://bhlt2dsdad68i" path="res://scripts/props/stone.gd" id="8_0eupj"]
 [ext_resource type="Texture2D" uid="uid://yvt8uv8nkdle" path="res://art/level02/stalactite_01.png" id="8_ya6n0"]
 [ext_resource type="Texture2D" uid="uid://d1xtqqmhcfsuk" path="res://art/level02/stalactitegroup.png" id="9_gw7qu"]
 [ext_resource type="PackedScene" uid="uid://ctufl3v4544gd" path="res://scenes/Hazards/falling_stalactite.tscn" id="10_ec2g8"]
@@ -366,7 +369,7 @@ tile_map_data = PackedByteArray("AAABAP//AAAAAAAAAAABAP7/AAAAAAAAAAACAP7/AAAAAAA
 tile_set = SubResource("TileSet_ya6n0")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=373639691]
-position = Vector2(743, -367)
+position = Vector2(5843, 777)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1193094583]
 position = Vector2(1441, 1419)
@@ -380,6 +383,12 @@ shape = SubResource("RectangleShape2D_45klw")
 position = Vector2(3792, 858)
 collision_layer = 1
 collision_mask = 1
+
+[node name="Stone" parent="." unique_id=893672911 groups=["Crate"] instance=ExtResource("6_k553b")]
+position = Vector2(5577, 1153)
+physics_material_override = ExtResource("7_sp205")
+sleeping = true
+script = ExtResource("8_0eupj")
 
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("2_pw5fa")]
 position = Vector2(507, -366)
