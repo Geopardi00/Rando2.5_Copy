@@ -128,6 +128,74 @@ size = Vector2(63, 61)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3pila"]
 size = Vector2(59, 16)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bfb10"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_154ug"]
+_limits = [0.0, 0.3, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.07999999, 0.10449439), 1.5168545, 1.5168545, 0, 0, Vector2(0.5288889, 0.3), 0.0, 0.0, 0, 0, Vector2(0.92444444, 0.13820225), -1.1721135, -1.1721135, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_2y4a5"]
+curve = SubResource("Curve_154ug")
+
+[sub_resource type="Gradient" id="Gradient_yj8ph"]
+colors = PackedColorArray(1, 1, 1, 0.078431375, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3xboy"]
+gradient = SubResource("Gradient_yj8ph")
+
+[sub_resource type="Curve" id="Curve_yl48f"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_i652i"]
+_limits = [0.0, 30.0, 0.0, 1.0]
+_data = [Vector2(0, 15.168541), 0.0, 0.0, 0, 0, Vector2(0.09333334, 27.977531), 0.0, 0.0, 0, 0, Vector2(0.24000001, 30), 0.0, 0.0, 0, 0, Vector2(1, 30), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_6gto5"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_qcx6o"]
+curve_x = SubResource("Curve_yl48f")
+curve_y = SubResource("Curve_i652i")
+curve_z = SubResource("Curve_6gto5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pff7q"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -300, 0)
+emission_shape = 3
+emission_box_extents = Vector3(4000, 600, 1)
+gravity = Vector3(0, 4000, 0)
+scale_min = 0.19999999
+scale_over_velocity_curve = SubResource("CurveXYZTexture_qcx6o")
+color_initial_ramp = SubResource("GradientTexture1D_3xboy")
+alpha_curve = SubResource("CurveTexture_2y4a5")
+collision_mode = 2
+sub_emitter_mode = 3
+sub_emitter_amount_at_collision = 1
+
+[sub_resource type="Curve" id="Curve_bfb10"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.08444444, 0.26966298), 1.9785051, 1.9785051, 0, 0, Vector2(0.4977778, 0.49438208), 0.0, 0.0, 0, 0, Vector2(0.9288889, 0.25842702), -1.6358228, -1.6358228, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_154ug"]
+curve = SubResource("Curve_bfb10")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2y4a5"]
+lifetime_randomness = 0.7
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 0, 1)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 400, 0)
+alpha_curve = SubResource("CurveTexture_154ug")
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_bfb10"]
 polygon = PackedVector2Array(1, 0, 479, 0, 672, 0, 672, 19, 695, 51, 1032, 51, 1032, 71, 537, 71, 77, 71, 3, 71)
 
@@ -141,10 +209,13 @@ polygon = PackedVector2Array(-2, -9, 788, -8, 844, -8, 844, -67, 893, -67, 893, 
 polygon = PackedVector2Array(-2, 1, 342, 1, 341, -42, 660, -42, 660, -108, 703, -108, 704, -43, 828, -42, 828, -204, 850, -204, 850, -42, 944, -42, 937, -213, 1366, -215, 1365, -281, 1486, -281, 1486, -253, 1774, -253, 1774, -8, 1071, -8, 719, 27, 306, 49, 60, 126, 60, 178, 1, 178)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3xboy"]
-polygon = PackedVector2Array(3, 0, 22, 0, 22, -166, 42, -166, 42, -6, 134, -6, 134, 15, 2, 15)
+polygon = PackedVector2Array(-180, -4, -88, -4, -87, -167, -69, -167, -68, -4, 22, -4, 22, -166, 42, -166, 42, -6, 134, -6, 134, 15, -183, 16)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_yl48f"]
-polygon = PackedVector2Array(-1, -1, 414, -1, 415, 113, 3, 113)
+polygon = PackedVector2Array(-1, -1, 1217, 3, 1219, 111, 3, 113)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_i652i"]
+polygon = PackedVector2Array(0, -2, 351, -1, 344, 260, 441, 260, 437, -13, 494, -13, 494, 261, 633, 261, 633, 308, 11, 309)
 
 [node name="Level01" type="Node2D" unique_id=1698746909]
 script = ExtResource("13_84s7n")
@@ -1011,6 +1082,25 @@ shape = SubResource("RectangleShape2D_3pila")
 [node name="Fall_KillZone" parent="Hazards" unique_id=606477228 instance=ExtResource("36_d86x1")]
 position = Vector2(-4, 503)
 
+[node name="GPUParticles2D_Rain" type="GPUParticles2D" parent="." unique_id=1671328933]
+material = SubResource("CanvasItemMaterial_bfb10")
+position = Vector2(2549, 166)
+amount = 7000
+sub_emitter = NodePath("../GPUParticles2D_Splash")
+lifetime = 0.5
+preprocess = 0.5
+collision_base_size = 90.0
+visibility_rect = Rect2(-3000, -600, 7000, 1080)
+process_material = SubResource("ParticleProcessMaterial_pff7q")
+
+[node name="GPUParticles2D_Splash" type="GPUParticles2D" parent="." unique_id=1841217660]
+position = Vector2(116, 270)
+amount = 1000
+lifetime = 0.09999999999999999
+collision_base_size = 20.0
+visibility_rect = Rect2(-100, 0, 6500, 30)
+process_material = SubResource("ParticleProcessMaterial_2y4a5")
+
 [node name="SunBeams" type="Node2D" parent="." unique_id=65414672]
 
 [node name="SunBeam01" type="PointLight2D" parent="SunBeams" unique_id=795310205]
@@ -1120,26 +1210,32 @@ energy = 1.58
 shadow_enabled = true
 texture = ExtResource("38_bfb10")
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1786397724]
+[node name="Lightoccluders" type="Node2D" parent="." unique_id=1536667192]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Lightoccluders" unique_id=1786397724]
 position = Vector2(15, 284)
 occluder = SubResource("OccluderPolygon2D_bfb10")
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="." unique_id=610738776]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="Lightoccluders" unique_id=610738776]
 position = Vector2(1780, 349)
 occluder = SubResource("OccluderPolygon2D_154ug")
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="." unique_id=573695706]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="Lightoccluders" unique_id=573695706]
 position = Vector2(2472, 329)
 occluder = SubResource("OccluderPolygon2D_2y4a5")
 
-[node name="LightOccluder2D4" type="LightOccluder2D" parent="." unique_id=220314839]
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="Lightoccluders" unique_id=220314839]
 position = Vector2(3690, 308)
 occluder = SubResource("OccluderPolygon2D_yj8ph")
 
-[node name="LightOccluder2D5" type="LightOccluder2D" parent="." unique_id=961859602]
+[node name="LightOccluder2D5" type="LightOccluder2D" parent="Lightoccluders" unique_id=961859602]
 position = Vector2(3556, 494)
 occluder = SubResource("OccluderPolygon2D_3xboy")
 
-[node name="LightOccluder2D6" type="LightOccluder2D" parent="." unique_id=1054388886]
+[node name="LightOccluder2D6" type="LightOccluder2D" parent="Lightoccluders" unique_id=1054388886]
 position = Vector2(5174, -139)
 occluder = SubResource("OccluderPolygon2D_yl48f")
+
+[node name="LightOccluder2D7" type="LightOccluder2D" parent="Lightoccluders" unique_id=2023224880]
+position = Vector2(1159, 375)
+occluder = SubResource("OccluderPolygon2D_i652i")
