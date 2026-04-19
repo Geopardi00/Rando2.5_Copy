@@ -37,6 +37,15 @@
 [ext_resource type="Texture2D" uid="uid://33os8d3nof8q" path="res://art/parallax/foreground_vines01.png" id="30_iqf6e"]
 [ext_resource type="PackedScene" uid="uid://dwyjpymnf7mcs" path="res://scenes/Hazards/spike_hazard_kill_zone.tscn" id="32_stkom"]
 [ext_resource type="PackedScene" uid="uid://dm32l8wkliqrx" path="res://scenes/Hazards/fall_kill_zone.tscn" id="36_d86x1"]
+[ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="38_bfb10"]
+
+[sub_resource type="Environment" id="Environment_1uvka"]
+background_mode = 3
+tonemap_mode = 1
+tonemap_white = 1.45
+glow_enabled = true
+glow_intensity = 0.46
+glow_bloom = 0.14
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3g50r"]
 size = Vector2(689, 80)
@@ -119,8 +128,37 @@ size = Vector2(63, 61)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3pila"]
 size = Vector2(59, 16)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_bfb10"]
+polygon = PackedVector2Array(1, 0, 479, 0, 672, 0, 672, 19, 695, 51, 1032, 51, 1032, 71, 537, 71, 77, 71, 3, 71)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_154ug"]
+polygon = PackedVector2Array(-1, 1, 198, 0, 197, -58, 265, -58, 265, -1, 610, -2, 610, 31, 1, 36)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2y4a5"]
+polygon = PackedVector2Array(-2, -9, 788, -8, 844, -8, 844, -67, 893, -67, 893, -10, 906, -9, 906, 23, 243, 24, 2, 28)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_yj8ph"]
+polygon = PackedVector2Array(-2, 1, 342, 1, 341, -42, 660, -42, 660, -108, 703, -108, 704, -43, 828, -42, 828, -204, 850, -204, 850, -42, 944, -42, 937, -213, 1366, -215, 1365, -281, 1486, -281, 1486, -253, 1774, -253, 1774, -8, 1071, -8, 719, 27, 306, 49, 60, 126, 60, 178, 1, 178)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3xboy"]
+polygon = PackedVector2Array(3, 0, 22, 0, 22, -166, 42, -166, 42, -6, 134, -6, 134, 15, 2, 15)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_yl48f"]
+polygon = PackedVector2Array(-1, -1, 414, -1, 415, 113, 3, 113)
+
 [node name="Level01" type="Node2D" unique_id=1698746909]
 script = ExtResource("13_84s7n")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=801567806]
+environment = SubResource("Environment_1uvka")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1931465057]
+color = Color(0.75709885, 0.94131434, 0.8519965, 1)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=662750246]
+color = Color(0.07891121, 0.39110976, 0.3352338, 0.2509804)
+energy = 0.58
+blend_mode = 2
 
 [node name="Platforms" type="Node2D" parent="." unique_id=2031184102]
 
@@ -972,3 +1010,136 @@ shape = SubResource("RectangleShape2D_3pila")
 
 [node name="Fall_KillZone" parent="Hazards" unique_id=606477228 instance=ExtResource("36_d86x1")]
 position = Vector2(-4, 503)
+
+[node name="SunBeams" type="Node2D" parent="." unique_id=65414672]
+
+[node name="SunBeam01" type="PointLight2D" parent="SunBeams" unique_id=795310205]
+position = Vector2(378.78082, -16.220598)
+rotation = -0.34410712
+scale = Vector2(0.48285812, 1.8300097)
+color = Color(0.72716576, 0.5432528, 0.13813853, 1)
+energy = 1.29
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam02" type="PointLight2D" parent="SunBeams" unique_id=2063663345]
+position = Vector2(825.7257, 68.1086)
+rotation = -0.33269766
+scale = Vector2(1.3467758, 2.227401)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.38
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam03" type="PointLight2D" parent="SunBeams" unique_id=527560622]
+position = Vector2(1698.7075, 67.04097)
+rotation = -0.44824633
+scale = Vector2(0.45727396, 2.228248)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.42
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam04" type="PointLight2D" parent="SunBeams" unique_id=770617628]
+position = Vector2(1880.7916, 127.69359)
+rotation = -0.48437345
+scale = Vector2(0.18261155, 2.4792624)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam05" type="PointLight2D" parent="SunBeams" unique_id=131257381]
+position = Vector2(1960.7711, 100.32985)
+rotation = -0.48437348
+scale = Vector2(0.109965116, 2.4792624)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.86
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam06" type="PointLight2D" parent="SunBeams" unique_id=1500891569]
+position = Vector2(1908.0001, 78.99994)
+rotation = -0.49993256
+scale = Vector2(1.0884176, 2.5964022)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.43
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam07" type="PointLight2D" parent="SunBeams" unique_id=1997345398]
+position = Vector2(2330.04, 160.475)
+rotation = -0.4650359
+scale = Vector2(0.2426601, 2.6212394)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.57
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam08" type="PointLight2D" parent="SunBeams" unique_id=1907643697]
+position = Vector2(2966.795, 177.52002)
+rotation = -0.4650359
+scale = Vector2(1.3704588, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.57
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam09" type="PointLight2D" parent="SunBeams" unique_id=405165949]
+position = Vector2(3534.7837, 152.30301)
+rotation = -0.48150524
+scale = Vector2(0.38960817, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.86
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam10" type="PointLight2D" parent="SunBeams" unique_id=1262247744]
+position = Vector2(4071.7998, 128.85242)
+rotation = -0.48150524
+scale = Vector2(0.2908804, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.72
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam11" type="PointLight2D" parent="SunBeams" unique_id=2003487657]
+position = Vector2(4600.098, 133.22789)
+rotation = -0.43308288
+scale = Vector2(0.5738171, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.72
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="SunBeam12" type="PointLight2D" parent="SunBeams" unique_id=709512470]
+position = Vector2(5165.0005, 17.000107)
+rotation = -0.43308288
+scale = Vector2(0.5738171, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 1.58
+shadow_enabled = true
+texture = ExtResource("38_bfb10")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1786397724]
+position = Vector2(15, 284)
+occluder = SubResource("OccluderPolygon2D_bfb10")
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="." unique_id=610738776]
+position = Vector2(1780, 349)
+occluder = SubResource("OccluderPolygon2D_154ug")
+
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="." unique_id=573695706]
+position = Vector2(2472, 329)
+occluder = SubResource("OccluderPolygon2D_2y4a5")
+
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="." unique_id=220314839]
+position = Vector2(3690, 308)
+occluder = SubResource("OccluderPolygon2D_yj8ph")
+
+[node name="LightOccluder2D5" type="LightOccluder2D" parent="." unique_id=961859602]
+position = Vector2(3556, 494)
+occluder = SubResource("OccluderPolygon2D_3xboy")
+
+[node name="LightOccluder2D6" type="LightOccluder2D" parent="." unique_id=1054388886]
+position = Vector2(5174, -139)
+occluder = SubResource("OccluderPolygon2D_yl48f")
