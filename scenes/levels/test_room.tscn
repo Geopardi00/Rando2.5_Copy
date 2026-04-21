@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_sa601"]
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
+[ext_resource type="PackedScene" uid="uid://cmyc5acoeb8sm" path="res://scenes/enemies/enemy_boss.tscn" id="8_ff50h"]
 [ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
@@ -53,8 +54,6 @@ script = ExtResource("2_asmw1")
 move_speed = null
 jump_velocity = null
 gravity = null
-PUSH_FORCE = null
-BLOCK_MAX_VELOCITY = null
 coyote_time = null
 jump_buffer_time = null
 enable_double_jump = null
@@ -86,3 +85,7 @@ flip_h = true
 position = Vector2(140, 177)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("8_op2op")
+
+[node name="EnemyBoss" parent="." unique_id=1075910993 instance=ExtResource("8_ff50h")]
+position = Vector2(122.00001, -76)
+scale = Vector2(0.12, 0.12)
