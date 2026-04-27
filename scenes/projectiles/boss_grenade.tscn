@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bp2l0omicsks8"]
 
 [ext_resource type="Script" uid="uid://d5sjrsy7c6dy" path="res://scripts/projectiles/boss_grenade.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://chk2153o04aat" path="res://art/props/stoneball.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://dyutp87truost" path="res://art/props/grenade.png" id="2_ua6av"]
 [ext_resource type="Texture2D" uid="uid://ewj5t23iovfx" path="res://art/enemies/animations/Boss/grenade/explosion/frame0000.png" id="3_ua6av"]
 [ext_resource type="Texture2D" uid="uid://dhgjtft552g73" path="res://art/enemies/animations/Boss/grenade/explosion/frame0001.png" id="4_se7os"]
 [ext_resource type="Texture2D" uid="uid://b33u3x1lf7phs" path="res://art/enemies/animations/Boss/grenade/explosion/frame0002.png" id="5_db62o"]
@@ -57,8 +57,9 @@ travel_time = 4.0
 arc_height = 400.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1105752239]
-scale = Vector2(0.16, 0.16)
-texture = ExtResource("2")
+position = Vector2(0, -7.9999995)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("2_ua6av")
 
 [node name="ExplosionArea" type="Area2D" parent="." unique_id=626593849]
 collision_layer = 0

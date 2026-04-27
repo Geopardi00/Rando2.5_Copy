@@ -106,6 +106,7 @@ Last updated: 2026-04-27
 - Boss grenade scene/script added
 - Boss grenades use scripted arc movement and explode at target positions
 - Boss grenade warning uses `art/props/crosshair.png`
+- Boss grenade projectile now uses dedicated grenade art: `art/props/grenade.png`
 - Boss grenade explosion now uses a separate animation that plays only when the grenade reaches the floor/target
 - Grenade warning time and grenade air time are now separate boss export variables
 
@@ -205,6 +206,7 @@ Last updated: 2026-04-27
 - Added boss projectiles: `scenes/projectiles/boss_bullet.tscn`, `scripts/projectiles/boss_bullet.gd`, `scenes/projectiles/boss_grenade.tscn`, `scripts/projectiles/boss_grenade.gd`
 - Added grenade warning FX: `scenes/fx/grenade_warning.tscn`
 - Added grenade warning crosshair asset: `art/props/crosshair.png`
+- Added grenade projectile art: `art/props/grenade.png`
 - Added grenade explosion animation frames: `art/enemies/animations/Boss/grenade/explosion/`
 - Added boss jump and stomp animation frames: `art/enemies/animations/Boss/jump/`, `art/enemies/animations/Boss/stomp/`
 - Added boss fight level script for camera shake: `scripts/levels/boss_fight_level.gd`
