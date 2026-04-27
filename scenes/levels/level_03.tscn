@@ -1,0 +1,66 @@
+[gd_scene format=4 uid="uid://mobxq5bdc0px"]
+
+[ext_resource type="Texture2D" uid="uid://bgynj1o7nap1r" path="res://art/level03/32x32block.png" id="1_fvfhs"]
+[ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_ps4tf"]
+[ext_resource type="Texture2D" uid="uid://m81w4bq53gq2" path="res://art/level03/pier.png" id="2_4wrbh"]
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="3_ps4tf"]
+[ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="5_lcxk4"]
+
+[sub_resource type="Environment" id="Environment_o4mod"]
+background_mode = 3
+glow_enabled = true
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wrbh"]
+texture = ExtResource("1_fvfhs")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:0/0/terrains_peering_bit/right_side = 0
+0:0/0/terrains_peering_bit/bottom_right_corner = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/bottom_left_corner = 0
+0:0/0/terrains_peering_bit/left_side = 0
+0:0/0/terrains_peering_bit/top_left_corner = 0
+0:0/0/terrains_peering_bit/top_side = 0
+0:0/0/terrains_peering_bit/top_right_corner = 0
+
+[sub_resource type="TileSet" id="TileSet_ps4tf"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "Terrain 0"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/1 = SubResource("TileSetAtlasSource_4wrbh")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ps4tf"]
+size = Vector2(24, 41)
+
+[node name="Level03" type="Node2D" unique_id=901161810]
+script = ExtResource("1_ps4tf")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1152659410]
+environment = SubResource("Environment_o4mod")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=716074196]
+tile_map_data = PackedByteArray("AAABAAEAAQAAAAAAAAABAAAAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAAAAQAAAAAAAAD//wEAAQAAAAAAAAD//wAAAQAAAAAAAAADAAEAAQAAAAAAAAADAAAAAQAAAAAAAAACAAEAAQAAAAAAAAACAAAAAQAAAAAAAAALAAEAAQAAAAAAAAALAAAAAQAAAAAAAAAKAAEAAQAAAAAAAAAKAAAAAQAAAAAAAAAJAAEAAQAAAAAAAAAJAAAAAQAAAAAAAAAIAAEAAQAAAAAAAAAIAAAAAQAAAAAAAAAHAAEAAQAAAAAAAAAHAAAAAQAAAAAAAAAGAAEAAQAAAAAAAAAGAAAAAQAAAAAAAAAFAAEAAQAAAAAAAAAFAAAAAQAAAAAAAAAEAAEAAQAAAAAAAAAEAAAAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_ps4tf")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1379300044]
+position = Vector2(203, 12)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_4wrbh")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=31593072]
+position = Vector2(81, -74)
+
+[node name="Player" parent="." unique_id=1487025887 instance=ExtResource("3_ps4tf")]
+script = ExtResource("5_lcxk4")
+
+[node name="Goal" type="Area2D" parent="." unique_id=201163403]
+position = Vector2(381, -21)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1482087650]
+position = Vector2(-2, -10.5)
+shape = SubResource("RectangleShape2D_ps4tf")

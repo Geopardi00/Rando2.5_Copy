@@ -47,8 +47,8 @@ animations = [{
 }]
 
 [sub_resource type="Gradient" id="Gradient_u6r2k"]
-offsets = PackedFloat32Array(0, 0.56875)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.5473251, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_3dyab"]
 gradient = SubResource("Gradient_u6r2k")

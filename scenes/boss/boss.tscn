@@ -1,0 +1,232 @@
+[gd_scene format=3 uid="uid://d2kfqvnlyedl4"]
+
+[ext_resource type="Script" uid="uid://doamqvhfr8w8v" path="res://scripts/boss/boss.gd" id="1"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2"]
+[ext_resource type="Texture2D" uid="uid://c8daxdj2eeeyy" path="res://art/enemies/animations/Boss/test1/frame0000.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dd367hcbirnne" path="res://art/enemies/animations/Boss/test1/frame0001.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://bus27jhocqmha" path="res://art/enemies/animations/Boss/test1/frame0002.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://skth3vo602jx" path="res://art/enemies/animations/Boss/test1/frame0003.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://du8d3kkn7mhfg" path="res://art/enemies/animations/Boss/test1/frame0004.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://dikbmm8yeic6t" path="res://art/enemies/animations/Boss/test1/frame0005.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://blytlphq3s634" path="res://art/enemies/animations/Boss/test1/frame0006.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://s0tt74q7rpny" path="res://art/enemies/animations/Boss/test1/frame0007.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://bvhmq3mvnrfbo" path="res://art/enemies/animations/Boss/test1/frame0008.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://ckbct612481ll" path="res://art/enemies/animations/Boss/test1/frame0009.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://dwnwg2vt4g2p8" path="res://art/enemies/animations/Boss/shoot/0000.png" id="13"]
+[ext_resource type="Texture2D" uid="uid://dv1ot1whjyavn" path="res://art/enemies/animations/Boss/shoot/0001.png" id="14"]
+[ext_resource type="Texture2D" uid="uid://cw2syntpdf04s" path="res://art/enemies/animations/Boss/shoot/0003.png" id="15"]
+[ext_resource type="Texture2D" uid="uid://c4k2r01fuso3" path="res://art/enemies/animations/Boss/shoot/0002.png" id="15_pxtfd"]
+[ext_resource type="Texture2D" uid="uid://4d2rvdp0trdr" path="res://art/enemies/animations/Boss/shoot/0004.png" id="16"]
+[ext_resource type="Texture2D" uid="uid://c4ph7wev5hu32" path="res://art/enemies/animations/Boss/shoot/0005.png" id="17"]
+[ext_resource type="Texture2D" uid="uid://b4uw1evffgrn3" path="res://art/enemies/animations/Boss/shoot/0006.png" id="18"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
+shader = ExtResource("2")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_boss"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_pxtfd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 9.0
+}]
+
+[sub_resource type="Animation" id="Animation_death"]
+resource_name = "death"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_fall"]
+resource_name = "fall"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_hurt"]
+resource_name = "hurt"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_idle"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_jump"]
+resource_name = "jump"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_reload"]
+resource_name = "reload"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_shoot"]
+resource_name = "shoot"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_stomp"]
+resource_name = "stomp"
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_throw"]
+resource_name = "throw"
+length = 0.1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_boss"]
+_data = {
+&"death": SubResource("Animation_death"),
+&"fall": SubResource("Animation_fall"),
+&"hurt": SubResource("Animation_hurt"),
+&"idle": SubResource("Animation_idle"),
+&"jump": SubResource("Animation_jump"),
+&"reload": SubResource("Animation_reload"),
+&"shoot": SubResource("Animation_shoot"),
+&"stomp": SubResource("Animation_stomp"),
+&"throw": SubResource("Animation_throw")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pxtfd"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uonfg"]
+animation = &"shoot"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_whqtw"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1q0wb"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1cw1b"]
+states/idle/node = SubResource("AnimationNodeAnimation_pxtfd")
+states/idle/position = Vector2(378, 109)
+states/shoot/node = SubResource("AnimationNodeAnimation_uonfg")
+states/shoot/position = Vector2(538, 109)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_whqtw"), "idle", "shoot", SubResource("AnimationNodeStateMachineTransition_1q0wb")]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(55, 86)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(35.5, 79)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_contact"]
+size = Vector2(57, 85)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stomp"]
+size = Vector2(132, 55)
+
+[node name="Boss" type="CharacterBody2D" unique_id=2141373853 groups=["enemy"]]
+collision_layer = 4
+script = ExtResource("1")
+jump_velocity_y = -750.0
+burst_delay = 0.5
+grenade_warning_time = 1.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1821942414]
+material = SubResource("ShaderMaterial_flash")
+position = Vector2(-35, -100)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_boss")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.9346453
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=759293719]
+libraries/ = SubResource("AnimationLibrary_boss")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=727398884]
+deterministic = false
+tree_root = SubResource("AnimationNodeStateMachine_1cw1b")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=310135749]
+position = Vector2(-41.5, -48)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1485881455 groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1949588913]
+position = Vector2(-36.25, -45.5)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="ContactDamageArea" type="Area2D" parent="." unique_id=264639669]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactDamageArea" unique_id=899270456]
+position = Vector2(-41.5, -49.5)
+shape = SubResource("RectangleShape2D_contact")
+
+[node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1202952156]
+position = Vector2(67, -44)
+
+[node name="GrenadeThrowMarker" type="Marker2D" parent="." unique_id=2078996515]
+position = Vector2(-1, -70)
+
+[node name="StompDamageArea" type="Area2D" parent="." unique_id=1660749978]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompDamageArea" unique_id=619276031]
+position = Vector2(-42, -32.5)
+shape = SubResource("RectangleShape2D_stomp")
+disabled = true
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=666819646]
+one_shot = true

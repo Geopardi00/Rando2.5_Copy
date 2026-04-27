@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://cqc1pujlqtimm"]
+
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://dhoubxga3w3k3" path="res://art/bosslevel1/stage1test.png" id="1_4dltw"]
+[ext_resource type="Script" uid="uid://ch38c7lx75j12" path="res://scripts/player/player.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://d2kfqvnlyedl4" path="res://scenes/boss/boss.tscn" id="4"]
+[ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="6"]
+[ext_resource type="Script" uid="uid://dj0hdc6jinvuy" path="res://scripts/levels/boss_fight_level.gd" id="7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(1946, 90)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(80, 1080)
+
+[node name="BossFightLevel" type="Node2D" unique_id=32251318]
+script = ExtResource("7")
+camera_shake_strength = 25.0
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1199272674]
+position = Vector2(960, 540)
+texture = ExtResource("1_4dltw")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1785679737]
+position = Vector2(960, 540)
+
+[node name="ArenaFloor" type="StaticBody2D" parent="." unique_id=282466060]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaFloor" unique_id=111997905]
+position = Vector2(967, 818)
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="FloorVisual" type="Sprite2D" parent="ArenaFloor" unique_id=2120696513]
+visible = false
+position = Vector2(960, 954)
+scale = Vector2(3, 0.55)
+texture = ExtResource("6")
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=2047200291]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=1029614834]
+position = Vector2(153, 540)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=1565534238]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=131654479]
+position = Vector2(1701, 545)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=877695265]
+position = Vector2(295, 688)
+
+[node name="BossSpawn" type="Marker2D" parent="." unique_id=26013676]
+position = Vector2(1367, 712)
+
+[node name="BossLeftLimit" type="Marker2D" parent="." unique_id=985351507]
+position = Vector2(340, 960)
+
+[node name="BossRightLimit" type="Marker2D" parent="." unique_id=2110300955]
+position = Vector2(1600, 960)
+
+[node name="GrenadeLeftLimit" type="Marker2D" parent="." unique_id=518547519]
+position = Vector2(220, 970)
+
+[node name="GrenadeRightLimit" type="Marker2D" parent="." unique_id=145383482]
+position = Vector2(1700, 970)
+
+[node name="Player" parent="." unique_id=1201901529 groups=["player"] instance=ExtResource("1")]
+position = Vector2(316, 659)
+script = ExtResource("2")
+bullet_scene = ExtResource("3")
+
+[node name="Boss" parent="." unique_id=2024625313 instance=ExtResource("4")]
+position = Vector2(1412, 747)
+boss_left_limit_path = NodePath("../BossLeftLimit")
+boss_right_limit_path = NodePath("../BossRightLimit")
+grenade_left_limit_path = NodePath("../GrenadeLeftLimit")
+grenade_right_limit_path = NodePath("../GrenadeRightLimit")

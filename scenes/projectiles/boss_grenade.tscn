@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bp2l0omicsks8"]
+
+[ext_resource type="Script" uid="uid://d5sjrsy7c6dy" path="res://scripts/projectiles/boss_grenade.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://chk2153o04aat" path="res://art/props/stoneball.png" id="2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
+radius = 92.0
+
+[node name="BossGrenade" type="Node2D" unique_id=380127908]
+z_index = 4
+script = ExtResource("1")
+travel_time = 2.0
+arc_height = 300.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1105752239]
+scale = Vector2(0.16, 0.16)
+texture = ExtResource("2")
+
+[node name="ExplosionArea" type="Area2D" parent="." unique_id=626593849]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea" unique_id=1918486576]
+shape = SubResource("CircleShape2D_explosion")
+disabled = true

@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://7c4gq5eqxlum" path="res://scenes/levels/test_room_2.tscn" id="13_s3wpq"]
 [ext_resource type="PackedScene" uid="uid://cmyc5acoeb8sm" path="res://scenes/enemies/enemy_boss.tscn" id="14_35xhr"]
 [ext_resource type="Script" uid="uid://doohh1kf8qvtd" path="res://scripts/fx/one_shot_sound_2d.gd" id="14_rvktu"]
+[ext_resource type="PackedScene" uid="uid://mobxq5bdc0px" path="res://scenes/levels/level_03.tscn" id="15_77dtu"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="15_rvktu"]
 [ext_resource type="PackedScene" uid="uid://cgt62fqky0qjv" path="res://scenes/Intro/cut_scene.tscn" id="16_77dtu"]
 
@@ -56,3 +57,5 @@ volume_db = -2.761
 [node name="TestRoom2" parent="." unique_id=495586300 instance=ExtResource("13_s3wpq")]
 
 [node name="EnemyBoss" parent="." unique_id=1075910993 instance=ExtResource("14_35xhr")]
+
+[node name="Level03" parent="." unique_id=901161810 instance=ExtResource("15_77dtu")]

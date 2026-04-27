@@ -11,10 +11,10 @@ shader = ExtResource("3_6f5w2")
 shader_parameter/flash_amount = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ac8cj"]
-size = Vector2(19, 36)
+size = Vector2(207, 434)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6rux"]
-size = Vector2(16, 34)
+size = Vector2(193, 414)
 
 [node name="EnemyKnifeThrower" type="CharacterBody2D" unique_id=1748288799 groups=["enemy"]]
 position = Vector2(326, 78)
@@ -30,20 +30,19 @@ throw_offset = null
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=928285763]
 material = SubResource("ShaderMaterial_n0xlh")
 position = Vector2(-3.0517578e-05, -1.0000038)
-scale = Vector2(0.09, 0.09)
 texture = ExtResource("1_e4yay")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1484088456]
-position = Vector2(3, 1)
+position = Vector2(18.5, 4)
 shape = SubResource("RectangleShape2D_ac8cj")
-
-[node name="CooldownTimer" type="Timer" parent="." unique_id=958227915]
 
 [node name="HurtBox" type="Area2D" parent="." unique_id=1394739961 groups=["enemy_hurtbox"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=468608857]
-position = Vector2(3, 1)
+position = Vector2(20.5, 8)
 shape = SubResource("RectangleShape2D_o6rux")
+
+[node name="CooldownTimer" type="Timer" parent="." unique_id=958227915]
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=83865021]
 stream = ExtResource("5_n0xlh")

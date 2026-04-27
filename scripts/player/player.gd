@@ -16,6 +16,9 @@ const BLOCK_MAX_VELOCITY = 180
 @export var bullet_scene: PackedScene
 @export var fire_rate: float = 0.2
 @export var bullet_offset: Vector2 = Vector2(16, 12)
+@export var max_hp: int = 3
+@export var invulnerability_time: float = 0.75
+@export var debug_enabled: bool = false
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
@@ -27,10 +30,14 @@ var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
 var air_jumps_left: int = 0
 var is_dead: bool = false
+var current_hp: int = 0
+var invulnerability_timer: float = 0.0
+var blink_timer: float = 0.0
 
 
 func _ready() -> void:
 	add_to_group("player")
+	current_hp = max_hp
 
 	fire_timer.wait_time = fire_rate
 	fire_timer.one_shot = true
@@ -41,6 +48,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	update_invulnerability(delta)
+
 	if is_dead:
 		velocity.x = 0.0
 
@@ -181,7 +190,40 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 	if not body.is_in_group("enemy"):
 		return
 
-	die()
+	take_damage(1)
+
+
+func take_damage(amount: int = 1) -> void:
+	if is_dead or invulnerability_timer > 0.0:
+		return
+
+	current_hp -= amount
+
+	if debug_enabled:
+		print("Player damage received: ", amount, " HP: ", current_hp, "/", max_hp)
+
+	if current_hp <= 0:
+		die()
+		return
+
+	invulnerability_timer = invulnerability_time
+	blink_timer = 0.0
+
+
+func update_invulnerability(delta: float) -> void:
+	if invulnerability_timer <= 0.0:
+		animated_sprite.visible = true
+		return
+
+	invulnerability_timer -= delta
+	blink_timer -= delta
+
+	if blink_timer <= 0.0:
+		animated_sprite.visible = not animated_sprite.visible
+		blink_timer = 0.08
+
+	if invulnerability_timer <= 0.0:
+		animated_sprite.visible = true
 
 
 func die() -> void:
@@ -189,7 +231,9 @@ func die() -> void:
 		return
 
 	is_dead = true
+	current_hp = 0
 	hurtbox.monitoring = false
+	animated_sprite.visible = true
 	velocity.x = 0.0
 
 	if velocity.y < 0.0:

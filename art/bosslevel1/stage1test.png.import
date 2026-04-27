@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dt44qx12eednt"
-path="res://.godot/imported/0007.png-42e725f6f85cf4e0cc51f36f54ec203e.ctex"
+uid="uid://dhoubxga3w3k3"
+path="res://.godot/imported/stage1test.png-d828f6ee6129f927238bdde11174e957.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/enemies/animations/Boss/shoot/0007.png"
-dest_files=["res://.godot/imported/0007.png-42e725f6f85cf4e0cc51f36f54ec203e.ctex"]
+source_file="res://art/bosslevel1/stage1test.png"
+dest_files=["res://.godot/imported/stage1test.png-d828f6ee6129f927238bdde11174e957.ctex"]
 
 [params]
 

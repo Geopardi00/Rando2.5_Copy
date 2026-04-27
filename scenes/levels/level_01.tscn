@@ -690,12 +690,14 @@ position = Vector2(3887, 272)
 
 [node name="EnemyKnifeThrower" parent="Enemies" unique_id=1748288799 instance=ExtResource("15_5t8rk")]
 position = Vector2(2331, 323)
+scale = Vector2(0.1, 0.1)
 
 [node name="Enemy_dog" parent="Enemies" unique_id=363953011 instance=ExtResource("16_cag23")]
 position = Vector2(3140, 274)
 
 [node name="EnemyKnifeThrower2" parent="Enemies" unique_id=347898558 instance=ExtResource("15_5t8rk")]
 position = Vector2(3990, 283)
+scale = Vector2(0.1, 0.1)
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=492750461]
 position = Vector2(286, 200)
@@ -1096,7 +1098,7 @@ process_material = SubResource("ParticleProcessMaterial_pff7q")
 [node name="GPUParticles2D_Splash" type="GPUParticles2D" parent="." unique_id=1841217660]
 position = Vector2(116, 270)
 amount = 1000
-lifetime = 0.09999999999999999
+lifetime = 0.1
 collision_base_size = 20.0
 visibility_rect = Rect2(-100, 0, 6500, 30)
 process_material = SubResource("ParticleProcessMaterial_2y4a5")
