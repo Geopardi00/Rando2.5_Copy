@@ -3,6 +3,7 @@ extends Area2D
 @export var speed: float = 260.0
 @export var lifetime: float = 2.0
 @export var direction: int = -1
+@export var damage: int = 3
 
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -23,7 +24,9 @@ func update_visual() -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
-		if body.has_method("die"):
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+		elif body.has_method("die"):
 			body.die()
 		queue_free()
 		return

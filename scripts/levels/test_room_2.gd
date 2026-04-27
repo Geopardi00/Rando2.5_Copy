@@ -1,8 +1,12 @@
 extends Node2D
 
+@export_file("*.tscn") var next_scene_path: String = "res://scenes/boss/boss_fight_level.tscn"
+
 @onready var goal: Area2D = $Goal
 @onready var player: CharacterBody2D = $Player
 @onready var player_spawn: Marker2D = $PlayerSpawn
+
+var goal_completed: bool = false
 
 
 func _ready() -> void:
@@ -20,14 +24,22 @@ func _ready() -> void:
 
 
 func _on_goal_body_entered(body: Node) -> void:
+	if goal_completed:
+		return
+
 	if body != player:
 		return
+
+	goal_completed = true
 
 	var state := _get_state_of_game()
 	if state != null and state.has_method("register_goal_reached"):
 		state.register_goal_reached()
 
 	print("goal reached")
+
+	if next_scene_path != "":
+		get_tree().change_scene_to_file(next_scene_path)
 
 
 func _get_state_of_game() -> Node:

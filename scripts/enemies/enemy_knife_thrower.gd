@@ -6,6 +6,7 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 
 @export var gravity: float = 1100.0
 @export var max_hp: int = 3
+@export var contact_damage: int = 3
 
 @export var attack_range: float = 360.0
 @export var vertical_tolerance: float = 56.0

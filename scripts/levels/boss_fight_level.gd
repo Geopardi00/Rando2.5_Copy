@@ -21,6 +21,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	update_camera_shake(delta)
+
+
+func update_camera_shake(delta: float) -> void:
 	if shake_time_remaining <= 0.0:
 		camera.offset = base_camera_offset
 		return

@@ -190,7 +190,11 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 	if not body.is_in_group("enemy"):
 		return
 
-	take_damage(1)
+	var damage := 1
+	if body.get("contact_damage") != null:
+		damage = int(body.get("contact_damage"))
+
+	take_damage(damage)
 
 
 func take_damage(amount: int = 1) -> void:

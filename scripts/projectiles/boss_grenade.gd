@@ -1,13 +1,15 @@
 extends Node2D
 
 @export var damage: int = 1
-@export var travel_time: float = 0.9
+@export var travel_time: float = 2
 @export var arc_height: float = 260.0
 @export var explosion_radius: float = 92.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var explosion_area: Area2D = $ExplosionArea
 @onready var explosion_shape: CollisionShape2D = $ExplosionArea/CollisionShape2D
+@onready var explosion_sprite: AnimatedSprite2D = $ExplosionSprite
+
 
 var start_position: Vector2 = Vector2.ZERO
 var target_position: Vector2 = Vector2.ZERO
@@ -19,6 +21,8 @@ var warning: Node = null
 func _ready() -> void:
 	explosion_area.monitoring = false
 	explosion_shape.disabled = true
+	explosion_sprite.visible = false
+	explosion_sprite.stop()
 	var circle_shape := explosion_shape.shape as CircleShape2D
 	if circle_shape != null:
 		circle_shape.radius = explosion_radius
@@ -52,6 +56,8 @@ func explode() -> void:
 
 	exploded = true
 	sprite.visible = false
+	explosion_sprite.visible = true
+	explosion_sprite.play("explode")
 
 	if is_instance_valid(warning):
 		warning.queue_free()
@@ -63,7 +69,7 @@ func explode() -> void:
 	for body in explosion_area.get_overlapping_bodies():
 		_damage_body(body)
 
-	await get_tree().create_timer(0.12).timeout
+	await explosion_sprite.animation_finished
 	queue_free()
 
 

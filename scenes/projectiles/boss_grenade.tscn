@@ -2,15 +2,59 @@
 
 [ext_resource type="Script" uid="uid://d5sjrsy7c6dy" path="res://scripts/projectiles/boss_grenade.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://chk2153o04aat" path="res://art/props/stoneball.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://ewj5t23iovfx" path="res://art/enemies/animations/Boss/grenade/explosion/frame0000.png" id="3_ua6av"]
+[ext_resource type="Texture2D" uid="uid://dhgjtft552g73" path="res://art/enemies/animations/Boss/grenade/explosion/frame0001.png" id="4_se7os"]
+[ext_resource type="Texture2D" uid="uid://b33u3x1lf7phs" path="res://art/enemies/animations/Boss/grenade/explosion/frame0002.png" id="5_db62o"]
+[ext_resource type="Texture2D" uid="uid://cyyl4yghwh4c8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0003.png" id="6_enwh7"]
+[ext_resource type="Texture2D" uid="uid://cpc0mxu2s1xww" path="res://art/enemies/animations/Boss/grenade/explosion/frame0004.png" id="7_xf4t0"]
+[ext_resource type="Texture2D" uid="uid://dlx1lv68k5awt" path="res://art/enemies/animations/Boss/grenade/explosion/frame0005.png" id="8_53ife"]
+[ext_resource type="Texture2D" uid="uid://cno6ln2hh8yyq" path="res://art/enemies/animations/Boss/grenade/explosion/frame0006.png" id="9_i8u0m"]
+[ext_resource type="Texture2D" uid="uid://bbelnt40wefi8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0007.png" id="10_qdqeh"]
+[ext_resource type="Texture2D" uid="uid://eut65yqjgw1j" path="res://art/enemies/animations/Boss/grenade/explosion/frame0008.png" id="11_4ksp5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
 radius = 92.0
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_0ep7f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ua6av")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_se7os")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_db62o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_enwh7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xf4t0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_53ife")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_i8u0m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_qdqeh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_4ksp5")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 16.0
+}]
+
 [node name="BossGrenade" type="Node2D" unique_id=380127908]
 z_index = 4
 script = ExtResource("1")
-travel_time = 2.0
-arc_height = 300.0
+travel_time = 4.0
+arc_height = 400.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1105752239]
 scale = Vector2(0.16, 0.16)
@@ -24,3 +68,9 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea" unique_id=1918486576]
 shape = SubResource("CircleShape2D_explosion")
 disabled = true
+
+[node name="ExplosionSprite" type="AnimatedSprite2D" parent="." unique_id=824319464]
+position = Vector2(12, -195)
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_0ep7f")
+animation = &"explode"

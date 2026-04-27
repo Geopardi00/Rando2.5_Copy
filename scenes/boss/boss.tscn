@@ -19,6 +19,51 @@
 [ext_resource type="Texture2D" uid="uid://4d2rvdp0trdr" path="res://art/enemies/animations/Boss/shoot/0004.png" id="16"]
 [ext_resource type="Texture2D" uid="uid://c4ph7wev5hu32" path="res://art/enemies/animations/Boss/shoot/0005.png" id="17"]
 [ext_resource type="Texture2D" uid="uid://b4uw1evffgrn3" path="res://art/enemies/animations/Boss/shoot/0006.png" id="18"]
+[ext_resource type="Texture2D" uid="uid://cjk4dfbxm00ff" path="res://art/enemies/animations/Boss/jump/frame0000.png" id="19"]
+[ext_resource type="Texture2D" uid="uid://bw68o2c6lu7v1" path="res://art/enemies/animations/Boss/jump/frame0001.png" id="20"]
+[ext_resource type="Texture2D" uid="uid://bi7r40o2w5ep8" path="res://art/enemies/animations/Boss/jump/frame0002.png" id="21"]
+[ext_resource type="Texture2D" uid="uid://xw303efbgivh" path="res://art/enemies/animations/Boss/jump/frame0003.png" id="22"]
+[ext_resource type="Texture2D" uid="uid://co5r4sonqi7y2" path="res://art/enemies/animations/Boss/jump/frame0004.png" id="23"]
+[ext_resource type="Texture2D" uid="uid://bhhaw3pnfhbh5" path="res://art/enemies/animations/Boss/jump/frame0005.png" id="24"]
+[ext_resource type="Texture2D" uid="uid://6h7hxy7vk256" path="res://art/enemies/animations/Boss/jump/frame0006.png" id="25"]
+[ext_resource type="Texture2D" uid="uid://c2pf83k2alinm" path="res://art/enemies/animations/Boss/jump/frame0007.png" id="26"]
+[ext_resource type="Texture2D" uid="uid://dwlas3j30lk64" path="res://art/enemies/animations/Boss/jump/frame0008.png" id="27"]
+[ext_resource type="Texture2D" uid="uid://dwsr0o72r8l8v" path="res://art/enemies/animations/Boss/jump/frame0009.png" id="28"]
+[ext_resource type="Texture2D" uid="uid://71ds4f88myr4" path="res://art/enemies/animations/Boss/jump/frame0010.png" id="29"]
+[ext_resource type="Texture2D" uid="uid://c4nrno85npl2x" path="res://art/enemies/animations/Boss/jump/frame0011.png" id="30"]
+[ext_resource type="Texture2D" uid="uid://b42ojncrcwg6a" path="res://art/enemies/animations/Boss/jump/frame0012.png" id="31"]
+[ext_resource type="Texture2D" uid="uid://co12fuessnqgk" path="res://art/enemies/animations/Boss/jump/frame0013.png" id="32"]
+[ext_resource type="Texture2D" uid="uid://dskyw21sgiej2" path="res://art/enemies/animations/Boss/jump/frame0014.png" id="33"]
+[ext_resource type="Texture2D" uid="uid://c4xitngdpy8lf" path="res://art/enemies/animations/Boss/jump/frame0015.png" id="34"]
+[ext_resource type="Texture2D" uid="uid://8fv0en8jxcxl" path="res://art/enemies/animations/Boss/jump/frame0016.png" id="35"]
+[ext_resource type="Texture2D" uid="uid://8yynincfsue2" path="res://art/enemies/animations/Boss/jump/frame0017.png" id="36"]
+[ext_resource type="Texture2D" uid="uid://clq4cj2x0tbl5" path="res://art/enemies/animations/Boss/jump/frame0018.png" id="37"]
+[ext_resource type="Texture2D" uid="uid://uok8ttaf5a1o" path="res://art/enemies/animations/Boss/jump/frame0019.png" id="38"]
+[ext_resource type="Texture2D" uid="uid://blapxhcdyrrwx" path="res://art/enemies/animations/Boss/jump/frame0020.png" id="39"]
+[ext_resource type="Texture2D" uid="uid://di77qyu6jl0r" path="res://art/enemies/animations/Boss/jump/frame0021.png" id="40"]
+[ext_resource type="Texture2D" uid="uid://bn3ayan53fnwn" path="res://art/enemies/animations/Boss/jump/frame0022.png" id="41"]
+[ext_resource type="Texture2D" uid="uid://cltlsmrcb6855" path="res://art/enemies/animations/Boss/jump/frame0023.png" id="42"]
+[ext_resource type="Texture2D" uid="uid://bq61mlum1vxug" path="res://art/enemies/animations/Boss/jump/frame0024.png" id="43"]
+[ext_resource type="Texture2D" uid="uid://bg2j3yk82xrj8" path="res://art/enemies/animations/Boss/jump/frame0025.png" id="44"]
+[ext_resource type="Texture2D" uid="uid://c8pyt5q7f7ce1" path="res://art/enemies/animations/Boss/jump/frame0026.png" id="45"]
+[ext_resource type="Texture2D" uid="uid://bdmk8hxmevhri" path="res://art/enemies/animations/Boss/jump/frame0027.png" id="46"]
+[ext_resource type="Texture2D" uid="uid://b0ttroathoxwk" path="res://art/enemies/animations/Boss/jump/frame0028.png" id="47"]
+[ext_resource type="Texture2D" uid="uid://bwcsst5qbpenq" path="res://art/enemies/animations/Boss/jump/frame0029.png" id="48"]
+[ext_resource type="Texture2D" uid="uid://p58ex0aihac7" path="res://art/enemies/animations/Boss/jump/frame0030.png" id="49"]
+[ext_resource type="Texture2D" uid="uid://qf2b4r244k7d" path="res://art/enemies/animations/Boss/jump/frame0031.png" id="50"]
+[ext_resource type="Texture2D" uid="uid://32oyte1y8ofe" path="res://art/enemies/animations/Boss/jump/frame0032.png" id="51"]
+[ext_resource type="Texture2D" uid="uid://bd52gdc3xixei" path="res://art/enemies/animations/Boss/jump/frame0033.png" id="52"]
+[ext_resource type="Texture2D" uid="uid://b8vqxixkb2fej" path="res://art/enemies/animations/Boss/stomp/frame0000.png" id="53"]
+[ext_resource type="Texture2D" uid="uid://byx2lvhd42fi1" path="res://art/enemies/animations/Boss/stomp/frame0001.png" id="54"]
+[ext_resource type="Texture2D" uid="uid://dbgmx31kyceio" path="res://art/enemies/animations/Boss/stomp/frame0002.png" id="55"]
+[ext_resource type="Texture2D" uid="uid://dogpmmveb6koj" path="res://art/enemies/animations/Boss/stomp/frame0003.png" id="56"]
+[ext_resource type="Texture2D" uid="uid://nulii5k55tpw" path="res://art/enemies/animations/Boss/stomp/frame0004.png" id="57"]
+[ext_resource type="Texture2D" uid="uid://bmkm2sr6uwj5e" path="res://art/enemies/animations/Boss/stomp/frame0005.png" id="58"]
+[ext_resource type="Texture2D" uid="uid://dqcnd0uaioaco" path="res://art/enemies/animations/Boss/stomp/frame0006.png" id="59"]
+[ext_resource type="Texture2D" uid="uid://c7oliljd7l8ai" path="res://art/enemies/animations/Boss/stomp/frame0007.png" id="60"]
+[ext_resource type="Texture2D" uid="uid://ctprqi8ng7ax8" path="res://art/enemies/animations/Boss/stomp/frame0008.png" id="61"]
+[ext_resource type="Texture2D" uid="uid://cm3v70gqmxlb5" path="res://art/enemies/animations/Boss/stomp/frame0009.png" id="62"]
+[ext_resource type="Texture2D" uid="uid://ji34aomur8eh" path="res://art/enemies/animations/Boss/stomp/frame0010.png" id="63"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
 shader = ExtResource("2")
@@ -63,6 +108,113 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("19")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("13")
 }, {
 "duration": 1.0,
@@ -86,6 +238,44 @@ animations = [{
 "loop": true,
 "name": &"shoot",
 "speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63")
+}],
+"loop": false,
+"name": &"stomp",
+"speed": 18.0
 }]
 
 [sub_resource type="Animation" id="Animation_death"]
@@ -165,7 +355,7 @@ size = Vector2(35.5, 79)
 size = Vector2(57, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_stomp"]
-size = Vector2(132, 55)
+size = Vector2(219, 55)
 
 [node name="Boss" type="CharacterBody2D" unique_id=2141373853 groups=["enemy"]]
 collision_layer = 4
@@ -179,9 +369,10 @@ material = SubResource("ShaderMaterial_flash")
 position = Vector2(-35, -100)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_boss")
-animation = &"idle"
+animation = &"jump"
 autoplay = "idle"
-frame_progress = 0.9346453
+frame = 14
+frame_progress = 0.6784717
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=759293719]
 libraries/ = SubResource("AnimationLibrary_boss")
@@ -224,7 +415,7 @@ collision_mask = 2
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StompDamageArea" unique_id=619276031]
-position = Vector2(-42, -32.5)
+position = Vector2(-33.5, -32.5)
 shape = SubResource("RectangleShape2D_stomp")
 disabled = true
 

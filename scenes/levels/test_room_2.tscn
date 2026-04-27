@@ -477,10 +477,12 @@ position = Vector2(434, -348)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1193094583]
 position = Vector2(1441, 1419)
+collision_layer = 64
+collision_mask = 2
 script = ExtResource("4_siir5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1161046753]
-position = Vector2(32, -8.5)
+position = Vector2(56, -10)
 shape = SubResource("RectangleShape2D_45klw")
 
 [node name="Crate" parent="." unique_id=131320726 instance=ExtResource("18_gc2gi")]
@@ -914,6 +916,12 @@ shadow_enabled = true
 [node name="EnemyKnifeThrower2" parent="Enemies" unique_id=1202055901 instance=ExtResource("21_sp205")]
 position = Vector2(2497, -533)
 scale = Vector2(0.1, 0.1)
+gravity = 1100.0
+max_hp = 3
+attack_range = 360.0
+vertical_tolerance = 56.0
+throw_cooldown = 1.2
+throw_offset = Vector2(28, -6)
 
 [node name="Enemy_dog" parent="Enemies" unique_id=363953011 instance=ExtResource("22_0eupj")]
 position = Vector2(4221, -21)
@@ -924,6 +932,12 @@ position = Vector2(1406, -539)
 [node name="EnemyKnifeThrower" parent="Enemies" unique_id=1748288799 instance=ExtResource("21_sp205")]
 position = Vector2(2845, 39)
 scale = Vector2(0.1, 0.1)
+gravity = 1100.0
+max_hp = 3
+attack_range = 360.0
+vertical_tolerance = 56.0
+throw_cooldown = 1.2
+throw_offset = Vector2(28, -6)
 
 [node name="Enemy_dog2" parent="Enemies" unique_id=436945732 instance=ExtResource("22_0eupj")]
 position = Vector2(2265, 836)
@@ -940,6 +954,12 @@ position = Vector2(3581, 842)
 [node name="EnemyKnifeThrower3" parent="Enemies" unique_id=1141753210 instance=ExtResource("21_sp205")]
 position = Vector2(4762.0005, 676)
 scale = Vector2(0.1, 0.1)
+gravity = 1100.0
+max_hp = 3
+attack_range = 360.0
+vertical_tolerance = 56.0
+throw_cooldown = 1.2
+throw_offset = Vector2(28, -6)
 
 [node name="Enemy3" parent="Enemies" unique_id=326608506 instance=ExtResource("23_tnob1")]
 position = Vector2(4212, 665)
@@ -953,3 +973,9 @@ position = Vector2(4064, 1592)
 [node name="EnemyKnifeThrower4" parent="Enemies" unique_id=1399842163 instance=ExtResource("21_sp205")]
 position = Vector2(3551.0002, 1446)
 scale = Vector2(0.1, 0.1)
+gravity = 1100.0
+max_hp = 3
+attack_range = 360.0
+vertical_tolerance = 56.0
+throw_cooldown = 1.2
+throw_offset = Vector2(28, -6)

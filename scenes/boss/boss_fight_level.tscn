@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cqc1pujlqtimm"]
 
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="1"]
-[ext_resource type="Texture2D" uid="uid://dhoubxga3w3k3" path="res://art/bosslevel1/stage1test.png" id="1_4dltw"]
 [ext_resource type="Script" uid="uid://ch38c7lx75j12" path="res://scripts/player/player.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cmmnmtvj805ay" path="res://art/bosslevel1/stage1final.png" id="2_mhgkl"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://d2kfqvnlyedl4" path="res://scenes/boss/boss.tscn" id="4"]
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="6"]
@@ -16,11 +16,12 @@ size = Vector2(80, 1080)
 
 [node name="BossFightLevel" type="Node2D" unique_id=32251318]
 script = ExtResource("7")
-camera_shake_strength = 25.0
+camera_shake_time = 0.35
+camera_shake_strength = 30.0
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1199272674]
+[node name="Foreground" type="Sprite2D" parent="." unique_id=224071599]
 position = Vector2(960, 540)
-texture = ExtResource("1_4dltw")
+texture = ExtResource("2_mhgkl")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1785679737]
 position = Vector2(960, 540)
@@ -56,7 +57,7 @@ position = Vector2(295, 688)
 position = Vector2(1367, 712)
 
 [node name="BossLeftLimit" type="Marker2D" parent="." unique_id=985351507]
-position = Vector2(340, 960)
+position = Vector2(216, 951)
 
 [node name="BossRightLimit" type="Marker2D" parent="." unique_id=2110300955]
 position = Vector2(1600, 960)
@@ -69,11 +70,20 @@ position = Vector2(1700, 970)
 
 [node name="Player" parent="." unique_id=1201901529 groups=["player"] instance=ExtResource("1")]
 position = Vector2(316, 659)
+scale = Vector2(1.5, 1.5)
 script = ExtResource("2")
+move_speed = 240.0
+jump_velocity = -500.0
+gravity = 1200.0
 bullet_scene = ExtResource("3")
 
 [node name="Boss" parent="." unique_id=2024625313 instance=ExtResource("4")]
 position = Vector2(1412, 747)
+max_hp = 40
+jump_velocity_y = -800.0
+jump_speed_x = 460.0
+grenade_count = 3
+grenade_air_time = 1.6
 boss_left_limit_path = NodePath("../BossLeftLimit")
 boss_right_limit_path = NodePath("../BossRightLimit")
 grenade_left_limit_path = NodePath("../GrenadeLeftLimit")

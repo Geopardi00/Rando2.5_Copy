@@ -18,6 +18,7 @@ enum State {
 @export var chase_reacquire_delay: float = 1.1
 
 @export var max_hp: int = 2
+@export var contact_damage: int = 3
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var wall_check_left: RayCast2D = $WallCheckLeft

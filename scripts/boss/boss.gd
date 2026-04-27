@@ -36,6 +36,7 @@ enum BossState {
 @export var reload_time: float = 1.0
 @export var grenade_count: int = 2
 @export var grenade_warning_time: float = 0.75
+@export var grenade_air_time: float = 0.5
 @export var debug_enabled: bool = false
 @export var boss_left_limit_path: NodePath
 @export var boss_right_limit_path: NodePath
@@ -147,7 +148,7 @@ func choose_next_attack() -> void:
 		return
 
 	var roll := randi_range(1, 100)
-	if roll <= 50:
+	if roll <= 40:
 		debug_print("Chosen attack: shoot")
 		do_shoot_attack()
 	elif roll <= 75:
@@ -238,7 +239,7 @@ func do_grenade_attack() -> void:
 		throw_grenade_at(target)
 		await get_tree().create_timer(0.25).timeout
 
-	await get_tree().create_timer(grenade_warning_time + 0.35).timeout
+	await get_tree().create_timer(grenade_warning_time + 0.15).timeout
 
 	if can_attack():
 		choose_next_attack()
@@ -269,8 +270,8 @@ func run_stomp_jump() -> void:
 	else:
 		velocity.x = stomp_jump_direction * jump_speed_x
 
-	if velocity.y > 0.0:
-		travel(&"fall")
+	if animated_sprite.animation != &"jump":
+		travel(&"jump")
 
 
 func land_stomp() -> void:
@@ -301,7 +302,7 @@ func throw_grenade_at(target: Vector2) -> void:
 
 	var grenade = BOSS_GRENADE_SCENE.instantiate()
 	get_tree().current_scene.add_child(grenade)
-	grenade.travel_time = grenade_warning_time
+	grenade.travel_time = grenade_air_time
 	grenade.setup(grenade_throw_marker.global_position, target, grenade_damage, warning)
 
 

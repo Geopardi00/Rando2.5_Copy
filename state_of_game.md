@@ -1,6 +1,6 @@
 # State of Game
 
-Last updated: 2026-04-17
+Last updated: 2026-04-27
 
 ## High-Level Status
 - Level 01 is in a good playable state.
@@ -11,7 +11,11 @@ Last updated: 2026-04-17
 - Intro slideshow flow is now implemented.
 - Main menu music is now implemented.
 - Player animation flow is now active (idle/walk/jump/death).
-- Level 02 building has started.
+- Level 02 building has started, and Level 03 work/assets have also started.
+- A separate boss fight level now exists with a playable boss arena.
+- Boss fight core loop is implemented and recently polished: shooting, reload, grenade throws, jump stomp, boss HP, player HP, camera shake, boss jump/stomp animations, grenade explosion animation, and crosshair grenade warnings.
+- Current game flow is wired from intro cutscene to main menu, then Level 01, test_room_2, and boss fight.
+- Latest Git checkpoint pushed to `https://github.com/Geopardi00/Rando2.5_Copy.git`.
 
 ## Implemented Features
 
@@ -23,7 +27,9 @@ Last updated: 2026-04-17
 - Double jump
 - Shooting
 - Fire-rate limit on shooting
-- Player dies in one hit
+- Player now has simple HP support (`max_hp = 3`, `current_hp`, `take_damage()`)
+- Player has brief invulnerability / blinking after taking damage
+- Player still supports instant-death via `die()` for hazards and legacy systems
 - Player death reloads the current scene
 - Scene reload resets enemies, hazards, bullets, and temporary level state
 - AnimatedSprite2D-based player animation state handling
@@ -36,6 +42,9 @@ Last updated: 2026-04-17
 - Enemy hit flash added via shader material parameter (`flash_amount`)
 - Enemy death blood burst particles added
 - Enemy hit sound now plays reliably, including on the killing hit, by spawning a one-shot `AudioStreamPlayer2D` in code
+- Boss uses the same player-bullet-to-`enemy_hurtbox` damage convention as regular enemies
+- Boss attacks damage the player through `take_damage(1)`
+- Dog contact, knife thrower contact, and thrown knife projectiles now deal 3 damage, making them one-hit kills against the 3 HP player
 
 ### Enemies
 - **Patrol enemy**
@@ -70,13 +79,35 @@ Last updated: 2026-04-17
   - Spawns blood burst on death
   - Plays hit sound on damage
 
+- **Boss fight boss**
+  - Separate boss scene: `res://scenes/boss/boss.tscn`
+  - Boss AI script: `res://scripts/boss/boss.gd`
+  - Uses `CharacterBody2D`
+  - Has HP and emits `boss_defeated`
+  - Faces the player using `AnimatedSprite2D.flip_h`
+  - Uses `AnimatedSprite2D.play()` for animation control; `AnimationTree` remains in the scene as a learning scaffold but is disabled in code for now
+  - Starts the fight with shooting
+  - Later picks attacks with weighted random logic in `choose_next_attack()`
+  - Current attacks: shooting bursts, reload window, grenade throws, jump stomp
+  - Jump and stomp now use real boss `AnimatedSprite2D` animations
+  - Jump stomp jumps between arena sides and avoids center wobble by locking jump direction
+  - Stomp landing creates brief damage area and triggers camera shake
+  - Boss remains vulnerable during all attacks and reload
+
 ### Enemy Projectiles
 - Knife projectile scene created
 - Knife projectile moves horizontally
 - Knife flips correctly based on direction
-- Knife kills player on hit
+- Knife deals 3 damage and kills the current 3 HP player on hit
 - Knife disappears on collision / lifetime end
 - Throw offset adjusted so projectile does not immediately collide with the thrower
+- Boss bullet scene/script added
+- Boss bullets move in a normalized direction, damage the player, and disappear on collision/lifetime/screen exit
+- Boss grenade scene/script added
+- Boss grenades use scripted arc movement and explode at target positions
+- Boss grenade warning uses `art/props/crosshair.png`
+- Boss grenade explosion now uses a separate animation that plays only when the grenade reaches the floor/target
+- Grenade warning time and grenade air time are now separate boss export variables
 
 ### Hazards
 - **Spike hazard**
@@ -102,12 +133,22 @@ Last updated: 2026-04-17
 - Level 02 building has started
 - TileMapLayer setup for gameplay/collision is ready
 - TileMapLayer setup for background is ready
+- Boss fight level exists as a separate 1920x1080 arena scene
+- Boss arena includes player spawn, boss spawn, floor/walls, Camera2D, and boss/grenade limit markers
+- Boss fight final stage art added under `art/bosslevel1/`
+- Project main scene is now the intro cutscene again
+- Level progression is wired: `cut_scene.tscn` -> `main_menu.tscn` -> `level_01.tscn` -> `test_room_2.tscn` -> `boss_fight_level.tscn`
+- Level 03 scene/assets have been added and are in progress
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
 - Per-instance material duplication added so enemy flashes do not affect other instances
 - Blood burst particle scene created with `GPUParticles2D`
 - Blood burst is spawned on enemy death
+- Grenade warning FX scene added
+- Grenade warning FX now uses the crosshair prop sprite instead of the placeholder polygon/line circle
+- Grenade explosion animation frames added under `art/enemies/animations/Boss/grenade/explosion/`
+- Boss stomp landing triggers camera shake through the boss fight level script
 
 ### Audio
 - Enemy hit sound workflow added
@@ -132,6 +173,9 @@ Last updated: 2026-04-17
 - Intro slideshow scene created
 - Intro slideshow script and image sequence implemented
 - Intro flow currently feeds into the main menu
+- Main project boot flow now starts from the intro cutscene
+- Main menu Start loads Level 01
+- Level goals now advance the player from Level 01 to test_room_2, then to the boss fight
 
 ## Current Checkpoint Snapshot
 - Updated player scene: `scenes/player/main.tscn`
@@ -156,6 +200,19 @@ Last updated: 2026-04-17
 - TileMapLayer for gameplay/collision is ready
 - TileMapLayer for background is ready
 - Added first new Level 02 hazard: falling stalactite
+- Added boss fight level: `scenes/boss/boss_fight_level.tscn`
+- Added boss scene/script: `scenes/boss/boss.tscn`, `scripts/boss/boss.gd`
+- Added boss projectiles: `scenes/projectiles/boss_bullet.tscn`, `scripts/projectiles/boss_bullet.gd`, `scenes/projectiles/boss_grenade.tscn`, `scripts/projectiles/boss_grenade.gd`
+- Added grenade warning FX: `scenes/fx/grenade_warning.tscn`
+- Added grenade warning crosshair asset: `art/props/crosshair.png`
+- Added grenade explosion animation frames: `art/enemies/animations/Boss/grenade/explosion/`
+- Added boss jump and stomp animation frames: `art/enemies/animations/Boss/jump/`, `art/enemies/animations/Boss/stomp/`
+- Added boss fight level script for camera shake: `scripts/levels/boss_fight_level.gd`
+- Added/updated boss arena art: `art/bosslevel1/stage1test.png`, `art/bosslevel1/stage1final.png`
+- Added Level 03 scene/script and art assets: `scenes/levels/level_03.tscn`, `scripts/levels/level_03.gd`, `art/level03/`
+- Updated player health flow in both `scripts/player/player.gd` and `scenes/player/player.gd`
+- Latest checkpoint commit: `3ede60c Add boss fight checkpoint`
+- Latest working progress includes boss animation/FX polish, final game-flow wiring, and enemy one-hit-kill damage tuning
 
 ## Important Scenes / Scripts
 
@@ -174,6 +231,18 @@ Last updated: 2026-04-17
 - `scenes/enemies/enemy_knife_thrower.tscn`
 - `scenes/enemies/enemy_dog.tscn`
 
+### Boss Fight
+- `scenes/boss/boss_fight_level.tscn`
+- `scenes/boss/boss.tscn`
+- `scripts/boss/boss.gd`
+- `scripts/levels/boss_fight_level.gd`
+- `scenes/projectiles/boss_bullet.tscn`
+- `scripts/projectiles/boss_bullet.gd`
+- `scenes/projectiles/boss_grenade.tscn`
+- `scripts/projectiles/boss_grenade.gd`
+- `scenes/fx/grenade_warning.tscn`
+- `art/props/crosshair.png`
+
 ### Hazards
 - Spike hazard scene / script
 - Fall killzone scene / script
@@ -190,17 +259,21 @@ Last updated: 2026-04-17
 ### FX
 - `res://shaders/hit_flash.gdshader`
 - `res://scenes/fx/blood_burst.tscn`
+- `res://scenes/fx/grenade_warning.tscn`
 - `blood_burst.gd`
 
 ### State / Runtime
 - Runtime state tracking lives in `scripts/state_of_game.gd`
 
 ## Current Design Rules
-- Player dies in one hit
+- Player has 3 HP for boss-fight damage, but `die()` still supports instant-death hazards
 - Enemies respawn because the scene reloads on player death
-- No health bar / hearts system yet
+- No health bar / hearts UI yet
 - Player animations are in progress and now active in-game
 - Enemy animation pass is still pending
+- Boss animation currently uses `AnimatedSprite2D.play()` directly; AnimationTree is kept in the boss scene but is not driving gameplay animation yet
+- Boss fight camera is currently fixed at 1.0 zoom with no camera follow or parallax; stomp camera shake remains enabled
+- Grenades show the airborne grenade sprite until impact, then hide it and play the explosion animation
 - Enemy behavior is intentionally simple and production-friendly
 - Avoid overbuilding enemy architecture at this stage
 - Menu/UI implementation should stay lightweight and presentation-focused for now
@@ -221,18 +294,39 @@ Last updated: 2026-04-17
 - Level 02 building started
 - TileMapLayer setup for gameplay/collision and background completed
 - First Level 02 hazard (falling stalactite) added
+- Boss fight scene created and playable
+- Boss shooting, reload, grenade throw, and jump stomp implemented
+- Boss faces player correctly after sprite-facing adjustment
+- Stomp warning sign was removed because the fight feels better without it
+- Stomp center wobble fixed by choosing arena sides and locking jump direction
+- Boss fight camera shake added on stomp landing
+- Boss jump/stomp animations added and wired into the jump stomp flow
+- Grenade air time separated from warning duration
+- Grenade explosion animation fixed so it plays only on impact, not while the grenade is flying
+- Grenade warning marker replaced with `crosshair.png`
+- Boss fight camera reverted to fixed 1.0 zoom with no follow/parallax after playtesting
+- Opening and level progression flow wired through intro, menu, Level 01, test_room_2, and boss fight
+- Dog, knife thrower, and knife projectile damage tuned to 3 for one-hit kills
+- Boss attack tuning is editable in `choose_next_attack()` and exported variables on the boss
+- Git remote updated to `https://github.com/Geopardi00/Rando2.5_Copy.git`
+- Git checkpoint pushed: `3ede60c Add boss fight checkpoint`
 
 ## Recommended Next Steps
 - Level 01 polish pass
 - Add remaining core sound effects (shoot, throw, UI click, ambient)
+- Add boss-specific sound effects for shooting, reload, grenade throw/explosion, stomp, hurt, and death
+- Add boss HP UI / player health UI when the fight needs presentation polish
+- Add remaining boss animations for reload, throw, hurt, and death
+- Decide later whether to wire AnimationTree fully or continue with direct `AnimatedSprite2D.play()`
 - Enemy animation pass
 - Simple camera / combat juice
 - Goal / level-complete presentation polish
 - Clean game flow between menu and gameplay
-- Start Level 02 after Level 01 feels consistently good
+- Continue Level 02 / Level 03 building after Level 01 feels consistently good
 
 ## Notes
 - Current development priority has been: gameplay first, polish second.
 - Full animation polish is still selective; player animation is now active while enemy animation remains pending.
 - Current enemy set is enough for meaningful Level 01 gameplay.
 - Main menu is now good enough to support a cleaner presentation loop for the project.
+- Boss fight is in gameplay prototype state: functional attacks and damage are in, but UI/audio/final animation polish are still pending.

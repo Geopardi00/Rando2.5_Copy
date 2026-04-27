@@ -1,14 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://choatset0ay5k"]
 
-[node name="GrenadeWarning" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://b3b2uq22pbsk7" path="res://art/props/crosshair.png" id="1"]
+
+[node name="GrenadeWarning" type="Node2D" unique_id=1317253962]
 z_index = 2
 
-[node name="Fill" type="Polygon2D" parent="."]
-color = Color(1, 0.1, 0.05, 0.22)
-polygon = PackedVector2Array(92, 0, 65, 65, 0, 92, -65, 65, -92, 0, -65, -65, 0, -92, 65, -65)
-
-[node name="Ring" type="Line2D" parent="."]
-modulate = Color(1, 0.15, 0.05, 0.85)
-width = 5.0
-closed = true
-points = PackedVector2Array(92, 0, 65, 65, 0, 92, -65, 65, -92, 0, -65, -65, 0, -92, 65, -65)
+[node name="Crosshair" type="Sprite2D" parent="." unique_id=1548138490]
+position = Vector2(4, -184)
+texture = ExtResource("1")
