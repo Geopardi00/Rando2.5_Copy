@@ -1,6 +1,6 @@
 # State of Game
 
-Last updated: 2026-04-27
+Last updated: 2026-04-29
 
 ## High-Level Status
 - Level 01 is in a good playable state.
@@ -11,10 +11,12 @@ Last updated: 2026-04-27
 - Intro slideshow flow is now implemented.
 - Main menu music is now implemented.
 - Player animation flow is now active (idle/walk/jump/death).
-- Level 02 building has started, and Level 03 work/assets have also started.
+- Level 02 building has started.
+- Level 03 now has a first playable watchtower sniper test piece with rotating spotlight, cover blocking, line-of-sight detection, tracking, and shooting.
 - A separate boss fight level now exists with a playable boss arena.
 - Boss fight core loop is implemented and recently polished: shooting, reload, grenade throws, jump stomp, boss HP, player HP, camera shake, boss jump/stomp animations, grenade explosion animation, and crosshair grenade warnings.
 - Current game flow is wired from intro cutscene to main menu, then Level 01, test_room_2, and boss fight.
+- Latest Level 03 work is focused on prototyping one stationary non-killable watchtower sniper enemy before building a full level around it.
 - Latest Git checkpoint pushed to `https://github.com/Geopardi00/Rando2.5_Copy.git`.
 
 ## Implemented Features
@@ -94,6 +96,21 @@ Last updated: 2026-04-27
   - Stomp landing creates brief damage area and triggers camera shake
   - Boss remains vulnerable during all attacks and reload
 
+- **Watchtower sentry sniper**
+  - First Level 03-specific enemy prototype
+  - Stationary sniper placed on a watchtower/high-ground setup
+  - Not designed to be killable by the player yet
+  - Uses a rotating `VisionPivot` scan between exported angle limits
+  - Uses a visual-only `PointLight2D` spotlight cone
+  - Gameplay detection is separate from the light visual and uses distance, cone angle checks, and physics ray queries
+  - Cover/ground collision can block detection through raycast line of sight
+  - Supports exported minimum and maximum vision range
+  - Supports alert delay before firing
+  - After detection, tracks the player with the beam while line of sight remains clear
+  - Holds the last seen angle briefly when the player reaches cover, then returns to scanning
+  - Reuses the boss bullet projectile for aimed sniper shots with exported speed and damage
+  - Spotlight visual was adjusted to keep the `PointLight2D` origin at the pivot and use `texture_offset` for cone placement, improving LightOccluder2D behavior
+
 ### Enemy Projectiles
 - Knife projectile scene created
 - Knife projectile moves horizontally
@@ -109,6 +126,7 @@ Last updated: 2026-04-27
 - Boss grenade projectile now uses dedicated grenade art: `art/props/grenade.png`
 - Boss grenade explosion now uses a separate animation that plays only when the grenade reaches the floor/target
 - Grenade warning time and grenade air time are now separate boss export variables
+- Watchtower sniper reuses `scenes/projectiles/boss_bullet.tscn` for aimed test shots
 
 ### Hazards
 - **Spike hazard**
@@ -140,6 +158,8 @@ Last updated: 2026-04-27
 - Project main scene is now the intro cutscene again
 - Level progression is wired: `cut_scene.tscn` -> `main_menu.tscn` -> `level_01.tscn` -> `test_room_2.tscn` -> `boss_fight_level.tscn`
 - Level 03 scene/assets have been added and are in progress
+- Level 03 test scene now includes player spawn, simple ground/cover setup, watchtower art, stationary sniper, spotlight, LightOccluder2D test objects, and basic goal area
+- Level 03 cover testing currently uses normal collision for gameplay ray blocking and LightOccluder2D for visual shadow blocking
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
@@ -150,6 +170,8 @@ Last updated: 2026-04-27
 - Grenade warning FX now uses the crosshair prop sprite instead of the placeholder polygon/line circle
 - Grenade explosion animation frames added under `art/enemies/animations/Boss/grenade/explosion/`
 - Boss stomp landing triggers camera shake through the boss fight level script
+- Level 03 sniper spotlight currently uses `art/vfx/light_stream.jpg` / related light stream iterations as a cone texture
+- Level 03 spotlight is visual-only; actual stealth detection does not depend on rendered light pixels
 
 ### Audio
 - Enemy hit sound workflow added
@@ -212,6 +234,9 @@ Last updated: 2026-04-27
 - Added boss fight level script for camera shake: `scripts/levels/boss_fight_level.gd`
 - Added/updated boss arena art: `art/bosslevel1/stage1test.png`, `art/bosslevel1/stage1final.png`
 - Added Level 03 scene/script and art assets: `scenes/levels/level_03.tscn`, `scripts/levels/level_03.gd`, `art/level03/`
+- Added Level 03 sniper script: `scripts/enemies/enemy_sentry_sniper.gd`
+- Added Level 03 watchtower sniper test scene content inside `scenes/levels/level_03.tscn`
+- Added/iterated Level 03 watchtower and light beam assets under `art/level03/` and `art/vfx/`
 - Updated player health flow in both `scripts/player/player.gd` and `scenes/player/player.gd`
 - Latest checkpoint commit: `3ede60c Add boss fight checkpoint`
 - Latest working progress includes boss animation/FX polish, final game-flow wiring, and enemy one-hit-kill damage tuning
@@ -228,6 +253,7 @@ Last updated: 2026-04-27
 - `enemy.gd` (basic patrol enemy)
 - `enemy_dog.gd`
 - `enemy_knife_thrower.gd`
+- `enemy_sentry_sniper.gd`
 - `knife_projectile.gd`
 - `scenes/enemies/knife_projectile.tscn`
 - `scenes/enemies/enemy_knife_thrower.tscn`
@@ -278,6 +304,9 @@ Last updated: 2026-04-27
 - Grenades show the airborne grenade sprite until impact, then hide it and play the explosion animation
 - Enemy behavior is intentionally simple and production-friendly
 - Avoid overbuilding enemy architecture at this stage
+- Level 03 sniper is intentionally a focused test enemy, not a full stealth AI system
+- Spotlight rendering is visual-only; gameplay visibility must continue to use raycast/physics logic
+- Player can hide behind collision cover; LightOccluder2D is for matching the visual beam where practical
 - Menu/UI implementation should stay lightweight and presentation-focused for now
 
 ## Things Tuned / Solved Recently
@@ -310,6 +339,13 @@ Last updated: 2026-04-27
 - Opening and level progression flow wired through intro, menu, Level 01, test_room_2, and boss fight
 - Dog, knife thrower, and knife projectile damage tuned to 3 for one-hit kills
 - Boss attack tuning is editable in `choose_next_attack()` and exported variables on the boss
+- Level 03 watchtower sniper prototype added and playtested
+- Sniper detection was aligned to the `VisionPivot` rather than `ShootPoint` so gameplay visibility better matches the spotlight origin
+- Sniper gained a minimum vision range so the player can stand too close/below the tower without being tracked or shot
+- Sniper tracking now follows the player after first detection, holds last seen angle briefly behind cover, and then resumes scanning
+- Player visibility checks now sample multiple configurable points on the player body via `player_detection_offsets`
+- Sniper beam aiming can be tuned separately with `player_aim_offset`
+- PointLight2D spotlight was changed to keep its node position near the pivot and use `texture_offset` so visual cone placement does not break shadow origin as badly
 - Git remote updated to `https://github.com/Geopardi00/Rando2.5_Copy.git`
 - Git checkpoint pushed: `3ede60c Add boss fight checkpoint`
 
@@ -325,6 +361,7 @@ Last updated: 2026-04-27
 - Goal / level-complete presentation polish
 - Clean game flow between menu and gameplay
 - Continue Level 02 / Level 03 building after Level 01 feels consistently good
+- Continue tuning Level 03 sniper spotlight visuals, cover readability, and test layout before expanding into a full level section
 
 ## Notes
 - Current development priority has been: gameplay first, polish second.

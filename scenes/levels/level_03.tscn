@@ -1,66 +1,173 @@
-[gd_scene format=4 uid="uid://mobxq5bdc0px"]
+[gd_scene format=3 uid="uid://mobxq5bdc0px"]
 
-[ext_resource type="Texture2D" uid="uid://bgynj1o7nap1r" path="res://art/level03/32x32block.png" id="1_fvfhs"]
-[ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_ps4tf"]
-[ext_resource type="Texture2D" uid="uid://m81w4bq53gq2" path="res://art/level03/pier.png" id="2_4wrbh"]
-[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="3_ps4tf"]
-[ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="5_lcxk4"]
+[ext_resource type="Texture2D" uid="uid://bgynj1o7nap1r" path="res://art/level03/32x32block.png" id="1_block"]
+[ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_level"]
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="3_player_script"]
+[ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="4_player_bullet"]
+[ext_resource type="Texture2D" uid="uid://wcf5q1o2bgrr" path="res://art/level03/watchtower.png" id="5_watchtower"]
+[ext_resource type="Texture2D" uid="uid://b7nmvlow8lpri" path="res://art/vfx/light_stream3.png" id="6_8w8tq"]
+[ext_resource type="Script" uid="uid://cn5wnswb7nkoh" path="res://scripts/enemies/enemy_sentry_sniper.gd" id="6_sniper_script"]
+[ext_resource type="Texture2D" uid="uid://cxqtyr0osq71f" path="res://art/enemies/Enemy2.png" id="9_sniper_sprite"]
+[ext_resource type="Texture2D" uid="uid://bg7vmefvqju3o" path="res://art/parallax/background_near.png" id="10_8w8tq"]
 
-[sub_resource type="Environment" id="Environment_o4mod"]
+[sub_resource type="Environment" id="Environment_level03"]
 background_mode = 3
 glow_enabled = true
+glow_intensity = 0.35
+glow_bloom = 0.08
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wrbh"]
-texture = ExtResource("1_fvfhs")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-0:0/0/terrain_set = 0
-0:0/0/terrain = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
-0:0/0/terrains_peering_bit/right_side = 0
-0:0/0/terrains_peering_bit/bottom_right_corner = 0
-0:0/0/terrains_peering_bit/bottom_side = 0
-0:0/0/terrains_peering_bit/bottom_left_corner = 0
-0:0/0/terrains_peering_bit/left_side = 0
-0:0/0/terrains_peering_bit/top_left_corner = 0
-0:0/0/terrains_peering_bit/top_side = 0
-0:0/0/terrains_peering_bit/top_right_corner = 0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1527, 64)
 
-[sub_resource type="TileSet" id="TileSet_ps4tf"]
-tile_size = Vector2i(32, 32)
-physics_layer_0/collision_layer = 1
-terrain_set_0/mode = 0
-terrain_set_0/terrain_0/name = "Terrain 0"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/1 = SubResource("TileSetAtlasSource_4wrbh")
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_8w8tq"]
+polygon = PackedVector2Array(-924, -26, 599, -26, 599, -4, -924, -3)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ps4tf"]
-size = Vector2(24, 41)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tower_platform"]
+size = Vector2(260, 28)
 
-[node name="Level03" type="Node2D" unique_id=901161810]
-script = ExtResource("1_ps4tf")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cover"]
+size = Vector2(38, 259)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1152659410]
-environment = SubResource("Environment_o4mod")
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_hvqp8"]
+polygon = PackedVector2Array(0, 132, 34, 132, 34, -126.00001, 0, -126.00001)
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=716074196]
-tile_map_data = PackedByteArray("AAABAAEAAQAAAAAAAAABAAAAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAAAAQAAAAAAAAD//wEAAQAAAAAAAAD//wAAAQAAAAAAAAADAAEAAQAAAAAAAAADAAAAAQAAAAAAAAACAAEAAQAAAAAAAAACAAAAAQAAAAAAAAALAAEAAQAAAAAAAAALAAAAAQAAAAAAAAAKAAEAAQAAAAAAAAAKAAAAAQAAAAAAAAAJAAEAAQAAAAAAAAAJAAAAAQAAAAAAAAAIAAEAAQAAAAAAAAAIAAAAAQAAAAAAAAAHAAEAAQAAAAAAAAAHAAAAAQAAAAAAAAAGAAEAAQAAAAAAAAAGAAAAAQAAAAAAAAAFAAEAAQAAAAAAAAAFAAAAAQAAAAAAAAAEAAEAAQAAAAAAAAAEAAAAAQAAAAAAAAA=")
-tile_set = SubResource("TileSet_ps4tf")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_goal"]
+size = Vector2(48, 96)
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1379300044]
-position = Vector2(203, 12)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_4wrbh")
+[node name="Level03" type="Node2D" unique_id=342020118]
+script = ExtResource("1_level")
 
-[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=31593072]
-position = Vector2(81, -74)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=475558959]
+environment = SubResource("Environment_level03")
 
-[node name="Player" parent="." unique_id=1487025887 instance=ExtResource("3_ps4tf")]
-script = ExtResource("5_lcxk4")
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=2050934020]
+color = Color(0.39, 0.45, 0.5, 1)
 
-[node name="Goal" type="Area2D" parent="." unique_id=201163403]
-position = Vector2(381, -21)
+[node name="TestPlatforms" type="Node2D" parent="." unique_id=1542460230]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=1482087650]
-position = Vector2(-2, -10.5)
-shape = SubResource("RectangleShape2D_ps4tf")
+[node name="Ground" type="StaticBody2D" parent="TestPlatforms" unique_id=1902123546]
+position = Vector2(560, 320)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestPlatforms/Ground" unique_id=1377979296]
+position = Vector2(-163.5, 0)
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="GroundSprite" type="Sprite2D" parent="TestPlatforms/Ground" unique_id=2063127814]
+position = Vector2(-162.50003, 0)
+scale = Vector2(47.65625, 2)
+texture = ExtResource("1_block")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="TestPlatforms/Ground" unique_id=1204489814]
+occluder = SubResource("OccluderPolygon2D_8w8tq")
+
+[node name="TowerPlatform" type="StaticBody2D" parent="TestPlatforms" unique_id=1457706999]
+position = Vector2(1464, 19)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestPlatforms/TowerPlatform" unique_id=350738895]
+position = Vector2(52, -6)
+shape = SubResource("RectangleShape2D_tower_platform")
+
+[node name="PlatformSprite" type="Sprite2D" parent="TestPlatforms/TowerPlatform" unique_id=1117985220]
+position = Vector2(54.000008, -5)
+scale = Vector2(8.125, 0.875)
+texture = ExtResource("1_block")
+
+[node name="CoverTestObject" type="StaticBody2D" parent="TestPlatforms" unique_id=774515781]
+position = Vector2(343, 226.00002)
+rotation = 1.5707964
+scale = Vector2(0.33893362, 0.360287)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestPlatforms/CoverTestObject" unique_id=29415240]
+position = Vector2(16, -0.5)
+shape = SubResource("RectangleShape2D_cover")
+
+[node name="CoverSprite" type="Sprite2D" parent="TestPlatforms/CoverTestObject" unique_id=1077150990]
+modulate = Color(0.32, 0.34, 0.36, 1)
+position = Vector2(15.691614, -1.2722898)
+scale = Vector2(1.2067741, 8.045482)
+texture = ExtResource("1_block")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="TestPlatforms/CoverTestObject" unique_id=207676881]
+position = Vector2(-1, -3)
+occluder = SubResource("OccluderPolygon2D_hvqp8")
+
+[node name="Watchtower" type="Sprite2D" parent="." unique_id=2109420169]
+z_index = -1
+position = Vector2(963.00006, 75)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_watchtower")
+
+[node name="EnemySentrySniper" type="Node2D" parent="." unique_id=185439143]
+position = Vector2(944, -37)
+script = ExtResource("6_sniper_script")
+min_vision_range = 380.0
+vision_range = 850.0
+cone_half_angle_degrees = 8.0
+min_scan_angle_degrees = 125.0
+max_scan_angle_degrees = 170.0
+scan_speed_degrees = 21.0
+alert_delay = 0.01
+fire_cooldown = 1.0
+hold_last_seen_time = 1.8
+player_aim_offset = Vector2(0, 15)
+player_detection_offsets = Array[Vector2]([Vector2(0, -16), Vector2(0, 8), Vector2(0, 24)])
+bullet_speed = 1500.0
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemySentrySniper" unique_id=123011001]
+position = Vector2(0, -8)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("9_sniper_sprite")
+
+[node name="ShootPoint" type="Marker2D" parent="EnemySentrySniper" unique_id=195592615]
+position = Vector2(4, -13)
+
+[node name="VisionPivot" type="Node2D" parent="EnemySentrySniper" unique_id=824167460]
+position = Vector2(-13, -14)
+rotation = -0.773796
+
+[node name="VisionRay" type="RayCast2D" parent="EnemySentrySniper/VisionPivot" unique_id=701431480]
+position = Vector2(24, 21)
+enabled = false
+target_position = Vector2(-74, 0)
+
+[node name="Spotlight" type="PointLight2D" parent="EnemySentrySniper/VisionPivot" unique_id=1528459422]
+position = Vector2(-5.6400642, 1.4797499)
+rotation = -1.5692862
+scale = Vector2(-0.1836587, 3.6311138)
+color = Color(0.99999946, 0.9068846, 0.6475957, 1)
+energy = 1.44
+shadow_enabled = true
+texture = ExtResource("6_8w8tq")
+
+[node name="FireCooldownTimer" type="Timer" parent="EnemySentrySniper" unique_id=1700382644]
+one_shot = true
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
+position = Vector2(-286, 255)
+
+[node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
+position = Vector2(140, 260)
+script = ExtResource("3_player_script")
+bullet_scene = ExtResource("4_player_bullet")
+
+[node name="Camera2D" parent="Player" index="2" unique_id=2029278347]
+position = Vector2(258, -189)
+
+[node name="Goal" type="Area2D" parent="." unique_id=1575876299]
+position = Vector2(1090, 224)
+collision_layer = 64
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Goal" unique_id=201965596]
+shape = SubResource("RectangleShape2D_goal")
+
+[node name="World" type="Node2D" parent="." unique_id=1878231503]
+
+[node name="Parallax2D" type="Parallax2D" parent="World" unique_id=387366459]
+z_index = -4
+
+[node name="Sprite2D" type="Sprite2D" parent="World/Parallax2D" unique_id=1454557719]
+texture = ExtResource("10_8w8tq")
+
+[editable path="Player"]

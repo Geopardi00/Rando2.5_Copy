@@ -89,3 +89,5 @@ texture = ExtResource("8_op2op")
 [node name="EnemyBoss" parent="." unique_id=1075910993 instance=ExtResource("8_ff50h")]
 position = Vector2(122.00001, -76)
 scale = Vector2(0.12, 0.12)
+
+[node name="level_03" type="Node2D" parent="." unique_id=2011995481]
