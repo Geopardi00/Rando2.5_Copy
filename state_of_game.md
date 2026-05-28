@@ -1,9 +1,10 @@
 # State of Game
 
-Last updated: 2026-04-29
+Last updated: 2026-05-28
 
 ## High-Level Status
 - Level 01 is in a good playable state.
+- Level 01 has been replaced with the newer edited layout from the accidental edit folder and now uses the newer TileMapLayer/dirt tileset pass.
 - Core combat loop is working.
 - Enemy and hazard systems are now in place and feel good in playtests.
 - Basic combat feedback has been added with enemy hit flash, death particles, and hit audio.
@@ -17,7 +18,7 @@ Last updated: 2026-04-29
 - Boss fight core loop is implemented and recently polished: shooting, reload, grenade throws, jump stomp, boss HP, player HP, camera shake, boss jump/stomp animations, grenade explosion animation, and crosshair grenade warnings.
 - Current game flow is wired from intro cutscene to main menu, then Level 01, test_room_2, and boss fight.
 - Latest Level 03 work is focused on prototyping one stationary non-killable watchtower sniper enemy before building a full level around it.
-- Latest Git checkpoint pushed to `https://github.com/Geopardi00/Rando2.5_Copy.git`.
+- Latest Git checkpoint is for the Level 01 layout/art import in this working copy.
 
 ## Implemented Features
 
@@ -143,6 +144,8 @@ Last updated: 2026-04-29
 
 ### Level / World
 - Level 01 layout exists and is playable
+- Level 01 layout was imported from `C:\Users\mjket\Godot projects\Rambo2.5\rambo-2.5` into this working copy, with missing referenced `art/level01` assets copied over.
+- Level 01 now uses embedded TileSet/TileMapLayer resources for the newer dirt/block tile pass.
 - Level 01 enemy and hazard playtests are working well
 - Hazard and enemy reset behavior is correct because level reloads on player death
 - Parallax background near layer added
@@ -348,9 +351,11 @@ Last updated: 2026-04-29
 - PointLight2D spotlight was changed to keep its node position near the pivot and use `texture_offset` so visual cone placement does not break shadow origin as badly
 - Git remote updated to `https://github.com/Geopardi00/Rando2.5_Copy.git`
 - Git checkpoint pushed: `3ede60c Add boss fight checkpoint`
+- Level 01 edited layout was recovered from the accidental edit folder and imported into the current working project
+- Godot reimported the copied Level 01 textures and a headless load check of `res://scenes/levels/level_01.tscn` passed
 
 ## Recommended Next Steps
-- Level 01 polish pass
+- Playtest the newly imported Level 01 layout in the editor and do a polish pass on enemy/hazard spacing, collisions, and foreground readability
 - Add remaining core sound effects (shoot, throw, UI click, ambient)
 - Add boss-specific sound effects for shooting, reload, grenade throw/explosion, stomp, hurt, and death
 - Add boss HP UI / player health UI when the fight needs presentation polish
