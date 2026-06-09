@@ -2,25 +2,43 @@
 
 [ext_resource type="Script" uid="uid://ljck7scgry5c" path="res://scripts/enemies/enemy_dog.gd" id="1_h8v6i"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_a3t4t"]
+[ext_resource type="Texture2D" uid="uid://cmx3r4vdwq07r" path="res://art/enemies/animations/finaldogrun/frame0001.png" id="4_bmb5r"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_vrqf2"]
-[ext_resource type="Texture2D" uid="uid://b234lc1yfiae" path="res://art/enemies/animations/enemy_dog/charge/frame0000.png" id="5_tgpt4"]
-[ext_resource type="Texture2D" uid="uid://p58fymnws36n" path="res://art/enemies/animations/enemy_dog/charge/frame0001.png" id="6_yvawq"]
-[ext_resource type="Texture2D" uid="uid://e282x0ehsqsp" path="res://art/enemies/animations/enemy_dog/charge/frame0002.png" id="7_0xkhw"]
-[ext_resource type="Texture2D" uid="uid://blqupip08m3hj" path="res://art/enemies/animations/enemy_dog/charge/frame0003.png" id="8_beac8"]
-[ext_resource type="Texture2D" uid="uid://bj2l1lv7uo5dd" path="res://art/enemies/animations/enemy_dog/charge/frame0004.png" id="9_1n46b"]
-[ext_resource type="Texture2D" uid="uid://dtc8xmnunt2d0" path="res://art/enemies/animations/enemy_dog/charge/frame0005.png" id="10_qgiua"]
-[ext_resource type="Texture2D" uid="uid://bx2dmhvf1och3" path="res://art/enemies/animations/enemy_dog/charge/frame0006.png" id="11_j62a5"]
-[ext_resource type="Texture2D" uid="uid://pbulj1n1yivm" path="res://art/enemies/animations/enemy_dog/charge/frame0007.png" id="12_8aldu"]
-[ext_resource type="Texture2D" uid="uid://cujlbma4wohho" path="res://art/enemies/animations/enemy_dog/charge/frame0008.png" id="13_0f7xk"]
-[ext_resource type="Texture2D" uid="uid://c86uuib1tuxys" path="res://art/enemies/animations/enemy_dog/charge/frame0009.png" id="14_y5sxt"]
-[ext_resource type="Texture2D" uid="uid://2t6uciq25563" path="res://art/enemies/animations/enemy_dog/walk/frame0000.png" id="15_51tlq"]
-[ext_resource type="Texture2D" uid="uid://cp665ed5a4rux" path="res://art/enemies/animations/enemy_dog/walk/frame0001.png" id="16_arsur"]
-[ext_resource type="Texture2D" uid="uid://cym2306qaiw76" path="res://art/enemies/animations/enemy_dog/walk/frame0002.png" id="17_unfv4"]
-[ext_resource type="Texture2D" uid="uid://c8raa58alqo37" path="res://art/enemies/animations/enemy_dog/walk/frame0003.png" id="18_bmb5r"]
-[ext_resource type="Texture2D" uid="uid://cnufk5uj5bu2a" path="res://art/enemies/animations/enemy_dog/walk/frame0004.png" id="19_tbb1i"]
-[ext_resource type="Texture2D" uid="uid://b74nv3hurk5a8" path="res://art/enemies/animations/enemy_dog/walk/frame0005.png" id="20_4y376"]
-[ext_resource type="Texture2D" uid="uid://d3f1c512gy7r4" path="res://art/enemies/animations/enemy_dog/walk/frame0006.png" id="21_d3143"]
-[ext_resource type="Texture2D" uid="uid://du0wofmfre0x" path="res://art/enemies/animations/enemy_dog/walk/frame0007.png" id="22_b6tg7"]
+[ext_resource type="Texture2D" uid="uid://dg5w4w108e703" path="res://art/enemies/animations/finaldogrun/frame0002.png" id="5_tbb1i"]
+[ext_resource type="Texture2D" uid="uid://bwb3oeeq2wtc6" path="res://art/enemies/animations/finaldogrun/frame0003.png" id="6_4y376"]
+[ext_resource type="Texture2D" uid="uid://bnd4lj3ec6rcb" path="res://art/enemies/animations/finaldogrun/frame0004.png" id="7_d3143"]
+[ext_resource type="Texture2D" uid="uid://bi43pokcyk418" path="res://art/enemies/animations/finaldogrun/frame0005.png" id="8_b6tg7"]
+[ext_resource type="Texture2D" uid="uid://d1xinhyjpj1fy" path="res://art/enemies/animations/finaldogrun/frame0006.png" id="9_mo3q2"]
+[ext_resource type="Texture2D" uid="uid://cynnrm6l8si1n" path="res://art/enemies/animations/finaldogrun/frame0007.png" id="10_lrvel"]
+[ext_resource type="Texture2D" uid="uid://c10rfhvx51la5" path="res://art/enemies/animations/finaldogrun/frame0008.png" id="11_nk5l0"]
+[ext_resource type="Texture2D" uid="uid://cqfwgygkfljji" path="res://art/enemies/animations/finaldogrun/frame0009.png" id="12_fwapj"]
+[ext_resource type="Texture2D" uid="uid://b2e2je5b508l6" path="res://art/enemies/animations/finaldogrun/frame0010.png" id="13_qm5pv"]
+[ext_resource type="Texture2D" uid="uid://bqdc6pw2sc63v" path="res://art/enemies/animations/finaldogrun/frame0011.png" id="14_7xt05"]
+[ext_resource type="Texture2D" uid="uid://byv0su6cpkpem" path="res://art/enemies/animations/finaldogrun/frame0012.png" id="15_63l1d"]
+[ext_resource type="Texture2D" uid="uid://cwhp38xxuqxhw" path="res://art/enemies/animations/finaldogrun/frame0013.png" id="16_g43te"]
+[ext_resource type="Texture2D" uid="uid://db8jts2k8h7tt" path="res://art/enemies/animations/finaldogrun/frame0014.png" id="17_35tqs"]
+[ext_resource type="Texture2D" uid="uid://bbf1lxyubxuhy" path="res://art/enemies/animations/finaldogrun/frame0015.png" id="18_y2lnn"]
+[ext_resource type="Texture2D" uid="uid://c75ox6hnn21dh" path="res://art/enemies/animations/finaldogrun/frame0016.png" id="19_pa7ii"]
+[ext_resource type="Texture2D" uid="uid://c8amfat0y5682" path="res://art/enemies/animations/finaldogrun/frame0017.png" id="20_ee4ed"]
+[ext_resource type="Texture2D" uid="uid://dsn7ccxhjt6rw" path="res://art/enemies/animations/finaldogrun/frame0018.png" id="21_g47hx"]
+[ext_resource type="Texture2D" uid="uid://djvahj4f7lkm4" path="res://art/enemies/animations/finaldogrun/frame0019.png" id="22_isfil"]
+[ext_resource type="Texture2D" uid="uid://bcmmb271t2g6l" path="res://art/enemies/animations/finaldogrun/frame0020.png" id="23_k5cdg"]
+[ext_resource type="Texture2D" uid="uid://hkeagmmmtcr0" path="res://art/enemies/animations/finaldogrun/frame0021.png" id="24_shmap"]
+[ext_resource type="Texture2D" uid="uid://b76g0kw1xpe7w" path="res://art/enemies/animations/finaldogrun/frame0022.png" id="25_vgflv"]
+[ext_resource type="Texture2D" uid="uid://bx4vxy1hp5cf5" path="res://art/enemies/animations/finaldogrun/frame0023.png" id="26_jknkt"]
+[ext_resource type="Texture2D" uid="uid://b8iyto7rwsv28" path="res://art/enemies/animations/finaldogrun/frame0024.png" id="27_gwr8j"]
+[ext_resource type="Texture2D" uid="uid://bm6x8erh7cyxg" path="res://art/enemies/animations/finaldogwalk/frame0001.png" id="28_b6tg7"]
+[ext_resource type="Texture2D" uid="uid://bwr265dv2egy1" path="res://art/enemies/animations/finaldogwalk/frame0002.png" id="29_mo3q2"]
+[ext_resource type="Texture2D" uid="uid://dq55cgrec1b15" path="res://art/enemies/animations/finaldogwalk/frame0003.png" id="30_lrvel"]
+[ext_resource type="Texture2D" uid="uid://c6h8ptfsyj6vw" path="res://art/enemies/animations/finaldogwalk/frame0004.png" id="31_nk5l0"]
+[ext_resource type="Texture2D" uid="uid://bb0mr6la3mrhv" path="res://art/enemies/animations/finaldogwalk/frame0005.png" id="32_fwapj"]
+[ext_resource type="Texture2D" uid="uid://cog3hlx3jn57u" path="res://art/enemies/animations/finaldogwalk/frame0006.png" id="33_qm5pv"]
+[ext_resource type="Texture2D" uid="uid://ds8rnbmkas3cw" path="res://art/enemies/animations/finaldogwalk/frame0007.png" id="34_7xt05"]
+[ext_resource type="Texture2D" uid="uid://dr28r5d3tib8j" path="res://art/enemies/animations/finaldogwalk/frame0008.png" id="35_63l1d"]
+[ext_resource type="Texture2D" uid="uid://q7icwwh6vig7" path="res://art/enemies/animations/finaldogwalk/frame0009.png" id="36_g43te"]
+[ext_resource type="Texture2D" uid="uid://6d04hgh524dk" path="res://art/enemies/animations/finaldogwalk/frame0010.png" id="37_35tqs"]
+[ext_resource type="Texture2D" uid="uid://kwyvoagvby4x" path="res://art/enemies/animations/finaldogwalk/frame0011.png" id="38_y2lnn"]
+[ext_resource type="Texture2D" uid="uid://ha55xyf68htj" path="res://art/enemies/animations/finaldogwalk/frame0012.png" id="39_pa7ii"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
 size = Vector2(45, 27)
@@ -36,70 +54,125 @@ shader_parameter/flash_amount = 0.0
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_tgpt4")
+"texture": ExtResource("4_bmb5r")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_yvawq")
+"texture": ExtResource("5_tbb1i")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_0xkhw")
+"texture": ExtResource("6_4y376")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_beac8")
+"texture": ExtResource("7_d3143")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_1n46b")
+"texture": ExtResource("8_b6tg7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_qgiua")
+"texture": ExtResource("9_mo3q2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_j62a5")
+"texture": ExtResource("10_lrvel")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_8aldu")
+"texture": ExtResource("11_nk5l0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_0f7xk")
+"texture": ExtResource("12_fwapj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_y5sxt")
+"texture": ExtResource("13_qm5pv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_7xt05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_63l1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_g43te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_35tqs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_y2lnn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_pa7ii")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_ee4ed")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_g47hx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_isfil")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_k5cdg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_shmap")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_vgflv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_jknkt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_gwr8j")
 }],
 "loop": true,
 "name": &"charge",
-"speed": 21.0
+"speed": 49.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("15_51tlq")
+"texture": ExtResource("28_b6tg7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_arsur")
+"texture": ExtResource("29_mo3q2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("17_unfv4")
+"texture": ExtResource("30_lrvel")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_bmb5r")
+"texture": ExtResource("31_nk5l0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_tbb1i")
+"texture": ExtResource("32_fwapj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("20_4y376")
+"texture": ExtResource("33_qm5pv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("21_d3143")
+"texture": ExtResource("34_7xt05")
 }, {
 "duration": 1.0,
-"texture": ExtResource("22_b6tg7")
+"texture": ExtResource("35_63l1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_g43te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_35tqs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_y2lnn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_pa7ii")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 15.0
+"speed": 11.0
 }]
 
 [node name="Enemy_dog" type="CharacterBody2D" unique_id=363953011 groups=["enemy"]]
+scale = Vector2(0.9, 0.9)
 collision_layer = 4
 script = ExtResource("1_h8v6i")
 
@@ -137,5 +210,7 @@ target_position = Vector2(0, 10)
 material = SubResource("ShaderMaterial_tgpt4")
 scale = Vector2(0.08, 0.08)
 sprite_frames = SubResource("SpriteFrames_mo3q2")
-animation = &"charge"
-frame_progress = 0.29331654
+animation = &"walk"
+autoplay = "walk"
+frame_progress = 0.63292795
+speed_scale = 1.6

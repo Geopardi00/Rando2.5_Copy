@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
 [ext_resource type="PackedScene" uid="uid://cmyc5acoeb8sm" path="res://scenes/enemies/enemy_boss.tscn" id="8_ff50h"]
 [ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
+[ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="9_s3biy"]
+[ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="10_op2op"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(769, 20)
@@ -18,7 +20,7 @@ size = Vector2(36, 162)
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
 
 [node name="Crate" parent="." unique_id=131320726 instance=ExtResource("1_sa601")]
-position = Vector2(229, 111)
+position = Vector2(94, 115)
 collision_layer = 1
 collision_mask = 1
 
@@ -87,7 +89,14 @@ scale = Vector2(0.8, 0.8)
 texture = ExtResource("8_op2op")
 
 [node name="EnemyBoss" parent="." unique_id=1075910993 instance=ExtResource("8_ff50h")]
+visible = false
 position = Vector2(122.00001, -76)
 scale = Vector2(0.12, 0.12)
 
 [node name="level_03" type="Node2D" parent="." unique_id=2011995481]
+
+[node name="Enemy_dog" parent="." unique_id=363953011 instance=ExtResource("9_s3biy")]
+visible = false
+position = Vector2(361, 117)
+
+[node name="EnemyKnifeThrower" parent="." unique_id=1748288799 instance=ExtResource("10_op2op")]

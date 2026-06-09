@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
+const THROW_RELEASE_FRAME := 8
 
 @export var knife_scene: PackedScene
 
@@ -12,14 +13,17 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 @export var vertical_tolerance: float = 56.0
 @export var throw_cooldown: float = 1.2
 
-@export var throw_offset: Vector2 = Vector2(28, -6)
+@export var throw_offset: Vector2 = Vector2(28, 4)
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var cooldown_timer: Timer = $CooldownTimer
 @onready var hit_sound: AudioStreamPlayer2D = $HitSound
 
 var hp: int = 0
 var player: Node2D = null
+var is_throwing: bool = false
+var pending_throw_dir: int = -1
+var knife_spawned_this_throw: bool = false
 
 
 func _ready() -> void:
@@ -33,9 +37,13 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player") as Node2D
 
 	# Make sure each thrower instance has its own shader material.
-	if sprite.material != null:
-		sprite.material = sprite.material.duplicate()
+	if animated_sprite.material != null:
+		animated_sprite.material = animated_sprite.material.duplicate()
 		_set_flash_amount(0.0)
+
+	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
+	animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
+	animated_sprite.play("idle")
 
 
 func _physics_process(delta: float) -> void:
@@ -59,18 +67,27 @@ func _physics_process(delta: float) -> void:
 
 	update_facing(dir)
 
-	if abs(dx) <= attack_range and dy <= vertical_tolerance and cooldown_timer.is_stopped():
-		throw_knife(dir)
+	if abs(dx) <= attack_range and dy <= vertical_tolerance and cooldown_timer.is_stopped() and not is_throwing:
+		start_throw(dir)
 
 
 func update_facing(dir: int) -> void:
 	# Assumes enemy art faces LEFT by default.
 	# If your art faces RIGHT by default, change this to:
-	# sprite.flip_h = dir < 0
-	sprite.flip_h = dir > 0
+	# animated_sprite.flip_h = dir < 0
+	animated_sprite.flip_h = dir > 0
 
 
-func throw_knife(dir: int) -> void:
+func start_throw(dir: int) -> void:
+	is_throwing = true
+	pending_throw_dir = dir
+	knife_spawned_this_throw = false
+	update_facing(dir)
+	animated_sprite.play("throw2")
+	animated_sprite.frame = 0
+
+
+func spawn_knife(dir: int) -> void:
 	if knife_scene == null:
 		return
 
@@ -84,6 +101,33 @@ func throw_knife(dir: int) -> void:
 	cooldown_timer.start()
 
 
+func _on_animated_sprite_frame_changed() -> void:
+	if not is_throwing:
+		return
+
+	if animated_sprite.animation != "throw2":
+		return
+
+	if knife_spawned_this_throw:
+		return
+
+	if animated_sprite.frame >= THROW_RELEASE_FRAME:
+		knife_spawned_this_throw = true
+		spawn_knife(pending_throw_dir)
+
+
+func _on_animated_sprite_animation_finished() -> void:
+	if animated_sprite.animation != "throw2":
+		return
+
+	if is_throwing and not knife_spawned_this_throw:
+		knife_spawned_this_throw = true
+		spawn_knife(pending_throw_dir)
+
+	is_throwing = false
+	animated_sprite.play("idle")
+
+
 func take_damage(amount: int = 1) -> void:
 	hp -= amount
 	flash_hit()
@@ -94,10 +138,10 @@ func take_damage(amount: int = 1) -> void:
 
 
 func flash_hit() -> void:
-	if sprite.material == null:
+	if animated_sprite.material == null:
 		return
 
-	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	var mat: ShaderMaterial = animated_sprite.material as ShaderMaterial
 	if mat == null:
 		return
 
@@ -108,10 +152,10 @@ func flash_hit() -> void:
 
 
 func _set_flash_amount(value: float) -> void:
-	if sprite.material == null:
+	if animated_sprite.material == null:
 		return
 
-	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	var mat: ShaderMaterial = animated_sprite.material as ShaderMaterial
 	if mat == null:
 		return
 

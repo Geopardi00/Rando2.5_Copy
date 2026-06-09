@@ -1,14 +1,110 @@
 [gd_scene format=3 uid="uid://7r6butmsjild"]
 
-[ext_resource type="Texture2D" uid="uid://cxqtyr0osq71f" path="res://art/enemies/Enemy2.png" id="1_e4yay"]
 [ext_resource type="Script" uid="uid://snvn84vsd1km" path="res://scripts/enemies/enemy_knife_thrower.gd" id="1_o6rux"]
 [ext_resource type="PackedScene" uid="uid://bxpf17ic5m3mv" path="res://scenes/Weapons/knife_projectile.tscn" id="2_6f5w2"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="3_6f5w2"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="5_n0xlh"]
+[ext_resource type="Texture2D" uid="uid://6ht166xumghk" path="res://art/enemies/animations/knife_thrower/idle/frame0000.png" id="frame_10"]
+[ext_resource type="Texture2D" uid="uid://csatnv35hmv1v" path="res://art/enemies/animations/knife_thrower/idle/frame0001.png" id="frame_11"]
+[ext_resource type="Texture2D" uid="uid://c5wfd1xmtkmb7" path="res://art/enemies/animations/knife_thrower/idle/frame0002.png" id="frame_12"]
+[ext_resource type="Texture2D" uid="uid://ctg2g567jfqyl" path="res://art/enemies/animations/knife_thrower/idle/frame0003.png" id="frame_13"]
+[ext_resource type="Texture2D" uid="uid://dbextrre6ua60" path="res://art/enemies/animations/knife_thrower/idle/frame0004.png" id="frame_14"]
+[ext_resource type="Texture2D" uid="uid://cw11bfm4cpydw" path="res://art/enemies/animations/knife_thrower/throw2/frame0000.png" id="frame_15"]
+[ext_resource type="Texture2D" uid="uid://dhhy4c6rxf1vf" path="res://art/enemies/animations/knife_thrower/throw2/frame0001.png" id="frame_16"]
+[ext_resource type="Texture2D" uid="uid://baiv2d7ngbhnt" path="res://art/enemies/animations/knife_thrower/throw2/frame0002.png" id="frame_17"]
+[ext_resource type="Texture2D" uid="uid://m0fn0cammgbf" path="res://art/enemies/animations/knife_thrower/throw2/frame0003.png" id="frame_18"]
+[ext_resource type="Texture2D" uid="uid://binymc7c0y380" path="res://art/enemies/animations/knife_thrower/throw2/frame0004.png" id="frame_19"]
+[ext_resource type="Texture2D" uid="uid://b75s2lqfxw01t" path="res://art/enemies/animations/knife_thrower/throw2/frame0005.png" id="frame_20"]
+[ext_resource type="Texture2D" uid="uid://ylp2y4kqmdwn" path="res://art/enemies/animations/knife_thrower/throw2/frame0006.png" id="frame_21"]
+[ext_resource type="Texture2D" uid="uid://binuksf1ewyoq" path="res://art/enemies/animations/knife_thrower/throw2/frame0007.png" id="frame_22"]
+[ext_resource type="Texture2D" uid="uid://cvs2s2mvm1ion" path="res://art/enemies/animations/knife_thrower/throw2/frame0008.png" id="frame_23"]
+[ext_resource type="Texture2D" uid="uid://bnmvp8i8pn2bg" path="res://art/enemies/animations/knife_thrower/throw2/frame0009.png" id="frame_24"]
+[ext_resource type="Texture2D" uid="uid://bcwix8a2sssgt" path="res://art/enemies/animations/knife_thrower/throw2/frame0010.png" id="frame_25"]
+[ext_resource type="Texture2D" uid="uid://bdeafqy0sykvd" path="res://art/enemies/animations/knife_thrower/throw2/frame0011.png" id="frame_26"]
+[ext_resource type="Texture2D" uid="uid://dx12eghbegy43" path="res://art/enemies/animations/knife_thrower/throw2/frame0012.png" id="frame_27"]
+[ext_resource type="Texture2D" uid="uid://bcnledvsqwcl5" path="res://art/enemies/animations/knife_thrower/throw2/frame0013.png" id="frame_28"]
+[ext_resource type="Texture2D" uid="uid://1vrypf2jmuh2" path="res://art/enemies/animations/knife_thrower/throw2/frame0014.png" id="frame_29"]
+[ext_resource type="Texture2D" uid="uid://betoee264v84s" path="res://art/enemies/animations/knife_thrower/throw2/frame0015.png" id="frame_30"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n0xlh"]
 shader = ExtResource("3_6f5w2")
 shader_parameter/flash_amount = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6f5w2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_14")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("frame_15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_19")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_22")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_29")
+}, {
+"duration": 1.0,
+"texture": ExtResource("frame_30")
+}],
+"loop": false,
+"name": &"throw2",
+"speed": 17.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ac8cj"]
 size = Vector2(207, 434)
@@ -18,25 +114,24 @@ size = Vector2(193, 414)
 
 [node name="EnemyKnifeThrower" type="CharacterBody2D" unique_id=1748288799 groups=["enemy"]]
 position = Vector2(326, 78)
+collision_layer = 4
 script = ExtResource("1_o6rux")
 knife_scene = ExtResource("2_6f5w2")
-gravity = null
-max_hp = null
-attack_range = null
-vertical_tolerance = null
-throw_cooldown = null
-throw_offset = null
+throw_offset = Vector2(28, 2)
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=928285763]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=928285763]
 material = SubResource("ShaderMaterial_n0xlh")
 position = Vector2(-3.0517578e-05, -1.0000038)
-texture = ExtResource("1_e4yay")
+sprite_frames = SubResource("SpriteFrames_6f5w2")
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1484088456]
 position = Vector2(18.5, 4)
 shape = SubResource("RectangleShape2D_ac8cj")
 
 [node name="HurtBox" type="Area2D" parent="." unique_id=1394739961 groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=468608857]
 position = Vector2(20.5, 8)
