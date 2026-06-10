@@ -30,7 +30,7 @@ tonemap_exposure = 0.44
 tonemap_white = 2.2
 glow_enabled = true
 glow_intensity = 1.01
-glow_bloom = 0.19
+glow_bloom = 0.13
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_sp205"]
 polygon = PackedVector2Array(-19.199999, -19.199999, 32, -19.199999, 32, 32, -19.199999, 32)
@@ -800,13 +800,13 @@ position = Vector2(2061, -464)
 position = Vector2(2362, -547)
 
 [node name="Torch8" parent="Torches" unique_id=824418290 instance=ExtResource("20_dd7cg")]
-position = Vector2(2691, -251)
+position = Vector2(3157, -251)
 
 [node name="Torch9" parent="Torches" unique_id=1157250722 instance=ExtResource("20_dd7cg")]
-position = Vector2(3074, -367)
+position = Vector2(2844, -251)
 
 [node name="Torch10" parent="Torches" unique_id=182961552 instance=ExtResource("20_dd7cg")]
-position = Vector2(3502, -256)
+position = Vector2(3442, -256)
 
 [node name="Torch11" parent="Torches" unique_id=1288449806 instance=ExtResource("20_dd7cg")]
 visible = false
@@ -901,6 +901,16 @@ position = Vector2(2011, 1421)
 [node name="Torch42" parent="Torches" unique_id=92873447 instance=ExtResource("20_dd7cg")]
 position = Vector2(1386, 1421)
 
+[node name="Node2D" type="Node2D" parent="Torches" unique_id=1478594547]
+position = Vector2(3013, -486)
+
+[node name="Torch" parent="Torches/Node2D" unique_id=1895751163 instance=ExtResource("20_dd7cg")]
+
+[node name="Node2D2" type="Node2D" parent="Torches" unique_id=1147611680]
+
+[node name="Torch" parent="Torches/Node2D2" unique_id=1018611411 instance=ExtResource("20_dd7cg")]
+position = Vector2(3328, -486)
+
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1148530813]
 color = Color(0.33150485, 0.29332983, 0.49964267, 1)
 
@@ -916,11 +926,6 @@ shadow_enabled = true
 [node name="EnemyKnifeThrower2" parent="Enemies" unique_id=1202055901 instance=ExtResource("21_sp205")]
 position = Vector2(2497, -533)
 scale = Vector2(0.1, 0.1)
-gravity = 1100.0
-max_hp = 3
-attack_range = 360.0
-vertical_tolerance = 56.0
-throw_cooldown = 1.2
 throw_offset = Vector2(28, -6)
 
 [node name="Enemy_dog" parent="Enemies" unique_id=363953011 instance=ExtResource("22_0eupj")]
@@ -932,11 +937,6 @@ position = Vector2(1406, -539)
 [node name="EnemyKnifeThrower" parent="Enemies" unique_id=1748288799 instance=ExtResource("21_sp205")]
 position = Vector2(2845, 39)
 scale = Vector2(0.1, 0.1)
-gravity = 1100.0
-max_hp = 3
-attack_range = 360.0
-vertical_tolerance = 56.0
-throw_cooldown = 1.2
 throw_offset = Vector2(28, -6)
 
 [node name="Enemy_dog2" parent="Enemies" unique_id=436945732 instance=ExtResource("22_0eupj")]
@@ -954,11 +954,6 @@ position = Vector2(3581, 842)
 [node name="EnemyKnifeThrower3" parent="Enemies" unique_id=1141753210 instance=ExtResource("21_sp205")]
 position = Vector2(4762.0005, 676)
 scale = Vector2(0.1, 0.1)
-gravity = 1100.0
-max_hp = 3
-attack_range = 360.0
-vertical_tolerance = 56.0
-throw_cooldown = 1.2
 throw_offset = Vector2(28, -6)
 
 [node name="Enemy3" parent="Enemies" unique_id=326608506 instance=ExtResource("23_tnob1")]
@@ -973,9 +968,4 @@ position = Vector2(4064, 1592)
 [node name="EnemyKnifeThrower4" parent="Enemies" unique_id=1399842163 instance=ExtResource("21_sp205")]
 position = Vector2(3551.0002, 1446)
 scale = Vector2(0.1, 0.1)
-gravity = 1100.0
-max_hp = 3
-attack_range = 360.0
-vertical_tolerance = 56.0
-throw_cooldown = 1.2
 throw_offset = Vector2(28, -6)

@@ -14,8 +14,10 @@ const BLOCK_MAX_VELOCITY = 180
 @export var extra_jumps: int = 1
 
 @export var bullet_scene: PackedScene
+@export var muzzle_flash_scene: PackedScene = preload("res://scenes/props/muzzle_flash.tscn")
 @export var fire_rate: float = 0.2
 @export var bullet_offset: Vector2 = Vector2(16, 12)
+@export var muzzle_flash_offset: Vector2 = Vector2(18, 12)
 @export var max_hp: int = 3
 @export var invulnerability_time: float = 0.75
 @export var debug_enabled: bool = false
@@ -24,6 +26,7 @@ const BLOCK_MAX_VELOCITY = 180
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
+@onready var muzzle_marker: Marker2D = $MuzzleMarker
 
 var facing: int = 1
 var coyote_timer: float = 0.0
@@ -179,12 +182,37 @@ func fire_bullet() -> void:
 	var bullet = bullet_scene.instantiate()
 	get_tree().current_scene.add_child(bullet)
 
-	var spawn_pos: Vector2 = global_position + Vector2(bullet_offset.x * facing, bullet_offset.y)
-	bullet.global_position = spawn_pos
+	bullet.global_position = get_muzzle_global_position()
 	bullet.direction = facing
+	spawn_muzzle_flash()
 
 	shoot_sound.play()
 
+func spawn_muzzle_flash() -> void:
+	if muzzle_flash_scene == null:
+		return
+
+	var flash := muzzle_flash_scene.instantiate() as Node2D
+	if flash == null:
+		return
+
+	add_child(flash)
+	flash.position = get_muzzle_local_position()
+	flash.scale.x = abs(flash.scale.x) * facing
+
+
+func get_muzzle_local_position() -> Vector2:
+	if muzzle_marker != null:
+		return Vector2(abs(muzzle_marker.position.x) * facing, muzzle_marker.position.y)
+
+	return Vector2(muzzle_flash_offset.x * facing, muzzle_flash_offset.y)
+
+
+func get_muzzle_global_position() -> Vector2:
+	if muzzle_marker != null:
+		return to_global(get_muzzle_local_position())
+
+	return global_position + Vector2(bullet_offset.x * facing, bullet_offset.y)
 
 func _on_hurtbox_body_entered(body: Node) -> void:
 	if not body.is_in_group("enemy"):

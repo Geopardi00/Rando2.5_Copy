@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://6kw4h5wsrr37"]
+
+[ext_resource type="Texture2D" uid="uid://72rqrib7ckjf" path="res://art/characters/muzzle_flash.png" id="1_flash"]
+[ext_resource type="Script" uid="uid://17u6vd3icryb" path="res://scripts/fx/muzzle_flash.gd" id="2_script"]
+
+[node name="MuzzleFlash" type="Sprite2D" unique_id=1587423220]
+z_index = 3
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_flash")
+offset = Vector2(20, 10)
+script = ExtResource("2_script")

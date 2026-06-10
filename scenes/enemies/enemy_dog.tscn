@@ -168,13 +168,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk",
-"speed": 11.0
+"speed": 14.0
 }]
 
 [node name="Enemy_dog" type="CharacterBody2D" unique_id=363953011 groups=["enemy"]]
 scale = Vector2(0.9, 0.9)
 collision_layer = 4
 script = ExtResource("1_h8v6i")
+patrol_speed = 80.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=594483582]
 position = Vector2(-0.5, 2.5)

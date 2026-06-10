@@ -1,9 +1,22 @@
 [gd_scene format=3 uid="uid://be4fypp1qggw"]
 
 [ext_resource type="Script" uid="uid://dixoev14rc2cf" path="res://scripts/enemies/enemy.gd" id="1_8e3ao"]
-[ext_resource type="Texture2D" uid="uid://cstbwj78xac8y" path="res://art/enemies/enemy1.png" id="2_38ino"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_fcftc"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_fcftc"]
+[ext_resource type="Texture2D" uid="uid://b8rxht53bf14p" path="res://art/enemies/animations/soldier/walk/frame0000.png" id="walk_10"]
+[ext_resource type="Texture2D" uid="uid://g54fn8400ak1" path="res://art/enemies/animations/soldier/walk/frame0001.png" id="walk_11"]
+[ext_resource type="Texture2D" uid="uid://boavcbyj0j1hp" path="res://art/enemies/animations/soldier/walk/frame0002.png" id="walk_12"]
+[ext_resource type="Texture2D" uid="uid://cb0m65wqdp2eq" path="res://art/enemies/animations/soldier/walk/frame0003.png" id="walk_13"]
+[ext_resource type="Texture2D" uid="uid://cffquoosfp5ln" path="res://art/enemies/animations/soldier/walk/frame0004.png" id="walk_14"]
+[ext_resource type="Texture2D" uid="uid://b0etnns7m26pq" path="res://art/enemies/animations/soldier/walk/frame0005.png" id="walk_15"]
+[ext_resource type="Texture2D" uid="uid://blmr65sy4ifgf" path="res://art/enemies/animations/soldier/walk/frame0006.png" id="walk_16"]
+[ext_resource type="Texture2D" uid="uid://clolb2jj1h6mj" path="res://art/enemies/animations/soldier/walk/frame0007.png" id="walk_17"]
+[ext_resource type="Texture2D" uid="uid://josom4hejioc" path="res://art/enemies/animations/soldier/walk/frame0008.png" id="walk_18"]
+[ext_resource type="Texture2D" uid="uid://b3t05povc35b2" path="res://art/enemies/animations/soldier/walk/frame0009.png" id="walk_19"]
+[ext_resource type="Texture2D" uid="uid://c8nk2ngq0vum2" path="res://art/enemies/animations/soldier/walk/frame0010.png" id="walk_20"]
+[ext_resource type="Texture2D" uid="uid://dslc8jaq4qkw5" path="res://art/enemies/animations/soldier/walk/frame0011.png" id="walk_21"]
+[ext_resource type="Texture2D" uid="uid://24yc2amhyn2d" path="res://art/enemies/animations/soldier/walk/frame0012.png" id="walk_22"]
+[ext_resource type="Texture2D" uid="uid://c4m7nlvuvon0o" path="res://art/enemies/animations/soldier/walk/frame0013.png" id="walk_23"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fcftc"]
 size = Vector2(20, 36)
@@ -11,6 +24,56 @@ size = Vector2(20, 36)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lu5c6"]
 shader = ExtResource("2_fcftc")
 shader_parameter/flash_amount = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_walk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("walk_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_17")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_18")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_19")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_22")
+}, {
+"duration": 1.0,
+"texture": ExtResource("walk_23")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 33.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lu5c6"]
 size = Vector2(18, 33)
@@ -23,10 +86,12 @@ script = ExtResource("1_8e3ao")
 position = Vector2(0, 7)
 shape = SubResource("RectangleShape2D_fcftc")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=939382343]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=939382343]
 material = SubResource("ShaderMaterial_lu5c6")
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_38ino")
+scale = Vector2(0.05, 0.05)
+sprite_frames = SubResource("SpriteFrames_walk")
+animation = &"walk"
+frame_progress = 0.74398714
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=819948242 groups=["enemy_hurtbox"]]
 collision_layer = 16

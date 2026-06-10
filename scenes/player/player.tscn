@@ -321,6 +321,9 @@ scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
 animation = &"idle"
 
+[node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]
+position = Vector2(18, 13)
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2029278347]
 position = Vector2(52, -137)
 zoom = Vector2(1.5, 1.5)

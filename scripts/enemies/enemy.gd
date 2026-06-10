@@ -7,7 +7,7 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 @export var move_direction: int = -1
 @export var max_hp: int = 2
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var wall_check_left: RayCast2D = $WallCheckLeft
 @onready var wall_check_right: RayCast2D = $WallCheckRight
 @onready var floor_check_left: RayCast2D = $FloorCheckLeft
@@ -22,9 +22,11 @@ func _ready() -> void:
 	hp = max_hp
 
 	# Give this enemy instance its own material copy.
-	if sprite.material != null:
-		sprite.material = sprite.material.duplicate()
+	if animated_sprite.material != null:
+		animated_sprite.material = animated_sprite.material.duplicate()
 		_set_flash_amount(0.0)
+
+	animated_sprite.play("walk")
 
 
 func _physics_process(delta: float) -> void:
@@ -40,8 +42,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 	# Assumes sprite faces LEFT by default.
-	# If wrong, change to: sprite.flip_h = move_direction < 0
-	sprite.flip_h = move_direction > 0
+	# If wrong, change to: animated_sprite.flip_h = move_direction < 0
+	animated_sprite.flip_h = move_direction > 0
 
 
 func should_turn_around() -> bool:
@@ -74,10 +76,10 @@ func take_damage(amount: int = 1) -> void:
 
 
 func flash_hit() -> void:
-	if sprite.material == null:
+	if animated_sprite.material == null:
 		return
 
-	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	var mat: ShaderMaterial = animated_sprite.material as ShaderMaterial
 	if mat == null:
 		return
 
@@ -88,10 +90,10 @@ func flash_hit() -> void:
 
 
 func _set_flash_amount(value: float) -> void:
-	if sprite.material == null:
+	if animated_sprite.material == null:
 		return
 
-	var mat: ShaderMaterial = sprite.material as ShaderMaterial
+	var mat: ShaderMaterial = animated_sprite.material as ShaderMaterial
 	if mat == null:
 		return
 
