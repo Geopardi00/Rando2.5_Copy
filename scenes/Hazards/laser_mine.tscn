@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://fw2njekj6b7u"]
+
+[ext_resource type="Script" uid="uid://cn11tav658uxy" path="res://scripts/Hazards/laser_mine.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://n6af3l5s74va" path="res://art/props/mine_near.png" id="2_ql14s"]
+[ext_resource type="Texture2D" uid="uid://g2gla58n678i" path="res://art/props/mine_far.png" id="3_a3c3k"]
+[ext_resource type="Texture2D" uid="uid://ewj5t23iovfx" path="res://art/enemies/animations/Boss/grenade/explosion/frame0000.png" id="4_y7yh7"]
+[ext_resource type="Texture2D" uid="uid://dhgjtft552g73" path="res://art/enemies/animations/Boss/grenade/explosion/frame0001.png" id="5_6jgaj"]
+[ext_resource type="Texture2D" uid="uid://b33u3x1lf7phs" path="res://art/enemies/animations/Boss/grenade/explosion/frame0002.png" id="6_n6rji"]
+[ext_resource type="Texture2D" uid="uid://cyyl4yghwh4c8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0003.png" id="7_y7tkk"]
+[ext_resource type="Texture2D" uid="uid://cpc0mxu2s1xww" path="res://art/enemies/animations/Boss/grenade/explosion/frame0004.png" id="8_q4p5t"]
+[ext_resource type="Texture2D" uid="uid://dlx1lv68k5awt" path="res://art/enemies/animations/Boss/grenade/explosion/frame0005.png" id="9_dnl6u"]
+[ext_resource type="Texture2D" uid="uid://cno6ln2hh8yyq" path="res://art/enemies/animations/Boss/grenade/explosion/frame0006.png" id="10_4nhrv"]
+[ext_resource type="Texture2D" uid="uid://bbelnt40wefi8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0007.png" id="11_0xecw"]
+[ext_resource type="Texture2D" uid="uid://eut65yqjgw1j" path="res://art/enemies/animations/Boss/grenade/explosion/frame0008.png" id="12_xjg42"]
+[ext_resource type="Texture2D" uid="uid://cdmkii0w4oxey" path="res://art/enemies/animations/Boss/grenade/explosion/frame0009.png" id="13_6jgaj"]
+[ext_resource type="AudioStream" uid="uid://bchpe3g3h18ul" path="res://audio/sfx/explosion.wav" id="13_ahc7j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_beam"]
+size = Vector2(25.5, 7)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
+radius = 59.03389
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rlodm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_y7yh7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6jgaj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n6rji")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_y7tkk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_q4p5t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_dnl6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_4nhrv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_0xecw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_xjg42")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_6jgaj")
+}],
+"loop": false,
+"name": &"mine_explosion",
+"speed": 15.0
+}]
+
+[node name="LaserMine" type="Node2D" unique_id=909400269]
+script = ExtResource("1_script")
+
+[node name="MineSprite" type="Sprite2D" parent="." unique_id=1611665701]
+z_index = 3
+texture = ExtResource("2_ql14s")
+
+[node name="BeamSprite" type="Sprite2D" parent="." unique_id=2103265622]
+position = Vector2(61, -11)
+texture = ExtResource("3_a3c3k")
+
+[node name="BeamTrigger" type="Area2D" parent="." unique_id=1799064020]
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BeamTrigger" unique_id=1496868098]
+position = Vector2(34, -13)
+shape = SubResource("RectangleShape2D_beam")
+
+[node name="ExplosionArea" type="Area2D" parent="." unique_id=1067355361]
+position = Vector2(28, -11)
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea" unique_id=1523538478]
+shape = SubResource("CircleShape2D_explosion")
+disabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=492381417]
+z_index = 3
+position = Vector2(32, -137)
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_rlodm")
+animation = &"mine_explosion"
+frame = 8
+frame_progress = 1.0
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1994321317]
+stream = ExtResource("13_ahc7j")

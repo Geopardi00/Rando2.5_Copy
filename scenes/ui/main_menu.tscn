@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://wcw3ppdxnkjv" path="res://art/menus/StartButton2.png" id="3_uhagc"]
 [ext_resource type="Texture2D" uid="uid://borwglpgrtbgy" path="res://art/menus/MenuText.png" id="3_wb0q5"]
 [ext_resource type="Texture2D" uid="uid://dd5gmyeh2geci" path="res://art/menus/OptionButton2.png" id="4_btxxm"]
+[ext_resource type="PackedScene" uid="uid://8exaxpukqtwg" path="res://scenes/fx/fog_front.tscn" id="5_7suek"]
 [ext_resource type="Texture2D" uid="uid://c615wbmsy8rad" path="res://art/menus/ExitButton2.png" id="5_wb0q5"]
 [ext_resource type="Texture2D" uid="uid://c4q4688xcp76t" path="res://art/menus/ExitButton.png" id="5_x2yvf"]
 [ext_resource type="AudioStream" uid="uid://cuah437ybe63" path="res://audio/sfx/buttonclick.wav" id="9_q85j6"]
@@ -32,21 +33,6 @@ scale_min = 0.0
 scale_max = 2.0
 anim_speed_max = 3.6
 turbulence_enabled = true
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_btxxm"]
-lifetime_randomness = 0.61
-particle_flag_disable_z = true
-emission_shape_offset = Vector3(0, -0.1, 0)
-emission_shape_scale = Vector3(0, 0, 0)
-angle_min = 1.0728835e-05
-angle_max = 10.0000105
-spread = 115.715
-initial_velocity_min = 33.29
-initial_velocity_max = 125.0
-gravity = Vector3(0, 0, 0)
-linear_accel_min = -2.2351742e-06
-linear_accel_max = 45.109997
-scale_max = 1.1999999
 
 [node name="MainMenu" type="Control" unique_id=1331571085]
 layout_mode = 3
@@ -95,18 +81,8 @@ speed_scale = 0.2
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_wb0q5")
 
-[node name="FogFront" type="GPUParticles2D" parent="." unique_id=457292009]
-modulate = Color(1, 1, 1, 0.8352941)
+[node name="FogFront" parent="." unique_id=1889287654 instance=ExtResource("5_7suek")]
 position = Vector2(-599, 501)
-scale = Vector2(11.9360895, -5.779351)
-amount = 300
-amount_ratio = 0.7642
-texture = ExtResource("3_btxxm")
-lifetime = 20.0
-preprocess = 30.0
-speed_scale = 0.2
-fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_btxxm")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=2072468663]
 layout_mode = 1

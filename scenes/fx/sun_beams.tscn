@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://bucje1crlwl04"]
+
+[ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="1_35oma"]
+
+[node name="SunBeams" type="Node2D" unique_id=445635109]
+
+[node name="SunBeam01" type="PointLight2D" parent="." unique_id=426902174]
+position = Vector2(378.78082, -16.220598)
+rotation = -0.34410712
+scale = Vector2(0.48285812, 1.8300097)
+color = Color(0.72716576, 0.5432528, 0.13813853, 1)
+energy = 1.29
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam02" type="PointLight2D" parent="." unique_id=263872337]
+position = Vector2(825.7257, 68.1086)
+rotation = -0.33269766
+scale = Vector2(1.3467758, 2.227401)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.6
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam03" type="PointLight2D" parent="." unique_id=1921381438]
+position = Vector2(1698.7075, 67.04097)
+rotation = -0.44824633
+scale = Vector2(0.45727396, 2.228248)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.63
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam04" type="PointLight2D" parent="." unique_id=333366534]
+position = Vector2(1880.7916, 127.69359)
+rotation = -0.48437345
+scale = Vector2(0.18261155, 2.4792624)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam05" type="PointLight2D" parent="." unique_id=1365633831]
+position = Vector2(1960.7711, 100.32985)
+rotation = -0.48437348
+scale = Vector2(0.109965116, 2.4792624)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.86
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam06" type="PointLight2D" parent="." unique_id=115074686]
+position = Vector2(1908.0001, 78.99994)
+rotation = -0.49993256
+scale = Vector2(1.0884176, 2.5964022)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.43
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam07" type="PointLight2D" parent="." unique_id=2122357936]
+position = Vector2(2330.04, 160.475)
+rotation = -0.4650359
+scale = Vector2(0.2426601, 2.6212394)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.57
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam08" type="PointLight2D" parent="." unique_id=1495601550]
+position = Vector2(2966.795, 177.52002)
+rotation = -0.4650359
+scale = Vector2(1.3704588, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.57
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam09" type="PointLight2D" parent="." unique_id=1123484960]
+position = Vector2(3534.7837, 152.30301)
+rotation = -0.48150524
+scale = Vector2(0.38960817, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.86
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam10" type="PointLight2D" parent="." unique_id=400871740]
+position = Vector2(4071.7998, 128.85242)
+rotation = -0.48150524
+scale = Vector2(0.2908804, 2.9676256)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.72
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam11" type="PointLight2D" parent="." unique_id=1052511826]
+position = Vector2(4559.199, 44.77065)
+rotation = -0.49198017
+scale = Vector2(0.5738171, 3.3483078)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 0.72
+shadow_enabled = true
+texture = ExtResource("1_35oma")
+
+[node name="SunBeam12" type="PointLight2D" parent="." unique_id=398623491]
+position = Vector2(5082, -111.9998)
+rotation = -0.63159394
+scale = Vector2(0.39461088, 3.294121)
+color = Color(0.7254902, 0.54509807, 0.13725491, 1)
+energy = 1.47
+shadow_enabled = true
+texture = ExtResource("1_35oma")

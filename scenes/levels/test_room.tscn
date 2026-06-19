@@ -6,23 +6,28 @@
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_sa601"]
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
-[ext_resource type="PackedScene" uid="uid://cmyc5acoeb8sm" path="res://scenes/enemies/enemy_boss.tscn" id="8_ff50h"]
 [ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
 [ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="9_s3biy"]
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="10_op2op"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="11_x4gfd"]
 [ext_resource type="PackedScene" uid="uid://6kw4h5wsrr37" path="res://scenes/props/muzzle_flash.tscn" id="12_ronwj"]
+[ext_resource type="PackedScene" uid="uid://b8mb1736qqexw" path="res://scenes/props/torch.tscn" id="13_o8emw"]
+[ext_resource type="PackedScene" uid="uid://bucje1crlwl04" path="res://scenes/fx/sun_beams.tscn" id="14_fma50"]
+[ext_resource type="PackedScene" uid="uid://fw2njekj6b7u" path="res://scenes/Hazards/laser_mine.tscn" id="15_laser"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
-size = Vector2(769, 20)
+size = Vector2(1903.5, 19)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
 size = Vector2(36, 162)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_laser_mine_beam_test"]
+size = Vector2(35, 13.5)
+
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
 
 [node name="Crate" parent="." unique_id=131320726 instance=ExtResource("1_sa601")]
-position = Vector2(94, 115)
+position = Vector2(-263, 119)
 collision_layer = 1
 collision_mask = 1
 
@@ -30,13 +35,13 @@ collision_mask = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1427477057]
-position = Vector2(9, 167)
+position = Vector2(576.25, 166.5)
 shape = SubResource("RectangleShape2D_51pqh")
 
 [node name="ColorRect" type="ColorRect" parent="Floor/CollisionShape2D" unique_id=1561013991]
 offset_left = -384.0
 offset_top = -10.0
-offset_right = 385.0
+offset_right = 1523.0
 offset_bottom = 30.0
 
 [node name="Wall" type="StaticBody2D" parent="." unique_id=1635101776]
@@ -81,15 +86,9 @@ position = Vector2(140, 177)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("8_op2op")
 
-[node name="EnemyBoss" parent="." unique_id=1075910993 instance=ExtResource("8_ff50h")]
-visible = false
-position = Vector2(122.00001, -76)
-scale = Vector2(0.12, 0.12)
-
 [node name="level_03" type="Node2D" parent="." unique_id=2011995481]
 
 [node name="Enemy_dog" parent="." unique_id=363953011 instance=ExtResource("9_s3biy")]
-visible = false
 position = Vector2(361, 117)
 
 [node name="EnemyKnifeThrower" parent="." unique_id=1748288799 instance=ExtResource("10_op2op")]
@@ -99,3 +98,38 @@ visible = false
 position = Vector2(301, 39)
 
 [node name="AnimatedSprite2D" parent="." unique_id=354235826 instance=ExtResource("12_ronwj")]
+
+[node name="Torch" parent="." unique_id=1845595865 instance=ExtResource("13_o8emw")]
+position = Vector2(175, 42)
+
+[node name="SunBeams" parent="." unique_id=445635109 instance=ExtResource("14_fma50")]
+
+[node name="LaserMine" parent="." unique_id=1752570516 instance=ExtResource("15_laser")]
+position = Vector2(1794, 125)
+
+[node name="MineSprite" parent="LaserMine" index="0" unique_id=1611665701]
+z_index = 2
+texture_filter = 4
+position = Vector2(-65, 15)
+
+[node name="BeamSprite" parent="LaserMine" index="1" unique_id=2103265622]
+texture_filter = 4
+position = Vector2(-2.9999762, 3.000001)
+rotation = -0.003562741
+scale = Vector2(0.96368086, 1)
+
+[node name="BeamTrigger" parent="LaserMine" index="2" unique_id=1799064020]
+position = Vector2(77, 7)
+
+[node name="CollisionShape2D" parent="LaserMine/BeamTrigger" index="0" unique_id=1496868098]
+position = Vector2(-110, -3)
+shape = SubResource("RectangleShape2D_laser_mine_beam_test")
+
+[node name="CollisionShape2D" parent="LaserMine/ExplosionArea" parent_id_path=PackedInt32Array(1752570516, 1067355361) index="0" unique_id=1523538478]
+position = Vector2(-4, 2)
+
+[node name="LaserMine2" parent="." unique_id=909400269 instance=ExtResource("15_laser")]
+position = Vector2(839, 150)
+
+[editable path="SunBeams"]
+[editable path="LaserMine"]
