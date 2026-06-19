@@ -1,6 +1,13 @@
 # State of Game
 
-Last updated: 2026-05-28
+Last updated: 2026-06-19
+
+## Latest Update - 2026-06-19
+- Level 03 checkpoint respawn added around the checkpoint flag; deaths after activation reload the scene and respawn at the checkpoint marker.
+- Reusable laser mine hazard added with beam-only trigger, explosion area, explosion animation, explosion sound, and cleanup that waits for sound playback.
+- Level 03 prop and layout pass continued with checkpoint, sandbag, cover, bridge, tower, and environmental asset work.
+- Player shooting polish added: muzzle flash follows a Marker2D barrel point and bullet sprite flips correctly when firing left.
+- Enemy animation passes added for the basic soldier, knife thrower, and dog work.
 
 ## High-Level Status
 - Level 01 is in a good playable state.
@@ -374,3 +381,4 @@ Last updated: 2026-05-28
 - Current enemy set is enough for meaningful Level 01 gameplay.
 - Main menu is now good enough to support a cleaner presentation loop for the project.
 - Boss fight is in gameplay prototype state: functional attacks and damage are in, but UI/audio/final animation polish are still pending.
+

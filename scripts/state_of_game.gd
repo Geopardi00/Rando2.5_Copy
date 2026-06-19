@@ -8,6 +8,7 @@ const IMPLEMENTED_FEATURES := {
 	"enemy_patrol_ai": true,
 	"bullet_enemy_damage": true,
 	"player_respawn_on_hit": true,
+	"checkpoint_respawn": true,
 }
 
 var session_unix_time: float = Time.get_unix_time_from_system()
@@ -23,6 +24,9 @@ var shots_fired: int = 0
 var bullet_hits: int = 0
 var player_deaths: int = 0
 var last_respawn_position: Vector2 = Vector2.ZERO
+var checkpoint_active: bool = false
+var checkpoint_level_name: String = ""
+var checkpoint_position: Vector2 = Vector2.ZERO
 
 
 func reset_runtime_state() -> void:
@@ -35,11 +39,34 @@ func reset_runtime_state() -> void:
 
 
 func register_level_start(new_level_name: String, new_spawn_position: Vector2, new_enemies_total: int) -> void:
+	if level_name != "" and level_name != new_level_name:
+		clear_checkpoint()
+
 	level_name = new_level_name
 	spawn_position = new_spawn_position
-	player_position = new_spawn_position
+	player_position = get_respawn_position(new_level_name, new_spawn_position)
 	enemies_total = max(new_enemies_total, 0)
 	reset_runtime_state()
+
+
+func activate_checkpoint(new_level_name: String, new_checkpoint_position: Vector2) -> void:
+	checkpoint_active = true
+	checkpoint_level_name = new_level_name
+	checkpoint_position = new_checkpoint_position
+	last_respawn_position = new_checkpoint_position
+
+
+func get_respawn_position(current_level_name: String, fallback_position: Vector2) -> Vector2:
+	if checkpoint_active and checkpoint_level_name == current_level_name:
+		return checkpoint_position
+
+	return fallback_position
+
+
+func clear_checkpoint() -> void:
+	checkpoint_active = false
+	checkpoint_level_name = ""
+	checkpoint_position = Vector2.ZERO
 
 
 func update_player_snapshot(new_position: Vector2, new_velocity: Vector2, new_facing: int) -> void:
@@ -88,6 +115,9 @@ func build_state_dictionary() -> Dictionary:
 			"bullet_hits": bullet_hits,
 			"player_deaths": player_deaths,
 			"last_respawn_position": _vec2_to_dictionary(last_respawn_position),
+			"checkpoint_active": checkpoint_active,
+			"checkpoint_level_name": checkpoint_level_name,
+			"checkpoint_position": _vec2_to_dictionary(checkpoint_position),
 		},
 	}
 
