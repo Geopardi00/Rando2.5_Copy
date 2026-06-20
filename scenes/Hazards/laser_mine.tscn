@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bbelnt40wefi8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0007.png" id="11_0xecw"]
 [ext_resource type="Texture2D" uid="uid://eut65yqjgw1j" path="res://art/enemies/animations/Boss/grenade/explosion/frame0008.png" id="12_xjg42"]
 [ext_resource type="Texture2D" uid="uid://cdmkii0w4oxey" path="res://art/enemies/animations/Boss/grenade/explosion/frame0009.png" id="13_6jgaj"]
-[ext_resource type="AudioStream" uid="uid://bchpe3g3h18ul" path="res://audio/sfx/explosion.wav" id="13_ahc7j"]
+[ext_resource type="AudioStream" uid="uid://18krgcs6tind" path="res://audio/sfx/explosion1.wav" id="14_6jgaj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_beam"]
 size = Vector2(25.5, 7)
@@ -101,4 +101,4 @@ frame = 8
 frame_progress = 1.0
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1994321317]
-stream = ExtResource("13_ahc7j")
+stream = ExtResource("14_6jgaj")
