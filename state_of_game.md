@@ -1,6 +1,13 @@
 # State of Game
 
-Last updated: 2026-06-19
+Last updated: 2026-06-20
+
+## Latest Update - 2026-06-20
+- Level 03 layout pass continued with newly placed platforms and additional Sprite2D decoration/prop work.
+- Foreground depth pass added with Parallax2D layers for near, mid, and far foreground elements.
+- Additional Level 03 enemies were placed for the current combat/layout pass.
+- Moonbeam visuals were added and adjusted as part of the Level 03 atmosphere pass.
+- Laser mine scene was updated again during the current hazard/audio polish pass.
 
 ## Latest Update - 2026-06-19
 - Level 03 checkpoint respawn added around the checkpoint flag; deaths after activation reload the scene and respawn at the checkpoint marker.
