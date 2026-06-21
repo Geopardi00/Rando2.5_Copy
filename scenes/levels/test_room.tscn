@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://6kw4h5wsrr37" path="res://scenes/props/muzzle_flash.tscn" id="12_ronwj"]
 [ext_resource type="PackedScene" uid="uid://b8mb1736qqexw" path="res://scenes/props/torch.tscn" id="13_o8emw"]
 [ext_resource type="PackedScene" uid="uid://bucje1crlwl04" path="res://scenes/fx/sun_beams.tscn" id="14_fma50"]
+[ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="15_ity2g"]
+[ext_resource type="Texture2D" uid="uid://dy8amwpcg4u28" path="res://art/level01/ver2.0/foregroundplant05.png" id="15_l652x"]
 [ext_resource type="PackedScene" uid="uid://fw2njekj6b7u" path="res://scenes/Hazards/laser_mine.tscn" id="15_laser"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
@@ -23,6 +25,10 @@ size = Vector2(36, 162)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_laser_mine_beam_test"]
 size = Vector2(35, 13.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4c4i7"]
+shader = ExtResource("15_ity2g")
+shader_parameter/WindStrength = 18.4930006409175
 
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
 
@@ -100,7 +106,7 @@ position = Vector2(301, 39)
 [node name="AnimatedSprite2D" parent="." unique_id=354235826 instance=ExtResource("12_ronwj")]
 
 [node name="Torch" parent="." unique_id=1845595865 instance=ExtResource("13_o8emw")]
-position = Vector2(175, 42)
+position = Vector2(-24, 45)
 
 [node name="SunBeams" parent="." unique_id=445635109 instance=ExtResource("14_fma50")]
 
@@ -130,6 +136,18 @@ position = Vector2(-4, 2)
 
 [node name="LaserMine2" parent="." unique_id=909400269 instance=ExtResource("15_laser")]
 position = Vector2(839, 150)
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=241815937]
+scroll_scale = Vector2(1.2, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=668024232]
+
+[node name="Foregroundplant05" type="Sprite2D" parent="Parallax2D" unique_id=1730518571]
+modulate = Color(0.52906674, 0.5290667, 0.5290667, 1)
+material = SubResource("ShaderMaterial_4c4i7")
+position = Vector2(168, 230)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("15_l652x")
 
 [editable path="SunBeams"]
 [editable path="LaserMine"]

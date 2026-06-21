@@ -57,12 +57,16 @@
 [ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="43_ka027"]
 [ext_resource type="Texture2D" uid="uid://dy8amwpcg4u28" path="res://art/level01/ver2.0/foregroundplant05.png" id="51_5wlp5"]
 [ext_resource type="Texture2D" uid="uid://bfwcb0m671xu" path="res://art/level01/ver2.0/foregroundplant04.png" id="51_radsg"]
+[ext_resource type="Shader" uid="uid://cjrb8ro6io3gl" path="res://shaders/foreground_wind2.tres" id="52_4ghe2"]
 [ext_resource type="Texture2D" uid="uid://c0anus20yhdjd" path="res://art/level01/ver2.0/foregroundstone01.png" id="52_8mjvw"]
 [ext_resource type="Texture2D" uid="uid://285e8l2xy0v3" path="res://art/level01/ver2.0/foregroundstone05.png" id="52_atuk7"]
 [ext_resource type="Texture2D" uid="uid://dqqhbj20q6o1g" path="res://art/level01/ver2.0/foregroundplant02.png" id="53_cxsoa"]
 [ext_resource type="Texture2D" uid="uid://b7xy52y7bqo2o" path="res://art/level01/ver2.0/foregroundstone03.png" id="53_nip07"]
 [ext_resource type="Texture2D" uid="uid://bxly5c1wdhvq3" path="res://art/level01/ver2.0/foregroundplant01.png" id="54_a10ds"]
 [ext_resource type="Texture2D" uid="uid://c7oyb7jchnn3h" path="res://art/level01/ver2.0/foregroundplant03.png" id="54_radsg"]
+[ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="56_66fwr"]
+[ext_resource type="Shader" uid="uid://djhmtqwif48gv" path="res://shaders/fog.gdshader" id="66_ka1dv"]
+[ext_resource type="Shader" uid="uid://dg0outdtaryog" path="res://shaders/God rays.gdshader" id="67_qkk4n"]
 
 [sub_resource type="Environment" id="Environment_level03"]
 background_mode = 3
@@ -215,6 +219,74 @@ polygon = PackedVector2Array(-4, 2, 2, 2, 4, 1, 4, -1, 0, -3, -3, -3, -5, 0)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_goal"]
 size = Vector2(48, 96)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qmkdx"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 6.8290000868775
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ftsv"]
+shader = ExtResource("56_66fwr")
+shader_parameter/WindStrength = 5.9930000471675005
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_66fwr"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 10.154000244815
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ka1dv"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 12.1690003405275
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qkk4n"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 18.0150006182125
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cctgy"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 16.250000534374998
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v0by6"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 14.0000004275
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ghe2"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 10.5150002619625
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uqjib"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqtvr"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 5.0010000000475
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jy88k"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 5.5510000261725
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mt38o"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_om8jl"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 15.000000475
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7cis"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 11.066000288135
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1np1t"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uhb4f"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 16.5810005500975
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ni0h8"]
+shader = ExtResource("52_4ghe2")
+shader_parameter/WindStrength = 14.2650004400875
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iaubp"]
 frequency = 0.03
 
@@ -272,6 +344,67 @@ polygon = PackedVector2Array(6016, -148, 6245, -151, 6285, -146, 6285, -130, 624
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5wlp5"]
 polygon = PackedVector2Array(6420, -157, 6462, -162, 6716, -159, 6716, -142, 6464, -146, 6420, -141)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1r4s3"]
+shader = ExtResource("66_ka1dv")
+shader_parameter/base_color = Color(0.46666667, 0.8392157, 0.93333334, 0.09803922)
+shader_parameter/location_fade = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4ghe2"]
+seed = 1
+frequency = 0.0427
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ka1dv"]
+noise = SubResource("FastNoiseLite_4ghe2")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yrqgo"]
+shader = ExtResource("67_qkk4n")
+shader_parameter/angle = 0.51
+shader_parameter/position = 0.17
+shader_parameter/spread = 0.6850000325375
+shader_parameter/cutoff = 0.22400005814000012
+shader_parameter/falloff = 0.2490000118275
+shader_parameter/edge_fade = 0.12800000608
+shader_parameter/speed = 2.045
+shader_parameter/ray1_density = 6.2
+shader_parameter/ray2_density = 40.0
+shader_parameter/ray2_intensity = 1.0
+shader_parameter/color = Color(0.8039216, 0.9372549, 0.9647059, 0.08235294)
+shader_parameter/hdr = true
+shader_parameter/seed = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ck4x5"]
+shader = ExtResource("67_qkk4n")
+shader_parameter/angle = 0.58
+shader_parameter/position = 0.23
+shader_parameter/spread = 0.554000026315
+shader_parameter/cutoff = 0.1930000566675001
+shader_parameter/falloff = 0.642000030495
+shader_parameter/edge_fade = 0.15
+shader_parameter/speed = 2.75
+shader_parameter/ray1_density = 6.2
+shader_parameter/ray2_density = 40.0
+shader_parameter/ray2_intensity = 0.3410000161975
+shader_parameter/color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+shader_parameter/hdr = false
+shader_parameter/seed = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wqvu7"]
+shader = ExtResource("67_qkk4n")
+shader_parameter/angle = 0.71
+shader_parameter/position = 0.22
+shader_parameter/spread = 0.64800003078
+shader_parameter/cutoff = 0.22500005818750002
+shader_parameter/falloff = 0.31600001501
+shader_parameter/edge_fade = 0.15
+shader_parameter/speed = 3.2
+shader_parameter/ray1_density = 8.0
+shader_parameter/ray2_density = 60.0
+shader_parameter/ray2_intensity = 0.42400002014
+shader_parameter/color = Color(0.8039216, 0.9372549, 0.9647059, 0.20784314)
+shader_parameter/hdr = false
+shader_parameter/seed = 5.0
 
 [node name="Level03" type="Node2D" unique_id=342020118]
 script = ExtResource("1_level")
@@ -865,7 +998,13 @@ texture = ExtResource("17_qsts2")
 
 [node name="Logpile02" type="Sprite2D" parent="Props" unique_id=1125987085]
 modulate = Color(0.8047426, 0.80474263, 0.8047426, 1)
-position = Vector2(3369, 208)
+position = Vector2(3402, 207)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("17_qsts2")
+
+[node name="Logpile03" type="Sprite2D" parent="Props" unique_id=490349248]
+modulate = Color(0.8047426, 0.80474263, 0.8047426, 1)
+position = Vector2(3446, 208)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("17_qsts2")
 
@@ -895,7 +1034,6 @@ texture = ExtResource("18_ka027")
 flip_h = true
 
 [node name="Light05" type="Sprite2D" parent="Props" unique_id=52225429]
-z_index = 1
 position = Vector2(4588, 256)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("18_ka027")
@@ -1131,12 +1269,14 @@ scroll_scale = Vector2(1.1, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ForegroundFar" unique_id=1710925023]
 modulate = Color(0.5616404, 0.6042889, 0.5525397, 1)
+material = SubResource("ShaderMaterial_qmkdx")
 position = Vector2(-921, 463)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("51_5wlp5")
 
 [node name="Sprite2D2" type="Sprite2D" parent="World/ForegroundFar" unique_id=498417848]
 modulate = Color(0.5616404, 0.6042889, 0.5525397, 1)
+material = SubResource("ShaderMaterial_4ftsv")
 position = Vector2(-789, 443)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("51_5wlp5")
@@ -1149,43 +1289,43 @@ texture = ExtResource("51_5wlp5")
 flip_h = true
 
 [node name="Sprite2D7" type="Sprite2D" parent="World/ForegroundFar" unique_id=1603098767]
-modulate = Color(0.5689727, 0.56897277, 0.5689727, 1)
+modulate = Color(0.43904907, 0.43904915, 0.43904895, 1)
 position = Vector2(-475, 333)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("53_cxsoa")
 
 [node name="Sprite2D4" type="Sprite2D" parent="World/ForegroundFar" unique_id=456096408]
-modulate = Color(0.5497138, 0.54927737, 0.4487779, 1)
+modulate = Color(0.4041526, 0.4039514, 0.31748164, 1)
 position = Vector2(-444, 418)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
 
 [node name="Sprite2D9" type="Sprite2D" parent="World/ForegroundFar" unique_id=1200548789]
-modulate = Color(0.5497138, 0.54927737, 0.4487779, 1)
+modulate = Color(0.51073295, 0.40277573, 0.32655424, 1)
 position = Vector2(-60.00003, 400)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
 
 [node name="Sprite2D5" type="Sprite2D" parent="World/ForegroundFar" unique_id=2104848271]
-modulate = Color(0.5689727, 0.56897277, 0.5689727, 1)
+modulate = Color(0.52553785, 0.43314862, 0.38051054, 1)
 position = Vector2(-511.99997, 337)
 scale = Vector2(0.08, 0.08)
 texture = ExtResource("53_cxsoa")
 
 [node name="Sprite2D8" type="Sprite2D" parent="World/ForegroundFar" unique_id=630463397]
-modulate = Color(0.5689727, 0.56897277, 0.5689727, 1)
+modulate = Color(0.46229082, 0.46229053, 0.4622907, 1)
 position = Vector2(-575, 361)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("53_cxsoa")
 
 [node name="Sprite2D6" type="Sprite2D" parent="World/ForegroundFar" unique_id=227972771]
-modulate = Color(0.5689727, 0.56897277, 0.5689727, 1)
+modulate = Color(0.45452452, 0.45452416, 0.4545244, 1)
 position = Vector2(-395, 344.99997)
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("53_cxsoa")
 
 [node name="Sprite2D10" type="Sprite2D" parent="World/ForegroundFar" unique_id=261664800]
-modulate = Color(0.6955032, 0.6955031, 0.6955031, 1)
+modulate = Color(0.6205607, 0.50743777, 0.52959496, 1)
 position = Vector2(-163, 332.00003)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("54_a10ds")
@@ -1196,44 +1336,48 @@ scroll_scale = Vector2(1.2, 1)
 
 [node name="Sprite2D2" type="Sprite2D" parent="World/ForegroundMid" unique_id=897215308]
 modulate = Color(0.40911728, 0.3785003, 0.19186574, 1)
+material = SubResource("ShaderMaterial_66fwr")
 position = Vector2(-1136, 488)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("51_5wlp5")
 
 [node name="Sprite2D7" type="Sprite2D" parent="World/ForegroundMid" unique_id=1537909402]
 modulate = Color(0.43528146, 0.40635777, 0.20800301, 1)
+material = SubResource("ShaderMaterial_ka1dv")
 position = Vector2(-927, 456)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("51_5wlp5")
 
 [node name="Sprite2D3" type="Sprite2D" parent="World/ForegroundMid" unique_id=909137143]
 modulate = Color(0.40911728, 0.3785003, 0.19186574, 1)
+material = SubResource("ShaderMaterial_qkk4n")
 position = Vector2(-1393, 518)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("51_5wlp5")
 
 [node name="Sprite2D4" type="Sprite2D" parent="World/ForegroundMid" unique_id=1247113464]
 modulate = Color(0.40911728, 0.3785003, 0.19186574, 1)
+material = SubResource("ShaderMaterial_cctgy")
 position = Vector2(-1662, 501)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("51_5wlp5")
 flip_h = true
 
 [node name="Sprite2D11" type="Sprite2D" parent="World/ForegroundMid" unique_id=1678732403]
-modulate = Color(0.25185874, 0.28499323, 0.13670674, 1)
+modulate = Color(0.31972942, 0.29166752, 0.20046127, 1)
 position = Vector2(-538.99994, 433.00003)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
 
 [node name="Sprite2D12" type="Sprite2D" parent="World/ForegroundMid" unique_id=1287660619]
-modulate = Color(0.25185874, 0.28499323, 0.13670674, 1)
+modulate = Color(0.4061276, 0.32254, 0.20283288, 1)
 position = Vector2(-258, 426)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
 flip_h = true
 
 [node name="Sprite2D15" type="Sprite2D" parent="World/ForegroundMid" unique_id=1158214725]
-modulate = Color(0.25185874, 0.28499323, 0.13670674, 1)
+modulate = Color(0.35538235, 0.32488972, 0.2257872, 1)
 position = Vector2(67.99997, 439)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
@@ -1241,69 +1385,80 @@ flip_h = true
 
 [node name="Sprite2D6" type="Sprite2D" parent="World/ForegroundMid" unique_id=103189608]
 modulate = Color(0.40911728, 0.3785003, 0.19186574, 1)
+material = SubResource("ShaderMaterial_v0by6")
 position = Vector2(-1270, 499)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("51_5wlp5")
 flip_h = true
 
 [node name="Sprite2D5" type="Sprite2D" parent="World/ForegroundMid" unique_id=291842730]
-modulate = Color(0.40911728, 0.3785003, 0.19186574, 1)
+modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
+material = SubResource("ShaderMaterial_4ghe2")
 position = Vector2(-1837.0001, 520)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("51_5wlp5")
 flip_h = true
 
 [node name="Sprite2D8" type="Sprite2D" parent="World/ForegroundMid" unique_id=1909291704]
-modulate = Color(0.44227967, 0.39798462, 0.3336037, 1)
+modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
+material = SubResource("ShaderMaterial_uqjib")
 position = Vector2(-708, 419)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D9" type="Sprite2D" parent="World/ForegroundMid" unique_id=702290024]
-modulate = Color(0.44227967, 0.39798462, 0.3336037, 1)
+modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
+material = SubResource("ShaderMaterial_lqtvr")
 position = Vector2(-607, 377)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D13" type="Sprite2D" parent="World/ForegroundMid" unique_id=1143642260]
 modulate = Color(0.44227967, 0.39798462, 0.3336037, 1)
+material = SubResource("ShaderMaterial_jy88k")
 position = Vector2(-334, 391)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D16" type="Sprite2D" parent="World/ForegroundMid" unique_id=694126697]
-modulate = Color(0.44227967, 0.39798462, 0.3336037, 1)
+modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
+material = SubResource("ShaderMaterial_mt38o")
 position = Vector2(-47, 381)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D17" type="Sprite2D" parent="World/ForegroundMid" unique_id=248347100]
-modulate = Color(0.44227967, 0.39798462, 0.3336037, 1)
+modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
+material = SubResource("ShaderMaterial_om8jl")
 position = Vector2(28, 377)
 scale = Vector2(0.13, 0.13)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ForegroundMid" unique_id=1965462028]
-modulate = Color(0.44227967, 0.39798462, 0.3336037, 1)
+modulate = Color(0.23529412, 0.21176471, 0.14117648, 1)
+material = SubResource("ShaderMaterial_u7cis")
 position = Vector2(-796, 449)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D10" type="Sprite2D" parent="World/ForegroundMid" unique_id=1411774253]
-modulate = Color(0.47521985, 0.43346795, 0.3108847, 1)
+modulate = Color(0.23515898, 0.2113499, 0.13990399, 1)
+material = SubResource("ShaderMaterial_1np1t")
 position = Vector2(-423, 348)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("53_cxsoa")
 
 [node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundMid" unique_id=1009809616]
-modulate = Color(0.47521985, 0.43346795, 0.3108847, 1)
+modulate = Color(0.23529412, 0.21176471, 0.14117648, 1)
+material = SubResource("ShaderMaterial_uhb4f")
 position = Vector2(-131, 362)
 scale = Vector2(0.18, 0.18)
 texture = ExtResource("53_cxsoa")
 flip_h = true
 
 [node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundMid" unique_id=1130451208]
-modulate = Color(0.47521985, 0.43346795, 0.3108847, 1)
+modulate = Color(0.23529412, 0.21176471, 0.14117648, 1)
+material = SubResource("ShaderMaterial_ni0h8")
 position = Vector2(143.00003, 390)
 scale = Vector2(0.18, 0.18)
 texture = ExtResource("53_cxsoa")
@@ -1505,273 +1660,136 @@ scroll_scale = Vector2(0.95, 1)
 [node name="MoonBeams" type="Node2D" parent="MoonBeams2" unique_id=1074925949]
 
 [node name="PointLight2D" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=930336890]
-position = Vector2(-1621.9999, -167)
+position = Vector2(-1506.0313, -148.82877)
 rotation = 0.21411048
-scale = Vector2(0.20423613, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(1.2074183, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.14
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
-[node name="PointLight2D2" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1401610807]
-position = Vector2(-1233, -377.99997)
-rotation = 0.22839569
-scale = Vector2(0.074039, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D3" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=877074217]
-position = Vector2(-911.00006, -326)
+[node name="PointLight2D6" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=803037053]
+position = Vector2(-649.01715, -203.26178)
 rotation = 0.21411048
-scale = Vector2(0.08225679, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(0.67391366, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.15
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
-[node name="PointLight2D5" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=2000166312]
-position = Vector2(-1229.9741, -375.86652)
+[node name="PointLight2D7" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=53499844]
+position = Vector2(-27, -194)
 rotation = 0.21411048
-scale = Vector2(0.3690338, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(0.67391366, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.15
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
-[node name="PointLight2D6" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=847355426]
-position = Vector2(-987, -302)
+[node name="PointLight2D8" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1317468829]
+position = Vector2(1596.9999, 65.99997)
 rotation = 0.21411048
-scale = Vector2(0.3690338, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(1.0148401, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.11
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
-[node name="PointLight2D7" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=345605665]
-position = Vector2(-779.6786, -233.66843)
+[node name="PointLight2D11" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=422973568]
+position = Vector2(4548, -3.000061)
 rotation = 0.21411048
-scale = Vector2(0.27693185, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(1.0148401, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.09
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
-[node name="PointLight2D8" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=704464724]
-position = Vector2(-257.00003, -241.00002)
+[node name="PointLight2D9" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=892165052]
+position = Vector2(3065, 113)
 rotation = 0.21411048
-scale = Vector2(0.42731413, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D9" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=2090034798]
-position = Vector2(-214.00003, -402.99994)
-rotation = 0.21411048
-scale = Vector2(0.18014954, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D10" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=346771496]
-position = Vector2(399.93698, -315.57397)
-rotation = 0.21411048
-scale = Vector2(0.74483573, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D11" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1971968855]
-position = Vector2(362.6034, -402.5003)
-rotation = 0.22615567
-scale = Vector2(0.22375032, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D12" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=269064382]
-position = Vector2(453.56143, -470.44183)
-rotation = 0.21411048
-scale = Vector2(0.18721765, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D13" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=2091802597]
-position = Vector2(490.75992, -422.4782)
-rotation = 0.18671688
-scale = Vector2(0.056490615, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D14" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1798609495]
-position = Vector2(544.45825, -495.46576)
-rotation = 0.19921969
-scale = Vector2(0.15638138, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D15" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=851289773]
-position = Vector2(952.99994, -353)
-rotation = 0.19921969
-scale = Vector2(0.30761236, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D16" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=749596144]
-position = Vector2(1252, -268.99997)
-rotation = 0.19921969
-scale = Vector2(0.41285408, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D17" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1223988943]
-position = Vector2(1233, -187.00002)
-rotation = 0.19921969
-scale = Vector2(0.65468943, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D18" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=499720650]
-position = Vector2(1612.1526, 23.790962)
-rotation = 0.19921969
-scale = Vector2(1.2195978, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D19" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=584739777]
-position = Vector2(2768.0002, 81.00004)
-rotation = 0.19921969
-scale = Vector2(0.47419658, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D20" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1109718725]
-position = Vector2(2745, 160.00005)
-rotation = 0.19921969
-scale = Vector2(0.20051028, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D21" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=615663875]
-position = Vector2(3059, 23.000015)
-rotation = 0.19921969
-scale = Vector2(0.53779465, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D22" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1500565658]
-position = Vector2(3334, -8.000015)
-rotation = 0.19921969
-scale = Vector2(0.53779465, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D23" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1630152639]
-position = Vector2(3588.0002, -177.99998)
-rotation = 0.19921969
-scale = Vector2(0.53779465, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
-
-[node name="PointLight2D24" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=2022686143]
-position = Vector2(3703.0002, 46.00011)
-rotation = 0.19921969
-scale = Vector2(0.22122458, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(1.0148401, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.1
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
 [node name="PointLight2D25" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1854162370]
-position = Vector2(3730.0002, -80.00001)
+position = Vector2(3729.0127, -80.19942)
 rotation = 0.19921969
-scale = Vector2(0.40873763, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
+scale = Vector2(0.55123895, 2.4752815)
+color = Color(0.8039216, 0.9372549, 0.9647059, 0.50980395)
+energy = 0.26
 shadow_enabled = true
 texture = ExtResource("43_ka027")
 texture_scale = 1.33
 
-[node name="PointLight2D26" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=1683779986]
-position = Vector2(4163.0186, -51.160267)
-rotation = 0.19921969
-scale = Vector2(0.5227056, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
+[node name="Fog" type="TextureRect" parent="." unique_id=1388032611]
+z_index = 8
+texture_repeat = 2
+material = SubResource("ShaderMaterial_1r4s3")
+offset_left = -2167.0
+offset_top = -462.0
+offset_right = 7190.0
+offset_bottom = 550.0
+texture = SubResource("NoiseTexture2D_ka1dv")
 
-[node name="PointLight2D27" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=547932654]
-position = Vector2(4556.396, -127.05551)
-rotation = 0.19921969
-scale = Vector2(0.3165856, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
+[node name="GodRays" type="Parallax2D" parent="." unique_id=1540753313]
+z_index = -1
+scroll_scale = Vector2(0.95, 1)
 
-[node name="PointLight2D28" type="PointLight2D" parent="MoonBeams2/MoonBeams" unique_id=312934491]
-position = Vector2(4808.1343, 54.383442)
-rotation = 0.19921969
-scale = Vector2(0.45361096, 2.4752815)
-color = Color(0.28235295, 0.80784315, 0.827451, 0.57254905)
-energy = 0.47
-shadow_enabled = true
-texture = ExtResource("43_ka027")
-texture_scale = 1.33
+[node name="Godray01" type="ColorRect" parent="GodRays" unique_id=1117172649]
+material = SubResource("ShaderMaterial_yrqgo")
+offset_left = -1777.0
+offset_top = -718.0
+offset_right = -1141.0
+offset_bottom = 392.0
+
+[node name="Godray03" type="ColorRect" parent="GodRays" unique_id=1743698451]
+material = SubResource("ShaderMaterial_ck4x5")
+offset_left = -945.0
+offset_top = -779.0
+offset_right = -385.0
+offset_bottom = 467.0
+
+[node name="Godray04" type="ColorRect" parent="GodRays" unique_id=610646170]
+material = SubResource("ShaderMaterial_ck4x5")
+offset_left = -286.0
+offset_top = -933.0
+offset_right = 274.0
+offset_bottom = 313.0
+
+[node name="Godray05" type="ColorRect" parent="GodRays" unique_id=1180178563]
+material = SubResource("ShaderMaterial_ck4x5")
+offset_left = 1365.0
+offset_top = -820.0
+offset_right = 1925.0
+offset_bottom = 426.0
+
+[node name="Godray06" type="ColorRect" parent="GodRays" unique_id=1725227842]
+material = SubResource("ShaderMaterial_ck4x5")
+offset_left = 4285.0
+offset_top = -765.0
+offset_right = 4883.0
+offset_bottom = 481.0
+
+[node name="Godray08" type="ColorRect" parent="GodRays" unique_id=1077247328]
+material = SubResource("ShaderMaterial_ck4x5")
+offset_left = 2870.0
+offset_top = -849.0
+offset_right = 3430.0
+offset_bottom = 397.0
+
+[node name="Godray07" type="ColorRect" parent="GodRays" unique_id=1225266595]
+material = SubResource("ShaderMaterial_wqvu7")
+offset_left = 3531.0
+offset_top = -800.0
+offset_right = 3953.0
+offset_bottom = 515.0
 
 [editable path="Player"]

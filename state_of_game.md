@@ -1,6 +1,12 @@
 # State of Game
 
-Last updated: 2026-06-20
+Last updated: 2026-06-21
+
+## Latest Update - 2026-06-21
+- Moonbeams and godrays were edited for the Level 03 atmosphere pass, including ColorRect shader work.
+- Foreground objects now have shader/material polish for better motion and depth.
+- Fog shader work was added and wired into the current test/Level 03 visual pass.
+- Level 03 and test room scenes were updated to support the current lighting, fog, and foreground shader iteration.
 
 ## Latest Update - 2026-06-20
 - Level 03 layout pass continued with newly placed platforms and additional Sprite2D decoration/prop work.
