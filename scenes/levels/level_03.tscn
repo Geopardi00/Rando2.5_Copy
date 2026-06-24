@@ -347,7 +347,7 @@ polygon = PackedVector2Array(6420, -157, 6462, -162, 6716, -159, 6716, -142, 646
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1r4s3"]
 shader = ExtResource("66_ka1dv")
-shader_parameter/base_color = Color(0.46666667, 0.8392157, 0.93333334, 0.09803922)
+shader_parameter/base_color = Color(0.96862745, 0.99215686, 0.99607843, 0.05490196)
 shader_parameter/location_fade = 1.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4ghe2"]
@@ -395,7 +395,7 @@ shader = ExtResource("67_qkk4n")
 shader_parameter/angle = 0.71
 shader_parameter/position = 0.22
 shader_parameter/spread = 0.64800003078
-shader_parameter/cutoff = 0.22500005818750002
+shader_parameter/cutoff = 0.2250000581875
 shader_parameter/falloff = 0.31600001501
 shader_parameter/edge_fade = 0.15
 shader_parameter/speed = 3.2
@@ -893,6 +893,14 @@ position = Vector2(1650, 231)
 scale = Vector2(0.13, 0.13)
 texture = ExtResource("28_u5pqs")
 
+[node name="Plant02" type="Sprite2D" parent="Terrain" unique_id=772687260]
+position = Vector2(1177, 275)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_d10hc")
+flip_h = true
+
+[node name="Plant03" type="Sprite2D" parent="Terrain" unique_id=909853650]
+
 [node name="Props" type="Node2D" parent="." unique_id=1128601714]
 
 [node name="OilBarrel01" type="StaticBody2D" parent="Props" unique_id=1237058901]
@@ -1238,6 +1246,7 @@ repeat_size = Vector2(2048, 0)
 repeat_times = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BackgroundFar" unique_id=464201576]
+modulate = Color(0.44439024, 0.7996712, 0.9397001, 1)
 z_index = -5
 texture = ExtResource("20_gpenj")
 offset = Vector2(0, -60)
@@ -1250,6 +1259,7 @@ repeat_size = Vector2(2048, 0)
 repeat_times = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BackgroundMid" unique_id=467480536]
+modulate = Color(0.20998836, 0.54454345, 0.70521724, 1)
 texture = ExtResource("20_410tk")
 
 [node name="BackgroundNear" type="Parallax2D" parent="World" unique_id=387366459]
@@ -1260,6 +1270,7 @@ repeat_size = Vector2(2048, 0)
 repeat_times = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BackgroundNear" unique_id=1454557719]
+modulate = Color(0.4756974, 0.773453, 0.7813384, 1)
 position = Vector2(-4, 103)
 texture = ExtResource("10_8w8tq")
 
@@ -1300,6 +1311,12 @@ position = Vector2(-444, 418)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
 
+[node name="Sprite2D16" type="Sprite2D" parent="World/ForegroundFar" unique_id=1574065523]
+modulate = Color(0.51073295, 0.40277573, 0.32655424, 1)
+position = Vector2(242, 428)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("52_atuk7")
+
 [node name="Sprite2D9" type="Sprite2D" parent="World/ForegroundFar" unique_id=1200548789]
 modulate = Color(0.51073295, 0.40277573, 0.32655424, 1)
 position = Vector2(-60.00003, 400)
@@ -1328,6 +1345,56 @@ texture = ExtResource("53_cxsoa")
 modulate = Color(0.6205607, 0.50743777, 0.52959496, 1)
 position = Vector2(-163, 332.00003)
 scale = Vector2(0.15, 0.15)
+texture = ExtResource("54_a10ds")
+
+[node name="Sprite2D19" type="Sprite2D" parent="World/ForegroundFar" unique_id=1424186132]
+modulate = Color(0.6243511, 0.49477035, 0.41299215, 1)
+position = Vector2(377, 360)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("54_a10ds")
+
+[node name="Sprite2D11" type="Sprite2D" parent="World/ForegroundFar" unique_id=361010441]
+modulate = Color(0.51073295, 0.40277573, 0.32655424, 1)
+position = Vector2(512, 446)
+rotation = -0.08552113
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("52_atuk7")
+
+[node name="Sprite2D12" type="Sprite2D" parent="World/ForegroundFar" unique_id=216910973]
+modulate = Color(0.51073295, 0.40277573, 0.32655424, 1)
+position = Vector2(853, 462)
+rotation = -0.08552113
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("52_atuk7")
+
+[node name="Sprite2D13" type="Sprite2D" parent="World/ForegroundFar" unique_id=769507042]
+modulate = Color(0.45452452, 0.45452416, 0.4545244, 1)
+position = Vector2(480, 369.99997)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("53_cxsoa")
+
+[node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundFar" unique_id=499248917]
+modulate = Color(0.45452452, 0.45452416, 0.4545244, 1)
+position = Vector2(646, 380)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("53_cxsoa")
+
+[node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundFar" unique_id=912260747]
+modulate = Color(0.45452452, 0.45452416, 0.4545244, 1)
+position = Vector2(200.00002, 345)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("53_cxsoa")
+
+[node name="Sprite2D17" type="Sprite2D" parent="World/ForegroundFar" unique_id=661417124]
+modulate = Color(0.45452452, 0.45452416, 0.4545244, 1)
+position = Vector2(170, 353)
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("53_cxsoa")
+
+[node name="Sprite2D15" type="Sprite2D" parent="World/ForegroundFar" unique_id=1948043153]
+modulate = Color(0.6243511, 0.49477035, 0.41299215, 1)
+position = Vector2(874, 372.99997)
+scale = Vector2(0.07, 0.07)
 texture = ExtResource("54_a10ds")
 
 [node name="ForegroundMid" type="Parallax2D" parent="World" unique_id=1801110203]
@@ -1383,6 +1450,20 @@ scale = Vector2(0.4, 0.4)
 texture = ExtResource("52_atuk7")
 flip_h = true
 
+[node name="Sprite2D19" type="Sprite2D" parent="World/ForegroundMid" unique_id=98574004]
+modulate = Color(0.38706738, 0.29061994, 0.1730515, 1)
+position = Vector2(371, 446)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("52_atuk7")
+flip_h = true
+
+[node name="Sprite2D20" type="Sprite2D" parent="World/ForegroundMid" unique_id=333404690]
+modulate = Color(0.40735754, 0.30745775, 0.14548528, 1)
+position = Vector2(700, 461)
+rotation = -0.08552113
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("52_atuk7")
+
 [node name="Sprite2D6" type="Sprite2D" parent="World/ForegroundMid" unique_id=103189608]
 modulate = Color(0.40911728, 0.3785003, 0.19186574, 1)
 material = SubResource("ShaderMaterial_v0by6")
@@ -1423,15 +1504,22 @@ texture = ExtResource("51_radsg")
 [node name="Sprite2D16" type="Sprite2D" parent="World/ForegroundMid" unique_id=694126697]
 modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
 material = SubResource("ShaderMaterial_mt38o")
-position = Vector2(-47, 381)
+position = Vector2(-25.000002, 366)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D17" type="Sprite2D" parent="World/ForegroundMid" unique_id=248347100]
 modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
 material = SubResource("ShaderMaterial_om8jl")
-position = Vector2(28, 377)
+position = Vector2(28, 397)
 scale = Vector2(0.13, 0.13)
+texture = ExtResource("51_radsg")
+
+[node name="Sprite2D21" type="Sprite2D" parent="World/ForegroundMid" unique_id=1406140922]
+modulate = Color(0.36862746, 0.3372549, 0.23529412, 1)
+material = SubResource("ShaderMaterial_om8jl")
+position = Vector2(288, 373)
+scale = Vector2(0.1, 0.1)
 texture = ExtResource("51_radsg")
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ForegroundMid" unique_id=1965462028]
@@ -1449,7 +1537,7 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("53_cxsoa")
 
 [node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundMid" unique_id=1009809616]
-modulate = Color(0.23529412, 0.21176471, 0.14117648, 1)
+modulate = Color(0.34493053, 0.31310326, 0.21764618, 1)
 material = SubResource("ShaderMaterial_uhb4f")
 position = Vector2(-131, 362)
 scale = Vector2(0.18, 0.18)
@@ -1457,10 +1545,26 @@ texture = ExtResource("53_cxsoa")
 flip_h = true
 
 [node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundMid" unique_id=1130451208]
-modulate = Color(0.23529412, 0.21176471, 0.14117648, 1)
+modulate = Color(0.3648813, 0.3316235, 0.2318821, 1)
 material = SubResource("ShaderMaterial_ni0h8")
-position = Vector2(143.00003, 390)
+position = Vector2(175, 387.99997)
 scale = Vector2(0.18, 0.18)
+texture = ExtResource("53_cxsoa")
+flip_h = true
+
+[node name="Sprite2D22" type="Sprite2D" parent="World/ForegroundMid" unique_id=1633104293]
+modulate = Color(0.35243288, 0.32082012, 0.222031, 1)
+material = SubResource("ShaderMaterial_ni0h8")
+position = Vector2(505, 417.99997)
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("53_cxsoa")
+flip_h = true
+
+[node name="Sprite2D23" type="Sprite2D" parent="World/ForegroundMid" unique_id=217985388]
+modulate = Color(0.34095204, 0.30941346, 0.21482167, 1)
+material = SubResource("ShaderMaterial_ni0h8")
+position = Vector2(836.00006, 401.00003)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("53_cxsoa")
 flip_h = true
 
@@ -1518,9 +1622,23 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(-607, 723)
 texture = ExtResource("52_8mjvw")
 
+[node name="Foregroundobejct02" type="Sprite2D" parent="World/ForegroundNear" unique_id=86540576]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(734, 778)
+rotation = -0.08552113
+texture = ExtResource("52_8mjvw")
+flip_h = true
+
 [node name="Foregroundobject02" type="Sprite2D" parent="World/ForegroundNear" unique_id=944892470]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(118, 696)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("53_nip07")
+flip_h = true
+
+[node name="Foregroundobject03" type="Sprite2D" parent="World/ForegroundNear" unique_id=364430778]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(1204.9999, 715)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("53_nip07")
 flip_h = true
@@ -1536,6 +1654,19 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(-431, 342)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("54_radsg")
+
+[node name="Sprite2D3" type="Sprite2D" parent="World/ForegroundNear" unique_id=1359594838]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(384, 475)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("53_cxsoa")
+
+[node name="Sprite2D4" type="Sprite2D" parent="World/ForegroundNear" unique_id=219514928]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(728.00006, 425)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("53_cxsoa")
+flip_h = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2667231]
 z_index = 4

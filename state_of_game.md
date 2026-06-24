@@ -1,6 +1,12 @@
 # State of Game
 
-Last updated: 2026-06-21
+Last updated: 2026-06-24
+
+## Latest Update - 2026-06-24
+- Level 02 asset pass continued with new platform and terrain art under the current Level 02 ver2.0 asset set.
+- Level 02/test room layout work was updated to use the new terrain and platform pieces.
+- Stalactite hazard visuals were updated for the current cave/hazard polish pass.
+- Night parallax background assets were added for the current Level 02/Level 03 atmosphere work.
 
 ## Latest Update - 2026-06-21
 - Moonbeams and godrays were edited for the Level 03 atmosphere pass, including ColorRect shader work.
