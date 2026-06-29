@@ -12,6 +12,7 @@ const IMPLEMENTED_FEATURES := {
 	"player_slap_attack": true,
 	"mosquito_harassment_enemy": true,
 	"mosquito_swatting_state": true,
+	"mosquito_swatting_air_momentum": true,
 	"non_lethal_mosquito_swarm": true,
 	"gameplay_freeze_frame": true,
 }

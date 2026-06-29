@@ -364,17 +364,18 @@ func mosquito_attack() -> void:
 	is_swatting = true
 	swatting_timer = 1.0
 	slap_animation_timer = 0.0
-	velocity.x = 0.0
+	if is_on_floor():
+		velocity.x = 0.0
 	play_animation_safe(&"swatting", &"idle")
 
 
 func update_swatting(delta: float) -> void:
 	swatting_timer -= delta
-	velocity.x = 0.0
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
+		velocity.x = 0.0
 		velocity.y = 0.0
 
 	if swatting_timer <= 0.0:
