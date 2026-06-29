@@ -6,6 +6,8 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 @export var gravity: float = 1000.0
 @export var move_direction: int = -1
 @export var max_hp: int = 2
+@export var slap_knockback_distance: float = 20.0
+@export var slap_knockback_duration: float = 0.12
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var wall_check_left: RayCast2D = $WallCheckLeft
@@ -16,6 +18,8 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 
 var hp: int = 0
 var is_head_turning: bool = false
+var slap_knockback_timer: float = 0.0
+var slap_knockback_velocity: float = 0.0
 
 
 func _ready() -> void:
@@ -36,15 +40,20 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = 0.0
 
+	if slap_knockback_timer > 0.0:
+		slap_knockback_timer -= delta
+		velocity.x = slap_knockback_velocity
+		move_and_slide()
+		update_sprite_facing(get_direction_from_velocity(slap_knockback_velocity))
+		return
+
 	if should_turn_around():
 		turn_around()
 
 	velocity.x = move_direction * move_speed
 	move_and_slide()
 
-	# Assumes sprite faces LEFT by default.
-	# If wrong, change to: animated_sprite.flip_h = move_direction < 0
-	animated_sprite.flip_h = move_direction > 0
+	update_sprite_facing(move_direction)
 
 
 func should_turn_around() -> bool:
@@ -79,10 +88,52 @@ func take_damage(amount: int = 1) -> void:
 func slapped() -> void:
 	take_damage(1)
 
+	if hp > 0:
+		start_slap_knockback()
+
 	if hp > 0 and not is_head_turning and animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"head_turn"):
 		play_head_turn()
 
-	# TODO: Add future stagger / knockback response for slap hits.
+
+func start_slap_knockback() -> void:
+	var knockback_direction := get_slap_knockback_direction()
+	var duration: float = maxf(slap_knockback_duration, 0.001)
+
+	slap_knockback_timer = duration
+	slap_knockback_velocity = knockback_direction * slap_knockback_distance / duration
+
+
+func get_slap_knockback_direction() -> int:
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+
+	if player != null:
+		if player.global_position.x < global_position.x:
+			return 1
+		if player.global_position.x > global_position.x:
+			return -1
+
+	if move_direction != 0:
+		return -signi(move_direction)
+
+	return 1
+
+
+func get_direction_from_velocity(current_velocity: float) -> int:
+	if current_velocity > 0.0:
+		return 1
+	if current_velocity < 0.0:
+		return -1
+
+	return 0
+
+
+func update_sprite_facing(direction: int) -> void:
+	if direction == 0:
+		return
+
+	# Assumes sprite faces LEFT by default.
+	# If wrong, change to: animated_sprite.flip_h = direction < 0
+	animated_sprite.flip_h = direction > 0
 
 
 func play_head_turn() -> void:

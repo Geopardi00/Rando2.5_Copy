@@ -35,25 +35,25 @@ shader_parameter/flash_amount = 0.0
 [sub_resource type="SpriteFrames" id="SpriteFrames_walk"]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 0.2,
 "texture": ExtResource("head_00")
 }, {
-"duration": 1.0,
+"duration": 0.2,
 "texture": ExtResource("head_01")
 }, {
-"duration": 0.8,
+"duration": 0.2,
 "texture": ExtResource("head_02")
 }, {
-"duration": 0.7,
+"duration": 0.4,
 "texture": ExtResource("head_03")
 }, {
-"duration": 0.7,
+"duration": 0.4,
 "texture": ExtResource("head_04")
 }, {
-"duration": 0.7,
+"duration": 0.4,
 "texture": ExtResource("head_05")
 }, {
-"duration": 0.7,
+"duration": 0.4,
 "texture": ExtResource("head_06")
 }],
 "loop": false,
@@ -123,8 +123,9 @@ shape = SubResource("RectangleShape2D_fcftc")
 material = SubResource("ShaderMaterial_lu5c6")
 scale = Vector2(0.05, 0.05)
 sprite_frames = SubResource("SpriteFrames_walk")
-animation = &"walk"
-frame_progress = 0.74398714
+animation = &"head_turn"
+frame = 6
+frame_progress = 1.0
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=819948242 groups=["enemy_hurtbox"]]
 collision_layer = 16

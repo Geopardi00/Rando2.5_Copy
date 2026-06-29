@@ -1,6 +1,12 @@
 # State of Game
 
-Last updated: 2026-06-24
+Last updated: 2026-06-29
+
+## Latest Update - 2026-06-29
+- Basic patrol soldier slap feedback was juiced up with short horizontal knockback on slap hits.
+- Soldier slap knockback is currently tuned to 20px over 0.12s and pushes away from the player while preserving bullet damage behavior.
+- Soldier `head_turn` animation timing was fine tuned for snappier slap response.
+- Latest checkpoint focuses on soldier slap knockback/head-turn feel.
 
 ## Latest Update - 2026-06-24
 - Level 02 asset pass continued with new platform and terrain art under the current Level 02 ver2.0 asset set.
@@ -71,6 +77,7 @@ Last updated: 2026-06-24
 - Enemy hit flash added via shader material parameter (`flash_amount`)
 - Enemy death blood burst particles added
 - Enemy hit sound now plays reliably, including on the killing hit, by spawning a one-shot `AudioStreamPlayer2D` in code
+- Player slap hits now knock surviving patrol soldiers back slightly for stronger combat feedback
 - Boss uses the same player-bullet-to-`enemy_hurtbox` damage convention as regular enemies
 - Boss attacks damage the player through `take_damage(1)`
 - Dog contact, knife thrower contact, and thrown knife projectiles now deal 3 damage, making them one-hit kills against the 3 HP player
@@ -85,6 +92,8 @@ Last updated: 2026-06-24
   - Uses white hit flash on damage
   - Spawns blood burst on death
   - Plays hit sound on damage
+  - Slap hits trigger a short knockback away from the player
+  - Slap/head-turn response timing has been tuned for snappier feedback
 
 - **Knife thrower enemy**
   - Stationary ground enemy
@@ -379,6 +388,8 @@ Last updated: 2026-06-24
 - Git checkpoint pushed: `3ede60c Add boss fight checkpoint`
 - Level 01 edited layout was recovered from the accidental edit folder and imported into the current working project
 - Godot reimported the copied Level 01 textures and a headless load check of `res://scenes/levels/level_01.tscn` passed
+- Patrol soldier slap knockback added and tuned down to 20px for a smaller gameplay-juice bump
+- Patrol soldier `head_turn` animation timing fine tuned for slap feedback
 
 ## Recommended Next Steps
 - Playtest the newly imported Level 01 layout in the editor and do a polish pass on enemy/hazard spacing, collisions, and foreground readability
