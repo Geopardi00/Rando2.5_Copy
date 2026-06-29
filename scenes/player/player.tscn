@@ -70,6 +70,27 @@
 [ext_resource type="Texture2D" uid="uid://bsh8ylddfwtwj" path="res://art/characters/animations/walk/frame0015.png" id="27_ttakn"]
 [ext_resource type="Texture2D" uid="uid://bc5yv65r1ixnb" path="res://art/characters/animations/jump/frame0016.png" id="28_hir57"]
 [ext_resource type="Texture2D" uid="uid://d0kygcthscbu3" path="res://art/characters/animations/walk/frame0016.png" id="28_rw8a5"]
+[ext_resource type="Texture2D" uid="uid://bll0nxy1s1cvq" path="res://art/characters/animations/slap/frame0000.png" id="slap_00"]
+[ext_resource type="Texture2D" uid="uid://i0cosc3506rx" path="res://art/characters/animations/slap/frame0001.png" id="slap_01"]
+[ext_resource type="Texture2D" uid="uid://df01jlf4iswfe" path="res://art/characters/animations/slap/frame0002.png" id="slap_02"]
+[ext_resource type="Texture2D" uid="uid://cengf75bsryv3" path="res://art/characters/animations/slap/frame0003.png" id="slap_03"]
+[ext_resource type="Texture2D" uid="uid://7v11fhm3d88s" path="res://art/characters/animations/slap/frame0004.png" id="slap_04"]
+[ext_resource type="Texture2D" uid="uid://dtxe1mv72yaof" path="res://art/characters/animations/slap/frame0005.png" id="slap_05"]
+[ext_resource type="Texture2D" uid="uid://dld4og2r5iwvl" path="res://art/characters/animations/slap/frame0006.png" id="slap_06"]
+[ext_resource type="Texture2D" uid="uid://cartxkc8reqya" path="res://art/characters/animations/slap/frame0007.png" id="slap_07"]
+[ext_resource type="Texture2D" uid="uid://ctsww2lne6mc0" path="res://art/characters/animations/slap/frame0008.png" id="slap_08"]
+[ext_resource type="Texture2D" uid="uid://dncgk06mycp3h" path="res://art/characters/animations/swatting/frame0000.png" id="swat_00"]
+[ext_resource type="Texture2D" uid="uid://xnv8c0fx58vo" path="res://art/characters/animations/swatting/frame0001.png" id="swat_01"]
+[ext_resource type="Texture2D" uid="uid://ckdpvsfwxiu1q" path="res://art/characters/animations/swatting/frame0002.png" id="swat_02"]
+[ext_resource type="Texture2D" uid="uid://csq8jdbuif3d6" path="res://art/characters/animations/swatting/frame0003.png" id="swat_03"]
+[ext_resource type="Texture2D" uid="uid://cc0vm83ubqjik" path="res://art/characters/animations/swatting/frame0004.png" id="swat_04"]
+[ext_resource type="Texture2D" uid="uid://cn5ygk6o3dsdu" path="res://art/characters/animations/swatting/frame0005.png" id="swat_05"]
+[ext_resource type="Texture2D" uid="uid://b4p3hwew6esxd" path="res://art/characters/animations/swatting/frame0006.png" id="swat_06"]
+[ext_resource type="Texture2D" uid="uid://cninjqjinxwiy" path="res://art/characters/animations/swatting/frame0007.png" id="swat_07"]
+[ext_resource type="Texture2D" uid="uid://cn4qo1up2s0nm" path="res://art/characters/animations/swatting/frame0008.png" id="swat_08"]
+[ext_resource type="Texture2D" uid="uid://dvmkxqvycv3ah" path="res://art/characters/animations/swatting/frame0009.png" id="swat_09"]
+[ext_resource type="Texture2D" uid="uid://x41h3nl21yar" path="res://art/characters/animations/swatting/frame0010.png" id="swat_10"]
+[ext_resource type="Texture2D" uid="uid://c02gh8hlskk5a" path="res://art/characters/animations/swatting/frame0011.png" id="swat_11"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8afob"]
 size = Vector2(20, 37)
@@ -246,6 +267,79 @@ animations = [{
 "loop": false,
 "name": &"jump",
 "speed": 30.0
+}, {
+"frames": [{
+"duration": 0.1,
+"texture": ExtResource("slap_00")
+}, {
+"duration": 0.1,
+"texture": ExtResource("slap_01")
+}, {
+"duration": 0.2,
+"texture": ExtResource("slap_02")
+}, {
+"duration": 0.3,
+"texture": ExtResource("slap_03")
+}, {
+"duration": 0.4,
+"texture": ExtResource("slap_04")
+}, {
+"duration": 0.5,
+"texture": ExtResource("slap_05")
+}, {
+"duration": 0.5,
+"texture": ExtResource("slap_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("slap_07")
+}, {
+"duration": 0.5,
+"texture": ExtResource("slap_08")
+}],
+"loop": false,
+"name": &"slap",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("swat_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swat_11")
+}],
+"loop": true,
+"name": &"swatting",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,

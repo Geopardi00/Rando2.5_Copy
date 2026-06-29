@@ -7,24 +7,19 @@
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
 [ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
-[ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="9_s3biy"]
-[ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="10_op2op"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="11_x4gfd"]
 [ext_resource type="PackedScene" uid="uid://6kw4h5wsrr37" path="res://scenes/props/muzzle_flash.tscn" id="12_ronwj"]
 [ext_resource type="PackedScene" uid="uid://b8mb1736qqexw" path="res://scenes/props/torch.tscn" id="13_o8emw"]
 [ext_resource type="PackedScene" uid="uid://bucje1crlwl04" path="res://scenes/fx/sun_beams.tscn" id="14_fma50"]
 [ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="15_ity2g"]
 [ext_resource type="Texture2D" uid="uid://dy8amwpcg4u28" path="res://art/level01/ver2.0/foregroundplant05.png" id="15_l652x"]
-[ext_resource type="PackedScene" uid="uid://fw2njekj6b7u" path="res://scenes/Hazards/laser_mine.tscn" id="15_laser"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_mosquito.tscn" id="16_mosquito"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
-size = Vector2(1903.5, 19)
+size = Vector2(2461.5, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
 size = Vector2(36, 162)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_laser_mine_beam_test"]
-size = Vector2(35, 13.5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4c4i7"]
 shader = ExtResource("15_ity2g")
@@ -41,7 +36,7 @@ collision_mask = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1427477057]
-position = Vector2(576.25, 166.5)
+position = Vector2(855.25, 170)
 shape = SubResource("RectangleShape2D_51pqh")
 
 [node name="ColorRect" type="ColorRect" parent="Floor/CollisionShape2D" unique_id=1561013991]
@@ -67,6 +62,17 @@ offset_bottom = 77.0
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("1_knmjg")]
 script = ExtResource("2_asmw1")
 bullet_scene = ExtResource("3_sa601")
+slap_range = 20.0
+slap_height = 74.0
+
+[node name="AnimatedSprite2D" parent="Player" index="1" unique_id=1001658057]
+animation = &"slap"
+frame = 8
+frame_progress = 1.0
+
+[node name="MosquitoFullHoming" parent="." unique_id=1120212242 instance=ExtResource("16_mosquito")]
+position = Vector2(1673, -33)
+scale = Vector2(0.5, 0.5)
 
 [node name="Bullet" parent="." unique_id=1682380724 instance=ExtResource("3_sa601")]
 position = Vector2(-187, 10)
@@ -94,14 +100,14 @@ texture = ExtResource("8_op2op")
 
 [node name="level_03" type="Node2D" parent="." unique_id=2011995481]
 
-[node name="Enemy_dog" parent="." unique_id=363953011 instance=ExtResource("9_s3biy")]
-position = Vector2(361, 117)
-
-[node name="EnemyKnifeThrower" parent="." unique_id=1748288799 instance=ExtResource("10_op2op")]
-visible = false
-
 [node name="Enemy" parent="." unique_id=83899896 instance=ExtResource("11_x4gfd")]
-position = Vector2(301, 39)
+position = Vector2(1988, 92)
+
+[node name="AnimatedSprite2D" parent="Enemy" index="1" unique_id=939382343]
+animation = &"head_turn"
+frame = 6
+frame_progress = 1.0
+speed_scale = 3.0
 
 [node name="AnimatedSprite2D" parent="." unique_id=354235826 instance=ExtResource("12_ronwj")]
 
@@ -109,33 +115,6 @@ position = Vector2(301, 39)
 position = Vector2(-24, 45)
 
 [node name="SunBeams" parent="." unique_id=445635109 instance=ExtResource("14_fma50")]
-
-[node name="LaserMine" parent="." unique_id=1752570516 instance=ExtResource("15_laser")]
-position = Vector2(1794, 125)
-
-[node name="MineSprite" parent="LaserMine" index="0" unique_id=1611665701]
-z_index = 2
-texture_filter = 4
-position = Vector2(-65, 15)
-
-[node name="BeamSprite" parent="LaserMine" index="1" unique_id=2103265622]
-texture_filter = 4
-position = Vector2(-2.9999762, 3.000001)
-rotation = -0.003562741
-scale = Vector2(0.96368086, 1)
-
-[node name="BeamTrigger" parent="LaserMine" index="2" unique_id=1799064020]
-position = Vector2(77, 7)
-
-[node name="CollisionShape2D" parent="LaserMine/BeamTrigger" index="0" unique_id=1496868098]
-position = Vector2(-110, -3)
-shape = SubResource("RectangleShape2D_laser_mine_beam_test")
-
-[node name="CollisionShape2D" parent="LaserMine/ExplosionArea" parent_id_path=PackedInt32Array(1752570516, 1067355361) index="0" unique_id=1523538478]
-position = Vector2(-4, 2)
-
-[node name="LaserMine2" parent="." unique_id=909400269 instance=ExtResource("15_laser")]
-position = Vector2(839, 150)
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=241815937]
 scroll_scale = Vector2(1.2, 1)
@@ -149,5 +128,10 @@ position = Vector2(168, 230)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("15_l652x")
 
+[node name="EnemyMosquito" parent="." unique_id=1777605421 instance=ExtResource("16_mosquito")]
+position = Vector2(697, -19)
+scale = Vector2(0.5, 0.5)
+
+[editable path="Player"]
+[editable path="Enemy"]
 [editable path="SunBeams"]
-[editable path="LaserMine"]

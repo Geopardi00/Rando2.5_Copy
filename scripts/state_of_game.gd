@@ -9,6 +9,10 @@ const IMPLEMENTED_FEATURES := {
 	"bullet_enemy_damage": true,
 	"player_respawn_on_hit": true,
 	"checkpoint_respawn": true,
+	"player_slap_attack": true,
+	"mosquito_harassment_enemy": true,
+	"mosquito_swatting_state": true,
+	"gameplay_freeze_frame": true,
 }
 
 var session_unix_time: float = Time.get_unix_time_from_system()

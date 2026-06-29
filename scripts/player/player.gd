@@ -21,6 +21,11 @@ const BLOCK_MAX_VELOCITY = 180
 @export var max_hp: int = 3
 @export var invulnerability_time: float = 0.75
 @export var debug_enabled: bool = false
+@export var slap_range: float = 46.0
+@export var slap_height: float = 34.0
+@export var slap_duration: float = 0.10
+@export var slap_cooldown: float = 0.25
+@export var mosquito_immunity_time: float = 1.0
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
@@ -36,6 +41,11 @@ var is_dead: bool = false
 var current_hp: int = 0
 var invulnerability_timer: float = 0.0
 var blink_timer: float = 0.0
+var slap_cooldown_timer: float = 0.0
+var slap_animation_timer: float = 0.0
+var swatting_timer: float = 0.0
+var mosquito_immunity_timer: float = 0.0
+var is_swatting: bool = false
 
 
 func _ready() -> void:
@@ -52,6 +62,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	update_invulnerability(delta)
+	update_mosquito_immunity(delta)
+	update_slap_timers(delta)
 
 	if is_dead:
 		velocity.x = 0.0
@@ -61,6 +73,12 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.y = 0.0
 
+		move_and_slide()
+		update_animation()
+		return
+
+	if is_swatting:
+		update_swatting(delta)
 		move_and_slide()
 		update_animation()
 		return
@@ -117,6 +135,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("shoot"):
 		try_shoot()
 
+	if Input.is_action_just_pressed("slap"):
+		try_slap()
+
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collision_crate = collision.get_collider()
@@ -150,6 +171,16 @@ func update_animation() -> void:
 		play_animation_safe(&"death", &"idle")
 		return
 
+	if is_swatting:
+		animated_sprite.speed_scale = 1.0
+		play_animation_safe(&"swatting", &"idle")
+		return
+
+	if slap_animation_timer > 0.0:
+		animated_sprite.speed_scale = 1.0
+		play_animation_safe(&"slap", &"idle")
+		return
+
 	if not is_on_floor():
 		animated_sprite.speed_scale = 1.0
 
@@ -168,6 +199,9 @@ func update_animation() -> void:
 
 
 func try_shoot() -> void:
+	if is_swatting:
+		return
+
 	if bullet_scene == null:
 		return
 
@@ -187,6 +221,58 @@ func fire_bullet() -> void:
 	spawn_muzzle_flash()
 
 	shoot_sound.play()
+
+
+func try_slap() -> void:
+	if is_dead or is_swatting or slap_cooldown_timer > 0.0:
+		return
+
+	slap_cooldown_timer = slap_cooldown
+	slap_animation_timer = slap_duration
+	play_animation_safe(&"slap", &"idle")
+	spawn_slap_hitbox()
+
+
+func spawn_slap_hitbox() -> void:
+	var hitbox := Area2D.new()
+	hitbox.name = "SlapHitbox"
+	hitbox.collision_layer = 0
+	hitbox.collision_mask = 16
+	hitbox.monitoring = true
+	hitbox.monitorable = false
+
+	var shape := CollisionShape2D.new()
+	var rectangle := RectangleShape2D.new()
+	rectangle.size = Vector2(slap_range, slap_height)
+	shape.shape = rectangle
+	hitbox.add_child(shape)
+
+	var hit_enemies: Array[Node] = []
+	hitbox.area_entered.connect(_on_slap_hitbox_area_entered.bind(hit_enemies))
+
+	get_tree().current_scene.add_child(hitbox)
+	hitbox.global_position = global_position + Vector2((slap_range * 0.5 + 12.0) * facing, 8.0)
+
+	await get_tree().create_timer(slap_duration).timeout
+	if is_instance_valid(hitbox):
+		hitbox.queue_free()
+
+
+func _on_slap_hitbox_area_entered(area: Area2D, hit_enemies: Array[Node]) -> void:
+	if not area.is_in_group("enemy_hurtbox"):
+		return
+
+	var enemy := area.get_parent()
+	if enemy == null or hit_enemies.has(enemy):
+		return
+
+	hit_enemies.append(enemy)
+
+	if enemy.has_method("slapped"):
+		enemy.slapped()
+	elif enemy.has_method("take_damage"):
+		enemy.take_damage(1)
+
 
 func spawn_muzzle_flash() -> void:
 	if muzzle_flash_scene == null:
@@ -256,6 +342,44 @@ func update_invulnerability(delta: float) -> void:
 
 	if invulnerability_timer <= 0.0:
 		animated_sprite.visible = true
+
+
+func update_mosquito_immunity(delta: float) -> void:
+	if mosquito_immunity_timer > 0.0:
+		mosquito_immunity_timer -= delta
+
+
+func update_slap_timers(delta: float) -> void:
+	if slap_cooldown_timer > 0.0:
+		slap_cooldown_timer -= delta
+
+	if slap_animation_timer > 0.0:
+		slap_animation_timer -= delta
+
+
+func mosquito_attack() -> void:
+	if is_dead or is_swatting or mosquito_immunity_timer > 0.0:
+		return
+
+	is_swatting = true
+	swatting_timer = 1.0
+	slap_animation_timer = 0.0
+	velocity.x = 0.0
+	play_animation_safe(&"swatting", &"idle")
+
+
+func update_swatting(delta: float) -> void:
+	swatting_timer -= delta
+	velocity.x = 0.0
+
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	else:
+		velocity.y = 0.0
+
+	if swatting_timer <= 0.0:
+		is_swatting = false
+		mosquito_immunity_timer = mosquito_immunity_time
 
 
 func die() -> void:

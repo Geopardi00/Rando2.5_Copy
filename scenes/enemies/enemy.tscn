@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://dixoev14rc2cf" path="res://scripts/enemies/enemy.gd" id="1_8e3ao"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_fcftc"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_fcftc"]
+[ext_resource type="Texture2D" uid="uid://c68qtoe7q3sbp" path="res://art/enemies/animations/soldier/head_turn/frame0000.png" id="head_00"]
+[ext_resource type="Texture2D" uid="uid://if1n8emk8ub7" path="res://art/enemies/animations/soldier/head_turn/frame0001.png" id="head_01"]
+[ext_resource type="Texture2D" uid="uid://by26dc0oe2mf7" path="res://art/enemies/animations/soldier/head_turn/frame0002.png" id="head_02"]
+[ext_resource type="Texture2D" uid="uid://cq758d0nxwiwc" path="res://art/enemies/animations/soldier/head_turn/frame0003.png" id="head_03"]
+[ext_resource type="Texture2D" uid="uid://byswsv6v5icn0" path="res://art/enemies/animations/soldier/head_turn/frame0004.png" id="head_04"]
+[ext_resource type="Texture2D" uid="uid://b1uay1hxkoopp" path="res://art/enemies/animations/soldier/head_turn/frame0005.png" id="head_05"]
+[ext_resource type="Texture2D" uid="uid://kf22v73avs4t" path="res://art/enemies/animations/soldier/head_turn/frame0006.png" id="head_06"]
 [ext_resource type="Texture2D" uid="uid://b8rxht53bf14p" path="res://art/enemies/animations/soldier/walk/frame0000.png" id="walk_10"]
 [ext_resource type="Texture2D" uid="uid://g54fn8400ak1" path="res://art/enemies/animations/soldier/walk/frame0001.png" id="walk_11"]
 [ext_resource type="Texture2D" uid="uid://boavcbyj0j1hp" path="res://art/enemies/animations/soldier/walk/frame0002.png" id="walk_12"]
@@ -27,6 +34,32 @@ shader_parameter/flash_amount = 0.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_walk"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("head_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("head_01")
+}, {
+"duration": 0.8,
+"texture": ExtResource("head_02")
+}, {
+"duration": 0.7,
+"texture": ExtResource("head_03")
+}, {
+"duration": 0.7,
+"texture": ExtResource("head_04")
+}, {
+"duration": 0.7,
+"texture": ExtResource("head_05")
+}, {
+"duration": 0.7,
+"texture": ExtResource("head_06")
+}],
+"loop": false,
+"name": &"head_turn",
+"speed": 12.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("walk_10")

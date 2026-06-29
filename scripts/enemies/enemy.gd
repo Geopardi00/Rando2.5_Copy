@@ -15,6 +15,7 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 @onready var hit_sound: AudioStreamPlayer2D = $HitSound
 
 var hp: int = 0
+var is_head_turning: bool = false
 
 
 func _ready() -> void:
@@ -73,6 +74,26 @@ func take_damage(amount: int = 1) -> void:
 
 	if hp <= 0:
 		die()
+
+
+func slapped() -> void:
+	take_damage(1)
+
+	if hp > 0 and not is_head_turning and animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(&"head_turn"):
+		play_head_turn()
+
+	# TODO: Add future stagger / knockback response for slap hits.
+
+
+func play_head_turn() -> void:
+	is_head_turning = true
+	animated_sprite.play(&"head_turn")
+	await animated_sprite.animation_finished
+
+	if hp > 0 and animated_sprite.animation == &"head_turn":
+		animated_sprite.play(&"walk")
+
+	is_head_turning = false
 
 
 func flash_hit() -> void:

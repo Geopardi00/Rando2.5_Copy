@@ -1,0 +1,144 @@
+[gd_scene format=3 uid="uid://dherhj16sdmrk"]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_mosquito.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_hit"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/idle/frame0000.png" id="idle_00"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/idle/frame0001.png" id="idle_01"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/idle/frame0002.png" id="idle_02"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/idle/frame0003.png" id="idle_03"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/idle/frame0004.png" id="idle_04"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/idle/frame0005.png" id="idle_05"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0000.png" id="charge_00"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0004.png" id="charge_04"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0008.png" id="charge_08"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0012.png" id="charge_12"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0016.png" id="charge_16"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0020.png" id="charge_20"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0024.png" id="charge_24"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0028.png" id="charge_28"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0032.png" id="charge_32"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0036.png" id="charge_36"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0040.png" id="charge_40"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0044.png" id="charge_44"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0048.png" id="charge_48"]
+[ext_resource type="Texture2D" path="res://art/enemies/animations/mosquito/charge/frame0051.png" id="charge_51"]
+
+[sub_resource type="RectangleShape2D" id="BodyShape"]
+size = Vector2(14, 10)
+
+[sub_resource type="RectangleShape2D" id="HurtShape"]
+size = Vector2(12, 8)
+
+[sub_resource type="RectangleShape2D" id="AttackShape"]
+size = Vector2(22, 16)
+
+[sub_resource type="ShaderMaterial" id="FlashMaterial"]
+shader = ExtResource("2_shader")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="SpriteFrames" id="MosquitoFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("charge_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_32")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_40")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_48")
+}, {
+"duration": 1.0,
+"texture": ExtResource("charge_51")
+}],
+"loop": true,
+"name": &"charge",
+"speed": 26.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("idle_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_05")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}]
+
+[node name="EnemyMosquito" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("BodyShape")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("FlashMaterial")
+scale = Vector2(0.06, 0.06)
+sprite_frames = SubResource("MosquitoFrames")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("HurtShape")
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("AttackShape")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_hit")
+volume_db = -21.585
