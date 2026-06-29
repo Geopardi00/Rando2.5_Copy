@@ -41,7 +41,7 @@
 [ext_resource type="Texture2D" uid="uid://ha55xyf68htj" path="res://art/enemies/animations/finaldogwalk/frame0012.png" id="39_pa7ii"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
-size = Vector2(45, 27)
+size = Vector2(45, 31)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a3t4t"]
 size = Vector2(41, 25)
@@ -178,7 +178,7 @@ script = ExtResource("1_h8v6i")
 patrol_speed = 80.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=594483582]
-position = Vector2(-0.5, 2.5)
+position = Vector2(-0.5, 4.5000005)
 shape = SubResource("RectangleShape2D_hibgo")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1296359984 groups=["enemy_hurtbox"]]
@@ -213,5 +213,5 @@ scale = Vector2(0.08, 0.08)
 sprite_frames = SubResource("SpriteFrames_mo3q2")
 animation = &"walk"
 autoplay = "walk"
-frame_progress = 0.63292795
+frame_progress = 0.106583044
 speed_scale = 1.6
