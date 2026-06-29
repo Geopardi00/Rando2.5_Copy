@@ -11,9 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://6kw4h5wsrr37" path="res://scenes/props/muzzle_flash.tscn" id="12_ronwj"]
 [ext_resource type="PackedScene" uid="uid://b8mb1736qqexw" path="res://scenes/props/torch.tscn" id="13_o8emw"]
 [ext_resource type="PackedScene" uid="uid://bucje1crlwl04" path="res://scenes/fx/sun_beams.tscn" id="14_fma50"]
+[ext_resource type="PackedScene" uid="uid://dxau7e3ddsbqg" path="res://scenes/Non_lethal/mosquito_swarm.tscn" id="15_4c4i7"]
 [ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="15_ity2g"]
 [ext_resource type="Texture2D" uid="uid://dy8amwpcg4u28" path="res://art/level01/ver2.0/foregroundplant05.png" id="15_l652x"]
-[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_mosquito.tscn" id="16_mosquito"]
+[ext_resource type="PackedScene" uid="uid://c8hpa3dy0fosg" path="res://scenes/enemies/enemy_mosquito.tscn" id="16_mosquito"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(2461.5, 32)
@@ -70,10 +71,6 @@ animation = &"slap"
 frame = 8
 frame_progress = 1.0
 
-[node name="MosquitoFullHoming" parent="." unique_id=1120212242 instance=ExtResource("16_mosquito")]
-position = Vector2(1673, -33)
-scale = Vector2(0.5, 0.5)
-
 [node name="Bullet" parent="." unique_id=1682380724 instance=ExtResource("3_sa601")]
 position = Vector2(-187, 10)
 
@@ -128,9 +125,12 @@ position = Vector2(168, 230)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("15_l652x")
 
-[node name="EnemyMosquito" parent="." unique_id=1777605421 instance=ExtResource("16_mosquito")]
-position = Vector2(697, -19)
-scale = Vector2(0.5, 0.5)
+[node name="EnemyMosquito" parent="." unique_id=1591869900 instance=ExtResource("16_mosquito")]
+position = Vector2(660, 5)
+patrol_speed = 50.0
+
+[node name="MosquitoSwarm" parent="." unique_id=1248282254 instance=ExtResource("15_4c4i7")]
+position = Vector2(562, -120)
 
 [editable path="Player"]
 [editable path="Enemy"]

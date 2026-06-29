@@ -16,18 +16,18 @@ enum ChargeMode {
 	FULL_HOMING
 }
 
-@export var patrol_speed: float = 80.0
+@export var patrol_speed: float = 70.0
 @export var patrol_distance: float = 120.0
-@export var bob_height: float = 14.0
-@export var bob_speed: float = 5.0
+@export var bob_height: float = 10.0
+@export var bob_speed: float = 4.0
 @export var detection_range: float = 180.0
 @export var charge_mode: ChargeMode = ChargeMode.FULL_HOMING
-@export var charge_speed: float = 320.0
+@export var charge_speed: float = 310.0
 @export var homing_strength: float = 9.0
-@export var homing_duration: float = 0.2
+@export var homing_duration: float = 0.15
 @export var attach_duration: float = 0.12
-@export var escape_duration: float = 0.55
-@export var debug_draw: bool = true:
+@export var escape_duration: float = 0.95
+@export var debug_draw: bool = false:
 	set(value):
 		debug_draw = value
 		queue_redraw()

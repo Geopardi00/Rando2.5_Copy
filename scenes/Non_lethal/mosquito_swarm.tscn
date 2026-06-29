@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dxau7e3ddsbqg"]
+
+[ext_resource type="PackedScene" uid="uid://c8hpa3dy0fosg" path="res://scenes/enemies/enemy_mosquito.tscn" id="1_odeug"]
+
+[node name="MosquitoSwarm" type="Node2D" unique_id=1248282254]
+
+[node name="EnemyMosquito" parent="." unique_id=1591869900 instance=ExtResource("1_odeug")]
+position = Vector2(348, -11)
+scale = Vector2(0.3, 0.3)
+patrol_speed = 10.0
+patrol_distance = 30.0
+bob_height = 7.0
+bob_speed = 3.0
+detection_range = 1.0
+
+[node name="EnemyMosquito2" parent="." unique_id=2096718885 instance=ExtResource("1_odeug")]
+position = Vector2(375, 39)
+scale = Vector2(0.4, 0.4)
+patrol_speed = 15.0
+patrol_distance = 35.0
+bob_height = 5.0
+detection_range = 1.0
+
+[node name="EnemyMosquito3" parent="." unique_id=853250256 instance=ExtResource("1_odeug")]
+position = Vector2(452, 15)
+scale = Vector2(0.3, 0.3)
+patrol_speed = 13.0
+patrol_distance = 40.0
+bob_height = 5.0
+detection_range = 1.0
