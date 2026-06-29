@@ -5,6 +5,7 @@ extends Node2D
 @onready var goal: Area2D = $Goal
 @onready var player: CharacterBody2D = $Player
 @onready var player_spawn: Marker2D = $PlayerSpawn
+@onready var game_ui: Node = $GameUI
 
 var goal_completed: bool = false
 
@@ -12,6 +13,7 @@ var goal_completed: bool = false
 func _ready() -> void:
 	player.global_position = player_spawn.global_position
 	player.set("respawn_position", player_spawn.global_position)
+	bind_game_ui()
 
 	var state := _get_state_of_game()
 	if state != null and state.has_method("register_level_start"):
@@ -44,3 +46,8 @@ func _on_goal_body_entered(body: Node) -> void:
 
 func _get_state_of_game() -> Node:
 	return get_node_or_null("/root/StateOfGame")
+
+
+func bind_game_ui() -> void:
+	if game_ui != null and game_ui.has_method("bind_player"):
+		game_ui.call("bind_player", player)

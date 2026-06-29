@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://b76vve6eggmei" path="res://scenes/levels/goal.gd" id="4_siir5"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="5_7ptk6"]
 [ext_resource type="Texture2D" uid="uid://d4jx6ra0jx1dk" path="res://art/level02/ver2.0/platform01.png" id="5_ffogc"]
+[ext_resource type="PackedScene" path="res://scenes/ui/game_ui.tscn" id="5_game_ui"]
 [ext_resource type="Texture2D" uid="uid://mcfc0c7hisb7" path="res://art/level02/ver2.0/platform02.png" id="6_2re1w"]
 [ext_resource type="PackedScene" uid="uid://b0ka34mljyuk6" path="res://scripts/props/stone.tscn" id="6_k553b"]
 [ext_resource type="Texture2D" uid="uid://do8qbcy4nc10v" path="res://art/level02/ver2.0/platform03.png" id="7_2re1w"]
@@ -476,6 +477,8 @@ size = Vector2(1094, 20)
 
 [node name="TestRoom2" type="Node2D" unique_id=495586300]
 script = ExtResource("1_45klw")
+
+[node name="GameUI" parent="." instance=ExtResource("5_game_ui")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1645197093]
 environment = SubResource("Environment_dd7cg")

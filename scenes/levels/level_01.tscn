@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://onylvomacabe" path="res://scripts/goal.gd" id="12_gi8m4"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="12_tyxjt"]
 [ext_resource type="Script" uid="uid://dcw16xyksu2lm" path="res://scripts/levels/level_01.gd" id="13_84s7n"]
+[ext_resource type="PackedScene" path="res://scenes/ui/game_ui.tscn" id="13_game_ui"]
 [ext_resource type="Texture2D" uid="uid://dm0ncow8khioc" path="res://art/level01/ver2.0/platform11.png" id="14_yfn7s"]
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="15_5t8rk"]
 [ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="16_cag23"]
@@ -242,6 +243,8 @@ size = Vector2(20, 307)
 [node name="Level01" type="Node2D" unique_id=1698746909]
 script = ExtResource("13_84s7n")
 
+[node name="GameUI" parent="." instance=ExtResource("13_game_ui")]
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=801567806]
 environment = SubResource("Environment_1uvka")
 
@@ -300,20 +303,62 @@ scale = Vector2(0.1, 0.1)
 
 [node name="MosquitoSwarm" parent="Enemies" unique_id=1248282254 instance=ExtResource("8_uvhx5")]
 modulate = Color(0.21950102, 0.21950102, 0.21950102, 1)
-position = Vector2(741, 182)
+position = Vector2(661, 134)
 scale = Vector2(0.7, 0.7)
 
 [node name="MosquitoSwarm2" parent="Enemies" unique_id=1783046602 instance=ExtResource("8_uvhx5")]
 modulate = Color(0.21950102, 0.21950102, 0.21950102, 1)
-position = Vector2(2937, 124.000015)
+position = Vector2(2956, 96)
 scale = Vector2(0.7, 0.7)
 
-[node name="EnemyMosquito" parent="Enemies" unique_id=1591869900 instance=ExtResource("7_syaoa")]
-position = Vector2(977, 218)
+[node name="EnemyMosquito" parent="Enemies/MosquitoSwarm2" index="0" unique_id=1591869900]
+position = Vector2(311.42844, -25.71429)
+
+[node name="EnemyMosquito2" parent="Enemies/MosquitoSwarm2" index="1" unique_id=2096718885]
+position = Vector2(351.42856, 51.428566)
+
+[node name="EnemyMosquito3" parent="Enemies/MosquitoSwarm2" index="2" unique_id=853250256]
+position = Vector2(504.28586, 11.428572)
+
+[node name="MosquitoSwarm3" parent="Enemies" unique_id=1210963568 instance=ExtResource("8_uvhx5")]
+modulate = Color(0.21950102, 0.21950102, 0.21950102, 1)
+position = Vector2(3665, -85.999985)
+scale = Vector2(0.6, 0.6)
+
+[node name="EnemyMosquito" parent="Enemies/MosquitoSwarm3" index="0" unique_id=1591869900]
+position = Vector2(229.99988, 4.2856874)
+
+[node name="EnemyMosquito2" parent="Enemies/MosquitoSwarm3" index="1" unique_id=2096718885]
+position = Vector2(327.14285, 67.142845)
+
+[node name="EnemyMosquito3" parent="Enemies/MosquitoSwarm3" index="2" unique_id=853250256]
+position = Vector2(465.71445, -1.4285927)
+
+[node name="MosquitoSwarm4" parent="Enemies" unique_id=1939956563 instance=ExtResource("8_uvhx5")]
+modulate = Color(0.21950102, 0.21950102, 0.21950102, 1)
+position = Vector2(4676, -207)
+scale = Vector2(0.6, 0.6)
+
+[node name="EnemyMosquito" parent="Enemies/MosquitoSwarm4" index="0" unique_id=1591869900]
+position = Vector2(176.66653, -15.000001)
+
+[node name="EnemyMosquito2" parent="Enemies/MosquitoSwarm4" index="1" unique_id=2096718885]
+position = Vector2(395.00012, 80)
+
+[node name="EnemyMosquito3" parent="Enemies/MosquitoSwarm4" index="2" unique_id=853250256]
+position = Vector2(465.71445, -1.4285927)
+
+[node name="EnemyMosquito" parent="Enemies" unique_id=402491163 instance=ExtResource("7_syaoa")]
+position = Vector2(878, 163)
 scale = Vector2(0.4, 0.4)
 
 [node name="EnemyMosquito2" parent="Enemies" unique_id=702569858 instance=ExtResource("7_syaoa")]
-position = Vector2(3249, 158)
+position = Vector2(3282, 113)
+scale = Vector2(0.4, 0.4)
+
+[node name="EnemyMosquito3" parent="Enemies" unique_id=2066386988 instance=ExtResource("7_syaoa")]
+position = Vector2(4885, -82.999985)
+scale = Vector2(0.4, 0.4)
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=492750461]
 position = Vector2(404, 219)
@@ -2165,3 +2210,7 @@ occluder = SubResource("OccluderPolygon2D_i652i")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBorder/StaticBody2D" unique_id=1856829906]
 position = Vector2(307, 201)
 shape = SubResource("RectangleShape2D_xkw5e")
+
+[editable path="Enemies/MosquitoSwarm2"]
+[editable path="Enemies/MosquitoSwarm3"]
+[editable path="Enemies/MosquitoSwarm4"]

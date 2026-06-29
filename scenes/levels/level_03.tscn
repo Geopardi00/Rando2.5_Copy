@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://mobxq5bdc0px"]
 
 [ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://scenes/ui/game_ui.tscn" id="1_game_ui"]
 [ext_resource type="Script" uid="uid://d3d88qcplfpe1" path="res://scripts/levels/checkpoint_trigger.gd" id="2_checkpoint_trigger"]
 [ext_resource type="Texture2D" uid="uid://df51f6jv5qg6o" path="res://art/level01/tileset_dirt.png" id="2_foqc1"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_player"]
@@ -55,6 +56,8 @@
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="39_wkwep"]
 [ext_resource type="Script" uid="uid://cvbtj5fv4wcul" path="res://scenes/props/level03_torches.gd" id="42_krbd2"]
 [ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="43_ka027"]
+[ext_resource type="PackedScene" uid="uid://c8hpa3dy0fosg" path="res://scenes/enemies/enemy_mosquito.tscn" id="43_v0by6"]
+[ext_resource type="PackedScene" uid="uid://dxau7e3ddsbqg" path="res://scenes/Non_lethal/mosquito_swarm.tscn" id="44_uqjib"]
 [ext_resource type="Texture2D" uid="uid://dy8amwpcg4u28" path="res://art/level01/ver2.0/foregroundplant05.png" id="51_5wlp5"]
 [ext_resource type="Texture2D" uid="uid://bfwcb0m671xu" path="res://art/level01/ver2.0/foregroundplant04.png" id="51_radsg"]
 [ext_resource type="Shader" uid="uid://cjrb8ro6io3gl" path="res://shaders/foreground_wind2.tres" id="52_4ghe2"]
@@ -408,6 +411,8 @@ shader_parameter/seed = 5.0
 
 [node name="Level03" type="Node2D" unique_id=342020118]
 script = ExtResource("1_level")
+
+[node name="GameUI" parent="." instance=ExtResource("1_game_ui")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=475558959]
 environment = SubResource("Environment_level03")
@@ -1120,6 +1125,36 @@ position = Vector2(4272, 248)
 
 [node name="Enemy2" parent="Enemies" unique_id=980405753 instance=ExtResource("39_wkwep")]
 position = Vector2(3239, 223)
+
+[node name="EnemyMosquito" parent="Enemies" unique_id=1591869900 instance=ExtResource("43_v0by6")]
+position = Vector2(-174, 144)
+scale = Vector2(0.3, 0.3)
+
+[node name="MosquitoSwarm" parent="Enemies" unique_id=1248282254 instance=ExtResource("44_uqjib")]
+position = Vector2(-365, 69)
+scale = Vector2(0.5, 0.5)
+
+[node name="EnemyMosquito" parent="Enemies/MosquitoSwarm" index="0" unique_id=1591869900]
+position = Vector2(250, 12)
+
+[node name="EnemyMosquito2" parent="Enemies/MosquitoSwarm" index="1" unique_id=2096718885]
+position = Vector2(366.00003, 66)
+
+[node name="EnemyMosquito3" parent="Enemies/MosquitoSwarm" index="2" unique_id=853250256]
+position = Vector2(564, 26)
+
+[node name="MosquitoSwarm2" parent="Enemies" unique_id=584647253 instance=ExtResource("44_uqjib")]
+position = Vector2(696, 164)
+scale = Vector2(0.5, 0.5)
+
+[node name="EnemyMosquito" parent="Enemies/MosquitoSwarm2" index="0" unique_id=1591869900]
+position = Vector2(250, 12)
+
+[node name="EnemyMosquito2" parent="Enemies/MosquitoSwarm2" index="1" unique_id=2096718885]
+position = Vector2(366.00003, 66)
+
+[node name="EnemyMosquito3" parent="Enemies/MosquitoSwarm2" index="2" unique_id=853250256]
+position = Vector2(564, 26)
 
 [node name="EnemySentrySniper" type="Node2D" parent="." unique_id=185439143]
 position = Vector2(946, -27)
@@ -1923,4 +1958,6 @@ offset_top = -800.0
 offset_right = 3953.0
 offset_bottom = 515.0
 
+[editable path="Enemies/MosquitoSwarm"]
+[editable path="Enemies/MosquitoSwarm2"]
 [editable path="Player"]

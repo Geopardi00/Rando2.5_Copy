@@ -3,6 +3,7 @@ extends Node2D
 @onready var goal: Area2D = $Goal
 @onready var player: CharacterBody2D = $Player
 @onready var player_spawn: Marker2D = $PlayerSpawn
+@onready var game_ui: Node = $GameUI
 
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _ready() -> void:
 
 	player.global_position = respawn_position
 	player.set("respawn_position", respawn_position)
+	bind_game_ui()
 
 	if not goal.body_entered.is_connected(_on_goal_body_entered):
 		goal.body_entered.connect(_on_goal_body_entered)
@@ -37,3 +39,8 @@ func _on_goal_body_entered(body: Node) -> void:
 
 func _get_state_of_game() -> Node:
 	return get_node_or_null("/root/StateOfGame")
+
+
+func bind_game_ui() -> void:
+	if game_ui != null and game_ui.has_method("bind_player"):
+		game_ui.call("bind_player", player)

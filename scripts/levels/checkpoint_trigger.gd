@@ -25,6 +25,7 @@ func _on_body_entered(body: Node) -> void:
 
 	activated = true
 	state.activate_checkpoint(_get_level_id(), _get_checkpoint_position())
+	show_checkpoint_message()
 	print("checkpoint reached")
 
 
@@ -47,3 +48,13 @@ func _get_checkpoint_position() -> Vector2:
 		return checkpoint_spawn.global_position
 
 	return global_position
+
+
+func show_checkpoint_message() -> void:
+	var current_scene := get_tree().current_scene
+	if current_scene == null:
+		return
+
+	var game_ui := current_scene.get_node_or_null("GameUI")
+	if game_ui != null and game_ui.has_method("show_checkpoint_message"):
+		game_ui.call("show_checkpoint_message")

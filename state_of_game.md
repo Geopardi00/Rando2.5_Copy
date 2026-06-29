@@ -3,10 +3,15 @@
 Last updated: 2026-06-29
 
 ## Latest Update - 2026-06-29
+- Reusable per-level `GameUI` HUD scene added and instanced into Level 01, test_room_2, and Level 03.
+- Player health now emits a `health_changed(current_hp, max_hp)` signal for UI binding.
+- HUD displays player head + full/empty heart assets, with damage vignette and hidden speedrun timer placeholder ready for later.
+- Checkpoint triggers can now show a level-local checkpoint text notification through `GameUI`.
+- Mosquito placement/content was adjusted in Level 01, Level 03, and the test room iteration.
 - Basic patrol soldier slap feedback was juiced up with short horizontal knockback on slap hits.
 - Soldier slap knockback is currently tuned to 20px over 0.12s and pushes away from the player while preserving bullet damage behavior.
 - Soldier `head_turn` animation timing was fine tuned for snappier slap response.
-- Latest checkpoint focuses on soldier slap knockback/head-turn feel.
+- Latest checkpoint focuses on the level HUD/UI system plus mosquito iteration.
 
 ## Latest Update - 2026-06-24
 - Level 02 asset pass continued with new platform and terrain art under the current Level 02 ver2.0 asset set.
@@ -50,7 +55,7 @@ Last updated: 2026-06-29
 - Boss fight core loop is implemented and recently polished: shooting, reload, grenade throws, jump stomp, boss HP, player HP, camera shake, boss jump/stomp animations, grenade explosion animation, and crosshair grenade warnings.
 - Current game flow is wired from intro cutscene to main menu, then Level 01, test_room_2, and boss fight.
 - Latest Level 03 work is focused on prototyping one stationary non-killable watchtower sniper enemy before building a full level around it.
-- Latest Git checkpoint is for the Level 01 layout/art import in this working copy.
+- Latest Git checkpoint includes the new per-level GameUI/HUD system and mosquito placement iteration.
 
 ## Implemented Features
 
@@ -63,6 +68,7 @@ Last updated: 2026-06-29
 - Shooting
 - Fire-rate limit on shooting
 - Player now has simple HP support (`max_hp = 3`, `current_hp`, `take_damage()`)
+- Player emits `health_changed(current_hp, max_hp)` for HUD updates
 - Player has brief invulnerability / blinking after taking damage
 - Player still supports instant-death via `die()` for hazards and legacy systems
 - Player death reloads the current scene
@@ -218,6 +224,12 @@ Last updated: 2026-06-29
 - Audio setup approach favors simple per-scene source nodes with code-spawned one-shot playback when needed
 
 ### UI / Main Menu
+- Reusable per-level `GameUI` scene added as a `CanvasLayer`
+- `GameUI` includes health HUD, hidden speedrun timer placeholder, checkpoint message UI, and screen effects container
+- Health HUD uses `ui_player_head.png`, `ui_heart_full.png`, and `ui_heart_empty.png`
+- Health HUD binds to the player health signal and supports rebuilding hearts if max HP changes later
+- Damage vignette feedback is implemented as a `ScreenEffects` fallback `ColorRect`
+- Checkpoint text notification can be triggered from checkpoint areas through the level-local `GameUI`
 - Main menu scene created
 - Background image displays correctly at runtime via forced full-rect setup in script
 - TextureButton-based menu buttons implemented
@@ -275,6 +287,10 @@ Last updated: 2026-06-29
 - Added Level 03 sniper script: `scripts/enemies/enemy_sentry_sniper.gd`
 - Added Level 03 watchtower sniper test scene content inside `scenes/levels/level_03.tscn`
 - Added/iterated Level 03 watchtower and light beam assets under `art/level03/` and `art/vfx/`
+- Added reusable GameUI scene/script: `scenes/ui/game_ui.tscn`, `scripts/ui/game_ui.gd`
+- Added UI health art under `art/ui/`: `ui_player_head.png`, `ui_heart_full.png`, `ui_heart_empty.png`
+- Updated Level 01, test_room_2, and Level 03 to instance `GameUI`
+- Updated checkpoint trigger flow to show checkpoint text through the level-local UI
 - Updated player health flow in both `scripts/player/player.gd` and `scenes/player/player.gd`
 - Latest checkpoint commit: `3ede60c Add boss fight checkpoint`
 - Latest working progress includes boss animation/FX polish, final game-flow wiring, and enemy one-hit-kill damage tuning
@@ -390,6 +406,9 @@ Last updated: 2026-06-29
 - Godot reimported the copied Level 01 textures and a headless load check of `res://scenes/levels/level_01.tscn` passed
 - Patrol soldier slap knockback added and tuned down to 20px for a smaller gameplay-juice bump
 - Patrol soldier `head_turn` animation timing fine tuned for slap feedback
+- Per-level HUD system added and playtested with player health hearts, damage vignette, checkpoint message, and future timer placeholder
+- UI asset import metadata generated for the new HUD art
+- Mosquito placement/content changes included in the current checkpoint
 
 ## Recommended Next Steps
 - Playtest the newly imported Level 01 layout in the editor and do a polish pass on enemy/hazard spacing, collisions, and foreground readability

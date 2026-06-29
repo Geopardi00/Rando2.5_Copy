@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal health_changed(current_hp: int, max_hp: int)
+
 @export var move_speed: float = 220.0
 @export var jump_velocity: float = -400.0
 @export var gravity: float = 1100.0
@@ -51,6 +53,7 @@ var is_swatting: bool = false
 func _ready() -> void:
 	add_to_group("player")
 	current_hp = max_hp
+	health_changed.emit(current_hp, max_hp)
 
 	fire_timer.wait_time = fire_rate
 	fire_timer.one_shot = true
@@ -324,6 +327,7 @@ func take_damage(amount: int = 1) -> void:
 		die()
 		return
 
+	health_changed.emit(current_hp, max_hp)
 	invulnerability_timer = invulnerability_time
 	blink_timer = 0.0
 
@@ -389,6 +393,7 @@ func die() -> void:
 
 	is_dead = true
 	current_hp = 0
+	health_changed.emit(current_hp, max_hp)
 	hurtbox.monitoring = false
 	animated_sprite.visible = true
 	velocity.x = 0.0
