@@ -1,6 +1,17 @@
 # State of Game
 
-Last updated: 2026-06-29
+Last updated: 2026-07-07
+
+## Latest Update - 2026-07-07
+- Level 03 checkpoint flag has been upgraded from a static prop into an animated checkpoint setup.
+- New reusable checkpoint scene added at `scenes/props/checkpoint.tscn`.
+- Level 03 now instances the reusable checkpoint scene under `Props` as `Checkpoint3`.
+- Checkpoint flag animation flow is now: `idle` on level start, `ignition` once when the player activates the checkpoint, then looping `burn`.
+- Checkpoint trigger now supports an optional `PointLight2D` glow that fades in as ignition begins and remains active afterward.
+- Checkpoint glow includes subtle procedural energy flicker after activation.
+- Checkpoint trigger paths were updated for the reusable scene child names: `Flag`, `Trigger`, `Spawnpoint`, and `Glow`.
+- Checkpoint animation frames were added under `art/props/animations/checkpoint/`.
+- Next useful checkpoint polish target: customizable checkpoint message presentation through `GameUI`, including custom text, font, glow, and UI particles.
 
 ## Latest Update - 2026-06-29
 - Reusable per-level `GameUI` HUD scene added and instanced into Level 01, test_room_2, and Level 03.
@@ -204,6 +215,7 @@ Last updated: 2026-06-29
 - Level 03 scene/assets have been added and are in progress
 - Level 03 test scene now includes player spawn, simple ground/cover setup, watchtower art, stationary sniper, spotlight, LightOccluder2D test objects, and basic goal area
 - Level 03 cover testing currently uses normal collision for gameplay ray blocking and LightOccluder2D for visual shadow blocking
+- Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
@@ -230,6 +242,7 @@ Last updated: 2026-06-29
 - Health HUD binds to the player health signal and supports rebuilding hearts if max HP changes later
 - Damage vignette feedback is implemented as a `ScreenEffects` fallback `ColorRect`
 - Checkpoint text notification can be triggered from checkpoint areas through the level-local `GameUI`
+- Level checkpoint triggers can drive a reusable animated checkpoint flag scene and activation light.
 - Main menu scene created
 - Background image displays correctly at runtime via forced full-rect setup in script
 - TextureButton-based menu buttons implemented
@@ -291,6 +304,10 @@ Last updated: 2026-06-29
 - Added UI health art under `art/ui/`: `ui_player_head.png`, `ui_heart_full.png`, `ui_heart_empty.png`
 - Updated Level 01, test_room_2, and Level 03 to instance `GameUI`
 - Updated checkpoint trigger flow to show checkpoint text through the level-local UI
+- Added reusable animated checkpoint scene: `scenes/props/checkpoint.tscn`
+- Added checkpoint animation frames under `art/props/animations/checkpoint/`
+- Updated Level 03 to instance the reusable checkpoint scene
+- Updated checkpoint trigger flow to play idle, ignition, and burn animations and fade/flicker the checkpoint glow on activation
 - Updated player health flow in both `scripts/player/player.gd` and `scenes/player/player.gd`
 - Latest checkpoint commit: `3ede60c Add boss fight checkpoint`
 - Latest working progress includes boss animation/FX polish, final game-flow wiring, and enemy one-hit-kill damage tuning
@@ -409,8 +426,12 @@ Last updated: 2026-06-29
 - Per-level HUD system added and playtested with player health hearts, damage vignette, checkpoint message, and future timer placeholder
 - UI asset import metadata generated for the new HUD art
 - Mosquito placement/content changes included in the current checkpoint
+- Animated checkpoint flag scene added for Level 03 and future level reuse
+- Checkpoint glow now fades in at ignition start and keeps a small flicker while active
 
 ## Recommended Next Steps
+- Add customizable checkpoint message text/styling through `GameUI`
+- Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn
 - Playtest the newly imported Level 01 layout in the editor and do a polish pass on enemy/hazard spacing, collisions, and foreground readability
 - Add remaining core sound effects (shoot, throw, UI click, ambient)
 - Add boss-specific sound effects for shooting, reload, grenade throw/explosion, stomp, hurt, and death

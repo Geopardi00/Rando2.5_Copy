@@ -1,8 +1,7 @@
 [gd_scene format=4 uid="uid://mobxq5bdc0px"]
 
-[ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_level"]
 [ext_resource type="PackedScene" path="res://scenes/ui/game_ui.tscn" id="1_game_ui"]
-[ext_resource type="Script" uid="uid://d3d88qcplfpe1" path="res://scripts/levels/checkpoint_trigger.gd" id="2_checkpoint_trigger"]
+[ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_level"]
 [ext_resource type="Texture2D" uid="uid://df51f6jv5qg6o" path="res://art/level01/tileset_dirt.png" id="2_foqc1"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_player"]
 [ext_resource type="Texture2D" uid="uid://bwma4wuihoqh0" path="res://art/level01/32x32block.png" id="3_foqc1"]
@@ -51,6 +50,7 @@
 [ext_resource type="Texture2D" uid="uid://nu5xawrogen" path="res://art/level03/sandbag02.png" id="27_yx8lb"]
 [ext_resource type="Texture2D" uid="uid://bl0ysgvg583wd" path="res://art/tiles/moss01.png" id="28_u5pqs"]
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="32_0orvv"]
+[ext_resource type="PackedScene" uid="uid://biopl3d1oalud" path="res://scenes/props/checkpoint.tscn" id="33_uqjib"]
 [ext_resource type="Texture2D" uid="uid://bne1njcdojxdd" path="res://art/props/machine_gun.png" id="36_23aix"]
 [ext_resource type="Texture2D" uid="uid://jptuxvwk3gcw" path="res://art/props/gasbottles.png" id="37_5wlp5"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="39_wkwep"]
@@ -209,9 +209,6 @@ size = Vector2(299.99994, 18.571411)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_b7kj7"]
 polygon = PackedVector2Array(-132.85718, -65.714264, 90, -65.714264, 141.42847, -61.42856, 141.42847, -44.285706, 127.14282, -42.857117, 85.714355, -20, -142.85718, -18.571411, -148.57153, -40, -158.57153, -42.857117, -157.14282, -58.57141)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_checkpoint_trigger"]
-size = Vector2(21, 167)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_py8xv"]
 size = Vector2(48, 33)
@@ -412,7 +409,7 @@ shader_parameter/seed = 5.0
 [node name="Level03" type="Node2D" unique_id=342020118]
 script = ExtResource("1_level")
 
-[node name="GameUI" parent="." instance=ExtResource("1_game_ui")]
+[node name="GameUI" parent="." unique_id=1603510891 instance=ExtResource("1_game_ui")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=475558959]
 environment = SubResource("Environment_level03")
@@ -976,23 +973,13 @@ scale = Vector2(0.4, 0.4)
 texture = ExtResource("13_an42a")
 
 [node name="Checkpoint" type="Sprite2D" parent="Props" unique_id=1728647637]
+visible = false
 modulate = Color(0.76320183, 0.82397354, 0.72776973, 1)
 position = Vector2(2782, 242)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("14_8bbnc")
 
-[node name="CheckpointTrigger" type="Area2D" parent="Props" unique_id=1851782588]
-position = Vector2(2782, 242)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("2_checkpoint_trigger")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Props/CheckpointTrigger" unique_id=1642893600]
-position = Vector2(-1.5, -28.5)
-shape = SubResource("RectangleShape2D_checkpoint_trigger")
-
-[node name="CheckpointSpawn" type="Marker2D" parent="Props/CheckpointTrigger" unique_id=1766478316]
-position = Vector2(0, 18)
+[node name="Checkpoint3" parent="Props" unique_id=1459719266 instance=ExtResource("33_uqjib")]
 
 [node name="Boat" type="Sprite2D" parent="Props" unique_id=1864570681]
 light_mask = 0
@@ -1247,7 +1234,7 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(-1667, 206)
+position = Vector2(2167, 238)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
@@ -1899,10 +1886,10 @@ texture_scale = 1.33
 z_index = 8
 texture_repeat = 2
 material = SubResource("ShaderMaterial_1r4s3")
-offset_left = -2167.0
-offset_top = -462.0
-offset_right = 7190.0
-offset_bottom = 550.0
+offset_left = -2173.0
+offset_top = -461.0
+offset_right = 7184.0
+offset_bottom = 551.0
 texture = SubResource("NoiseTexture2D_ka1dv")
 
 [node name="GodRays" type="Parallax2D" parent="." unique_id=1540753313]
