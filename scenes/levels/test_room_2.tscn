@@ -4,11 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://bvplrb0djhv40" path="res://art/tilemaps/tileset.png" id="1_p1esm"]
 [ext_resource type="Texture2D" uid="uid://bi2a4kejjke21" path="res://art/tilemaps/backgroundtile.png" id="2_crne1"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_pw5fa"]
+[ext_resource type="FontFile" uid="uid://i4twsmsye3h5" path="res://fonts/Russo_one/RussoOne-Regular.ttf" id="3_gcwyd"]
 [ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="3_pw5fa"]
 [ext_resource type="Script" uid="uid://b76vve6eggmei" path="res://scenes/levels/goal.gd" id="4_siir5"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="5_7ptk6"]
 [ext_resource type="Texture2D" uid="uid://d4jx6ra0jx1dk" path="res://art/level02/ver2.0/platform01.png" id="5_ffogc"]
-[ext_resource type="PackedScene" path="res://scenes/ui/game_ui.tscn" id="5_game_ui"]
+[ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="5_game_ui"]
 [ext_resource type="Texture2D" uid="uid://mcfc0c7hisb7" path="res://art/level02/ver2.0/platform02.png" id="6_2re1w"]
 [ext_resource type="PackedScene" uid="uid://b0ka34mljyuk6" path="res://scripts/props/stone.tscn" id="6_k553b"]
 [ext_resource type="Texture2D" uid="uid://do8qbcy4nc10v" path="res://art/level02/ver2.0/platform03.png" id="7_2re1w"]
@@ -43,6 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://vdn5p0fuudf1" path="res://art/level02/ver2.0/Stone09.png" id="22_1g3op"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="23_tnob1"]
 [ext_resource type="Texture2D" uid="uid://bgsktj305ij57" path="res://art/level02/ver2.0/Stone05.png" id="24_g84t8"]
+[ext_resource type="PackedScene" uid="uid://biopl3d1oalud" path="res://scenes/props/checkpoint.tscn" id="27_dwpg4"]
 
 [sub_resource type="Environment" id="Environment_dd7cg"]
 background_mode = 3
@@ -478,7 +480,11 @@ size = Vector2(1094, 20)
 [node name="TestRoom2" type="Node2D" unique_id=495586300]
 script = ExtResource("1_45klw")
 
-[node name="GameUI" parent="." instance=ExtResource("5_game_ui")]
+[node name="GameUI" parent="." unique_id=1948001626 instance=ExtResource("5_game_ui")]
+checkpoint_font = ExtResource("3_gcwyd")
+checkpoint_font_size = 52
+checkpoint_text_color = Color(0.52156866, 0.07450981, 0, 1)
+checkpoint_glow_scale = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1645197093]
 environment = SubResource("Environment_dd7cg")
@@ -1806,6 +1812,11 @@ rotation = 3.096214
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("22_1g3op")
 flip_h = true
+
+[node name="Props" type="Node2D" parent="." unique_id=351043869]
+
+[node name="Checkpoint3" parent="Props" unique_id=1459719266 instance=ExtResource("27_dwpg4")]
+position = Vector2(-1022, -23)
 
 [node name="Crate" parent="." unique_id=131320726 instance=ExtResource("18_gc2gi")]
 position = Vector2(3848, 865)

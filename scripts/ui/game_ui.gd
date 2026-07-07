@@ -3,7 +3,20 @@ extends CanvasLayer
 @export var player_head_texture: Texture2D = preload("res://art/ui/ui_player_head.png")
 @export var heart_full_texture: Texture2D = preload("res://art/ui/ui_heart_full.png")
 @export var heart_empty_texture: Texture2D = preload("res://art/ui/ui_heart_empty.png")
+
+@export_group("Checkpoint Message")
 @export var checkpoint_message_time: float = 1.4
+@export var checkpoint_font: Font
+@export var checkpoint_font_size: int = 32
+@export var checkpoint_text_color: Color = Color.WHITE
+@export var checkpoint_outline_size: int = 6
+@export var checkpoint_outline_color: Color = Color.BLACK
+@export var checkpoint_glow_enabled: bool = true
+@export var checkpoint_glow_color: Color = Color(1.0, 0.58, 0.18, 0.55)
+@export var checkpoint_glow_scale: float = 1.16
+@export var checkpoint_particles_enabled: bool = true
+
+@export_group("Screen Effects")
 @export var damage_vignette_time: float = 0.25
 
 @onready var head_icon: TextureRect = $HUD/HealthUI/HeadIcon
@@ -12,10 +25,13 @@ extends CanvasLayer
 @onready var timer_label: Label = $HUD/SpeedrunTimerUI/TimerLabel
 @onready var message_ui: Control = $MessageUI
 @onready var checkpoint_text: Label = $MessageUI/CheckpointText
+@onready var checkpoint_glow_text: Label = get_node_or_null("MessageUI/CheckpointGlowText") as Label
+@onready var checkpoint_particles: CPUParticles2D = get_node_or_null("MessageUI/CheckpointParticles") as CPUParticles2D
 @onready var damage_vignette: CanvasItem = $ScreenEffects/DamageVignette
 
 var bound_player: Node = null
 var last_hp: int = -1
+var checkpoint_tween: Tween = null
 
 
 func _ready() -> void:
@@ -24,6 +40,7 @@ func _ready() -> void:
 	speedrun_timer_ui.visible = false
 	damage_vignette.visible = true
 	damage_vignette.modulate.a = 0.0
+	_apply_checkpoint_text_style()
 
 
 func bind_player(player: Node) -> void:
@@ -74,14 +91,47 @@ func rebuild_hearts(max_hp: int) -> void:
 
 
 func show_checkpoint_message(text := "CHECKPOINT") -> void:
-	checkpoint_text.text = text
-	message_ui.visible = true
-	message_ui.modulate.a = 1.0
+	if checkpoint_tween != null and checkpoint_tween.is_valid():
+		checkpoint_tween.kill()
 
-	var tween := create_tween()
-	tween.tween_interval(checkpoint_message_time)
-	tween.tween_property(message_ui, "modulate:a", 0.0, 0.25)
-	tween.tween_callback(func() -> void: message_ui.visible = false)
+	checkpoint_text.text = text
+	if checkpoint_glow_text != null:
+		checkpoint_glow_text.text = text
+		checkpoint_glow_text.visible = checkpoint_glow_enabled
+
+	_apply_checkpoint_text_style()
+
+	message_ui.visible = true
+	message_ui.modulate.a = 0.0
+	message_ui.scale = Vector2(0.86, 0.86)
+	checkpoint_text.scale = Vector2.ONE
+
+	if checkpoint_particles != null and checkpoint_particles_enabled:
+		checkpoint_particles.restart()
+		checkpoint_particles.emitting = true
+
+	if checkpoint_glow_text != null:
+		checkpoint_glow_text.scale = Vector2(checkpoint_glow_scale, checkpoint_glow_scale)
+
+	checkpoint_tween = create_tween()
+	checkpoint_tween.set_parallel(true)
+	checkpoint_tween.tween_property(message_ui, "modulate:a", 1.0, 0.12)
+	checkpoint_tween.tween_property(message_ui, "scale", Vector2(1.08, 1.08), 0.12)
+	if checkpoint_glow_text != null and checkpoint_glow_enabled:
+		checkpoint_tween.tween_property(checkpoint_glow_text, "modulate:a", checkpoint_glow_color.a, 0.12)
+
+	checkpoint_tween.chain()
+	checkpoint_tween.set_parallel(false)
+	checkpoint_tween.tween_property(message_ui, "scale", Vector2.ONE, 0.12)
+	checkpoint_tween.tween_interval(checkpoint_message_time)
+	checkpoint_tween.tween_property(message_ui, "modulate:a", 0.0, 0.25)
+	checkpoint_tween.tween_callback(_hide_checkpoint_message)
+
+
+func _hide_checkpoint_message() -> void:
+	message_ui.visible = false
+	if checkpoint_particles != null:
+		checkpoint_particles.emitting = false
 
 
 func flash_damage_vignette() -> void:
@@ -98,6 +148,25 @@ func set_timer_visible(enabled: bool) -> void:
 
 func set_timer_text(text: String) -> void:
 	timer_label.text = text
+
+
+func _apply_checkpoint_text_style() -> void:
+	_apply_checkpoint_label_style(checkpoint_text, checkpoint_text_color)
+	_apply_checkpoint_label_style(checkpoint_glow_text, checkpoint_glow_color)
+
+
+func _apply_checkpoint_label_style(label: Label, color: Color) -> void:
+	if label == null:
+		return
+
+	if checkpoint_font != null:
+		label.add_theme_font_override("font", checkpoint_font)
+
+	label.add_theme_font_size_override("font_size", checkpoint_font_size)
+	label.add_theme_color_override("font_color", color)
+	label.add_theme_constant_override("outline_size", checkpoint_outline_size)
+	label.add_theme_color_override("font_outline_color", checkpoint_outline_color)
+	label.modulate.a = color.a
 
 
 func _on_player_health_changed(current_hp: int, max_hp: int) -> void:

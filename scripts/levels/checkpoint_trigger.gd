@@ -6,6 +6,7 @@ extends Area2D
 @export var checkpoint_light_fade_time: float = 0.35
 @export var checkpoint_light_flicker_amount: float = 0.08
 @export var checkpoint_light_flicker_speed: float = 18.0
+@export var checkpoint_message: String = "CHECKPOINT"
 @export var level_id_override: String = ""
 
 @onready var checkpoint_spawn: Marker2D = get_node_or_null(checkpoint_spawn_path) as Marker2D
@@ -74,7 +75,7 @@ func show_checkpoint_message() -> void:
 
 	var game_ui := current_scene.get_node_or_null("GameUI")
 	if game_ui != null and game_ui.has_method("show_checkpoint_message"):
-		game_ui.call("show_checkpoint_message")
+		game_ui.call("show_checkpoint_message", checkpoint_message)
 
 
 func play_checkpoint_idle() -> void:
