@@ -3,6 +3,11 @@
 Last updated: 2026-07-08
 
 ## Latest Update - 2026-07-08
+- Level 03 looping ambience is now working through a local `LevelAmbience` `AudioStreamPlayer` in `scenes/levels/level_03.tscn`.
+- The working ambience stream is `audio/sfx/Level03ambience_16bit.wav`; it autoplays in Level 03 and restarts when the level reloads after player death.
+- The earlier persistent ambience autoload approach was removed for now because the simpler scene-local audio node proved more reliable during testing.
+- Player landing animation frames were touched up after playtesting; the hard landing feel is currently considered good.
+- Level 02/test_room_2 has an experimental foreground/parallax visual pass using new foreground stone assets, but it does not currently look good and is likely to be removed or reworked.
 - Player hard landing response added for bigger falls/high jumps using the new `landing` animation frames.
 - Hard landing is tuned in `scenes/player/player.tscn` to trigger at `590 px/s`, pause horizontal movement for `0.2s`, and hold the landing animation for `0.3s`.
 - Hard landing values are exported under the Player inspector's `Hard Landing` group for easy tuning.
@@ -230,6 +235,7 @@ Last updated: 2026-07-08
 - Level 03 test scene now includes player spawn, simple ground/cover setup, watchtower art, stationary sniper, spotlight, LightOccluder2D test objects, and basic goal area
 - Level 03 cover testing currently uses normal collision for gameplay ray blocking and LightOccluder2D for visual shadow blocking
 - Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
+- Level 03 now has local looping ambience via a scene-local `AudioStreamPlayer`; the ambience restarts on level reload.
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
@@ -248,6 +254,7 @@ Last updated: 2026-07-08
 - Hit sound now survives enemy death by spawning a separate `AudioStreamPlayer2D` in code instead of relying on the enemy-local player
 - Main menu background music playback is now implemented
 - Audio setup approach favors simple per-scene source nodes with code-spawned one-shot playback when needed
+- Level 03 ambience is implemented with a local `AudioStreamPlayer` named `LevelAmbience`, using `audio/sfx/Level03ambience_16bit.wav`
 
 ### UI / Main Menu
 - Reusable per-level `GameUI` scene added as a `CanvasLayer`
@@ -297,6 +304,7 @@ Last updated: 2026-07-08
 - Added player animation frames: `art/characters/animations/idle`, `walk`, `jump`, `death`
 - Added refreshed player walk/jump animation frame sets: `art/characters/animations/walk2/`, `art/characters/animations/jump2/`
 - Added player landing animation frame set: `art/characters/animations/landing/`
+- Added experimental Level 02 foreground stone art under `art/level02/ver2.0/Foreground_stone*.png`; current pass is provisional and may be removed.
 - Added test room scene: `scenes/levels/test_room.tscn`
 - Added tunnel door prop: `art/props/tunneldoor.png`
 - Level 02 building started
@@ -314,6 +322,7 @@ Last updated: 2026-07-08
 - Added boss fight level script for camera shake: `scripts/levels/boss_fight_level.gd`
 - Added/updated boss arena art: `art/bosslevel1/stage1test.png`, `art/bosslevel1/stage1final.png`
 - Added Level 03 scene/script and art assets: `scenes/levels/level_03.tscn`, `scripts/levels/level_03.gd`, `art/level03/`
+- Added Level 03 ambience audio: `audio/sfx/Level03ambience_16bit.wav`
 - Added Level 03 sniper script: `scripts/enemies/enemy_sentry_sniper.gd`
 - Added Level 03 watchtower sniper test scene content inside `scenes/levels/level_03.tscn`
 - Added/iterated Level 03 watchtower and light beam assets under `art/level03/` and `art/vfx/`
@@ -414,6 +423,8 @@ Last updated: 2026-07-08
 - Player idle/walk/jump/death animation sets imported and wired into player logic
 - Player walk and jump animations refreshed with newer frame sets while preserving the same runtime animation names
 - Player hard landing animation and tiny stop effect added and tuned for high falls only
+- Player landing animation polish pass adjusted mid-animation frames after testing
+- Level 02 foreground/parallax experiment added in test_room_2, currently marked as not good enough and likely temporary
 - Player death animation integrated into death flow
 - Level 02 building started
 - TileMapLayer setup for gameplay/collision and background completed
@@ -452,6 +463,7 @@ Last updated: 2026-07-08
 - Checkpoint glow now fades in at ignition start and keeps a small flicker while active
 - Checkpoint banner glow/font/particle polish added and tuned enough for current playtesting
 - Level 02/test_room_2 now has one reusable checkpoint placed
+- Level 03 ambience playback issue solved by using a local scene `AudioStreamPlayer` instead of the temporary autoload approach
 
 ## Recommended Next Steps
 - Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn

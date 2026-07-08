@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="1_game_ui"]
 [ext_resource type="Script" uid="uid://dphrulfk5ah0w" path="res://scripts/levels/level_03.gd" id="1_level"]
+[ext_resource type="AudioStream" uid="uid://hffia4unwmb5" path="res://audio/sfx/Level03ambience_16bit.wav" id="2_ambience"]
 [ext_resource type="Texture2D" uid="uid://df51f6jv5qg6o" path="res://art/level01/tileset_dirt.png" id="2_foqc1"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_player"]
 [ext_resource type="Texture2D" uid="uid://bwma4wuihoqh0" path="res://art/level01/32x32block.png" id="3_foqc1"]
 [ext_resource type="FontFile" uid="uid://i4twsmsye3h5" path="res://fonts/Russo_one/RussoOne-Regular.ttf" id="3_lqtvr"]
-[ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="3_player_script"]
 [ext_resource type="Texture2D" uid="uid://cx6rwl5prrqsg" path="res://art/level03/pier03.png" id="4_dkd5g"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="4_player_bullet"]
 [ext_resource type="Texture2D" uid="uid://6faw201wnxh4" path="res://art/level03/mud_platform01.png" id="5_kapun"]
@@ -413,11 +413,16 @@ script = ExtResource("1_level")
 [node name="GameUI" parent="." unique_id=1603510891 instance=ExtResource("1_game_ui")]
 checkpoint_message_time = 1.8
 checkpoint_font = ExtResource("3_lqtvr")
-checkpoint_font_size = 52
+checkpoint_font_size = 64
 checkpoint_text_color = Color(0.52156866, 0.07450981, 0, 1)
 checkpoint_outline_size = 9
 checkpoint_glow_color = Color(0.9098039, 0.5019608, 0.4627451, 0.60784316)
 checkpoint_glow_scale = 1.0
+
+[node name="LevelAmbience" type="AudioStreamPlayer" parent="." unique_id=2096239027]
+stream = ExtResource("2_ambience")
+volume_db = -11.263
+autoplay = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=475558959]
 environment = SubResource("Environment_level03")
@@ -1242,11 +1247,10 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(-1668, 220)
+position = Vector2(-1667, 244)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
-script = ExtResource("3_player_script")
 bullet_scene = ExtResource("4_player_bullet")
 
 [node name="Camera2D" parent="Player" index="3" unique_id=2029278347]

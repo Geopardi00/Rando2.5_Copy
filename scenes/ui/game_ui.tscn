@@ -86,16 +86,15 @@ layout_mode = 2
 text = "00:00.00"
 
 [node name="MessageUI" type="Control" parent="." unique_id=1777357870]
-visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -180.0
-offset_top = 56.0
+offset_top = 136.0
 offset_right = 180.0
-offset_bottom = 112.0
+offset_bottom = 192.0
 grow_horizontal = 2
 pivot_offset = Vector2(180, 28)
 mouse_filter = 2
