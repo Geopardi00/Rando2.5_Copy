@@ -101,6 +101,15 @@
 [ext_resource type="Texture2D" uid="uid://dv2ybqd2byv7n" path="res://art/characters/animations/walk2/frame0010.png" id="84_pkjeu"]
 [ext_resource type="Texture2D" uid="uid://uf1tt5x0c7fk" path="res://art/characters/animations/walk2/frame0011.png" id="85_0epl4"]
 [ext_resource type="Texture2D" uid="uid://c4bovpo32lgv2" path="res://art/characters/animations/walk2/frame0012.png" id="86_3r8w6"]
+[ext_resource type="Texture2D" uid="uid://cr6tehbrv0y0p" path="res://art/characters/animations/landing/frame0000.png" id="landing_00"]
+[ext_resource type="Texture2D" uid="uid://b4jbod6ghg3aj" path="res://art/characters/animations/landing/frame0001.png" id="landing_01"]
+[ext_resource type="Texture2D" uid="uid://dodit8tj8t124" path="res://art/characters/animations/landing/frame0002.png" id="landing_02"]
+[ext_resource type="Texture2D" uid="uid://c1elwl8ce7fee" path="res://art/characters/animations/landing/frame0003.png" id="landing_03"]
+[ext_resource type="Texture2D" uid="uid://w10kilb36xbv" path="res://art/characters/animations/landing/frame0004.png" id="landing_04"]
+[ext_resource type="Texture2D" uid="uid://00hfione2dwj" path="res://art/characters/animations/landing/frame0005.png" id="landing_05"]
+[ext_resource type="Texture2D" uid="uid://cgtbktg2jmsio" path="res://art/characters/animations/landing/frame0006.png" id="landing_06"]
+[ext_resource type="Texture2D" uid="uid://cwcalsvas0oyf" path="res://art/characters/animations/landing/frame0007.png" id="landing_07"]
+[ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="player_script"]
 [ext_resource type="Texture2D" uid="uid://bll0nxy1s1cvq" path="res://art/characters/animations/slap/frame0000.png" id="slap_00"]
 [ext_resource type="Texture2D" uid="uid://i0cosc3506rx" path="res://art/characters/animations/slap/frame0001.png" id="slap_01"]
 [ext_resource type="Texture2D" uid="uid://df01jlf4iswfe" path="res://art/characters/animations/slap/frame0002.png" id="slap_02"]
@@ -359,6 +368,35 @@ animations = [{
 "speed": 30.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("landing_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("landing_07")
+}],
+"loop": false,
+"name": &"landing",
+"speed": 20.0
+}, {
+"frames": [{
 "duration": 0.1,
 "texture": ExtResource("slap_00")
 }, {
@@ -539,6 +577,10 @@ size = Vector2(18, 35)
 z_index = 1
 position = Vector2(44, -72)
 collision_layer = 2
+script = ExtResource("player_script")
+hard_landing_min_fall_speed = 590.0
+hard_landing_stop_time = 0.2
+hard_landing_animation_time = 0.3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=529171582]
 position = Vector2(0, 7.25)
@@ -547,8 +589,9 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"walk"
-frame_progress = 0.32251173
+animation = &"landing"
+frame = 7
+frame_progress = 1.0
 
 [node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]
 position = Vector2(19, 8)

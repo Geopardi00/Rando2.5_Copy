@@ -3,6 +3,9 @@
 Last updated: 2026-07-08
 
 ## Latest Update - 2026-07-08
+- Player hard landing response added for bigger falls/high jumps using the new `landing` animation frames.
+- Hard landing is tuned in `scenes/player/player.tscn` to trigger at `590 px/s`, pause horizontal movement for `0.2s`, and hold the landing animation for `0.3s`.
+- Hard landing values are exported under the Player inspector's `Hard Landing` group for easy tuning.
 - Player walk and jump animation art was refreshed with new frame sets under `art/characters/animations/walk2/` and `art/characters/animations/jump2/`.
 - `scenes/player/player.tscn` now uses the new walk2 frames for the runtime `walk` animation and the new jump2 frames for the runtime `jump` animation.
 - Existing player animation script flow remains unchanged because the playable animation names are still `walk` and `jump`.
@@ -95,7 +98,8 @@ Last updated: 2026-07-08
 - Player death reloads the current scene
 - Scene reload resets enemies, hazards, bullets, and temporary level state
 - AnimatedSprite2D-based player animation state handling
-- Player uses idle/walk/jump/death animations in gameplay
+- Player uses idle/walk/jump/landing/death animations in gameplay
+- Player now has a hard landing response after fast downward falls, with a short horizontal stop for impact feel
 
 ### Combat
 - Player bullets spawn correctly based on facing direction
@@ -292,6 +296,7 @@ Last updated: 2026-07-08
 - Added main menu music: `audio/music/Shadow Over Hope.mp3`
 - Added player animation frames: `art/characters/animations/idle`, `walk`, `jump`, `death`
 - Added refreshed player walk/jump animation frame sets: `art/characters/animations/walk2/`, `art/characters/animations/jump2/`
+- Added player landing animation frame set: `art/characters/animations/landing/`
 - Added test room scene: `scenes/levels/test_room.tscn`
 - Added tunnel door prop: `art/props/tunneldoor.png`
 - Level 02 building started
@@ -408,6 +413,7 @@ Last updated: 2026-07-08
 - Enemy hit sound cutting off on death solved by code-spawned one-shot audio playback
 - Player idle/walk/jump/death animation sets imported and wired into player logic
 - Player walk and jump animations refreshed with newer frame sets while preserving the same runtime animation names
+- Player hard landing animation and tiny stop effect added and tuned for high falls only
 - Player death animation integrated into death flow
 - Level 02 building started
 - TileMapLayer setup for gameplay/collision and background completed

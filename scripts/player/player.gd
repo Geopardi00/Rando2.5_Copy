@@ -29,6 +29,11 @@ const BLOCK_MAX_VELOCITY = 180
 @export var slap_cooldown: float = 0.25
 @export var mosquito_immunity_time: float = 1.0
 
+@export_group("Hard Landing")
+@export var hard_landing_min_fall_speed: float = 520.0
+@export var hard_landing_stop_time: float = 0.08
+@export var hard_landing_animation_time: float = 0.22
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
@@ -48,6 +53,9 @@ var slap_animation_timer: float = 0.0
 var swatting_timer: float = 0.0
 var mosquito_immunity_timer: float = 0.0
 var is_swatting: bool = false
+var max_fall_speed: float = 0.0
+var landing_animation_timer: float = 0.0
+var landing_stop_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -67,6 +75,7 @@ func _physics_process(delta: float) -> void:
 	update_invulnerability(delta)
 	update_mosquito_immunity(delta)
 	update_slap_timers(delta)
+	update_landing_timers(delta)
 
 	if is_dead:
 		velocity.x = 0.0
@@ -88,6 +97,7 @@ func _physics_process(delta: float) -> void:
 
 	var input_axis: float = Input.get_axis("move_left", "move_right")
 	var jump_pressed: bool = Input.is_action_just_pressed("jump")
+	var was_on_floor: bool = is_on_floor()
 
 	# Facing
 	if input_axis > 0.0:
@@ -98,7 +108,9 @@ func _physics_process(delta: float) -> void:
 	animated_sprite.flip_h = facing < 0
 
 	# Horizontal movement
-	if input_axis != 0.0:
+	if landing_stop_timer > 0.0:
+		velocity.x = 0.0
+	elif input_axis != 0.0:
 		velocity.x = input_axis * move_speed
 	else:
 		velocity.x = 0.0
@@ -124,15 +136,20 @@ func _physics_process(delta: float) -> void:
 
 	# Ground / coyote jump
 	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
+		cancel_landing()
 		velocity.y = jump_velocity
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
 
 	# Double jump
 	elif jump_pressed and enable_double_jump and not is_on_floor() and air_jumps_left > 0:
+		cancel_landing()
 		velocity.y = jump_velocity
 		air_jumps_left -= 1
 		jump_buffer_timer = 0.0
+
+	if not is_on_floor():
+		max_fall_speed = maxf(max_fall_speed, velocity.y)
 
 	# Shooting
 	if Input.is_action_just_pressed("shoot"):
@@ -149,6 +166,7 @@ func _physics_process(delta: float) -> void:
 
 
 	move_and_slide()
+	update_hard_landing(was_on_floor)
 	update_animation()
 
 
@@ -182,6 +200,11 @@ func update_animation() -> void:
 	if slap_animation_timer > 0.0:
 		animated_sprite.speed_scale = 1.0
 		play_animation_safe(&"slap", &"idle")
+		return
+
+	if landing_animation_timer > 0.0:
+		animated_sprite.speed_scale = 1.0
+		play_animation_safe(&"landing", &"idle")
 		return
 
 	if not is_on_floor():
@@ -359,6 +382,43 @@ func update_slap_timers(delta: float) -> void:
 
 	if slap_animation_timer > 0.0:
 		slap_animation_timer -= delta
+
+
+func update_landing_timers(delta: float) -> void:
+	if landing_animation_timer > 0.0:
+		landing_animation_timer -= delta
+
+	if landing_stop_timer > 0.0:
+		landing_stop_timer -= delta
+
+
+func update_hard_landing(was_on_floor: bool) -> void:
+	if is_dead or is_swatting:
+		max_fall_speed = 0.0
+		return
+
+	if was_on_floor:
+		max_fall_speed = 0.0
+		return
+
+	if not is_on_floor():
+		return
+
+	if max_fall_speed >= hard_landing_min_fall_speed:
+		start_hard_landing()
+
+	max_fall_speed = 0.0
+
+
+func start_hard_landing() -> void:
+	landing_animation_timer = hard_landing_animation_time
+	landing_stop_timer = hard_landing_stop_time
+	velocity.x = 0.0
+
+
+func cancel_landing() -> void:
+	landing_animation_timer = 0.0
+	landing_stop_timer = 0.0
 
 
 func mosquito_attack() -> void:
