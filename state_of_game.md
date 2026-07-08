@@ -1,6 +1,12 @@
 # State of Game
 
-Last updated: 2026-07-07
+Last updated: 2026-07-08
+
+## Latest Update - 2026-07-08
+- Player walk and jump animation art was refreshed with new frame sets under `art/characters/animations/walk2/` and `art/characters/animations/jump2/`.
+- `scenes/player/player.tscn` now uses the new walk2 frames for the runtime `walk` animation and the new jump2 frames for the runtime `jump` animation.
+- Existing player animation script flow remains unchanged because the playable animation names are still `walk` and `jump`.
+- Player collision shape and muzzle marker were lightly adjusted to better fit the refreshed player animation frames.
 
 ## Latest Update - 2026-07-07
 - Checkpoint banner presentation has been polished in `GameUI` with customizable text, Russo One font support, duplicate glow text, pop/fade animation, and optional `CPUParticles2D` spark effects.
@@ -285,6 +291,7 @@ Last updated: 2026-07-07
 - Added intro voiceover: `audio/intro/opening_monologue.wav`
 - Added main menu music: `audio/music/Shadow Over Hope.mp3`
 - Added player animation frames: `art/characters/animations/idle`, `walk`, `jump`, `death`
+- Added refreshed player walk/jump animation frame sets: `art/characters/animations/walk2/`, `art/characters/animations/jump2/`
 - Added test room scene: `scenes/levels/test_room.tscn`
 - Added tunnel door prop: `art/props/tunneldoor.png`
 - Level 02 building started
@@ -400,6 +407,7 @@ Last updated: 2026-07-07
 - Menu fog visibility/debug issues solved
 - Enemy hit sound cutting off on death solved by code-spawned one-shot audio playback
 - Player idle/walk/jump/death animation sets imported and wired into player logic
+- Player walk and jump animations refreshed with newer frame sets while preserving the same runtime animation names
 - Player death animation integrated into death flow
 - Level 02 building started
 - TileMapLayer setup for gameplay/collision and background completed
@@ -460,4 +468,3 @@ Last updated: 2026-07-07
 - Current enemy set is enough for meaningful Level 01 gameplay.
 - Main menu is now good enough to support a cleaner presentation loop for the project.
 - Boss fight is in gameplay prototype state: functional attacks and damage are in, but UI/audio/final animation polish are still pending.
-
