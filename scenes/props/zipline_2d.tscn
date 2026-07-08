@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://d3g1clqub8sis"]
+
+[ext_resource type="Script" path="res://scripts/props/zipline_2d.gd" id="1_zipline"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zipline_grab"]
+size = Vector2(420, 80)
+
+[node name="Zipline2D" type="Node2D"]
+script = ExtResource("1_zipline")
+
+[node name="StartAnchor" type="Marker2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="EndAnchor" type="Marker2D" parent="."]
+position = Vector2(420, 120)
+
+[node name="CableOutline" type="Line2D" parent="."]
+width = 8.0
+default_color = Color(0.03, 0.03, 0.03, 1)
+
+[node name="Cable" type="Line2D" parent="."]
+width = 4.0
+default_color = Color(0.46, 0.46, 0.46, 1)
+
+[node name="GrabArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabArea"]
+shape = SubResource("RectangleShape2D_zipline_grab")

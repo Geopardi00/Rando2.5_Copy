@@ -34,6 +34,9 @@ const BLOCK_MAX_VELOCITY = 180
 @export var hard_landing_stop_time: float = 0.08
 @export var hard_landing_animation_time: float = 0.22
 
+@export_group("Zipline")
+@export var zipline_reattach_cooldown_time: float = 0.18
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
@@ -56,6 +59,12 @@ var is_swatting: bool = false
 var max_fall_speed: float = 0.0
 var landing_animation_timer: float = 0.0
 var landing_stop_timer: float = 0.0
+var nearby_ziplines: Array[Node] = []
+var active_zipline: Node = null
+var is_riding_zipline: bool = false
+var zipline_progress: float = 0.0
+var zipline_speed: float = 0.0
+var zipline_reattach_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -76,8 +85,10 @@ func _physics_process(delta: float) -> void:
 	update_mosquito_immunity(delta)
 	update_slap_timers(delta)
 	update_landing_timers(delta)
+	update_zipline_timers(delta)
 
 	if is_dead:
+		force_detach_from_zipline()
 		velocity.x = 0.0
 
 		if not is_on_floor():
@@ -89,7 +100,19 @@ func _physics_process(delta: float) -> void:
 		update_animation()
 		return
 
+	if is_riding_zipline:
+		if Input.is_action_just_pressed("jump"):
+			var launch_velocity := get_zipline_launch_velocity(true)
+			detach_from_zipline(launch_velocity)
+			update_animation()
+			return
+		else:
+			update_zipline_movement(delta)
+			update_animation()
+			return
+
 	if is_swatting:
+		force_detach_from_zipline()
 		update_swatting(delta)
 		move_and_slide()
 		update_animation()
@@ -98,6 +121,9 @@ func _physics_process(delta: float) -> void:
 	var input_axis: float = Input.get_axis("move_left", "move_right")
 	var jump_pressed: bool = Input.is_action_just_pressed("jump")
 	var was_on_floor: bool = is_on_floor()
+
+	if Input.is_action_just_pressed("interact"):
+		try_attach_to_nearest_zipline()
 
 	# Facing
 	if input_axis > 0.0:
@@ -200,6 +226,14 @@ func update_animation() -> void:
 	if slap_animation_timer > 0.0:
 		animated_sprite.speed_scale = 1.0
 		play_animation_safe(&"slap", &"idle")
+		return
+
+	if is_riding_zipline:
+		animated_sprite.speed_scale = 1.0
+		if velocity.y < 0.0:
+			play_animation_safe(&"jump", &"idle")
+		else:
+			play_animation_safe(&"fall", &"jump")
 		return
 
 	if landing_animation_timer > 0.0:
@@ -392,6 +426,152 @@ func update_landing_timers(delta: float) -> void:
 		landing_stop_timer -= delta
 
 
+func update_zipline_timers(delta: float) -> void:
+	if zipline_reattach_timer > 0.0:
+		zipline_reattach_timer -= delta
+
+
+func register_nearby_zipline(zipline: Node) -> void:
+	if not nearby_ziplines.has(zipline):
+		nearby_ziplines.append(zipline)
+
+
+func unregister_nearby_zipline(zipline: Node) -> void:
+	nearby_ziplines.erase(zipline)
+
+
+func try_attach_to_nearest_zipline() -> void:
+	if is_dead or is_swatting or is_riding_zipline or zipline_reattach_timer > 0.0:
+		return
+
+	var closest_zipline: Node = null
+	var closest_progress := 0.0
+	var closest_distance := INF
+
+	for zipline in nearby_ziplines:
+		if zipline == null or not is_instance_valid(zipline):
+			continue
+
+		if not zipline.has_method("get_closest_progress_to_world_position"):
+			continue
+
+		var progress: float = zipline.call("get_closest_progress_to_world_position", global_position)
+		var cable_position: Vector2 = zipline.call("get_world_position_at_progress", progress)
+		var distance := global_position.distance_squared_to(cable_position)
+
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_progress = progress
+			closest_zipline = zipline
+
+	if closest_zipline != null:
+		attach_to_zipline(closest_zipline, closest_progress)
+
+
+func attach_to_zipline(zipline: Node, progress: float) -> void:
+	if zipline == null or not is_instance_valid(zipline):
+		return
+
+	active_zipline = zipline
+	is_riding_zipline = true
+	zipline_progress = clamp(progress, 0.0, 1.0)
+	cancel_landing()
+	jump_buffer_timer = 0.0
+	coyote_timer = 0.0
+	air_jumps_left = extra_jumps
+
+	var tangent: Vector2 = active_zipline.call("get_world_tangent_at_progress", zipline_progress)
+	var projected_speed := velocity.dot(tangent)
+	var downhill_direction: float = active_zipline.call("get_downhill_progress_direction")
+	var minimum_speed: float = active_zipline.get("minimum_downhill_speed")
+	var fallback_speed: float = active_zipline.get("initial_ride_speed")
+
+	if abs(projected_speed) < minimum_speed:
+		projected_speed = max(minimum_speed, fallback_speed) * downhill_direction
+
+	zipline_speed = projected_speed
+	active_zipline.call("attach_player", self, zipline_progress)
+	active_zipline.call("set_rider_progress", zipline_progress)
+	global_position = active_zipline.call("get_world_position_at_progress", zipline_progress) + active_zipline.get("player_hang_offset")
+	velocity = tangent * zipline_speed
+
+
+func update_zipline_movement(delta: float) -> void:
+	if active_zipline == null or not is_instance_valid(active_zipline):
+		force_detach_from_zipline()
+		return
+
+	var tangent: Vector2 = active_zipline.call("get_world_tangent_at_progress", zipline_progress)
+	var acceleration: float = active_zipline.get("ride_acceleration")
+	var maximum_speed: float = active_zipline.get("maximum_ride_speed")
+	var downhill_direction: float = active_zipline.call("get_downhill_progress_direction")
+	var minimum_speed: float = active_zipline.get("minimum_downhill_speed")
+	var cable_length: float = active_zipline.call("get_cable_length")
+	var gravity_acceleration := Vector2(0.0, gravity).dot(tangent)
+
+	zipline_speed += gravity_acceleration * acceleration / gravity * delta
+	zipline_speed = clamp(zipline_speed, -maximum_speed, maximum_speed)
+
+	if signf(zipline_speed) == downhill_direction and abs(zipline_speed) < minimum_speed:
+		zipline_speed = minimum_speed * downhill_direction
+	elif abs(zipline_speed) < 1.0:
+		zipline_speed = minimum_speed * downhill_direction
+
+	zipline_progress += (zipline_speed / cable_length) * delta
+
+	var reached_start := zipline_progress <= 0.0
+	var reached_end := zipline_progress >= 1.0
+	zipline_progress = clamp(zipline_progress, 0.0, 1.0)
+	active_zipline.call("set_rider_progress", zipline_progress)
+
+	var target_position: Vector2 = active_zipline.call("get_world_position_at_progress", zipline_progress) + active_zipline.get("player_hang_offset")
+	velocity = (target_position - global_position) / max(delta, 0.001)
+
+	if velocity.x > 5.0:
+		facing = 1
+	elif velocity.x < -5.0:
+		facing = -1
+	animated_sprite.flip_h = facing < 0
+
+	move_and_slide()
+
+	if reached_start or reached_end:
+		detach_from_zipline(get_zipline_launch_velocity(false))
+
+
+func get_zipline_launch_velocity(include_jump: bool) -> Vector2:
+	if active_zipline == null or not is_instance_valid(active_zipline):
+		return velocity
+
+	var tangent: Vector2 = active_zipline.call("get_world_tangent_at_progress", zipline_progress)
+	var launch_velocity := tangent * zipline_speed
+
+	if include_jump:
+		launch_velocity.y -= active_zipline.get("detach_jump_velocity")
+	else:
+		launch_velocity *= active_zipline.get("end_launch_multiplier")
+
+	return launch_velocity
+
+
+func detach_from_zipline(launch_velocity: Vector2) -> void:
+	if active_zipline != null and is_instance_valid(active_zipline):
+		active_zipline.call("detach_player", self)
+
+	active_zipline = null
+	is_riding_zipline = false
+	zipline_speed = 0.0
+	zipline_reattach_timer = zipline_reattach_cooldown_time
+	velocity = launch_velocity
+
+
+func force_detach_from_zipline() -> void:
+	if not is_riding_zipline:
+		return
+
+	detach_from_zipline(velocity)
+
+
 func update_hard_landing(was_on_floor: bool) -> void:
 	if is_dead or is_swatting:
 		max_fall_speed = 0.0
@@ -425,6 +605,7 @@ func mosquito_attack() -> void:
 	if is_dead or is_swatting or mosquito_immunity_timer > 0.0:
 		return
 
+	force_detach_from_zipline()
 	is_swatting = true
 	swatting_timer = 1.0
 	slap_animation_timer = 0.0
@@ -451,6 +632,7 @@ func die() -> void:
 	if is_dead:
 		return
 
+	force_detach_from_zipline()
 	is_dead = true
 	current_hp = 0
 	health_changed.emit(current_hp, max_hp)

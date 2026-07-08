@@ -3,6 +3,10 @@
 Last updated: 2026-07-08
 
 ## Latest Update - 2026-07-08
+- Prototype zipline mechanic added and tested in `scenes/levels/test_room.tscn`.
+- New reusable `Zipline2D` scene supports anchor-based cable sizing, natural sag, rider bend, grey cable with black outline, and inspector-tunable movement/visual settings.
+- Player can attach to nearby ziplines with `interact` (`E` keyboard / Xbox `B`) and detach with `jump`, preserving ride momentum.
+- Zipline support was added to both player script copies to keep `test_room.tscn` and normal player scenes aligned.
 - Level 03 looping ambience is now working through a local `LevelAmbience` `AudioStreamPlayer` in `scenes/levels/level_03.tscn`.
 - The working ambience stream is `audio/sfx/Level03ambience_16bit.wav`; it autoplays in Level 03 and restarts when the level reloads after player death.
 - The earlier persistent ambience autoload approach was removed for now because the simpler scene-local audio node proved more reliable during testing.
@@ -105,6 +109,7 @@ Last updated: 2026-07-08
 - AnimatedSprite2D-based player animation state handling
 - Player uses idle/walk/jump/landing/death animations in gameplay
 - Player now has a hard landing response after fast downward falls, with a short horizontal stop for impact feel
+- Player has first-pass zipline riding support: attach with `interact`, ride along a generated cable, jump to detach, and force-detach safely on death/swatting
 
 ### Combat
 - Player bullets spawn correctly based on facing direction
@@ -236,6 +241,7 @@ Last updated: 2026-07-08
 - Level 03 cover testing currently uses normal collision for gameplay ray blocking and LightOccluder2D for visual shadow blocking
 - Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
 - Level 03 now has local looping ambience via a scene-local `AudioStreamPlayer`; the ambience restarts on level reload.
+- Test room now includes a prototype reusable zipline for movement feel testing.
 
 ### Visual Feedback / VFX
 - White hit flash shader created and applied to enemies
@@ -332,6 +338,8 @@ Last updated: 2026-07-08
 - Updated checkpoint trigger flow to show checkpoint text through the level-local UI
 - Added Russo One font for checkpoint banner styling: `fonts/Russo_one/RussoOne-Regular.ttf`
 - Added reusable animated checkpoint scene: `scenes/props/checkpoint.tscn`
+- Added reusable zipline prototype scene/script: `scenes/props/zipline_2d.tscn`, `scripts/props/zipline_2d.gd`
+- Added zipline setup notes: `scenes/props/zipline_README.md`
 - Added checkpoint animation frames under `art/props/animations/checkpoint/`
 - Updated Level 03 to instance the reusable checkpoint scene
 - Updated Level 02/test_room_2 to include the reusable checkpoint scene
@@ -464,6 +472,8 @@ Last updated: 2026-07-08
 - Checkpoint banner glow/font/particle polish added and tuned enough for current playtesting
 - Level 02/test_room_2 now has one reusable checkpoint placed
 - Level 03 ambience playback issue solved by using a local scene `AudioStreamPlayer` instead of the temporary autoload approach
+- Zipline prototype added to test room; cable endpoints remain pinned while rider bend affects only the middle span
+- `interact` input now supports keyboard `E` and Xbox `B`
 
 ## Recommended Next Steps
 - Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn
