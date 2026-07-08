@@ -3,6 +3,8 @@
 Last updated: 2026-07-08
 
 ## Latest Update - 2026-07-08
+- One reusable zipline has been placed and playtested in Level 03; the mechanic is currently feeling good enough to keep exploring.
+- Level 03 gained a small supporting traversal/layout pass around the new zipline, including visual anchor props and nearby platform/spawn adjustments for testing.
 - Prototype zipline mechanic added and tested in `scenes/levels/test_room.tscn`.
 - New reusable `Zipline2D` scene supports anchor-based cable sizing, natural sag, rider bend, grey cable with black outline, and inspector-tunable movement/visual settings.
 - Player can attach to nearby ziplines with `interact` (`E` keyboard / Xbox `B`) and detach with `jump`, preserving ride momentum.
@@ -241,6 +243,7 @@ Last updated: 2026-07-08
 - Level 03 cover testing currently uses normal collision for gameplay ray blocking and LightOccluder2D for visual shadow blocking
 - Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
 - Level 03 now has local looping ambience via a scene-local `AudioStreamPlayer`; the ambience restarts on level reload.
+- Level 03 now includes the first in-level reusable zipline traversal test.
 - Test room now includes a prototype reusable zipline for movement feel testing.
 
 ### Visual Feedback / VFX
@@ -474,6 +477,7 @@ Last updated: 2026-07-08
 - Level 03 ambience playback issue solved by using a local scene `AudioStreamPlayer` instead of the temporary autoload approach
 - Zipline prototype added to test room; cable endpoints remain pinned while rider bend affects only the middle span
 - `interact` input now supports keyboard `E` and Xbox `B`
+- First Level 03 zipline placement added and playtested successfully
 
 ## Recommended Next Steps
 - Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn

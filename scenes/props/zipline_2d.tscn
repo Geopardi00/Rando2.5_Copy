@@ -1,30 +1,41 @@
 [gd_scene format=3 uid="uid://d3g1clqub8sis"]
 
-[ext_resource type="Script" path="res://scripts/props/zipline_2d.gd" id="1_zipline"]
+[ext_resource type="Script" uid="uid://b366nv5qjij87" path="res://scripts/props/zipline_2d.gd" id="1_zipline"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zipline_grab"]
-size = Vector2(420, 80)
+size = Vector2(436.80658, 62)
 
-[node name="Zipline2D" type="Node2D"]
+[node name="Zipline2D" type="Node2D" unique_id=1330517482]
 script = ExtResource("1_zipline")
+cable_samples = 40
+cable_width = 3.0
+cable_outline_width = 1.0
+rider_bend_amount = 10.0
+rider_bend_radius = 0.5
+bend_response_speed = 5.0
+maximum_ride_speed = 700.0
+detach_jump_velocity = 420.0
 
-[node name="StartAnchor" type="Marker2D" parent="."]
-position = Vector2(0, 0)
+[node name="StartAnchor" type="Marker2D" parent="." unique_id=1968645270]
 
-[node name="EndAnchor" type="Marker2D" parent="."]
+[node name="EndAnchor" type="Marker2D" parent="." unique_id=833868999]
 position = Vector2(420, 120)
 
-[node name="CableOutline" type="Line2D" parent="."]
-width = 8.0
+[node name="CableOutline" type="Line2D" parent="." unique_id=1891110833]
+points = PackedVector2Array(0, 0, 10.769231, 4.042522, 21.538462, 8.078781, 32.307693, 12.102557, 43.076923, 16.107708, 53.846157, 20.088215, 64.61539, 24.038216, 75.38462, 27.952053, 86.15385, 31.824291, 96.92308, 35.64978, 107.692314, 39.42366, 118.46154, 43.14142, 129.23077, 46.79888, 140, 50.392303, 150.76924, 53.918327, 161.53847, 57.374043, 172.3077, 60.75699, 183.07692, 64.06518, 193.84616, 67.29712, 204.61539, 70.45181, 215.38463, 73.52873, 226.15385, 76.52789, 236.92308, 79.4498, 247.69232, 82.29545, 258.46155, 85.066345, 269.23077, 87.76449, 280, 90.3923, 290.76923, 92.952736, 301.53848, 95.449104, 312.3077, 97.8852, 323.07693, 100.26517, 333.84616, 102.59352, 344.6154, 104.87513, 355.3846, 107.115135, 366.15384, 109.318985, 376.92307, 111.492325, 387.69232, 113.64102, 398.46155, 115.77109, 409.23077, 117.88868, 420, 120)
+width = 5.0
 default_color = Color(0.03, 0.03, 0.03, 1)
 
-[node name="Cable" type="Line2D" parent="."]
-width = 4.0
+[node name="Cable" type="Line2D" parent="." unique_id=1398644696]
+points = PackedVector2Array(0, 0, 10.769231, 4.042522, 21.538462, 8.078781, 32.307693, 12.102557, 43.076923, 16.107708, 53.846157, 20.088215, 64.61539, 24.038216, 75.38462, 27.952053, 86.15385, 31.824291, 96.92308, 35.64978, 107.692314, 39.42366, 118.46154, 43.14142, 129.23077, 46.79888, 140, 50.392303, 150.76924, 53.918327, 161.53847, 57.374043, 172.3077, 60.75699, 183.07692, 64.06518, 193.84616, 67.29712, 204.61539, 70.45181, 215.38463, 73.52873, 226.15385, 76.52789, 236.92308, 79.4498, 247.69232, 82.29545, 258.46155, 85.066345, 269.23077, 87.76449, 280, 90.3923, 290.76923, 92.952736, 301.53848, 95.449104, 312.3077, 97.8852, 323.07693, 100.26517, 333.84616, 102.59352, 344.6154, 104.87513, 355.3846, 107.115135, 366.15384, 109.318985, 376.92307, 111.492325, 387.69232, 113.64102, 398.46155, 115.77109, 409.23077, 117.88868, 420, 120)
+width = 3.0
 default_color = Color(0.46, 0.46, 0.46, 1)
 
-[node name="GrabArea" type="Area2D" parent="."]
+[node name="GrabArea" type="Area2D" parent="." unique_id=565041070]
+position = Vector2(210, 60)
+rotation = 0.27829966
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabArea" unique_id=309589480]
 shape = SubResource("RectangleShape2D_zipline_grab")
