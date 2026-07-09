@@ -1,6 +1,11 @@
 # State of Game
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
+
+## Latest Update - 2026-07-09
+- Level 03 atmosphere pass added an animated waterfall setup under a new `BackgroundNearest` parallax layer.
+- New waterfall animation/background assets were added under `art/props/animations/waterfall/`, including waterfall frames, stone wall art, and waterfall block pieces.
+- Level 03 background depth now includes the waterfall/stone wall pass behind gameplay while preserving the existing parallax stack.
 
 ## Latest Update - 2026-07-08
 - One reusable zipline has been placed and playtested in Level 03; the mechanic is currently feeling good enough to keep exploring.
@@ -244,6 +249,7 @@ Last updated: 2026-07-08
 - Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
 - Level 03 now has local looping ambience via a scene-local `AudioStreamPlayer`; the ambience restarts on level reload.
 - Level 03 now includes the first in-level reusable zipline traversal test.
+- Level 03 now includes an animated waterfall/background parallax pass for additional atmosphere.
 - Test room now includes a prototype reusable zipline for movement feel testing.
 
 ### Visual Feedback / VFX
@@ -257,6 +263,7 @@ Last updated: 2026-07-08
 - Boss stomp landing triggers camera shake through the boss fight level script
 - Level 03 sniper spotlight currently uses `art/vfx/light_stream.jpg` / related light stream iterations as a cone texture
 - Level 03 spotlight is visual-only; actual stealth detection does not depend on rendered light pixels
+- Level 03 waterfall animation and stone wall background visuals are placed in the parallax background stack.
 
 ### Audio
 - Enemy hit sound workflow added
@@ -332,6 +339,7 @@ Last updated: 2026-07-08
 - Added/updated boss arena art: `art/bosslevel1/stage1test.png`, `art/bosslevel1/stage1final.png`
 - Added Level 03 scene/script and art assets: `scenes/levels/level_03.tscn`, `scripts/levels/level_03.gd`, `art/level03/`
 - Added Level 03 ambience audio: `audio/sfx/Level03ambience_16bit.wav`
+- Added Level 03 waterfall/background assets under `art/props/animations/waterfall/`
 - Added Level 03 sniper script: `scripts/enemies/enemy_sentry_sniper.gd`
 - Added Level 03 watchtower sniper test scene content inside `scenes/levels/level_03.tscn`
 - Added/iterated Level 03 watchtower and light beam assets under `art/level03/` and `art/vfx/`
@@ -478,6 +486,7 @@ Last updated: 2026-07-08
 - Zipline prototype added to test room; cable endpoints remain pinned while rider bend affects only the middle span
 - `interact` input now supports keyboard `E` and Xbox `B`
 - First Level 03 zipline placement added and playtested successfully
+- Level 03 animated waterfall and background parallax visuals added as an atmosphere pass
 
 ## Recommended Next Steps
 - Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn

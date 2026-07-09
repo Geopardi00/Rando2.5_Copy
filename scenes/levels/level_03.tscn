@@ -56,11 +56,21 @@
 [ext_resource type="Texture2D" uid="uid://jptuxvwk3gcw" path="res://art/props/gasbottles.png" id="37_5wlp5"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="39_wkwep"]
 [ext_resource type="Script" uid="uid://cvbtj5fv4wcul" path="res://scenes/props/level03_torches.gd" id="42_krbd2"]
+[ext_resource type="Texture2D" uid="uid://b8aq6u2nf5h62" path="res://art/props/animations/waterfall/frame0000.png" id="42_yrqgo"]
+[ext_resource type="Texture2D" uid="uid://c8eymm3lvfin7" path="res://art/props/animations/waterfall/frame0001.png" id="43_ck4x5"]
 [ext_resource type="PackedScene" uid="uid://d3g1clqub8sis" path="res://scenes/props/zipline_2d.tscn" id="43_jy88k"]
 [ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="43_ka027"]
 [ext_resource type="PackedScene" uid="uid://c8hpa3dy0fosg" path="res://scenes/enemies/enemy_mosquito.tscn" id="43_v0by6"]
 [ext_resource type="PackedScene" uid="uid://dxau7e3ddsbqg" path="res://scenes/Non_lethal/mosquito_swarm.tscn" id="44_uqjib"]
+[ext_resource type="Texture2D" uid="uid://b37rsqdvtlhhv" path="res://art/props/animations/waterfall/frame0002.png" id="44_wqvu7"]
+[ext_resource type="Texture2D" uid="uid://c72521vcxoyj3" path="res://art/props/animations/waterfall/frame0003.png" id="45_31wr4"]
+[ext_resource type="Texture2D" uid="uid://j11nuohmqbsq" path="res://art/props/animations/waterfall/frame0004.png" id="46_5vlru"]
+[ext_resource type="Texture2D" uid="uid://chc1x226ouew8" path="res://art/props/animations/waterfall/frame0005.png" id="47_odj57"]
+[ext_resource type="Texture2D" uid="uid://bo2uvt0uqxs3f" path="res://art/props/animations/waterfall/frame0006.png" id="48_5x2cs"]
+[ext_resource type="Texture2D" uid="uid://c4yffiey00s3w" path="res://art/props/animations/waterfall/frame0007.png" id="49_dnaj0"]
+[ext_resource type="Texture2D" uid="uid://dqlcktv4xw6ot" path="res://art/props/animations/waterfall/frame0008.png" id="50_uq4pb"]
 [ext_resource type="Texture2D" uid="uid://dy8amwpcg4u28" path="res://art/level01/ver2.0/foregroundplant05.png" id="51_5wlp5"]
+[ext_resource type="Texture2D" uid="uid://dtr7dsaom3lrl" path="res://art/props/animations/waterfall/frame0009.png" id="51_br3ye"]
 [ext_resource type="Texture2D" uid="uid://bfwcb0m671xu" path="res://art/level01/ver2.0/foregroundplant04.png" id="51_radsg"]
 [ext_resource type="Shader" uid="uid://cjrb8ro6io3gl" path="res://shaders/foreground_wind2.tres" id="52_4ghe2"]
 [ext_resource type="Texture2D" uid="uid://c0anus20yhdjd" path="res://art/level01/ver2.0/foregroundstone01.png" id="52_8mjvw"]
@@ -70,8 +80,11 @@
 [ext_resource type="Texture2D" uid="uid://bxly5c1wdhvq3" path="res://art/level01/ver2.0/foregroundplant01.png" id="54_a10ds"]
 [ext_resource type="Texture2D" uid="uid://c7oyb7jchnn3h" path="res://art/level01/ver2.0/foregroundplant03.png" id="54_radsg"]
 [ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="56_66fwr"]
+[ext_resource type="Texture2D" uid="uid://c10wgxk5bjuly" path="res://art/props/animations/waterfall/stonewall.png" id="57_31wr4"]
 [ext_resource type="Shader" uid="uid://djhmtqwif48gv" path="res://shaders/fog.gdshader" id="66_ka1dv"]
 [ext_resource type="Shader" uid="uid://dg0outdtaryog" path="res://shaders/God rays.gdshader" id="67_qkk4n"]
+[ext_resource type="Texture2D" uid="uid://cw2fjtqkedygj" path="res://art/props/animations/waterfall/waterfall_blocks03.png" id="67_wqvu7"]
+[ext_resource type="Texture2D" uid="uid://eaocgr7rgmea" path="res://art/props/animations/waterfall/waterfall_blocks02.png" id="68_31wr4"]
 
 [sub_resource type="Environment" id="Environment_level03"]
 background_mode = 3
@@ -220,6 +233,44 @@ polygon = PackedVector2Array(-4, 2, 2, 2, 4, 1, 4, -1, 0, -3, -3, -3, -5, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_goal"]
 size = Vector2(48, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bldc6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("42_yrqgo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_ck4x5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_wqvu7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_31wr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_5vlru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_odj57")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_5x2cs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_dnaj0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_uq4pb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_br3ye")
+}],
+"loop": true,
+"name": &"default",
+"speed": 13.0
+}]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmkdx"]
 shader = ExtResource("52_4ghe2")
@@ -1293,7 +1344,7 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(3489, 97)
+position = Vector2(2580, 194)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
@@ -1353,6 +1404,37 @@ repeat_times = 5
 modulate = Color(0.4756974, 0.773453, 0.7813384, 1)
 position = Vector2(-4, 103)
 texture = ExtResource("10_8w8tq")
+
+[node name="BackgroundNearest" type="Parallax2D" parent="World" unique_id=546674223]
+modulate = Color(0.66245234, 0.66245234, 0.6624523, 1)
+z_index = -3
+scroll_scale = Vector2(0.9, 1)
+scroll_offset = Vector2(-478, 58)
+
+[node name="Stonewall" type="Sprite2D" parent="World/BackgroundNearest" unique_id=1277792719]
+position = Vector2(5188, 204)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("57_31wr4")
+
+[node name="Waterfall" type="AnimatedSprite2D" parent="World/BackgroundNearest" unique_id=412295039]
+modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
+position = Vector2(5228, 207.5)
+scale = Vector2(0.4, 0.51574075)
+sprite_frames = SubResource("SpriteFrames_bldc6")
+autoplay = "default"
+frame_progress = 0.58147776
+
+[node name="Sprite2D" type="Sprite2D" parent="World/BackgroundNearest" unique_id=985228757]
+modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
+position = Vector2(5043, 5)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("67_wqvu7")
+
+[node name="Sprite2D2" type="Sprite2D" parent="World/BackgroundNearest" unique_id=1627098315]
+modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
+position = Vector2(5372, 2)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("68_31wr4")
 
 [node name="ForegroundFar" type="Parallax2D" parent="World" unique_id=605950427]
 z_index = 6
