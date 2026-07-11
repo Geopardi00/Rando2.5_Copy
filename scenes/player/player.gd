@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal health_changed(current_hp: int, max_hp: int)
+signal ammo_changed(current_ammo: int, max_ammo: int)
 
 @export var move_speed: float = 220.0
 @export var jump_velocity: float = -400.0
@@ -20,6 +21,8 @@ const BLOCK_MAX_VELOCITY = 180
 @export var fire_rate: float = 0.2
 @export var bullet_offset: Vector2 = Vector2(16, 12)
 @export var muzzle_flash_offset: Vector2 = Vector2(18, 12)
+@export var max_ammo: int = 30
+@export var starting_ammo: int = 30
 @export var max_hp: int = 3
 @export var invulnerability_time: float = 0.75
 @export var debug_enabled: bool = false
@@ -62,6 +65,7 @@ var jump_buffer_timer: float = 0.0
 var air_jumps_left: int = 0
 var is_dead: bool = false
 var current_hp: int = 0
+var current_ammo: int = 0
 var invulnerability_timer: float = 0.0
 var blink_timer: float = 0.0
 var slap_cooldown_timer: float = 0.0
@@ -89,7 +93,9 @@ var melee_hit_enemies: Array[Node] = []
 func _ready() -> void:
 	add_to_group("player")
 	current_hp = max_hp
+	current_ammo = clampi(starting_ammo, 0, max_ammo)
 	health_changed.emit(current_hp, max_hp)
+	ammo_changed.emit(current_ammo, max_ammo)
 
 	fire_timer.wait_time = fire_rate
 	fire_timer.one_shot = true
@@ -297,10 +303,14 @@ func try_shoot() -> void:
 	if bullet_scene == null:
 		return
 
+	if current_ammo <= 0:
+		return
+
 	if not fire_timer.is_stopped():
 		return
 
 	fire_timer.start()
+	consume_ammo(1)
 	fire_bullet()
 
 
@@ -313,6 +323,25 @@ func fire_bullet() -> void:
 	spawn_muzzle_flash()
 
 	shoot_sound.play()
+
+
+func consume_ammo(amount: int) -> void:
+	if amount <= 0:
+		return
+
+	current_ammo = maxi(current_ammo - amount, 0)
+	ammo_changed.emit(current_ammo, max_ammo)
+
+
+func add_ammo(amount: int) -> void:
+	if amount <= 0:
+		return
+
+	var previous_ammo := current_ammo
+	current_ammo = clampi(current_ammo + amount, 0, max_ammo)
+
+	if current_ammo != previous_ammo:
+		ammo_changed.emit(current_ammo, max_ammo)
 
 
 func try_slap() -> void:

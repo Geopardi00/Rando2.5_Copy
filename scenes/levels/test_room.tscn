@@ -56,6 +56,7 @@
 [ext_resource type="Texture2D" uid="uid://so81ppxdus5g" path="res://art/props/animations/checkpoint/frame0038.png" id="54_588vh"]
 [ext_resource type="Texture2D" uid="uid://dokpckg7f6qal" path="res://art/props/animations/checkpoint/frame0039.png" id="55_eqnpg"]
 [ext_resource type="PackedScene" uid="uid://d3g1clqub8sis" path="res://scenes/props/zipline_2d.tscn" id="56_zipline"]
+[ext_resource type="PackedScene" path="res://scenes/props/magazine_pickup.tscn" id="57_magazine"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(1248.5, 48)
@@ -253,29 +254,24 @@ animation = &"slap"
 frame = 8
 frame_progress = 0.0
 
+[node name="MagazinePickup" parent="." unique_id=344168263 instance=ExtResource("57_magazine")]
+position = Vector2(421, 122)
+bob_distance = 1.5
+bob_time = 0.7
+
 [node name="Zipline2D" parent="." unique_id=1641684564 instance=ExtResource("56_zipline")]
 position = Vector2(856, 43)
-cable_samples = 40
-cable_width = 3.0
-cable_outline_width = 1.0
-rider_bend_amount = 10.0
-rider_bend_radius = 0.5
-bend_response_speed = 5.0
-maximum_ride_speed = 700.0
-detach_jump_velocity = 420.0
 
-[node name="EndAnchor" parent="Zipline2D" index="1"]
+[node name="EndAnchor" parent="Zipline2D" index="1" unique_id=833868999]
 position = Vector2(1035, 336)
 
-[node name="CableOutline" parent="Zipline2D" index="2"]
+[node name="CableOutline" parent="Zipline2D" index="2" unique_id=1891110833]
 points = PackedVector2Array(0, 0, 26.538462, 9.580984, 53.076923, 19.155704, 79.61539, 28.717943, 106.15385, 38.261555, 132.69232, 47.780525, 159.23077, 57.26899, 185.76924, 66.72128, 212.3077, 76.13199, 238.84616, 85.49593, 265.38464, 94.80828, 291.9231, 104.06449, 318.46155, 113.26043, 345, 122.3923, 371.53848, 131.45679, 398.07693, 140.45097, 424.6154, 149.37238, 451.15384, 158.21902, 477.69232, 166.98943, 504.23077, 175.68257, 530.7693, 184.29797, 557.30774, 192.83559, 583.8462, 201.29596, 610.38464, 209.68007, 636.9231, 217.98944, 663.46155, 226.22603, 690, 234.3923, 716.53845, 242.4912, 743.07697, 250.52603, 769.6154, 258.50058, 796.1539, 266.419, 822.6923, 274.28583, 849.2308, 282.10593, 875.7692, 289.8844, 902.3077, 297.62668, 928.8461, 305.33847, 955.38464, 313.02563, 981.9231, 320.69415, 1008.46155, 328.35022, 1035, 336)
-width = 5.0
 
-[node name="Cable" parent="Zipline2D" index="3"]
+[node name="Cable" parent="Zipline2D" index="3" unique_id=1398644696]
 points = PackedVector2Array(0, 0, 26.538462, 9.580984, 53.076923, 19.155704, 79.61539, 28.717943, 106.15385, 38.261555, 132.69232, 47.780525, 159.23077, 57.26899, 185.76924, 66.72128, 212.3077, 76.13199, 238.84616, 85.49593, 265.38464, 94.80828, 291.9231, 104.06449, 318.46155, 113.26043, 345, 122.3923, 371.53848, 131.45679, 398.07693, 140.45097, 424.6154, 149.37238, 451.15384, 158.21902, 477.69232, 166.98943, 504.23077, 175.68257, 530.7693, 184.29797, 557.30774, 192.83559, 583.8462, 201.29596, 610.38464, 209.68007, 636.9231, 217.98944, 663.46155, 226.22603, 690, 234.3923, 716.53845, 242.4912, 743.07697, 250.52603, 769.6154, 258.50058, 796.1539, 266.419, 822.6923, 274.28583, 849.2308, 282.10593, 875.7692, 289.8844, 902.3077, 297.62668, 928.8461, 305.33847, 955.38464, 313.02563, 981.9231, 320.69415, 1008.46155, 328.35022, 1035, 336)
-width = 3.0
 
-[node name="GrabArea" parent="Zipline2D" index="4"]
+[node name="GrabArea" parent="Zipline2D" index="4" unique_id=565041070]
 position = Vector2(517.5, 168)
 rotation = 0.31390417
 

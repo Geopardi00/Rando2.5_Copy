@@ -3,6 +3,12 @@
 Last updated: 2026-07-12
 
 ## Latest Update - 2026-07-12
+- First ammo pass is implemented for player shooting: player starts at `30 / 30` ammo, shooting consumes `1` ammo only when a bullet is actually fired, and shooting at `0` ammo does not spawn bullets or start the fire-rate timer.
+- Player now emits `ammo_changed(current_ammo, max_ammo)` for future `GameUI` ammo HUD work.
+- Reusable magazine pickup added with `art/props/magazine.png`, a small `0.04` visual scale, and a looping bob tween.
+- Magazine pickups restore `10` ammo up to the current max of `30`.
+- `scenes/levels/test_room.tscn` now includes a magazine pickup test placement near the player, tuned with a subtle `1.5 px` bob.
+- Project main scene is currently set to `test_room` for quick magazine/ammo testing.
 - Player machete melee attack is now implemented and working as a close-range alternative to shooting.
 - New `melee_attack` input is wired to keyboard `F` and Xbox `B`; zipline/interact remains keyboard `E` and has moved to Xbox `Y`.
 - `scenes/player/player.tscn` now includes the new `melee_attack` animation frames and a permanent `MeleeHitbox` child `Area2D` with a rectangle shape for editor-visible tuning.
@@ -116,6 +122,7 @@ Last updated: 2026-07-12
 - Double jump
 - Shooting
 - Fire-rate limit on shooting
+- Simple ammo pool for shooting: `30 / 30` starting ammo, `1` ammo consumed per successful shot, and magazine pickups restoring `10`
 - Machete melee attack with a permanent scene hitbox, one-hit-per-enemy-per-slash tracking, editor-tunable damage/range/timing exports, and a current Player-scene damage tune of `1`
 - Player now has simple HP support (`max_hp = 3`, `current_hp`, `take_damage()`)
 - Player emits `health_changed(current_hp, max_hp)` for HUD updates
@@ -131,6 +138,7 @@ Last updated: 2026-07-12
 ### Combat
 - Player bullets spawn correctly based on facing direction
 - Bullets damage enemies
+- Player shooting now depends on current ammo and emits ammo count changes for future UI
 - Enemy hurtbox-based damage flow is working
 - Machete melee damage now uses the same enemy hurtbox group and calls `take_damage(melee_damage)`, keeping it separate from the slap-specific `slapped()` reaction.
 - Enemy hit flash added via shader material parameter (`flash_amount`)

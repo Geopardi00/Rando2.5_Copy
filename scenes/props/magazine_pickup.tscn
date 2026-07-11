@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/magazine_pickup.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dqe1lwjs7o28t" path="res://art/props/magazine.png" id="2_texture"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_magazine"]
+size = Vector2(24, 18)
+
+[node name="MagazinePickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("2_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_magazine")
