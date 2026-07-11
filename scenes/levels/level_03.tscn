@@ -1347,7 +1347,7 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(4259, 110)
+position = Vector2(-1676, 230)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
@@ -2207,6 +2207,9 @@ offset_bottom = 515.0
 
 [node name="MagazinePickup" parent="Collectibles" unique_id=1306324502 instance=ExtResource("88_5x2cs")]
 position = Vector2(4338, 126)
+
+[node name="MagazinePickup2" parent="Collectibles" unique_id=1256362411 instance=ExtResource("88_5x2cs")]
+position = Vector2(812, 265)
 
 [editable path="Ziplines/Zipline2D"]
 [editable path="Enemies/MosquitoSwarm"]

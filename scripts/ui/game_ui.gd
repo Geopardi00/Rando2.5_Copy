@@ -3,6 +3,7 @@ extends CanvasLayer
 @export var player_head_texture: Texture2D = preload("res://art/ui/ui_player_head.png")
 @export var heart_full_texture: Texture2D = preload("res://art/ui/ui_heart_full.png")
 @export var heart_empty_texture: Texture2D = preload("res://art/ui/ui_heart_empty.png")
+@export var ammo_icon_texture: Texture2D = preload("res://art/props/magazine.png")
 
 @export_group("Checkpoint Message")
 @export var checkpoint_message_time: float = 1.4
@@ -23,6 +24,9 @@ extends CanvasLayer
 @onready var hearts_container: HBoxContainer = $HUD/HealthUI/HeartsContainer
 @onready var speedrun_timer_ui: Control = $HUD/SpeedrunTimerUI
 @onready var timer_label: Label = $HUD/SpeedrunTimerUI/TimerLabel
+@onready var ammo_ui: Control = $AmmoUI
+@onready var ammo_icon: TextureRect = $AmmoUI/AmmoIcon
+@onready var ammo_label: Label = $AmmoUI/AmmoLabel
 @onready var message_ui: Control = $MessageUI
 @onready var checkpoint_text: Label = $MessageUI/CheckpointText
 @onready var checkpoint_glow_text: Label = get_node_or_null("MessageUI/CheckpointGlowText") as Label
@@ -36,6 +40,8 @@ var checkpoint_tween: Tween = null
 
 func _ready() -> void:
 	head_icon.texture = player_head_texture
+	ammo_icon.texture = ammo_icon_texture
+	ammo_ui.visible = false
 	message_ui.visible = false
 	speedrun_timer_ui.visible = false
 	damage_vignette.visible = true
@@ -45,9 +51,13 @@ func _ready() -> void:
 
 func bind_player(player: Node) -> void:
 	if bound_player != null and bound_player.has_signal("health_changed"):
-		var callable := Callable(self, "_on_player_health_changed")
-		if bound_player.is_connected("health_changed", callable):
-			bound_player.disconnect("health_changed", callable)
+		var health_callable := Callable(self, "_on_player_health_changed")
+		if bound_player.is_connected("health_changed", health_callable):
+			bound_player.disconnect("health_changed", health_callable)
+	if bound_player != null and bound_player.has_signal("ammo_changed"):
+		var ammo_callable := Callable(self, "_on_player_ammo_changed")
+		if bound_player.is_connected("ammo_changed", ammo_callable):
+			bound_player.disconnect("ammo_changed", ammo_callable)
 
 	bound_player = player
 
@@ -55,13 +65,24 @@ func bind_player(player: Node) -> void:
 		return
 
 	if bound_player.has_signal("health_changed"):
-		var callable := Callable(self, "_on_player_health_changed")
-		if not bound_player.is_connected("health_changed", callable):
-			bound_player.connect("health_changed", callable)
+		var new_health_callable := Callable(self, "_on_player_health_changed")
+		if not bound_player.is_connected("health_changed", new_health_callable):
+			bound_player.connect("health_changed", new_health_callable)
+	if bound_player.has_signal("ammo_changed"):
+		var new_ammo_callable := Callable(self, "_on_player_ammo_changed")
+		if not bound_player.is_connected("ammo_changed", new_ammo_callable):
+			bound_player.connect("ammo_changed", new_ammo_callable)
 
 	var current_hp := int(bound_player.get("current_hp"))
 	var max_hp := int(bound_player.get("max_hp"))
 	update_health(current_hp, max_hp)
+
+	var current_ammo = bound_player.get("current_ammo")
+	var max_ammo = bound_player.get("max_ammo")
+	if current_ammo != null and max_ammo != null:
+		update_ammo(int(current_ammo), int(max_ammo))
+	else:
+		ammo_ui.visible = false
 
 
 func update_health(current_hp: int, max_hp: int) -> void:
@@ -88,6 +109,11 @@ func rebuild_hearts(max_hp: int) -> void:
 		var heart := hearts_container.get_child(hearts_container.get_child_count() - 1)
 		hearts_container.remove_child(heart)
 		heart.queue_free()
+
+
+func update_ammo(current_ammo: int, max_ammo: int) -> void:
+	ammo_ui.visible = true
+	ammo_label.text = "%d/%d" % [maxi(current_ammo, 0), maxi(max_ammo, 0)]
 
 
 func show_checkpoint_message(text := "CHECKPOINT") -> void:
@@ -174,6 +200,10 @@ func _on_player_health_changed(current_hp: int, max_hp: int) -> void:
 		flash_damage_vignette()
 
 	update_health(current_hp, max_hp)
+
+
+func _on_player_ammo_changed(current_ammo: int, max_ammo: int) -> void:
+	update_ammo(current_ammo, max_ammo)
 
 
 func _create_heart_rect() -> TextureRect:

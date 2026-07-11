@@ -57,6 +57,8 @@
 [ext_resource type="Texture2D" uid="uid://dokpckg7f6qal" path="res://art/props/animations/checkpoint/frame0039.png" id="55_eqnpg"]
 [ext_resource type="PackedScene" uid="uid://d3g1clqub8sis" path="res://scenes/props/zipline_2d.tscn" id="56_zipline"]
 [ext_resource type="PackedScene" uid="uid://bh4elchfpf8cr" path="res://scenes/props/magazine_pickup.tscn" id="57_magazine"]
+[ext_resource type="Script" path="res://scripts/levels/test_room.gd" id="58_test_room"]
+[ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="59_game_ui"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(1248.5, 48)
@@ -200,6 +202,9 @@ animations = [{
 size = Vector2(46, 73)
 
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
+script = ExtResource("58_test_room")
+
+[node name="GameUI" parent="." instance=ExtResource("59_game_ui")]
 
 [node name="Crate" parent="." unique_id=131320726 instance=ExtResource("1_sa601")]
 position = Vector2(-263, 119)

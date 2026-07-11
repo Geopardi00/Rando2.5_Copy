@@ -3,15 +3,15 @@
 Last updated: 2026-07-12
 
 ## Latest Update - 2026-07-12
-- First ammo pass is implemented for player shooting: player starts at `30 / 30` ammo, shooting consumes `1` ammo only when a bullet is actually fired, and shooting at `0` ammo does not spawn bullets or start the fire-rate timer.
-- Player now emits `ammo_changed(current_ammo, max_ammo)` for future `GameUI` ammo HUD work.
+- First ammo pass is implemented for player shooting: the Player scene currently starts at `15 / 20` ammo, shooting consumes `1` ammo only when a bullet is actually fired, and shooting at `0` ammo does not spawn bullets or start the fire-rate timer.
+- Player emits `ammo_changed(current_ammo, max_ammo)` and `GameUI` now displays the current ammo count with a magazine icon.
 - Reusable magazine pickup added with `art/props/magazine.png`, a small `0.04` visual scale, and a looping bob tween.
-- Magazine pickups restore `10` ammo up to the current max of `30`.
+- Magazine pickups currently restore `5` ammo up to the player's current max ammo.
 - Magazine pickup highlighting now uses a child `PointLight2D` with the Level 03 torch flicker script instead of the earlier shader glow test; because the light is parented to the pickup, it moves with the bob tween.
 - Magazine pickups now spawn a small one-shot collect burst using `scenes/fx/magazine_pickup_burst.tscn` and the custom `art/props/bursparticle.png` particle texture.
 - Magazine collect FX is spawned at the pickup's current `global_position` before playback, so moving a `MagazinePickup` instance also moves the burst correctly.
-- `scenes/levels/test_room.tscn` now includes a magazine pickup test placement near the player, tuned with a subtle `1.5 px` bob.
-- Level 03 now has an early magazine pickup placement under a `Collectibles` node for in-level ammo testing.
+- `scenes/levels/test_room.tscn` now includes a magazine pickup test placement near the player, a bound `GameUI`, and a small `scripts/levels/test_room.gd` binding script for focused ammo HUD testing.
+- Level 03 now has two magazine pickup placements under a `Collectibles` node for in-level ammo testing, and the Level 03 player spawn marker was moved for the current test pass.
 - Project main scene is currently set to Level 03 for quick level testing.
 - Player machete melee attack is now implemented and working as a close-range alternative to shooting.
 - New `melee_attack` input is wired to keyboard `F` and Xbox `B`; zipline/interact remains keyboard `E` and has moved to Xbox `Y`.
@@ -126,7 +126,7 @@ Last updated: 2026-07-12
 - Double jump
 - Shooting
 - Fire-rate limit on shooting
-- Simple ammo pool for shooting: `30 / 30` starting ammo, `1` ammo consumed per successful shot, and magazine pickups restoring `10`
+- Simple ammo pool for shooting: current Player scene tuning starts at `15 / 20`, `1` ammo is consumed per successful shot, and magazine pickups restore `5`
 - Machete melee attack with a permanent scene hitbox, one-hit-per-enemy-per-slash tracking, editor-tunable damage/range/timing exports, and a current Player-scene damage tune of `1`
 - Player now has simple HP support (`max_hp = 3`, `current_hp`, `take_damage()`)
 - Player emits `health_changed(current_hp, max_hp)` for HUD updates
@@ -148,7 +148,7 @@ Last updated: 2026-07-12
 - Enemy hit flash added via shader material parameter (`flash_amount`)
 - Enemy death blood burst particles added
 - Enemy hit sound now plays reliably, including on the killing hit, by spawning a one-shot `AudioStreamPlayer2D` in code
-- Player slap hits now knock surviving patrol soldiers back slightly for stronger combat feedback
+- Player slap hits now knock surviving patrol soldiers back slightly for stronger combat feedback; the current patrol enemy scene tune is `30 px` over `0.15s`
 - Boss uses the same player-bullet-to-`enemy_hurtbox` damage convention as regular enemies
 - Patrol soldier, knife thrower, dog, mosquito, and boss are compatible with machete damage through `take_damage(...)`.
 - Boss attacks damage the player through `take_damage(1)`
@@ -164,7 +164,7 @@ Last updated: 2026-07-12
   - Uses white hit flash on damage
   - Spawns blood burst on death
   - Plays hit sound on damage
-  - Slap hits trigger a short knockback away from the player
+- Slap hits trigger a short knockback away from the player, currently tuned to `30 px` over `0.15s` in the patrol enemy scene
   - Slap/head-turn response timing has been tuned for snappier feedback
 
 - **Knife thrower enemy**
@@ -273,7 +273,7 @@ Last updated: 2026-07-12
 - Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
 - Level 03 now has local looping ambience via a scene-local `AudioStreamPlayer`; the ambience restarts on level reload.
 - Level 03 now includes the first in-level reusable zipline traversal test.
-- Level 03 now includes an early reusable magazine ammo pickup placement under `Collectibles`.
+- Level 03 now includes two early reusable magazine ammo pickup placements under `Collectibles`.
 - Level 03 now includes an animated waterfall/background parallax pass for additional atmosphere.
 - Test room now includes a prototype reusable zipline for movement feel testing.
 
@@ -304,6 +304,7 @@ Last updated: 2026-07-12
 - `GameUI` includes health HUD, hidden speedrun timer placeholder, checkpoint message UI, and screen effects container
 - Health HUD uses `ui_player_head.png`, `ui_heart_full.png`, and `ui_heart_empty.png`
 - Health HUD binds to the player health signal and supports rebuilding hearts if max HP changes later
+- Ammo HUD binds to the player `ammo_changed` signal and displays a magazine icon plus `current/max` ammo text.
 - Damage vignette feedback is implemented as a `ScreenEffects` fallback `ColorRect`
 - Checkpoint text notification can be triggered from checkpoint areas through the level-local `GameUI`
 - Checkpoint message UI supports custom text, font, font size, text/outline/glow colors, glow scale, message timing, and optional `CPUParticles2D` sparks.
@@ -500,7 +501,7 @@ Last updated: 2026-07-12
 - Git checkpoint pushed: `3ede60c Add boss fight checkpoint`
 - Level 01 edited layout was recovered from the accidental edit folder and imported into the current working project
 - Godot reimported the copied Level 01 textures and a headless load check of `res://scenes/levels/level_01.tscn` passed
-- Patrol soldier slap knockback added and tuned down to 20px for a smaller gameplay-juice bump
+- Patrol soldier slap knockback added and currently tuned to 30px over 0.15s for a modest gameplay-juice bump
 - Patrol soldier `head_turn` animation timing fine tuned for slap feedback
 - Per-level HUD system added and playtested with player health hearts, damage vignette, checkpoint message, and future timer placeholder
 - UI asset import metadata generated for the new HUD art
@@ -516,6 +517,8 @@ Last updated: 2026-07-12
 - First Level 03 zipline placement added and playtested successfully
 - Level 03 animated waterfall and background parallax visuals added as an atmosphere pass
 - Magazine collect burst FX added and fixed so it appears at the moved pickup position instead of the reusable FX scene origin
+- Ammo HUD added to `GameUI`, using `art/props/magazine.png` and the player's ammo signal; `test_room.tscn` now instances and binds `GameUI` for ammo pickup testing
+- Player ammo scene tuning changed to `15 / 20`, and magazine pickups currently restore `5`
 
 ## Recommended Next Steps
 - Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn
