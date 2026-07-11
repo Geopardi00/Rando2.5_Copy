@@ -1,6 +1,15 @@
 # State of Game
 
-Last updated: 2026-07-09
+Last updated: 2026-07-12
+
+## Latest Update - 2026-07-12
+- Player machete melee attack is now implemented and working as a close-range alternative to shooting.
+- New `melee_attack` input is wired to keyboard `F` and Xbox `B`; zipline/interact remains keyboard `E` and has moved to Xbox `Y`.
+- `scenes/player/player.tscn` now includes the new `melee_attack` animation frames and a permanent `MeleeHitbox` child `Area2D` with a rectangle shape for editor-visible tuning.
+- Melee attack logic was added to both player script copies: `scenes/player/player.gd` and `scripts/player/player.gd`, preserving the current duplicate-script setup used by different levels.
+- Melee currently deals `1` damage in the Player scene, uses the existing `enemy_hurtbox` convention, blocks shooting/slap/zipline attach during the attack, and safely cancels on mosquito swatting or death.
+- Dog hurtbox collision was fixed in `scenes/enemies/enemy_dog.tscn` so melee hits dogs consistently; the dog hurtbox now uses the same layer `16` enemy-hurtbox convention as soldiers, knife throwers, and the boss.
+- Level 03 visual work continued with additional waterfall stone wall pieces, foreground silhouette object placement, an added second water reflection, and adjusted fog bounds.
 
 ## Latest Update - 2026-07-09
 - Level 03 atmosphere pass added an animated waterfall setup under a new `BackgroundNearest` parallax layer.
@@ -107,6 +116,7 @@ Last updated: 2026-07-09
 - Double jump
 - Shooting
 - Fire-rate limit on shooting
+- Machete melee attack with a permanent scene hitbox, one-hit-per-enemy-per-slash tracking, editor-tunable damage/range/timing exports, and a current Player-scene damage tune of `1`
 - Player now has simple HP support (`max_hp = 3`, `current_hp`, `take_damage()`)
 - Player emits `health_changed(current_hp, max_hp)` for HUD updates
 - Player has brief invulnerability / blinking after taking damage
@@ -122,11 +132,13 @@ Last updated: 2026-07-09
 - Player bullets spawn correctly based on facing direction
 - Bullets damage enemies
 - Enemy hurtbox-based damage flow is working
+- Machete melee damage now uses the same enemy hurtbox group and calls `take_damage(melee_damage)`, keeping it separate from the slap-specific `slapped()` reaction.
 - Enemy hit flash added via shader material parameter (`flash_amount`)
 - Enemy death blood burst particles added
 - Enemy hit sound now plays reliably, including on the killing hit, by spawning a one-shot `AudioStreamPlayer2D` in code
 - Player slap hits now knock surviving patrol soldiers back slightly for stronger combat feedback
 - Boss uses the same player-bullet-to-`enemy_hurtbox` damage convention as regular enemies
+- Patrol soldier, knife thrower, dog, mosquito, and boss are compatible with machete damage through `take_damage(...)`.
 - Boss attacks damage the player through `take_damage(1)`
 - Dog contact, knife thrower contact, and thrown knife projectiles now deal 3 damage, making them one-hit kills against the 3 HP player
 
@@ -485,6 +497,7 @@ Last updated: 2026-07-09
 - Level 03 ambience playback issue solved by using a local scene `AudioStreamPlayer` instead of the temporary autoload approach
 - Zipline prototype added to test room; cable endpoints remain pinned while rider bend affects only the middle span
 - `interact` input now supports keyboard `E` and Xbox `B`
+- After adding melee, `interact` / zipline now uses keyboard `E` and Xbox `Y`; `melee_attack` uses keyboard `F` and Xbox `B`.
 - First Level 03 zipline placement added and playtested successfully
 - Level 03 animated waterfall and background parallax visuals added as an atmosphere pass
 

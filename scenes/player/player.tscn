@@ -94,13 +94,24 @@
 [ext_resource type="Texture2D" uid="uid://b0vl3w7nyllgp" path="res://art/characters/animations/walk2/frame0003.png" id="77_tmafg"]
 [ext_resource type="Texture2D" uid="uid://bh6r0knukwf0p" path="res://art/characters/animations/walk2/frame0004.png" id="78_2enr6"]
 [ext_resource type="Texture2D" uid="uid://mrk8l6vps0nb" path="res://art/characters/animations/walk2/frame0005.png" id="79_qxlpa"]
+[ext_resource type="Texture2D" uid="uid://bgttvgl3fq1ba" path="res://art/characters/animations/melee_attack/frame0000.png" id="80_5ecds"]
 [ext_resource type="Texture2D" uid="uid://bficbl64pvavl" path="res://art/characters/animations/walk2/frame0006.png" id="80_iwd08"]
 [ext_resource type="Texture2D" uid="uid://ck1glj4dbj08g" path="res://art/characters/animations/walk2/frame0007.png" id="81_5oeuk"]
+[ext_resource type="Texture2D" uid="uid://hdxd201caqq5" path="res://art/characters/animations/melee_attack/frame0001.png" id="81_nssm8"]
+[ext_resource type="Texture2D" uid="uid://c4chauurkbfpi" path="res://art/characters/animations/melee_attack/frame0002.png" id="82_ei0bd"]
 [ext_resource type="Texture2D" uid="uid://f4owww3q8ct0" path="res://art/characters/animations/walk2/frame0008.png" id="82_oq5hk"]
 [ext_resource type="Texture2D" uid="uid://cf8owtodpdb4f" path="res://art/characters/animations/walk2/frame0009.png" id="83_kfile"]
+[ext_resource type="Texture2D" uid="uid://di42dpyfehnaq" path="res://art/characters/animations/melee_attack/frame0003.png" id="83_wwa77"]
 [ext_resource type="Texture2D" uid="uid://dv2ybqd2byv7n" path="res://art/characters/animations/walk2/frame0010.png" id="84_pkjeu"]
+[ext_resource type="Texture2D" uid="uid://duhexb4rfemfv" path="res://art/characters/animations/melee_attack/frame0004.png" id="84_tdwly"]
 [ext_resource type="Texture2D" uid="uid://uf1tt5x0c7fk" path="res://art/characters/animations/walk2/frame0011.png" id="85_0epl4"]
+[ext_resource type="Texture2D" uid="uid://djsqvkhohykgc" path="res://art/characters/animations/melee_attack/frame0005.png" id="85_fmlco"]
 [ext_resource type="Texture2D" uid="uid://c4bovpo32lgv2" path="res://art/characters/animations/walk2/frame0012.png" id="86_3r8w6"]
+[ext_resource type="Texture2D" uid="uid://ckaenb77ladao" path="res://art/characters/animations/melee_attack/frame0006.png" id="86_duoik"]
+[ext_resource type="Texture2D" uid="uid://bc147xwrv0j7r" path="res://art/characters/animations/melee_attack/frame0007.png" id="87_6qclm"]
+[ext_resource type="Texture2D" uid="uid://b4plrms48sfhw" path="res://art/characters/animations/melee_attack/frame0008.png" id="88_mtkxs"]
+[ext_resource type="Texture2D" uid="uid://pbhnuvakbogm" path="res://art/characters/animations/melee_attack/frame0009.png" id="89_pxyg8"]
+[ext_resource type="Texture2D" uid="uid://b278salqt08qf" path="res://art/characters/animations/melee_attack/frame0010.png" id="90_xm1em"]
 [ext_resource type="Texture2D" uid="uid://cr6tehbrv0y0p" path="res://art/characters/animations/landing/frame0000.png" id="landing_00"]
 [ext_resource type="Texture2D" uid="uid://b4jbod6ghg3aj" path="res://art/characters/animations/landing/frame0001.png" id="landing_01"]
 [ext_resource type="Texture2D" uid="uid://dodit8tj8t124" path="res://art/characters/animations/landing/frame0002.png" id="landing_02"]
@@ -397,6 +408,44 @@ animations = [{
 "speed": 20.0
 }, {
 "frames": [{
+"duration": 0.7,
+"texture": ExtResource("80_5ecds")
+}, {
+"duration": 0.6,
+"texture": ExtResource("81_nssm8")
+}, {
+"duration": 0.6,
+"texture": ExtResource("82_ei0bd")
+}, {
+"duration": 0.5,
+"texture": ExtResource("83_wwa77")
+}, {
+"duration": 0.4,
+"texture": ExtResource("84_tdwly")
+}, {
+"duration": 0.3,
+"texture": ExtResource("85_fmlco")
+}, {
+"duration": 0.4,
+"texture": ExtResource("86_duoik")
+}, {
+"duration": 0.5,
+"texture": ExtResource("87_6qclm")
+}, {
+"duration": 0.5,
+"texture": ExtResource("88_mtkxs")
+}, {
+"duration": 0.7,
+"texture": ExtResource("89_pxyg8")
+}, {
+"duration": 0.8,
+"texture": ExtResource("90_xm1em")
+}],
+"loop": true,
+"name": &"melee_attack",
+"speed": 19.0
+}, {
+"frames": [{
 "duration": 0.1,
 "texture": ExtResource("slap_00")
 }, {
@@ -573,11 +622,17 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(18, 35)
 
+[sub_resource type="RectangleShape2D" id="MeleeHitboxShape"]
+size = Vector2(22, 29)
+
 [node name="Player" type="CharacterBody2D" unique_id=1487025887]
 z_index = 1
 position = Vector2(44, -72)
 collision_layer = 2
 script = ExtResource("player_script")
+melee_damage = 1
+melee_range = 42.0
+melee_ground_stop_time = 0.2
 hard_landing_min_fall_speed = 590.0
 hard_landing_stop_time = 0.2
 hard_landing_animation_time = 0.3
@@ -589,9 +644,8 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"landing"
-frame = 7
-frame_progress = 1.0
+animation = &"melee_attack"
+frame_progress = 0.25809228
 
 [node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]
 position = Vector2(19, 8)
@@ -614,3 +668,15 @@ shape = SubResource("RectangleShape2D_dovo2")
 [node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=988886553]
 stream = ExtResource("2_dovo2")
 volume_db = -9.517
+
+[node name="MeleeHitbox" type="Area2D" parent="." unique_id=2064503526]
+position = Vector2(40, 8)
+collision_layer = 0
+collision_mask = 16
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox" unique_id=439599987]
+position = Vector2(-19, 3)
+shape = SubResource("MeleeHitboxShape")
+disabled = true

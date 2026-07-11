@@ -29,6 +29,17 @@ const BLOCK_MAX_VELOCITY = 180
 @export var slap_cooldown: float = 0.25
 @export var mosquito_immunity_time: float = 1.0
 
+@export_group("Melee Attack")
+@export var melee_damage: int = 2
+@export var melee_range: float = 52.0
+@export var melee_height: float = 38.0
+@export var melee_forward_offset: float = 14.0
+@export var melee_vertical_offset: float = 8.0
+@export var melee_ground_stop_time: float = 0.12
+@export var melee_attack_duration: float = 0.32
+@export var melee_hitbox_start_time: float = 0.08
+@export var melee_hitbox_duration: float = 0.10
+
 @export_group("Hard Landing")
 @export var hard_landing_min_fall_speed: float = 520.0
 @export var hard_landing_stop_time: float = 0.08
@@ -42,6 +53,8 @@ const BLOCK_MAX_VELOCITY = 180
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
 @onready var muzzle_marker: Marker2D = $MuzzleMarker
+@onready var melee_hitbox: Area2D = $MeleeHitbox
+@onready var melee_hitbox_shape: CollisionShape2D = $MeleeHitbox/CollisionShape2D
 
 var facing: int = 1
 var coyote_timer: float = 0.0
@@ -65,6 +78,12 @@ var is_riding_zipline: bool = false
 var zipline_progress: float = 0.0
 var zipline_speed: float = 0.0
 var zipline_reattach_timer: float = 0.0
+var is_melee_attacking: bool = false
+var melee_attack_timer: float = 0.0
+var melee_ground_stop_timer: float = 0.0
+var melee_hitbox_active: bool = false
+var melee_started_on_floor: bool = false
+var melee_hit_enemies: Array[Node] = []
 
 
 func _ready() -> void:
@@ -76,6 +95,9 @@ func _ready() -> void:
 	fire_timer.one_shot = true
 
 	hurtbox.body_entered.connect(_on_hurtbox_body_entered)
+	melee_hitbox.area_entered.connect(_on_melee_hitbox_area_entered)
+	disable_melee_hitbox()
+	update_melee_hitbox_geometry()
 
 	air_jumps_left = extra_jumps
 
@@ -86,6 +108,7 @@ func _physics_process(delta: float) -> void:
 	update_slap_timers(delta)
 	update_landing_timers(delta)
 	update_zipline_timers(delta)
+	update_melee_attack(delta)
 
 	if is_dead:
 		force_detach_from_zipline()
@@ -122,6 +145,9 @@ func _physics_process(delta: float) -> void:
 	var jump_pressed: bool = Input.is_action_just_pressed("jump")
 	var was_on_floor: bool = is_on_floor()
 
+	if Input.is_action_just_pressed("melee_attack"):
+		try_melee_attack()
+
 	if Input.is_action_just_pressed("interact"):
 		try_attach_to_nearest_zipline()
 
@@ -132,9 +158,10 @@ func _physics_process(delta: float) -> void:
 		facing = -1
 
 	animated_sprite.flip_h = facing < 0
+	update_melee_hitbox_geometry()
 
 	# Horizontal movement
-	if landing_stop_timer > 0.0:
+	if landing_stop_timer > 0.0 or melee_ground_stop_timer > 0.0:
 		velocity.x = 0.0
 	elif input_axis != 0.0:
 		velocity.x = input_axis * move_speed
@@ -223,6 +250,11 @@ func update_animation() -> void:
 		play_animation_safe(&"swatting", &"idle")
 		return
 
+	if is_melee_attacking:
+		animated_sprite.speed_scale = 1.0
+		play_melee_animation()
+		return
+
 	if slap_animation_timer > 0.0:
 		animated_sprite.speed_scale = 1.0
 		play_animation_safe(&"slap", &"idle")
@@ -259,7 +291,7 @@ func update_animation() -> void:
 
 
 func try_shoot() -> void:
-	if is_swatting:
+	if is_swatting or is_melee_attacking:
 		return
 
 	if bullet_scene == null:
@@ -284,7 +316,7 @@ func fire_bullet() -> void:
 
 
 func try_slap() -> void:
-	if is_dead or is_swatting or slap_cooldown_timer > 0.0:
+	if is_dead or is_swatting or is_melee_attacking or slap_cooldown_timer > 0.0:
 		return
 
 	slap_cooldown_timer = slap_cooldown
@@ -332,6 +364,128 @@ func _on_slap_hitbox_area_entered(area: Area2D, hit_enemies: Array[Node]) -> voi
 		enemy.slapped()
 	elif enemy.has_method("take_damage"):
 		enemy.take_damage(1)
+
+
+func try_melee_attack() -> void:
+	if is_dead or is_swatting or is_riding_zipline or is_melee_attacking:
+		return
+
+	start_melee_attack()
+
+
+func start_melee_attack() -> void:
+	is_melee_attacking = true
+	melee_attack_timer = 0.0
+	melee_hitbox_active = false
+	melee_started_on_floor = is_on_floor()
+	melee_hit_enemies.clear()
+	update_melee_hitbox_geometry()
+
+	if melee_started_on_floor:
+		melee_ground_stop_timer = melee_ground_stop_time
+		velocity.x = 0.0
+
+	play_melee_animation()
+
+
+func update_melee_attack(delta: float) -> void:
+	if melee_ground_stop_timer > 0.0:
+		melee_ground_stop_timer = maxf(melee_ground_stop_timer - delta, 0.0)
+
+	if not is_melee_attacking:
+		return
+
+	melee_attack_timer += delta
+
+	var hitbox_end_time := melee_hitbox_start_time + melee_hitbox_duration
+	if not melee_hitbox_active and melee_attack_timer >= melee_hitbox_start_time and melee_attack_timer < hitbox_end_time:
+		enable_melee_hitbox()
+	elif melee_hitbox_active and melee_attack_timer >= hitbox_end_time:
+		disable_melee_hitbox()
+
+	if melee_attack_timer >= melee_attack_duration:
+		finish_melee_attack()
+
+
+func enable_melee_hitbox() -> void:
+	update_melee_hitbox_geometry()
+	melee_hitbox_active = true
+	melee_hitbox.monitoring = true
+	melee_hitbox_shape.disabled = false
+
+	for area in melee_hitbox.get_overlapping_areas():
+		_on_melee_hitbox_area_entered(area)
+
+
+func disable_melee_hitbox() -> void:
+	melee_hitbox_active = false
+	melee_hitbox.monitoring = false
+	melee_hitbox_shape.disabled = true
+
+
+func finish_melee_attack() -> void:
+	disable_melee_hitbox()
+	is_melee_attacking = false
+	melee_attack_timer = 0.0
+	melee_ground_stop_timer = 0.0
+	melee_hit_enemies.clear()
+
+
+func cancel_melee_attack() -> void:
+	disable_melee_hitbox()
+	is_melee_attacking = false
+	melee_attack_timer = 0.0
+	melee_ground_stop_timer = 0.0
+	melee_hit_enemies.clear()
+
+
+func update_melee_hitbox_geometry() -> void:
+	var rectangle := melee_hitbox_shape.shape as RectangleShape2D
+	if rectangle != null:
+		rectangle.size = Vector2(melee_range, melee_height)
+
+	melee_hitbox.position = Vector2((melee_range * 0.5 + melee_forward_offset) * facing, melee_vertical_offset)
+
+
+func _on_melee_hitbox_area_entered(area: Area2D) -> void:
+	if not melee_hitbox_active:
+		return
+
+	if not area.is_in_group("enemy_hurtbox"):
+		return
+
+	var enemy := area.get_parent()
+	if enemy == null or melee_hit_enemies.has(enemy):
+		return
+
+	melee_hit_enemies.append(enemy)
+
+	if enemy.has_method("take_damage"):
+		enemy.take_damage(melee_damage)
+
+
+func play_melee_animation() -> void:
+	if melee_started_on_floor:
+		if play_animation_if_available(&"melee_ground"):
+			return
+	else:
+		if play_animation_if_available(&"melee_air"):
+			return
+		if play_animation_if_available(&"melee_ground"):
+			return
+
+	play_animation_safe(&"melee_attack", &"idle")
+
+
+func play_animation_if_available(name: StringName) -> bool:
+	var frames: SpriteFrames = animated_sprite.sprite_frames
+	if frames == null or not frames.has_animation(name):
+		return false
+
+	if animated_sprite.animation != name:
+		animated_sprite.play(name)
+
+	return true
 
 
 func spawn_muzzle_flash() -> void:
@@ -441,7 +595,7 @@ func unregister_nearby_zipline(zipline: Node) -> void:
 
 
 func try_attach_to_nearest_zipline() -> void:
-	if is_dead or is_swatting or is_riding_zipline or zipline_reattach_timer > 0.0:
+	if is_dead or is_swatting or is_melee_attacking or is_riding_zipline or zipline_reattach_timer > 0.0:
 		return
 
 	var closest_zipline: Node = null
@@ -606,6 +760,7 @@ func mosquito_attack() -> void:
 		return
 
 	force_detach_from_zipline()
+	cancel_melee_attack()
 	is_swatting = true
 	swatting_timer = 1.0
 	slap_animation_timer = 0.0
@@ -633,6 +788,7 @@ func die() -> void:
 		return
 
 	force_detach_from_zipline()
+	cancel_melee_attack()
 	is_dead = true
 	current_hp = 0
 	health_changed.emit(current_hp, max_hp)
