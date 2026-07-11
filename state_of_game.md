@@ -8,6 +8,8 @@ Last updated: 2026-07-12
 - Reusable magazine pickup added with `art/props/magazine.png`, a small `0.04` visual scale, and a looping bob tween.
 - Magazine pickups restore `10` ammo up to the current max of `30`.
 - Magazine pickup highlighting now uses a child `PointLight2D` with the Level 03 torch flicker script instead of the earlier shader glow test; because the light is parented to the pickup, it moves with the bob tween.
+- Magazine pickups now spawn a small one-shot collect burst using `scenes/fx/magazine_pickup_burst.tscn` and the custom `art/props/bursparticle.png` particle texture.
+- Magazine collect FX is spawned at the pickup's current `global_position` before playback, so moving a `MagazinePickup` instance also moves the burst correctly.
 - `scenes/levels/test_room.tscn` now includes a magazine pickup test placement near the player, tuned with a subtle `1.5 px` bob.
 - Level 03 now has an early magazine pickup placement under a `Collectibles` node for in-level ammo testing.
 - Project main scene is currently set to Level 03 for quick level testing.
@@ -288,6 +290,7 @@ Last updated: 2026-07-12
 - Level 03 spotlight is visual-only; actual stealth detection does not depend on rendered light pixels
 - Level 03 waterfall animation and stone wall background visuals are placed in the parallax background stack.
 - Magazine ammo pickups use a warm `PointLight2D` highlight with subtle torch-style flicker, parented to the bobbing pickup so the light follows the collectible.
+- Magazine ammo pickups trigger a short warm collect particle burst that cleans itself up after playback.
 
 ### Audio
 - Enemy hit sound workflow added
@@ -512,6 +515,7 @@ Last updated: 2026-07-12
 - After adding melee, `interact` / zipline now uses keyboard `E` and Xbox `Y`; `melee_attack` uses keyboard `F` and Xbox `B`.
 - First Level 03 zipline placement added and playtested successfully
 - Level 03 animated waterfall and background parallax visuals added as an atmosphere pass
+- Magazine collect burst FX added and fixed so it appears at the moved pickup position instead of the reusable FX scene origin
 
 ## Recommended Next Steps
 - Consider adding saved visual-state restore so an already activated checkpoint reloads directly into burn/glow state after respawn

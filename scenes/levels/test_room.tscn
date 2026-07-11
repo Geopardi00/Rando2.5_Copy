@@ -56,7 +56,7 @@
 [ext_resource type="Texture2D" uid="uid://so81ppxdus5g" path="res://art/props/animations/checkpoint/frame0038.png" id="54_588vh"]
 [ext_resource type="Texture2D" uid="uid://dokpckg7f6qal" path="res://art/props/animations/checkpoint/frame0039.png" id="55_eqnpg"]
 [ext_resource type="PackedScene" uid="uid://d3g1clqub8sis" path="res://scenes/props/zipline_2d.tscn" id="56_zipline"]
-[ext_resource type="PackedScene" path="res://scenes/props/magazine_pickup.tscn" id="57_magazine"]
+[ext_resource type="PackedScene" uid="uid://bh4elchfpf8cr" path="res://scenes/props/magazine_pickup.tscn" id="57_magazine"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(1248.5, 48)
@@ -255,9 +255,7 @@ frame = 8
 frame_progress = 0.0
 
 [node name="MagazinePickup" parent="." unique_id=344168263 instance=ExtResource("57_magazine")]
-position = Vector2(421, 122)
-bob_distance = 1.5
-bob_time = 0.7
+position = Vector2(247, 67)
 
 [node name="Zipline2D" parent="." unique_id=1641684564 instance=ExtResource("56_zipline")]
 position = Vector2(856, 43)

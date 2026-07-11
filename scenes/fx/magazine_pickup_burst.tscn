@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cefmc1exkgvc8"]
+
+[ext_resource type="Script" uid="uid://dc6y5eb3f72g1" path="res://scripts/fx/magazine_pickup_burst.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dnmsnpn1w3n4w" path="res://art/props/bursparticle.png" id="2_mv3xk"]
+
+[sub_resource type="Gradient" id="Gradient_pickup_burst"]
+offsets = PackedFloat32Array(0, 0.45, 1)
+colors = PackedColorArray(0.8732608, 0.8536854, 0.95674914, 1, 0.90099776, 0.7980791, 0.75146705, 0.7, 1, 0.45, 0.05, 0)
+
+[node name="MagazinePickupBurst" type="Node2D" unique_id=558126477]
+script = ExtResource("1_script")
+
+[node name="Particles" type="CPUParticles2D" parent="." unique_id=1259803093]
+emitting = false
+amount = 10
+texture = ExtResource("2_mv3xk")
+lifetime = 0.47
+one_shot = true
+speed_scale = 0.9
+explosiveness = 0.52
+randomness = 0.14
+direction = Vector2(0, -1)
+spread = 220.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 25.0
+initial_velocity_max = 55.0
+angular_velocity_min = -120.0
+angular_velocity_max = 120.0
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+color_ramp = SubResource("Gradient_pickup_burst")

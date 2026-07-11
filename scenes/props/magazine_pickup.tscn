@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/props/magazine_pickup.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dqe1lwjs7o28t" path="res://art/props/magazine.png" id="2_texture"]
 [ext_resource type="Script" uid="uid://cvbtj5fv4wcul" path="res://scenes/props/level03_torches.gd" id="3_torch_flicker"]
+[ext_resource type="PackedScene" path="res://scenes/fx/magazine_pickup_burst.tscn" id="4_collect_fx"]
 
 [sub_resource type="Gradient" id="Gradient_magazine_glow"]
 offsets = PackedFloat32Array(0, 0.2798354, 0.9218107)
@@ -23,6 +24,7 @@ collision_mask = 2
 script = ExtResource("1_script")
 bob_distance = 1.5
 bob_time = 0.7
+collect_fx_scene = ExtResource("4_collect_fx")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1605048733]
 scale = Vector2(0.04, 0.04)
