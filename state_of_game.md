@@ -7,8 +7,10 @@ Last updated: 2026-07-12
 - Player now emits `ammo_changed(current_ammo, max_ammo)` for future `GameUI` ammo HUD work.
 - Reusable magazine pickup added with `art/props/magazine.png`, a small `0.04` visual scale, and a looping bob tween.
 - Magazine pickups restore `10` ammo up to the current max of `30`.
+- Magazine pickup highlighting now uses a child `PointLight2D` with the Level 03 torch flicker script instead of the earlier shader glow test; because the light is parented to the pickup, it moves with the bob tween.
 - `scenes/levels/test_room.tscn` now includes a magazine pickup test placement near the player, tuned with a subtle `1.5 px` bob.
-- Project main scene is currently set to `test_room` for quick magazine/ammo testing.
+- Level 03 now has an early magazine pickup placement under a `Collectibles` node for in-level ammo testing.
+- Project main scene is currently set to Level 03 for quick level testing.
 - Player machete melee attack is now implemented and working as a close-range alternative to shooting.
 - New `melee_attack` input is wired to keyboard `F` and Xbox `B`; zipline/interact remains keyboard `E` and has moved to Xbox `Y`.
 - `scenes/player/player.tscn` now includes the new `melee_attack` animation frames and a permanent `MeleeHitbox` child `Area2D` with a rectangle shape for editor-visible tuning.
@@ -269,6 +271,7 @@ Last updated: 2026-07-12
 - Level 03 now uses a reusable animated checkpoint scene with idle/ignition/burn flag animation and an activation glow.
 - Level 03 now has local looping ambience via a scene-local `AudioStreamPlayer`; the ambience restarts on level reload.
 - Level 03 now includes the first in-level reusable zipline traversal test.
+- Level 03 now includes an early reusable magazine ammo pickup placement under `Collectibles`.
 - Level 03 now includes an animated waterfall/background parallax pass for additional atmosphere.
 - Test room now includes a prototype reusable zipline for movement feel testing.
 
@@ -284,6 +287,7 @@ Last updated: 2026-07-12
 - Level 03 sniper spotlight currently uses `art/vfx/light_stream.jpg` / related light stream iterations as a cone texture
 - Level 03 spotlight is visual-only; actual stealth detection does not depend on rendered light pixels
 - Level 03 waterfall animation and stone wall background visuals are placed in the parallax background stack.
+- Magazine ammo pickups use a warm `PointLight2D` highlight with subtle torch-style flicker, parented to the bobbing pickup so the light follows the collectible.
 
 ### Audio
 - Enemy hit sound workflow added

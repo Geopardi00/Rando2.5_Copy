@@ -1,19 +1,47 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://bh4elchfpf8cr"]
 
 [ext_resource type="Script" path="res://scripts/props/magazine_pickup.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dqe1lwjs7o28t" path="res://art/props/magazine.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://cvbtj5fv4wcul" path="res://scenes/props/level03_torches.gd" id="3_torch_flicker"]
+
+[sub_resource type="Gradient" id="Gradient_magazine_glow"]
+offsets = PackedFloat32Array(0, 0.2798354, 0.9218107)
+colors = PackedColorArray(1, 1, 1, 1, 0.80588496, 0.4312727, 0.034124136, 0.52156866, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_magazine_glow"]
+gradient = SubResource("Gradient_magazine_glow")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_magazine"]
 size = Vector2(24, 18)
 
-[node name="MagazinePickup" type="Area2D"]
+[node name="MagazinePickup" type="Area2D" unique_id=1306324502]
+modulate = Color(1.2227312, 1.2227312, 1.2227312, 1)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_script")
+bob_distance = 1.5
+bob_time = 0.7
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1605048733]
 scale = Vector2(0.04, 0.04)
 texture = ExtResource("2_texture")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="PickupLight" type="PointLight2D" parent="." unique_id=1999368381]
+position = Vector2(0, -1)
+scale = Vector2(1.6, 1.15)
+color = Color(0.8806186, 0.81072783, 0.62335527, 1)
+energy = 0.41
+texture = SubResource("GradientTexture2D_magazine_glow")
+texture_scale = 0.7
+script = ExtResource("3_torch_flicker")
+min_energy = 0.5
+max_energy = 0.6
+min_scale = 0.6
+max_scale = 0.8
+min_time = 0.18
+max_time = 0.34
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=518798558]
 shape = SubResource("RectangleShape2D_magazine")

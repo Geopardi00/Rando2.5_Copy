@@ -87,6 +87,7 @@
 [ext_resource type="Shader" uid="uid://dg0outdtaryog" path="res://shaders/God rays.gdshader" id="67_qkk4n"]
 [ext_resource type="Texture2D" uid="uid://cw2fjtqkedygj" path="res://art/props/animations/waterfall/waterfall_blocks03.png" id="67_wqvu7"]
 [ext_resource type="Texture2D" uid="uid://eaocgr7rgmea" path="res://art/props/animations/waterfall/waterfall_blocks02.png" id="68_31wr4"]
+[ext_resource type="PackedScene" uid="uid://bh4elchfpf8cr" path="res://scenes/props/magazine_pickup.tscn" id="88_5x2cs"]
 
 [sub_resource type="Environment" id="Environment_level03"]
 background_mode = 3
@@ -2201,6 +2202,11 @@ offset_left = 3531.0
 offset_top = -800.0
 offset_right = 3953.0
 offset_bottom = 515.0
+
+[node name="Collectibles" type="Sprite2D" parent="." unique_id=1281793077]
+
+[node name="MagazinePickup" parent="Collectibles" unique_id=1306324502 instance=ExtResource("88_5x2cs")]
+position = Vector2(4338, 126)
 
 [editable path="Ziplines/Zipline2D"]
 [editable path="Enemies/MosquitoSwarm"]
