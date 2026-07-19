@@ -3,6 +3,9 @@
 Last updated: 2026-07-19
 
 ## Latest Update - 2026-07-19
+- Level 03 foreground/parallax dressing pass continued with many new placed sprites across `ForegroundFar`, `ForegroundMid`, and `ForegroundNear`, extending the scene's layered jungle/stone depth farther across the current playable span.
+- Level 03 visual tuning was adjusted with stronger WorldEnvironment glow/bloom and a moved player spawn for the current foreground/parallax playtest pass.
+- Project main scene is currently set back to Level 03 for quick iteration, and `boss_test_room` had its Boss 2 debug health label moved near the upper screen area.
 - Boss 2 first playable prototype has started as a separate implementation from the existing first boss; Boss 1 files remain untouched.
 - New Boss 2 files: `scenes/boss/final_boss.tscn`, `scripts/boss/final_boss.gd`, and `scripts/levels/boss_test_room.gd`.
 - Boss 2 uses the placeholder `art/enemies/boss02.png`, has HP/hurtbox/death handling, no body contact damage, horizontal-only rifle bursts, a one-hit-per-combo knife hitbox, and authored marker-based platform repositioning.

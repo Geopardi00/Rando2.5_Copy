@@ -143,9 +143,9 @@ one_way_collision_margin = 4.0
 
 [node name="BossHealthLabel" type="Label" parent="BossDebugUI" unique_id=1989760021]
 offset_left = 758.0
-offset_top = 221.0
+offset_top = 76.0
 offset_right = 1158.0
-offset_bottom = 261.0
+offset_bottom = 116.0
 theme_override_font_sizes/font_size = 28
 text = "BOSS 2"
 horizontal_alignment = 1
