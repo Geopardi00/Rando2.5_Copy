@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://di3bvneivq105" path="res://art/bosslevel02/Foregorund.png" id="1_on6gp"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_06ieg"]
+[ext_resource type="Script" uid="uid://2kewe3gir6f" path="res://scripts/levels/boss_test_room.gd" id="3_test_room"]
+[ext_resource type="PackedScene" path="res://scenes/boss/final_boss.tscn" id="4_final_boss"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_on6gp"]
 size = Vector2(1826, 20)
@@ -25,6 +27,7 @@ size = Vector2(258, 6)
 size = Vector2(231, 4)
 
 [node name="BossTestRoom" type="Node2D" unique_id=291788006]
+script = ExtResource("3_test_room")
 
 [node name="Foreground" type="Sprite2D" parent="." unique_id=786058130]
 position = Vector2(959.7, 540.225)
@@ -75,9 +78,41 @@ position = Vector2(728, 744)
 [node name="BossSplawn" type="Marker2D" parent="." unique_id=1939831259]
 position = Vector2(1175, 711)
 
+[node name="BossNavigation" type="Node2D" parent="." unique_id=2136294059]
+
+[node name="FloorLeft" type="Marker2D" parent="BossNavigation" unique_id=213356280]
+position = Vector2(610, 812)
+
+[node name="FloorCenter" type="Marker2D" parent="BossNavigation" unique_id=2060065431]
+position = Vector2(960, 812)
+
+[node name="FloorRight" type="Marker2D" parent="BossNavigation" unique_id=371981166]
+position = Vector2(1320, 812)
+
+[node name="BoxLeft" type="Marker2D" parent="BossNavigation" unique_id=857580039]
+position = Vector2(562, 705)
+
+[node name="BoxRight" type="Marker2D" parent="BossNavigation" unique_id=1746380398]
+position = Vector2(1358, 705)
+
+[node name="PlatformLeft" type="Marker2D" parent="BossNavigation" unique_id=124821837]
+position = Vector2(707, 598)
+
+[node name="PlatformRight" type="Marker2D" parent="BossNavigation" unique_id=1256917530]
+position = Vector2(1252, 598)
+
 [node name="Player" parent="." unique_id=1487025887 instance=ExtResource("2_06ieg")]
 position = Vector2(732, 718)
 collision_layer = 8194
+
+[node name="Boss2" parent="." unique_id=320238166 instance=ExtResource("4_final_boss")]
+position = Vector2(1175, 705)
+scale = Vector2(0.6, 0.6)
+move_speed = 220.0
+jump_velocity = -510.0
+navigation_root_path = NodePath("../BossNavigation")
+rifle_telegraph_time = 0.15
+decision_delay = 0.15
 
 [node name="PlatformLeft" type="Node2D" parent="." unique_id=36750510]
 position = Vector2(601, 615)
@@ -102,3 +137,14 @@ position = Vector2(116.5, -15)
 shape = SubResource("RectangleShape2D_j0dir")
 one_way_collision = true
 one_way_collision_margin = 4.0
+
+[node name="BossDebugUI" type="CanvasLayer" parent="." unique_id=115381717]
+
+[node name="BossHealthLabel" type="Label" parent="BossDebugUI" unique_id=1989760021]
+offset_left = 760.0
+offset_top = 40.0
+offset_right = 1160.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 28
+text = "BOSS 2"
+horizontal_alignment = 1

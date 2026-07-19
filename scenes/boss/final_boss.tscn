@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/boss/final_boss.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://qfm5sopndty0" path="res://art/enemies/boss02.png" id="2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(34, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(38, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_knife"]
+size = Vector2(68, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ledge"]
+size = Vector2(2, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(2, 46)
+
+[node name="FinalBoss" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 8193
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -50)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -38)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -39)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="MuzzleMarker" type="Marker2D" parent="."]
+position = Vector2(30, -46)
+
+[node name="KnifeHitbox" type="Area2D" parent="."]
+position = Vector2(46, -40)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KnifeHitbox"]
+shape = SubResource("RectangleShape2D_knife")
+disabled = true
+
+[node name="Telegraph" type="ColorRect" parent="."]
+visible = false
+offset_left = -27.0
+offset_top = -91.0
+offset_right = 27.0
+offset_bottom = 2.0
+mouse_filter = 2
+color = Color(1, 0.15, 0.08, 0.65)
+
+[node name="FloorCheckLeft" type="RayCast2D" parent="."]
+position = Vector2(-22, -5)
+target_position = Vector2(0, 44)
+collision_mask = 8193
+
+[node name="FloorCheckRight" type="RayCast2D" parent="."]
+position = Vector2(22, -5)
+target_position = Vector2(0, 44)
+collision_mask = 8193
+
+[node name="WallCheckLeft" type="RayCast2D" parent="."]
+position = Vector2(-18, -38)
+target_position = Vector2(-18, 0)
+collision_mask = 1
+
+[node name="WallCheckRight" type="RayCast2D" parent="."]
+position = Vector2(18, -38)
+target_position = Vector2(18, 0)
+collision_mask = 1

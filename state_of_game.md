@@ -3,6 +3,13 @@
 Last updated: 2026-07-19
 
 ## Latest Update - 2026-07-19
+- Boss 2 first playable prototype has started as a separate implementation from the existing first boss; Boss 1 files remain untouched.
+- New Boss 2 files: `scenes/boss/final_boss.tscn`, `scripts/boss/final_boss.gd`, and `scripts/levels/boss_test_room.gd`.
+- Boss 2 uses the placeholder `art/enemies/boss02.png`, has HP/hurtbox/death handling, no body contact damage, horizontal-only rifle bursts, a one-hit-per-combo knife hitbox, and authored marker-based platform repositioning.
+- Boss 2 navigation now routes upward in steps and counters a player on a high platform by moving through the opposite-side box toward the opposite high platform.
+- Boss 2 floor traversal now favors running; jumps are delayed until the boss is close enough to the next higher marker or blocked at the intended climb point.
+- Known Boss 2 navigation issue: the boss can wait awkwardly on top of boxes until the player returns to a compatible level; this may become acceptable once grenades/pressure tools are added, but it should stay on the tuning radar.
+- `scenes/levels/boss_test_room.tscn` now instances Boss 2, adds `BossNavigation` markers, and shows a small debug boss health label for prototype testing.
 - Player drop-through one-way platform support is implemented in both duplicate player scripts: `scenes/player/player.gd` and `scripts/player/player.gd`.
 - Pressing Down + the existing `jump` action while standing on a layer 14 one-way platform temporarily removes only layer 14 from the player's collision mask, applies a small downward velocity, and restores the mask after the player's body has cleared the platform or a short safety timeout expires.
 - Down + Jump on normal solid platforms still performs a normal jump, and dropping through does not consume the player's double jump.
@@ -120,6 +127,7 @@ Last updated: 2026-07-19
 - Level 03 now has a first playable watchtower sniper test piece with rotating spotlight, cover blocking, line-of-sight detection, tracking, and shooting.
 - A separate boss fight level now exists with a playable boss arena.
 - Boss fight core loop is implemented and recently polished: shooting, reload, grenade throws, jump stomp, boss HP, player HP, camera shake, boss jump/stomp animations, grenade explosion animation, and crosshair grenade warnings.
+- Boss 2 is now being prototyped separately in `boss_test_room` as the final story boss candidate.
 - Current game flow is wired from intro cutscene to main menu, then Level 01, test_room_2, and boss fight.
 - Latest Level 03 work is focused on prototyping one stationary non-killable watchtower sniper enemy before building a full level around it.
 - Latest Git checkpoint includes the new per-level GameUI/HUD system and mosquito placement iteration.
@@ -147,6 +155,14 @@ Last updated: 2026-07-19
 - Player uses idle/walk/jump/landing/death animations in gameplay
 - Player now has a hard landing response after fast downward falls, with a short horizontal stop for impact feel
 - Player has first-pass zipline riding support: attach with `interact`, ride along a generated cable, jump to detach, and force-detach safely on death/swatting
+
+### Boss 2 Prototype
+- Separate from the existing first boss implementation.
+- Uses `art/enemies/boss02.png` as a placeholder sprite.
+- Has HP, `enemy_hurtbox` damage compatibility, hit flash, and `boss_defeated`.
+- Has no automatic body contact damage.
+- Current attacks are horizontal-only rifle burst and close-range knife combo.
+- Uses authored navigation markers in `boss_test_room` for run/jump/drop-through repositioning.
 
 ### Combat
 - Player bullets spawn correctly based on facing direction
