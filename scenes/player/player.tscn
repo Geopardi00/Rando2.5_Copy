@@ -405,7 +405,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"landing",
-"speed": 20.0
+"speed": 23.0
 }, {
 "frames": [{
 "duration": 0.7,
@@ -629,6 +629,7 @@ size = Vector2(22, 29)
 z_index = 1
 position = Vector2(44, -72)
 collision_layer = 2
+collision_mask = 8193
 script = ExtResource("player_script")
 max_ammo = 20
 starting_ammo = 15
@@ -646,8 +647,9 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"melee_attack"
-frame_progress = 0.25809228
+animation = &"landing"
+frame = 7
+frame_progress = 1.0
 
 [node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]
 position = Vector2(19, 8)

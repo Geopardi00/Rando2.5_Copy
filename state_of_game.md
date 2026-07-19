@@ -1,6 +1,14 @@
 # State of Game
 
-Last updated: 2026-07-12
+Last updated: 2026-07-19
+
+## Latest Update - 2026-07-19
+- Player drop-through one-way platform support is implemented in both duplicate player scripts: `scenes/player/player.gd` and `scripts/player/player.gd`.
+- Pressing Down + the existing `jump` action while standing on a layer 14 one-way platform temporarily removes only layer 14 from the player's collision mask, applies a small downward velocity, and restores the mask after the player's body has cleared the platform or a short safety timeout expires.
+- Down + Jump on normal solid platforms still performs a normal jump, and dropping through does not consume the player's double jump.
+- `move_down` is now in the Input Map with keyboard `S`, keyboard Down Arrow, and joypad left-stick down (`axis 1`, positive direction).
+- The base Player scene now collides with both World and OneWayPlatform layers by default (`collision_mask = 8193`).
+- `scenes/levels/boss_test_room.tscn` is the current focused one-way-platform test scene, with solid boxes and layer 14 one-way platforms for keyboard/controller verification.
 
 ## Latest Update - 2026-07-12
 - First ammo pass is implemented for player shooting: the Player scene currently starts at `15 / 20` ammo, shooting consumes `1` ammo only when a bullet is actually fired, and shooting at `0` ammo does not spawn bullets or start the fire-rate timer.
@@ -124,6 +132,7 @@ Last updated: 2026-07-12
 - Coyote time
 - Jump input buffering
 - Double jump
+- Drop-through one-way platforms with Down + Jump on physics layer 14
 - Shooting
 - Fire-rate limit on shooting
 - Simple ammo pool for shooting: current Player scene tuning starts at `15 / 20`, `1` ammo is consumed per successful shot, and magazine pickups restore `5`

@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://cbhvm2i265mce"]
+
+[ext_resource type="Texture2D" uid="uid://di3bvneivq105" path="res://art/bosslevel02/Foregorund.png" id="1_on6gp"]
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_06ieg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_on6gp"]
+size = Vector2(1826, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5kemy"]
+size = Vector2(20, 463)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vr6wc"]
+size = Vector2(20, 450)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06ieg"]
+size = Vector2(113, 109)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ouerw"]
+size = Vector2(129, 110)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_grro5"]
+size = Vector2(258, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j0dir"]
+size = Vector2(231, 4)
+
+[node name="BossTestRoom" type="Node2D" unique_id=291788006]
+
+[node name="Foreground" type="Sprite2D" parent="." unique_id=786058130]
+position = Vector2(959.7, 540.225)
+texture = ExtResource("1_on6gp")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=766035141]
+position = Vector2(960, 540)
+zoom = Vector2(1.5, 1.5)
+
+[node name="ArenaFloor" type="StaticBody2D" parent="." unique_id=1435520085]
+position = Vector2(-16, -96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaFloor" unique_id=470759861]
+position = Vector2(1027, 919)
+shape = SubResource("RectangleShape2D_on6gp")
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=225841139]
+position = Vector2(489, 693)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=121726220]
+position = Vector2(8, -85)
+shape = SubResource("RectangleShape2D_5kemy")
+
+[node name="RightWall" type="StaticBody2D" parent="." unique_id=2001806153]
+position = Vector2(1401, 606)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall" unique_id=275349493]
+position = Vector2(18, -8)
+shape = SubResource("RectangleShape2D_vr6wc")
+
+[node name="LeftBox" type="StaticBody2D" parent="." unique_id=1856218692]
+position = Vector2(73, -113)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBox" unique_id=675081747]
+position = Vector2(489.5, 872.5)
+shape = SubResource("RectangleShape2D_06ieg")
+
+[node name="RightBox" type="StaticBody2D" parent="." unique_id=324835986]
+position = Vector2(-156, -60)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBox" unique_id=88102330]
+position = Vector2(1514.5, 820)
+shape = SubResource("RectangleShape2D_ouerw")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=880686097]
+position = Vector2(728, 744)
+
+[node name="BossSplawn" type="Marker2D" parent="." unique_id=1939831259]
+position = Vector2(1175, 711)
+
+[node name="Player" parent="." unique_id=1487025887 instance=ExtResource("2_06ieg")]
+position = Vector2(732, 718)
+collision_layer = 8194
+
+[node name="PlatformLeft" type="Node2D" parent="." unique_id=36750510]
+position = Vector2(601, 615)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PlatformLeft" unique_id=1267875078]
+collision_layer = 8192
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformLeft/StaticBody2D" unique_id=15167201]
+position = Vector2(106, -15)
+shape = SubResource("RectangleShape2D_grro5")
+one_way_collision = true
+one_way_collision_margin = 4.0
+
+[node name="PlatformRight" type="Node2D" parent="." unique_id=912266916]
+position = Vector2(1136, 613)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="PlatformRight" unique_id=23671359]
+collision_layer = 8192
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformRight/StaticBody2D" unique_id=1012426773]
+position = Vector2(116.5, -15)
+shape = SubResource("RectangleShape2D_j0dir")
+one_way_collision = true
+one_way_collision_margin = 4.0

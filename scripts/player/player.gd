@@ -9,12 +9,15 @@ signal ammo_changed(current_ammo: int, max_ammo: int)
 
 const PUSH_FORCE = 100
 const BLOCK_MAX_VELOCITY = 180
+const ONE_WAY_PLATFORM_LAYER = 14
 
 @export var coyote_time: float = 0.10
 @export var jump_buffer_time: float = 0.10
 
 @export var enable_double_jump: bool = true
 @export var extra_jumps: int = 1
+@export var drop_through_duration: float = 0.25
+@export var drop_through_min_fall_speed: float = 180.0
 
 @export var bullet_scene: PackedScene
 @export var muzzle_flash_scene: PackedScene = preload("res://scenes/props/muzzle_flash.tscn")
@@ -56,6 +59,7 @@ const BLOCK_MAX_VELOCITY = 180
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
 @onready var muzzle_marker: Marker2D = $MuzzleMarker
+@onready var body_collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var melee_hitbox: Area2D = $MeleeHitbox
 @onready var melee_hitbox_shape: CollisionShape2D = $MeleeHitbox/CollisionShape2D
 
@@ -88,6 +92,9 @@ var melee_ground_stop_timer: float = 0.0
 var melee_hitbox_active: bool = false
 var melee_started_on_floor: bool = false
 var melee_hit_enemies: Array[Node] = []
+var drop_through_timer: float = 0.0
+var drop_through_floor_y: float = 0.0
+var drop_through_mask_was_enabled: bool = false
 
 
 func _ready() -> void:
@@ -115,6 +122,7 @@ func _physics_process(delta: float) -> void:
 	update_landing_timers(delta)
 	update_zipline_timers(delta)
 	update_melee_attack(delta)
+	update_drop_through(delta)
 
 	if is_dead:
 		force_detach_from_zipline()
@@ -149,6 +157,7 @@ func _physics_process(delta: float) -> void:
 
 	var input_axis: float = Input.get_axis("move_left", "move_right")
 	var jump_pressed: bool = Input.is_action_just_pressed("jump")
+	var drop_requested: bool = jump_pressed and Input.is_action_pressed("move_down")
 	var was_on_floor: bool = is_on_floor()
 
 	if Input.is_action_just_pressed("melee_attack"):
@@ -186,6 +195,9 @@ func _physics_process(delta: float) -> void:
 		air_jumps_left = extra_jumps
 	else:
 		coyote_timer -= delta
+
+	if drop_requested and try_start_drop_through():
+		jump_pressed = false
 
 	# Jump buffer
 	if jump_pressed:
@@ -227,6 +239,68 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	update_hard_landing(was_on_floor)
 	update_animation()
+
+
+func try_start_drop_through() -> bool:
+	if drop_through_timer > 0.0:
+		return true
+
+	var floor_y := get_one_way_floor_y()
+	if floor_y == INF:
+		return false
+
+	drop_through_mask_was_enabled = get_collision_mask_value(ONE_WAY_PLATFORM_LAYER)
+	drop_through_floor_y = floor_y
+	drop_through_timer = drop_through_duration
+	set_collision_mask_value(ONE_WAY_PLATFORM_LAYER, false)
+	velocity.y = maxf(velocity.y, drop_through_min_fall_speed)
+	jump_buffer_timer = 0.0
+	coyote_timer = 0.0
+	cancel_landing()
+
+	return true
+
+
+func get_one_way_floor_y() -> float:
+	if not is_on_floor():
+		return INF
+
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		if collision.get_normal().dot(up_direction) < 0.7:
+			continue
+
+		var collider := collision.get_collider() as CollisionObject2D
+		if collider != null and collider.get_collision_layer_value(ONE_WAY_PLATFORM_LAYER):
+			return collision.get_position().y
+
+	return INF
+
+
+func update_drop_through(delta: float) -> void:
+	if drop_through_timer <= 0.0:
+		return
+
+	drop_through_timer -= delta
+
+	if get_body_top_y() > drop_through_floor_y or drop_through_timer <= 0.0:
+		finish_drop_through()
+
+
+func finish_drop_through() -> void:
+	drop_through_timer = 0.0
+	set_collision_mask_value(ONE_WAY_PLATFORM_LAYER, drop_through_mask_was_enabled)
+
+
+func get_body_top_y() -> float:
+	if body_collision_shape == null:
+		return global_position.y
+
+	var rectangle := body_collision_shape.shape as RectangleShape2D
+	if rectangle != null:
+		return body_collision_shape.global_position.y - rectangle.size.y * 0.5 * abs(body_collision_shape.global_scale.y)
+
+	return body_collision_shape.global_position.y
 
 
 func play_animation_safe(name: StringName, fallback: StringName = &"idle") -> void:
