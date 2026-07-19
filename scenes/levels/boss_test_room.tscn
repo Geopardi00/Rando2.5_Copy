@@ -112,6 +112,7 @@ move_speed = 220.0
 jump_velocity = -510.0
 navigation_root_path = NodePath("../BossNavigation")
 rifle_telegraph_time = 0.15
+grenade_fuse_time = 1.6
 decision_delay = 0.15
 
 [node name="PlatformLeft" type="Node2D" parent="." unique_id=36750510]
@@ -141,10 +142,10 @@ one_way_collision_margin = 4.0
 [node name="BossDebugUI" type="CanvasLayer" parent="." unique_id=115381717]
 
 [node name="BossHealthLabel" type="Label" parent="BossDebugUI" unique_id=1989760021]
-offset_left = 760.0
-offset_top = 40.0
-offset_right = 1160.0
-offset_bottom = 80.0
+offset_left = 758.0
+offset_top = 221.0
+offset_right = 1158.0
+offset_bottom = 261.0
 theme_override_font_sizes/font_size = 28
 text = "BOSS 2"
 horizontal_alignment = 1

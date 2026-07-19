@@ -9,6 +9,9 @@ Last updated: 2026-07-19
 - Boss 2 navigation now routes upward in steps and counters a player on a high platform by moving through the opposite-side box toward the opposite high platform.
 - Boss 2 floor traversal now favors running; jumps are delayed until the boss is close enough to the next higher marker or blocked at the intended climb point.
 - Known Boss 2 navigation issue: the boss can wait awkwardly on top of boxes until the player returns to a compatible level; this may become acceptable once grenades/pressure tools are added, but it should stay on the tuning radar.
+- Boss 2 now has a boss-specific grenade attack milestone: target locks during telegraph, one active grenade at a time, cooldown-gated selection, deterministic arcing throws, limited bouncing, warning flash, explicit one-heart explosion damage, and cleanup on boss death.
+- Boss 2 grenade debugging now draws the actual damage radius during the final warning/explosion window; the reused explosion sprite has been manually tuned to sit lower against the damage circle for better readability.
+- `boss_test_room` currently overrides Boss 2 grenade fuse time to `1.6` seconds for faster prototype iteration.
 - `scenes/levels/boss_test_room.tscn` now instances Boss 2, adds `BossNavigation` markers, and shows a small debug boss health label for prototype testing.
 - Player drop-through one-way platform support is implemented in both duplicate player scripts: `scenes/player/player.gd` and `scripts/player/player.gd`.
 - Pressing Down + the existing `jump` action while standing on a layer 14 one-way platform temporarily removes only layer 14 from the player's collision mask, applies a small downward velocity, and restores the mask after the player's body has cleared the platform or a short safety timeout expires.
@@ -161,7 +164,8 @@ Last updated: 2026-07-19
 - Uses `art/enemies/boss02.png` as a placeholder sprite.
 - Has HP, `enemy_hurtbox` damage compatibility, hit flash, and `boss_defeated`.
 - Has no automatic body contact damage.
-- Current attacks are horizontal-only rifle burst and close-range knife combo.
+- Current attacks are horizontal-only rifle burst, close-range knife combo, and a boss-specific throwable grenade.
+- Boss 2 grenades reuse the existing grenade sprite, Boss 1 explosion frames, and explosion audio, but use separate gameplay logic in `scripts/projectiles/final_boss_grenade.gd`.
 - Uses authored navigation markers in `boss_test_room` for run/jump/drop-through repositioning.
 
 ### Combat

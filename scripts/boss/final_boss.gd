@@ -5,6 +5,7 @@ signal boss_defeated
 signal attack_started(attack_name: StringName)
 
 const BOSS_BULLET_SCENE := preload("res://scenes/projectiles/boss_bullet.tscn")
+const FINAL_BOSS_GRENADE_SCENE := preload("res://scenes/projectiles/final_boss_grenade.tscn")
 const ONE_WAY_PLATFORM_LAYER = 14
 const NAV_TIER_FLOOR = 0
 const NAV_TIER_BOX = 1
@@ -23,6 +24,8 @@ enum State {
 	RIFLE_BURST,
 	KNIFE_TELEGRAPH,
 	KNIFE_ACTIVE,
+	GRENADE_TELEGRAPH,
+	GRENADE_RELEASE,
 	RECOVERY,
 	DEFEATED
 }
@@ -63,6 +66,26 @@ enum State {
 @export var knife_recovery_time: float = 0.55
 @export var knife_damage: int = 1
 
+@export_group("Grenade")
+@export var grenade_cooldown: float = 4.2
+@export var grenade_telegraph_time: float = 0.55
+@export var grenade_release_time: float = 0.12
+@export var grenade_recovery_time: float = 0.5
+@export var grenade_damage: int = 1
+@export var grenade_fuse_time: float = 2.1
+@export var grenade_warning_duration: float = 0.7
+@export var grenade_max_bounces: int = 2
+@export var grenade_bounce_damping: float = 0.55
+@export var grenade_gravity: float = 950.0
+@export var grenade_flight_time: float = 0.95
+@export var grenade_prediction_time: float = 0.35
+@export var grenade_target_inaccuracy: float = 55.0
+@export var grenade_explosion_radius: float = 92.0
+@export var grenade_explosion_active_duration: float = 0.12
+@export var max_active_grenades: int = 1
+@export var grenade_left_limit_path: NodePath
+@export var grenade_right_limit_path: NodePath
+
 @export_group("AI")
 @export var decision_delay: float = 0.25
 @export var reposition_cooldown_time: float = 0.2
@@ -73,6 +96,8 @@ enum State {
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var hurtbox_shape: CollisionShape2D = $Hurtbox/CollisionShape2D
 @onready var muzzle_marker: Marker2D = $MuzzleMarker
+@onready var grenade_throw_marker: Marker2D = $GrenadeThrowMarker
+@onready var held_grenade_sprite: Sprite2D = $HeldGrenadeSprite
 @onready var knife_hitbox: Area2D = $KnifeHitbox
 @onready var knife_hitbox_shape: CollisionShape2D = $KnifeHitbox/CollisionShape2D
 @onready var telegraph: ColorRect = $Telegraph
@@ -95,6 +120,10 @@ var jump_has_left_floor: bool = false
 var drop_through_timer: float = 0.0
 var drop_through_floor_y: float = 0.0
 var drop_through_mask_was_enabled: bool = false
+var grenade_cooldown_timer: float = 0.0
+var grenade_locked_target: Vector2 = Vector2.ZERO
+var grenade_initial_velocity: Vector2 = Vector2.ZERO
+var active_grenade: Node = null
 var damaged_by_current_knife: Array[Node] = []
 var last_attack: StringName = &""
 var base_sprite_scale: Vector2 = Vector2.ONE
@@ -111,6 +140,7 @@ func _ready() -> void:
 	knife_hitbox_shape.disabled = true
 	knife_hitbox.body_entered.connect(_on_knife_hitbox_body_entered)
 	telegraph.visible = false
+	held_grenade_sprite.visible = false
 
 	update_facing(facing)
 	refresh_player()
@@ -123,6 +153,7 @@ func _physics_process(delta: float) -> void:
 	refresh_player()
 	update_flash(delta)
 	update_drop_through(delta)
+	update_grenade_cooldown(delta)
 
 	if state == State.DEFEATED:
 		return
@@ -151,6 +182,10 @@ func _physics_process(delta: float) -> void:
 			update_knife_telegraph(delta)
 		State.KNIFE_ACTIVE:
 			update_knife_active(delta)
+		State.GRENADE_TELEGRAPH:
+			update_grenade_telegraph(delta)
+		State.GRENADE_RELEASE:
+			update_grenade_release(delta)
 		State.RECOVERY:
 			update_recovery(delta)
 
@@ -182,6 +217,9 @@ func choose_next_action() -> void:
 	if not is_instance_valid(player):
 		enter_decide(decision_delay)
 		return
+	if player.get("is_dead") == true:
+		enter_decide(decision_delay)
+		return
 
 	var dx := player.global_position.x - global_position.x
 	var abs_dx := absf(dx)
@@ -191,12 +229,20 @@ func choose_next_action() -> void:
 		start_knife()
 		return
 
+	if can_start_grenade() and should_select_grenade(abs_dx, abs_dy):
+		start_grenade()
+		return
+
 	if abs_dy <= rifle_vertical_tolerance and abs_dx >= rifle_min_range and abs_dx <= rifle_range and last_attack != &"rifle":
 		start_rifle()
 		return
 
 	if abs_dy <= rifle_vertical_tolerance and abs_dx >= rifle_min_range and abs_dx <= rifle_range:
 		start_rifle()
+		return
+
+	if can_start_grenade():
+		start_grenade()
 		return
 
 	reposition_toward_player()
@@ -385,12 +431,175 @@ func update_knife_active(delta: float) -> void:
 		enter_recovery(knife_recovery_time)
 
 
+func start_grenade() -> void:
+	if not lock_grenade_target():
+		reposition_toward_player()
+		return
+
+	state = State.GRENADE_TELEGRAPH
+	state_timer = grenade_telegraph_time
+	attack_direction = get_player_direction()
+	update_facing(attack_direction)
+	velocity.x = 0.0
+	telegraph.visible = true
+	telegraph.color = Color(1.0, 0.75, 0.05, 0.6)
+	held_grenade_sprite.visible = true
+	attack_started.emit(&"grenade")
+
+
+func update_grenade_telegraph(delta: float) -> void:
+	velocity.x = 0.0
+	state_timer -= delta
+	pulse_telegraph()
+
+	if state_timer <= 0.0:
+		state = State.GRENADE_RELEASE
+		state_timer = grenade_release_time
+		sprite.scale = base_sprite_scale
+		telegraph.visible = false
+		spawn_grenade()
+
+
+func update_grenade_release(delta: float) -> void:
+	velocity.x = 0.0
+	state_timer -= delta
+
+	if state_timer <= 0.0:
+		last_attack = &"grenade"
+		held_grenade_sprite.visible = false
+		enter_recovery(grenade_recovery_time)
+
+
+func can_start_grenade() -> bool:
+	if grenade_cooldown_timer > 0.0:
+		return false
+	if max_active_grenades <= 0:
+		return false
+	if is_instance_valid(active_grenade):
+		return false
+	if not is_instance_valid(player):
+		return false
+	if player.get("is_dead") == true:
+		return false
+
+	return true
+
+
+func should_select_grenade(abs_dx: float, abs_dy: float) -> bool:
+	if abs_dx <= knife_range:
+		return false
+	if last_attack == &"grenade":
+		return false
+	if abs_dy > rifle_vertical_tolerance:
+		return true
+	if is_player_on_platform_tier():
+		return true
+	if is_boss_waiting_on_box_for_player():
+		return true
+
+	return false
+
+
+func lock_grenade_target() -> bool:
+	if not is_instance_valid(player):
+		return false
+
+	var start_position := grenade_throw_marker.global_position
+	grenade_locked_target = get_predicted_grenade_target()
+	grenade_initial_velocity = calculate_grenade_velocity(start_position, grenade_locked_target)
+	return true
+
+
+func get_predicted_grenade_target() -> Vector2:
+	var target := player.global_position
+	var player_velocity = player.get("velocity")
+	if player_velocity is Vector2:
+		var prediction: Vector2 = player_velocity * grenade_prediction_time
+		prediction.x = clampf(prediction.x, -140.0, 140.0)
+		prediction.y = clampf(prediction.y, -90.0, 90.0)
+		target += prediction
+
+	target.x += randf_range(-grenade_target_inaccuracy, grenade_target_inaccuracy)
+	target.y += randf_range(-grenade_target_inaccuracy * 0.35, grenade_target_inaccuracy * 0.35)
+
+	var limits := get_grenade_x_limits()
+	target.x = clampf(target.x, limits.x, limits.y)
+	return target
+
+
+func calculate_grenade_velocity(start_position: Vector2, target_position: Vector2) -> Vector2:
+	var flight_time := maxf(grenade_flight_time, 0.1)
+	var displacement := target_position - start_position
+	return Vector2(displacement.x / flight_time, (displacement.y - 0.5 * grenade_gravity * flight_time * flight_time) / flight_time)
+
+
+func spawn_grenade() -> void:
+	if is_instance_valid(active_grenade):
+		return
+
+	var grenade := FINAL_BOSS_GRENADE_SCENE.instantiate()
+	grenade.set("gravity", grenade_gravity)
+	grenade.set("fuse_time", grenade_fuse_time)
+	grenade.set("warning_duration", grenade_warning_duration)
+	grenade.set("max_bounces", grenade_max_bounces)
+	grenade.set("bounce_damping", grenade_bounce_damping)
+	grenade.set("explosion_radius", grenade_explosion_radius)
+	grenade.set("explosion_active_duration", grenade_explosion_active_duration)
+	if grenade.has_method("setup"):
+		grenade.setup(grenade_throw_marker.global_position, grenade_initial_velocity, grenade_damage, self)
+
+	active_grenade = grenade
+	if grenade.has_signal("finished"):
+		grenade.finished.connect(_on_active_grenade_finished.bind(grenade))
+	grenade.tree_exited.connect(_on_active_grenade_tree_exited.bind(grenade))
+	get_tree().current_scene.add_child(grenade)
+	grenade_cooldown_timer = grenade_cooldown
+
+
+func update_grenade_cooldown(delta: float) -> void:
+	if grenade_cooldown_timer > 0.0:
+		grenade_cooldown_timer = maxf(grenade_cooldown_timer - delta, 0.0)
+
+
+func get_grenade_x_limits() -> Vector2:
+	var left_marker := get_node_or_null(grenade_left_limit_path) as Node2D
+	var right_marker := get_node_or_null(grenade_right_limit_path) as Node2D
+	if left_marker != null and right_marker != null:
+		return Vector2(minf(left_marker.global_position.x, right_marker.global_position.x), maxf(left_marker.global_position.x, right_marker.global_position.x))
+
+	var min_x := INF
+	var max_x := -INF
+	for marker in get_navigation_markers():
+		min_x = minf(min_x, marker.global_position.x)
+		max_x = maxf(max_x, marker.global_position.x)
+
+	if min_x < INF and max_x > -INF:
+		return Vector2(min_x - 80.0, max_x + 80.0)
+
+	return Vector2(global_position.x - 700.0, global_position.x + 700.0)
+
+
+func is_player_on_platform_tier() -> bool:
+	var player_marker := get_nearest_navigation_marker(player.global_position)
+	return player_marker != null and get_marker_tier(player_marker) == NAV_TIER_PLATFORM
+
+
+func is_boss_waiting_on_box_for_player() -> bool:
+	var boss_marker := get_nearest_navigation_marker(global_position)
+	var player_marker := get_nearest_navigation_marker(player.global_position)
+	if boss_marker == null or player_marker == null:
+		return false
+
+	return get_marker_tier(boss_marker) == NAV_TIER_BOX and get_marker_tier(player_marker) != NAV_TIER_BOX
+
+
 func enter_recovery(duration: float) -> void:
 	state = State.RECOVERY
 	state_timer = duration
 	velocity.x = 0.0
 	sprite.scale = base_sprite_scale
 	telegraph.visible = false
+	held_grenade_sprite.visible = false
 
 
 func update_recovery(delta: float) -> void:
@@ -409,6 +618,7 @@ func enter_decide(delay: float) -> void:
 	velocity.x = 0.0
 	sprite.scale = base_sprite_scale
 	telegraph.visible = false
+	held_grenade_sprite.visible = false
 	knife_hitbox.monitoring = false
 	knife_hitbox_shape.disabled = true
 
@@ -668,6 +878,8 @@ func update_facing(direction: int) -> void:
 	facing = direction
 	sprite.flip_h = facing < 0
 	muzzle_marker.position.x = abs(muzzle_marker.position.x) * facing
+	grenade_throw_marker.position.x = abs(grenade_throw_marker.position.x) * facing
+	held_grenade_sprite.position.x = abs(held_grenade_sprite.position.x) * facing
 	update_knife_hitbox_direction()
 
 
@@ -708,6 +920,8 @@ func die() -> void:
 	knife_hitbox.monitoring = false
 	knife_hitbox_shape.disabled = true
 	telegraph.visible = false
+	held_grenade_sprite.visible = false
+	clear_active_grenade()
 	boss_defeated.emit()
 	queue_free()
 
@@ -730,3 +944,19 @@ func damage_with_knife(body: Node) -> void:
 func debug_print(message: String) -> void:
 	if debug_enabled:
 		print(message)
+
+
+func _on_active_grenade_finished(grenade: Node) -> void:
+	if active_grenade == grenade:
+		active_grenade = null
+
+
+func _on_active_grenade_tree_exited(grenade: Node) -> void:
+	if active_grenade == grenade:
+		active_grenade = null
+
+
+func clear_active_grenade() -> void:
+	if is_instance_valid(active_grenade):
+		active_grenade.queue_free()
+	active_grenade = null

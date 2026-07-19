@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/boss/final_boss.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://qfm5sopndty0" path="res://art/enemies/boss02.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://dyutp87truost" path="res://art/props/grenade.png" id="3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(34, 76)
@@ -42,6 +43,15 @@ shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="MuzzleMarker" type="Marker2D" parent="."]
 position = Vector2(30, -46)
+
+[node name="GrenadeThrowMarker" type="Marker2D" parent="."]
+position = Vector2(28, -58)
+
+[node name="HeldGrenadeSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(28, -58)
+scale = Vector2(0.055, 0.055)
+texture = ExtResource("3")
 
 [node name="KnifeHitbox" type="Area2D" parent="."]
 position = Vector2(46, -40)
