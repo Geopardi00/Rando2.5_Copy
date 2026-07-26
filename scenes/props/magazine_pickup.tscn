@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cefmc1exkgvc8" path="res://scenes/fx/magazine_pickup_burst.tscn" id="4_collect_fx"]
 
 [sub_resource type="Gradient" id="Gradient_magazine_glow"]
-offsets = PackedFloat32Array(0, 0.2798354, 0.9218107)
-colors = PackedColorArray(1, 1, 1, 1, 0.80588496, 0.4312727, 0.034124136, 0.52156866, 0, 0, 0, 0)
+offsets = PackedFloat32Array(0.057613168, 0.3621399, 0.9835391)
+colors = PackedColorArray(1, 1, 1, 1, 0.8784314, 0.74509805, 0.52156866, 0.8509804, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_magazine_glow"]
 gradient = SubResource("Gradient_magazine_glow")
@@ -35,7 +35,7 @@ texture = ExtResource("2_texture")
 position = Vector2(0, -1)
 scale = Vector2(1.6, 1.15)
 color = Color(0.8806186, 0.81072783, 0.62335527, 1)
-energy = 0.41
+energy = 2.06
 texture = SubResource("GradientTexture2D_magazine_glow")
 texture_scale = 0.7
 script = ExtResource("3_torch_flicker")
