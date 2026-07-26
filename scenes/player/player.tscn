@@ -633,6 +633,7 @@ collision_mask = 8193
 script = ExtResource("player_script")
 max_ammo = 20
 starting_ammo = 15
+slap_height = 60.0
 melee_damage = 1
 melee_range = 42.0
 melee_ground_stop_time = 0.2

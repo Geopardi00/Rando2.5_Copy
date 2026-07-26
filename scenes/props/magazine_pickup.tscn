@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cefmc1exkgvc8" path="res://scenes/fx/magazine_pickup_burst.tscn" id="4_collect_fx"]
 
 [sub_resource type="Gradient" id="Gradient_magazine_glow"]
-offsets = PackedFloat32Array(0.057613168, 0.3621399, 0.9835391)
+offsets = PackedFloat32Array(0.057613168, 0.3251029, 0.6419753)
 colors = PackedColorArray(1, 1, 1, 1, 0.8784314, 0.74509805, 0.52156866, 0.8509804, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_magazine_glow"]
