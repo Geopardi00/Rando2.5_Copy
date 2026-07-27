@@ -100,6 +100,7 @@
 [ext_resource type="Texture2D" uid="uid://bhdcah7txc6v2" path="res://art/level01/ver2.0/vines03B.png" id="90_1kwrj"]
 [ext_resource type="Texture2D" uid="uid://cf2yixs7l7k7r" path="res://art/level01/ver2.0/vines01B.png" id="91_8c2w4"]
 [ext_resource type="Texture2D" uid="uid://nopepxe4hkir" path="res://art/props/Tree02Blur.png" id="91_8nt0r"]
+[ext_resource type="Texture2D" uid="uid://37yhhfevfls0" path="res://art/props/WaterfallFog.png" id="99_1c306"]
 
 [sub_resource type="Environment" id="Environment_level03"]
 background_mode = 3
@@ -286,6 +287,14 @@ animations = [{
 "name": &"default",
 "speed": 13.0
 }]
+
+[sub_resource type="Curve" id="Curve_vsw2t"]
+_data = [Vector2(0.16226417, 0.78470033), 0.0, 0.0, 0, 0, Vector2(0.38867927, 1), 0.0, 0.0, 0, 0, Vector2(0.6867925, 0.88722396), 0.0, 0.0, 0, 0, Vector2(0.9169812, 0.48738176), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Gradient" id="Gradient_4wl77"]
+offsets = PackedFloat32Array(0, 0.31799164, 0.62761503, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmkdx"]
 shader = ExtResource("52_4ghe2")
@@ -1485,6 +1494,28 @@ volume_db = -3.255
 autoplay = true
 max_distance = 1046.0
 attenuation = 0.93303317
+
+[node name="WaterfallFog" type="CPUParticles2D" parent="World/BackgroundNearest/Waterfall2" unique_id=1560537763]
+position = Vector2(5246, 410)
+amount = 95
+texture = ExtResource("99_1c306")
+lifetime = 2.07
+speed_scale = 0.8
+explosiveness = 0.12
+randomness = 0.51
+emission_shape = 3
+emission_rect_extents = Vector2(120, 80)
+direction = Vector2(0, -5)
+spread = 15.22
+gravity = Vector2(0, 0)
+initial_velocity_min = 11.19
+initial_velocity_max = 18.39
+radial_accel_max = 1.44
+damping_min = 2.158
+damping_max = 14.388
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_vsw2t")
+color_ramp = SubResource("Gradient_4wl77")
 
 [node name="ForegroundFar" type="Parallax2D" parent="World" unique_id=605950427]
 z_index = 6
