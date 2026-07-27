@@ -342,10 +342,7 @@ func update_animation() -> void:
 
 	if is_riding_zipline:
 		animated_sprite.speed_scale = 1.0
-		if velocity.y < 0.0:
-			play_animation_safe(&"jump", &"idle")
-		else:
-			play_animation_safe(&"fall", &"jump")
+		play_animation_safe(&"zipline", &"jump")
 		return
 
 	if landing_animation_timer > 0.0:

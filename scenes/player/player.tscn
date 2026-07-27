@@ -142,6 +142,12 @@
 [ext_resource type="Texture2D" uid="uid://dvmkxqvycv3ah" path="res://art/characters/animations/swatting/frame0009.png" id="swat_09"]
 [ext_resource type="Texture2D" uid="uid://x41h3nl21yar" path="res://art/characters/animations/swatting/frame0010.png" id="swat_10"]
 [ext_resource type="Texture2D" uid="uid://c02gh8hlskk5a" path="res://art/characters/animations/swatting/frame0011.png" id="swat_11"]
+[ext_resource type="Texture2D" uid="uid://nwaqi01lno4l" path="res://art/characters/animations/zipline/frame0000.png" id="zipline_00"]
+[ext_resource type="Texture2D" uid="uid://mcn6guo67sg" path="res://art/characters/animations/zipline/frame0001.png" id="zipline_01"]
+[ext_resource type="Texture2D" uid="uid://c5pokvbe7b355" path="res://art/characters/animations/zipline/frame0002.png" id="zipline_02"]
+[ext_resource type="Texture2D" uid="uid://crtovfad0xkak" path="res://art/characters/animations/zipline/frame0003.png" id="zipline_03"]
+[ext_resource type="Texture2D" uid="uid://bxscyqy4kvv0m" path="res://art/characters/animations/zipline/frame0004.png" id="zipline_04"]
+[ext_resource type="Texture2D" uid="uid://d2decu0gtxel6" path="res://art/characters/animations/zipline/frame0005.png" id="zipline_05"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8afob"]
 size = Vector2(20, 37.5)
@@ -617,6 +623,29 @@ animations = [{
 "loop": true,
 "name": &"walk2",
 "speed": 44.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("zipline_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("zipline_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("zipline_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("zipline_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("zipline_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("zipline_05")
+}],
+"loop": true,
+"name": &"zipline",
+"speed": 12.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]

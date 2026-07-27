@@ -13,6 +13,7 @@ cable_outline_width = 1.0
 rider_bend_amount = 10.0
 rider_bend_radius = 0.5
 bend_response_speed = 5.0
+player_hang_offset = Vector2(0, 10)
 maximum_ride_speed = 700.0
 detach_jump_velocity = 420.0
 

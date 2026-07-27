@@ -8,11 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="10_r72dd"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="11_jmes4"]
 [ext_resource type="Texture2D" uid="uid://b4758l3kh40yg" path="res://art/props/tunneldoor.png" id="12_1uvka"]
-[ext_resource type="Script" uid="uid://cbe5lxpnc0rqy" path="res://scenes/player/player.gd" id="12_07lms"]
 [ext_resource type="Script" uid="uid://onylvomacabe" path="res://scripts/goal.gd" id="12_gi8m4"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="12_tyxjt"]
 [ext_resource type="Script" uid="uid://dcw16xyksu2lm" path="res://scripts/levels/level_01.gd" id="13_84s7n"]
-[ext_resource type="PackedScene" path="res://scenes/ui/game_ui.tscn" id="13_game_ui"]
+[ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="13_game_ui"]
 [ext_resource type="Texture2D" uid="uid://dm0ncow8khioc" path="res://art/level01/ver2.0/platform11.png" id="14_yfn7s"]
 [ext_resource type="PackedScene" uid="uid://7r6butmsjild" path="res://scenes/enemies/enemy_knife_thrower.tscn" id="15_5t8rk"]
 [ext_resource type="PackedScene" uid="uid://bxrxxajgkoae7" path="res://scenes/enemies/enemy_dog.tscn" id="16_cag23"]
@@ -243,7 +242,7 @@ size = Vector2(20, 307)
 [node name="Level01" type="Node2D" unique_id=1698746909]
 script = ExtResource("13_84s7n")
 
-[node name="GameUI" parent="." instance=ExtResource("13_game_ui")]
+[node name="GameUI" parent="." unique_id=649973500 instance=ExtResource("13_game_ui")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=801567806]
 environment = SubResource("Environment_1uvka")
@@ -375,7 +374,6 @@ shape = SubResource("RectangleShape2D_lswbx")
 
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("11_jmes4")]
 position = Vector2(494, 193)
-script = ExtResource("12_07lms")
 bullet_scene = ExtResource("12_tyxjt")
 slap_range = 10.0
 slap_height = 54.0

@@ -1370,7 +1370,7 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(2721, 166)
+position = Vector2(4282, 97)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
