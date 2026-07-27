@@ -85,6 +85,13 @@ func take_damage(amount: int = 1) -> void:
 		die()
 
 
+func machete_hit(amount: int = 1) -> void:
+	take_damage(amount)
+
+	if hp > 0:
+		start_slap_knockback()
+
+
 func slapped() -> void:
 	take_damage(1)
 

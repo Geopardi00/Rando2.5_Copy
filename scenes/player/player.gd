@@ -563,7 +563,9 @@ func _on_melee_hitbox_area_entered(area: Area2D) -> void:
 
 	melee_hit_enemies.append(enemy)
 
-	if enemy.has_method("take_damage"):
+	if enemy.has_method("machete_hit"):
+		enemy.machete_hit(melee_damage)
+	elif enemy.has_method("take_damage"):
 		enemy.take_damage(melee_damage)
 
 
