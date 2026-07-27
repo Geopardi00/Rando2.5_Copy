@@ -86,6 +86,7 @@
 [ext_resource type="Shader" uid="uid://dg0outdtaryog" path="res://shaders/God rays.gdshader" id="67_qkk4n"]
 [ext_resource type="Texture2D" uid="uid://cw2fjtqkedygj" path="res://art/props/animations/waterfall/waterfall_blocks03.png" id="67_wqvu7"]
 [ext_resource type="Texture2D" uid="uid://eaocgr7rgmea" path="res://art/props/animations/waterfall/waterfall_blocks02.png" id="68_31wr4"]
+[ext_resource type="AudioStream" uid="uid://cpt7vxywt3wg2" path="res://audio/sfx/waterfall.wav" id="72_8c2w4"]
 [ext_resource type="Texture2D" uid="uid://cqr2a72wcscg0" path="res://art/level01/ver2.0/foregroundstone04.png" id="79_dnaj0"]
 [ext_resource type="Texture2D" uid="uid://bx66alymdq632" path="res://art/level01/ver2.0/foregroundstone02.png" id="82_uq4pb"]
 [ext_resource type="Texture2D" uid="uid://cbh4amnl0pqnq" path="res://art/level01/ver2.0/vines01.png" id="83_5inbw"]
@@ -1455,14 +1456,6 @@ position = Vector2(5188, 213.8)
 scale = Vector2(0.4, 0.41398)
 texture = ExtResource("57_31wr4")
 
-[node name="Waterfall" type="AnimatedSprite2D" parent="World/BackgroundNearest" unique_id=412295039]
-modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
-position = Vector2(5228, 207.5)
-scale = Vector2(0.4, 0.51574075)
-sprite_frames = SubResource("SpriteFrames_bldc6")
-autoplay = "default"
-frame_progress = 0.58147776
-
 [node name="Sprite2D" type="Sprite2D" parent="World/BackgroundNearest" unique_id=985228757]
 modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
 position = Vector2(5043, 5)
@@ -1474,6 +1467,24 @@ modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
 position = Vector2(5372, 2)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("68_31wr4")
+
+[node name="Waterfall2" type="Node2D" parent="World/BackgroundNearest" unique_id=580479041]
+
+[node name="Waterfall" type="AnimatedSprite2D" parent="World/BackgroundNearest/Waterfall2" unique_id=412295039]
+modulate = Color(0.7176471, 0.7490196, 0.6627451, 1)
+position = Vector2(5228, 207.5)
+scale = Vector2(0.4, 0.51574075)
+sprite_frames = SubResource("SpriteFrames_bldc6")
+autoplay = "default"
+frame_progress = 0.58147776
+
+[node name="WaterfallSound" type="AudioStreamPlayer2D" parent="World/BackgroundNearest/Waterfall2" unique_id=445819005]
+position = Vector2(5325, 158)
+stream = ExtResource("72_8c2w4")
+volume_db = -3.255
+autoplay = true
+max_distance = 1046.0
+attenuation = 0.93303317
 
 [node name="ForegroundFar" type="Parallax2D" parent="World" unique_id=605950427]
 z_index = 6
