@@ -78,7 +78,6 @@
 [ext_resource type="Texture2D" uid="uid://dqqhbj20q6o1g" path="res://art/level01/ver2.0/foregroundplant02.png" id="53_cxsoa"]
 [ext_resource type="Texture2D" uid="uid://b7xy52y7bqo2o" path="res://art/level01/ver2.0/foregroundstone03.png" id="53_nip07"]
 [ext_resource type="Texture2D" uid="uid://bxly5c1wdhvq3" path="res://art/level01/ver2.0/foregroundplant01.png" id="54_a10ds"]
-[ext_resource type="Texture2D" uid="uid://c7oyb7jchnn3h" path="res://art/level01/ver2.0/foregroundplant03.png" id="54_radsg"]
 [ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="56_66fwr"]
 [ext_resource type="Texture2D" uid="uid://c10wgxk5bjuly" path="res://art/props/animations/waterfall/stonewall.png" id="57_31wr4"]
 [ext_resource type="Texture2D" uid="uid://cttfni15wqepf" path="res://art/props/animations/waterfall/stonewall03.png" id="57_odj57"]
@@ -89,7 +88,16 @@
 [ext_resource type="Texture2D" uid="uid://eaocgr7rgmea" path="res://art/props/animations/waterfall/waterfall_blocks02.png" id="68_31wr4"]
 [ext_resource type="Texture2D" uid="uid://cqr2a72wcscg0" path="res://art/level01/ver2.0/foregroundstone04.png" id="79_dnaj0"]
 [ext_resource type="Texture2D" uid="uid://bx66alymdq632" path="res://art/level01/ver2.0/foregroundstone02.png" id="82_uq4pb"]
+[ext_resource type="Texture2D" uid="uid://cbh4amnl0pqnq" path="res://art/level01/ver2.0/vines01.png" id="83_5inbw"]
+[ext_resource type="Texture2D" uid="uid://bf44gijqyldc2" path="res://art/level01/ver2.0/foregroundplant05Blur.png" id="84_bj607"]
+[ext_resource type="Texture2D" uid="uid://b542xwl04crwx" path="res://art/level01/ver2.0/vines04B.png" id="85_5inbw"]
+[ext_resource type="Texture2D" uid="uid://dhvkx3s5xuqbd" path="res://art/level01/ver2.0/vines03.png" id="85_bldc6"]
+[ext_resource type="Texture2D" uid="uid://bdwx63wy5yyq" path="res://art/level01/ver2.0/foregroundplant03Blur.png" id="85_nsyf0"]
+[ext_resource type="Texture2D" uid="uid://ci6v0gdinspfp" path="res://art/level01/ver2.0/foregroundstone01Blur.png" id="86_hg0n1"]
+[ext_resource type="Texture2D" uid="uid://oxdn0qsfrpw" path="res://art/level01/ver2.0/foregroundstone03Blur.png" id="87_8nt0r"]
+[ext_resource type="Texture2D" uid="uid://d26lm4bp2xv3g" path="res://art/level01/ver2.0/foregroundplant02Blur.png" id="88_1kwrj"]
 [ext_resource type="PackedScene" uid="uid://bh4elchfpf8cr" path="res://scenes/props/magazine_pickup.tscn" id="88_5x2cs"]
+[ext_resource type="Texture2D" uid="uid://nopepxe4hkir" path="res://art/props/Tree02Blur.png" id="91_8nt0r"]
 
 [sub_resource type="Environment" id="Environment_level03"]
 background_mode = 3
@@ -343,7 +351,7 @@ shader_parameter/WindStrength = 16.5810005500975
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ni0h8"]
 shader = ExtResource("52_4ghe2")
-shader_parameter/WindStrength = 11.533000310317501
+shader_parameter/WindStrength = 11.5330003103175
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uq4pb"]
 shader = ExtResource("52_4ghe2")
@@ -1361,7 +1369,7 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(-1644, 215)
+position = Vector2(2583, 140)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
@@ -2305,6 +2313,12 @@ scale = Vector2(0.16, 0.16)
 texture = ExtResource("54_a10ds")
 flip_h = true
 
+[node name="Sprite2D79" type="Sprite2D" parent="World/ForegroundMid" unique_id=88653656]
+modulate = Color(0.59717613, 0.59717613, 0.5971761, 1)
+position = Vector2(-2427, -280)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("83_5inbw")
+
 [node name="ForegroundNear" type="Parallax2D" parent="World" unique_id=65878513]
 z_index = 10
 scroll_scale = Vector2(1.3, 1)
@@ -2313,165 +2327,165 @@ scroll_scale = Vector2(1.3, 1)
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-2575, 332)
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 
 [node name="Foregroundplant02" type="Sprite2D" parent="World/ForegroundNear" unique_id=995753948]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-2319, 394)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 flip_h = true
 
 [node name="Foregroundplant03" type="Sprite2D" parent="World/ForegroundNear" unique_id=1499054850]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-2082, 496)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 flip_h = true
 
 [node name="Foregroundplant04" type="Sprite2D" parent="World/ForegroundNear" unique_id=302155738]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-1760, 623)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 
 [node name="Foregroundplant05" type="Sprite2D" parent="World/ForegroundNear" unique_id=1085641125]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-1631, 564)
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 
 [node name="Sprite2D11" type="Sprite2D" parent="World/ForegroundNear" unique_id=947047778]
 modulate = Color(0.3114708, 0.25051352, 0.121982016, 1)
 position = Vector2(1990, 418)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 flip_h = true
 
 [node name="Foregroundplant07" type="Sprite2D" parent="World/ForegroundNear" unique_id=2020283146]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-1061, 447)
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 flip_h = true
 
 [node name="Foregroundplant06" type="Sprite2D" parent="World/ForegroundNear" unique_id=1813824369]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-1399, 464)
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 
 [node name="Foregroundobejct01" type="Sprite2D" parent="World/ForegroundNear" unique_id=1310079634]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-607, 723)
-texture = ExtResource("52_8mjvw")
+texture = ExtResource("86_hg0n1")
 
 [node name="Foregroundobejct04" type="Sprite2D" parent="World/ForegroundNear" unique_id=1449004037]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2377, 749)
-texture = ExtResource("52_8mjvw")
+texture = ExtResource("86_hg0n1")
 
 [node name="Foregroundobejct02" type="Sprite2D" parent="World/ForegroundNear" unique_id=86540576]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(734, 778)
 rotation = -0.08552113
-texture = ExtResource("52_8mjvw")
+texture = ExtResource("86_hg0n1")
 flip_h = true
 
 [node name="Foregroundobejct03" type="Sprite2D" parent="World/ForegroundNear" unique_id=541679978]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2042.0001, 747.99994)
 rotation = -0.08552113
-texture = ExtResource("52_8mjvw")
+texture = ExtResource("86_hg0n1")
 flip_h = true
 
 [node name="Foregroundobejct05" type="Sprite2D" parent="World/ForegroundNear" unique_id=178450763]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(4117, 704.9999)
 rotation = -0.08552113
-texture = ExtResource("52_8mjvw")
+texture = ExtResource("86_hg0n1")
 flip_h = true
 
 [node name="Foregroundobejct06" type="Sprite2D" parent="World/ForegroundNear" unique_id=302803571]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(4701.9995, 707.99994)
 rotation = 0.34557518
-texture = ExtResource("52_8mjvw")
+texture = ExtResource("86_hg0n1")
 flip_h = true
 
 [node name="Sprite2D15" type="Sprite2D" parent="World/ForegroundNear" unique_id=1091027433]
 modulate = Color(0.19036669, 0.12522036, 0.05953583, 1)
 position = Vector2(3085, 396)
 scale = Vector2(0.14, 0.14)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 flip_h = true
 
 [node name="Foregroundobject02" type="Sprite2D" parent="World/ForegroundNear" unique_id=944892470]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(118, 696)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 flip_h = true
 
 [node name="Foregroundobject03" type="Sprite2D" parent="World/ForegroundNear" unique_id=364430778]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1204.9999, 715)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 flip_h = true
 
 [node name="Foregroundobject05" type="Sprite2D" parent="World/ForegroundNear" unique_id=973230503]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2927, 694)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject07" type="Sprite2D" parent="World/ForegroundNear" unique_id=1339695061]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(3542, 703)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject08" type="Sprite2D" parent="World/ForegroundNear" unique_id=204467271]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(5077, 707)
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject04" type="Sprite2D" parent="World/ForegroundNear" unique_id=1320177378]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1494.9999, 701.00006)
 rotation = -3.3580134
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject14" type="Sprite2D" parent="World/ForegroundNear" unique_id=190860036]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1679, 711)
 rotation = -3.3580134
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject06" type="Sprite2D" parent="World/ForegroundNear" unique_id=1855197308]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(3457.0002, 663.9999)
 rotation = -3.3580134
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject09" type="Sprite2D" parent="World/ForegroundNear" unique_id=369019786]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(5522.0005, 633.9999)
 rotation = -3.3580134
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject10" type="Sprite2D" parent="World/ForegroundNear" unique_id=992499394]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(5863, 656.00006)
 rotation = 1.7208947
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 flip_h = true
 
 [node name="Foregroundobject12" type="Sprite2D" parent="World/ForegroundNear" unique_id=208327784]
@@ -2479,7 +2493,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(6741.999, 787)
 rotation = 1.7208947
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 flip_h = true
 
 [node name="Foregroundobject11" type="Sprite2D" parent="World/ForegroundNear" unique_id=1887820502]
@@ -2487,196 +2501,214 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(6321, 743.99994)
 rotation = 2.9251719
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Foregroundobject13" type="Sprite2D" parent="World/ForegroundNear" unique_id=838111174]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(7260, 719.00006)
 rotation = 2.4085543
 scale = Vector2(0.8, 0.8)
-texture = ExtResource("53_nip07")
+texture = ExtResource("87_8nt0r")
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ForegroundNear" unique_id=471415200]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-215, 409.00003)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 
 [node name="Sprite2D2" type="Sprite2D" parent="World/ForegroundNear" unique_id=1513233775]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-431, 342)
 scale = Vector2(0.15, 0.15)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 
 [node name="Sprite2D3" type="Sprite2D" parent="World/ForegroundNear" unique_id=1359594838]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(384, 475)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D4" type="Sprite2D" parent="World/ForegroundNear" unique_id=219514928]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(728.00006, 425)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D5" type="Sprite2D" parent="World/ForegroundNear" unique_id=716007790]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(925, 454)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D6" type="Sprite2D" parent="World/ForegroundNear" unique_id=1108861224]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1047, 405.00003)
 scale = Vector2(0.15, 0.15)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 
 [node name="Sprite2D7" type="Sprite2D" parent="World/ForegroundNear" unique_id=181414656]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1383, 460)
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D8" type="Sprite2D" parent="World/ForegroundNear" unique_id=689553174]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1812, 437)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D12" type="Sprite2D" parent="World/ForegroundNear" unique_id=1233516261]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2588, 400)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D13" type="Sprite2D" parent="World/ForegroundNear" unique_id=1506021605]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2776, 436)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D16" type="Sprite2D" parent="World/ForegroundNear" unique_id=1620628913]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(3463, 402)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D17" type="Sprite2D" parent="World/ForegroundNear" unique_id=1350318464]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(3725, 418)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundNear" unique_id=588595852]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(3945.0002, 367)
 scale = Vector2(0.22, 0.22)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D20" type="Sprite2D" parent="World/ForegroundNear" unique_id=1820873891]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(4288, 341)
 scale = Vector2(0.17, 0.17)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D9" type="Sprite2D" parent="World/ForegroundNear" unique_id=580502099]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2162, 415)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 
 [node name="Sprite2D10" type="Sprite2D" parent="World/ForegroundNear" unique_id=1512681504]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2367, 396)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 flip_h = true
 
 [node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundNear" unique_id=1421370469]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(2954, 386)
 scale = Vector2(0.14, 0.14)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 flip_h = true
 
 [node name="Sprite2D19" type="Sprite2D" parent="World/ForegroundNear" unique_id=2135172109]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(4089, 376)
 scale = Vector2(0.14, 0.14)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 flip_h = true
 
 [node name="Sprite2D21" type="Sprite2D" parent="World/ForegroundNear" unique_id=1798496611]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(4708, 334)
 scale = Vector2(0.17, 0.17)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D22" type="Sprite2D" parent="World/ForegroundNear" unique_id=574985381]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(4984, 425)
 scale = Vector2(0.17, 0.17)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D24" type="Sprite2D" parent="World/ForegroundNear" unique_id=1082735946]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(5635, 390)
 scale = Vector2(0.14, 0.14)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D23" type="Sprite2D" parent="World/ForegroundNear" unique_id=1697408587]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(5217, 381)
 scale = Vector2(0.14, 0.14)
-texture = ExtResource("54_radsg")
+texture = ExtResource("85_nsyf0")
 flip_h = true
 
 [node name="Sprite2D25" type="Sprite2D" parent="World/ForegroundNear" unique_id=1475839774]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(6016, 349)
 scale = Vector2(0.14, 0.14)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 flip_h = true
 
 [node name="Sprite2D26" type="Sprite2D" parent="World/ForegroundNear" unique_id=297258816]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(6261, 436)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D27" type="Sprite2D" parent="World/ForegroundNear" unique_id=1722623336]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(6838, 464)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Sprite2D28" type="Sprite2D" parent="World/ForegroundNear" unique_id=1341924010]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(7098, 476)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("53_cxsoa")
+texture = ExtResource("88_1kwrj")
 
 [node name="Foregroundplant08" type="Sprite2D" parent="World/ForegroundNear" unique_id=1699246140]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(6588, 532)
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 
 [node name="Foregroundplant09" type="Sprite2D" parent="World/ForegroundNear" unique_id=1808788700]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(6413, 525)
 scale = Vector2(0.24, 0.24)
-texture = ExtResource("51_5wlp5")
+texture = ExtResource("84_bj607")
 flip_h = true
+
+[node name="Sprite2D29" type="Sprite2D" parent="World/ForegroundNear" unique_id=404177056]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-2549, -209.00002)
+scale = Vector2(0.35119647, 0.4835726)
+texture = ExtResource("85_5inbw")
+
+[node name="Sprite2D30" type="Sprite2D" parent="World/ForegroundNear" unique_id=1860165095]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-2274, -282)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("85_bldc6")
+
+[node name="Sprite2D31" type="Sprite2D" parent="World/ForegroundNear" unique_id=1761198180]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(3573, 16)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("91_8nt0r")
 
 [node name="WaterReclection01" type="Sprite2D" parent="." unique_id=2667231]
 z_index = 6
