@@ -91,7 +91,7 @@ var melee_attack_timer: float = 0.0
 var melee_ground_stop_timer: float = 0.0
 var melee_hitbox_active: bool = false
 var melee_started_on_floor: bool = false
-var melee_hit_enemies: Array[Node] = []
+var melee_hit_targets: Array[Node] = []
 var drop_through_timer: float = 0.0
 var drop_through_floor_y: float = 0.0
 var drop_through_mask_was_enabled: bool = false
@@ -478,7 +478,7 @@ func start_melee_attack() -> void:
 	melee_attack_timer = 0.0
 	melee_hitbox_active = false
 	melee_started_on_floor = is_on_floor()
-	melee_hit_enemies.clear()
+	melee_hit_targets.clear()
 	update_melee_hitbox_geometry()
 
 	if melee_started_on_floor:
@@ -528,7 +528,7 @@ func finish_melee_attack() -> void:
 	is_melee_attacking = false
 	melee_attack_timer = 0.0
 	melee_ground_stop_timer = 0.0
-	melee_hit_enemies.clear()
+	melee_hit_targets.clear()
 
 
 func cancel_melee_attack() -> void:
@@ -536,7 +536,7 @@ func cancel_melee_attack() -> void:
 	is_melee_attacking = false
 	melee_attack_timer = 0.0
 	melee_ground_stop_timer = 0.0
-	melee_hit_enemies.clear()
+	melee_hit_targets.clear()
 
 
 func update_melee_hitbox_geometry() -> void:
@@ -551,19 +551,39 @@ func _on_melee_hitbox_area_entered(area: Area2D) -> void:
 	if not melee_hitbox_active:
 		return
 
-	if not area.is_in_group("enemy_hurtbox"):
+	var is_enemy_hurtbox := area.is_in_group("enemy_hurtbox")
+	var is_destroyable_hurtbox := area.is_in_group("destroyable_prop_hurtbox")
+	if not is_enemy_hurtbox and not is_destroyable_hurtbox:
 		return
 
-	var enemy := area.get_parent()
-	if enemy == null or melee_hit_enemies.has(enemy):
+	var target := find_melee_target(area, is_destroyable_hurtbox)
+	if target == null or melee_hit_targets.has(target):
 		return
 
-	melee_hit_enemies.append(enemy)
+	melee_hit_targets.append(target)
 
-	if enemy.has_method("machete_hit"):
-		enemy.machete_hit(melee_damage)
-	elif enemy.has_method("take_damage"):
-		enemy.take_damage(melee_damage)
+	if target.has_method("machete_hit"):
+		if is_destroyable_hurtbox:
+			target.machete_hit(melee_damage, area.global_position)
+		else:
+			target.machete_hit(melee_damage)
+	elif target.has_method("take_damage"):
+		if is_destroyable_hurtbox:
+			target.take_damage(melee_damage, area.global_position, &"machete")
+		else:
+			target.take_damage(melee_damage)
+
+
+func find_melee_target(area: Area2D, is_destroyable_hurtbox: bool) -> Node:
+	var target := area.get_parent()
+	var target_group := "destroyable_prop" if is_destroyable_hurtbox else "enemy"
+
+	while target != null and target != self:
+		if target.is_in_group(target_group):
+			return target
+		target = target.get_parent()
+
+	return null
 
 
 func play_melee_animation() -> void:

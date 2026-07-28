@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Rambo 2.5"
-run/main_scene="uid://mobxq5bdc0px"
+run/main_scene="uid://cvcdyeev6ve8p"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -29,6 +29,8 @@ window/stretch/mode="canvas_items"
 
 PushCrate=""
 Crate=""
+destroyable_prop=""
+destroyable_prop_hurtbox=""
 
 [input]
 
@@ -85,6 +87,7 @@ move_down={
 [layer_names]
 
 2d_physics/layer_1="World"
+2d_physics/layer_7="DestroyableHurtbox"
 2d_physics/layer_14="OneWayPlatform"
 
 [physics]

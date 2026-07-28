@@ -59,6 +59,7 @@
 [ext_resource type="PackedScene" uid="uid://bh4elchfpf8cr" path="res://scenes/props/magazine_pickup.tscn" id="57_magazine"]
 [ext_resource type="Script" path="res://scripts/levels/test_room.gd" id="58_test_room"]
 [ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="59_game_ui"]
+[ext_resource type="PackedScene" path="res://scenes/props/destroyable/destroyable_crate.tscn" id="60_destroyable_crate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(1248.5, 48)
@@ -210,6 +211,9 @@ script = ExtResource("58_test_room")
 position = Vector2(-263, 119)
 collision_layer = 1
 collision_mask = 1
+
+[node name="DestroyableCrate" parent="." instance=ExtResource("60_destroyable_crate")]
+position = Vector2(120, 106)
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=2017400494]
 collision_mask = 0

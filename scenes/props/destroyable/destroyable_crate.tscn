@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://d0tkp3xgv4wtg"]
+
+[ext_resource type="PackedScene" uid="uid://dr6liuhxfhfah" path="res://scenes/props/destroyable/destroyable_prop.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://b50aqbtaf4gn0" path="res://art/props/box01.png" id="2_texture"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="3_hstdh"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_sound"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bh35q"]
+resource_local_to_scene = true
+shader = ExtResource("3_hstdh")
+shader_parameter/flash_amount = 0.0
+
+[node name="DestroyableCrate" unique_id=1091323594 instance=ExtResource("1_base")]
+hit_sound = ExtResource("3_sound")
+break_sound = ExtResource("3_sound")
+
+[node name="Sprite2D" parent="." index="0" unique_id=858243829]
+material = SubResource("ShaderMaterial_bh35q")
+texture = ExtResource("2_texture")
+
+[node name="PhysicalCollision" parent="." index="1" unique_id=302057026]
+position = Vector2(-0.5, 6)
+
+[node name="CollisionShape2D" parent="Hurtbox" parent_id_path=PackedInt32Array(159292695) index="0" unique_id=1166124619]
+position = Vector2(-0.5, 4.5)
+
+[node name="HitParticles" parent="." index="3" unique_id=1446975494]
+amount = 10

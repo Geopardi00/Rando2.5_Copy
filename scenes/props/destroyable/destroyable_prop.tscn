@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://dr6liuhxfhfah"]
+
+[ext_resource type="Script" uid="uid://hqs14rl8affe" path="res://scripts/props/destroyable_prop.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_physical"]
+size = Vector2(224.99976, 185.00015)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(255, 210)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hit"]
+direction = Vector3(0, -1, 0)
+spread = 70.0
+initial_velocity_min = 70.0
+initial_velocity_max = 120.0
+gravity = Vector3(0, 260, 0)
+scale_min = 0.7
+scale_max = 2.0
+scale_over_velocity_max = 15.21
+color = Color(0.91, 0.68, 0.3, 1)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_break"]
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 90.0
+initial_velocity_max = 190.0
+gravity = Vector3(0, 310, 0)
+scale_min = 0.8
+scale_max = 1.8
+color = Color(0.58, 0.31, 0.12, 1)
+
+[node name="DestroyableProp" type="StaticBody2D" unique_id=1796859287 groups=["destroyable_prop"]]
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=858243829]
+material = SubResource("ShaderMaterial_flash")
+
+[node name="PhysicalCollision" type="CollisionShape2D" parent="." unique_id=302057026]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_physical")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=159292695 groups=["destroyable_prop_hurtbox"]]
+collision_layer = 64
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1166124619]
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="HitParticles" type="GPUParticles2D" parent="." unique_id=1446975494]
+z_index = 2
+emitting = false
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_hit")
+
+[node name="BreakParticles" type="GPUParticles2D" parent="." unique_id=1209055258]
+z_index = 2
+emitting = false
+amount = 24
+lifetime = 0.65
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_break")
