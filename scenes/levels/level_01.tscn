@@ -55,10 +55,9 @@
 [ext_resource type="PackedScene" uid="uid://dm32l8wkliqrx" path="res://scenes/Hazards/fall_kill_zone.tscn" id="36_d86x1"]
 [ext_resource type="Texture2D" uid="uid://285e8l2xy0v3" path="res://art/level01/ver2.0/foregroundstone05.png" id="37_3xboy"]
 [ext_resource type="Texture2D" uid="uid://cqr2a72wcscg0" path="res://art/level01/ver2.0/foregroundstone04.png" id="38_i652i"]
-[ext_resource type="PackedScene" uid="uid://dr6liuhxfhfah" path="res://scenes/props/destroyable/destroyable_prop.tscn" id="42_305q2"]
+[ext_resource type="PackedScene" uid="uid://cd8s8qjuurvl6" path="res://scenes/props/destroyable/destroyable_crate_box05.tscn" id="42_box05"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="43_uuyc6"]
-[ext_resource type="Texture2D" uid="uid://d1odhm682roxd" path="res://art/props/box04.png" id="44_305q2"]
-[ext_resource type="Texture2D" uid="uid://bvqxokhdmpcd5" path="res://art/props/box05.png" id="44_uuyc6"]
+[ext_resource type="PackedScene" uid="uid://ckj6isn22w4ad" path="res://scenes/props/destroyable/destroyable_vines.tscn" id="43_uyhfn"]
 [ext_resource type="Texture2D" uid="uid://bem020f50owx5" path="res://art/level01/ver2.0/vines02.png" id="53_xkw5e"]
 [ext_resource type="Texture2D" uid="uid://cg6e7y0aunwi0" path="res://art/level01/ver2.0/vines04.png" id="54_3jppf"]
 [ext_resource type="Texture2D" uid="uid://dhvkx3s5xuqbd" path="res://art/level01/ver2.0/vines03.png" id="56_uvhx5"]
@@ -148,12 +147,50 @@ sources/0 = SubResource("TileSetAtlasSource_yj8ph")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lswbx"]
 size = Vector2(63, 61)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhwr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uyhfn"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxe6"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_physical"]
+size = Vector2(75, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(83, 73)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hit"]
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 1)
+direction = Vector3(0, -1, 0)
+spread = 100.732
+initial_velocity_min = 74.2
+initial_velocity_max = 120.0
+gravity = Vector3(0, 160, 0)
+linear_accel_min = -2.6200023
+linear_accel_max = 3.2099977
+radial_accel_min = -6.930002
+radial_accel_max = 8.449998
+tangential_accel_min = -2.2351742e-06
+tangential_accel_max = -2.2351742e-06
+scale_min = 0.099999994
+scale_max = 0.19999999
+scale_over_velocity_max = 15.21
+color = Color(0.91, 0.68, 0.3, 1)
+hue_variation_min = -2.2351742e-08
+hue_variation_max = -2.2351742e-08
+anim_offset_max = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_305q2"]
+resource_local_to_scene = true
+shader = ExtResource("43_uuyc6")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uuyc6"]
+resource_local_to_scene = true
+shader = ExtResource("43_uuyc6")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhwr"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
@@ -294,7 +331,7 @@ position = Vector2(1911, 315)
 position = Vector2(3887, 272)
 
 [node name="Enemy5" parent="Enemies" unique_id=554906531 instance=ExtResource("10_r72dd")]
-position = Vector2(5230, 19)
+position = Vector2(5374, 14)
 
 [node name="EnemyKnifeThrower" parent="Enemies" unique_id=1748288799 instance=ExtResource("15_5t8rk")]
 position = Vector2(2331, 323)
@@ -374,7 +411,7 @@ position = Vector2(4885, -82.999985)
 scale = Vector2(0.4, 0.4)
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=492750461]
-position = Vector2(404, 219)
+position = Vector2(4046, 200)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1748658046]
 position = Vector2(4663, -272)
@@ -1074,36 +1111,81 @@ texture = ExtResource("54_3jppf")
 
 [node name="DestroyableProps" type="Node2D" parent="." unique_id=2091864807]
 
-[node name="DestroyableCrate02" parent="DestroyableProps" unique_id=1796859287 instance=ExtResource("42_305q2")]
-position = Vector2(2036, 326)
-scale = Vector2(0.5, 0.5)
+[node name="DestroyableCrateBox05" parent="DestroyableProps" unique_id=522504920 instance=ExtResource("42_box05")]
+position = Vector2(627, 258)
 
-[node name="Sprite2D" parent="DestroyableProps/DestroyableCrate02" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_bfhwr")
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("44_305q2")
-
-[node name="PhysicalCollision" parent="DestroyableProps/DestroyableCrate02" index="1" unique_id=302057026]
-position = Vector2(1, 12)
-
-[node name="CollisionShape2D" parent="DestroyableProps/DestroyableCrate02/Hurtbox" parent_id_path=PackedInt32Array(1796859287, 159292695) index="0" unique_id=1166124619]
-position = Vector2(1, 5)
-
-[node name="DestroyableProp" parent="DestroyableProps" unique_id=225876864 instance=ExtResource("42_305q2")]
-position = Vector2(667, 333)
+[node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox05" index="0" unique_id=858243829]
+material = SubResource("ShaderMaterial_uyhfn")
+position = Vector2(43, 75)
 scale = Vector2(0.2, 0.2)
 
+[node name="PhysicalCollision" parent="DestroyableProps/DestroyableCrateBox05" index="1" unique_id=302057026]
+position = Vector2(43.5, 76)
+shape = SubResource("RectangleShape2D_physical")
+
+[node name="CollisionShape2D" parent="DestroyableProps/DestroyableCrateBox05/Hurtbox" parent_id_path=PackedInt32Array(522504920, 159292695) index="0" unique_id=1166124619]
+position = Vector2(43.5, 73.5)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="HitParticles" parent="DestroyableProps/DestroyableCrateBox05" index="3" unique_id=1446975494]
+position = Vector2(43, 69)
+lifetime = 0.48
+speed_scale = 0.7
+process_material = SubResource("ParticleProcessMaterial_hit")
+
+[node name="DestroyableCrateBox07" parent="DestroyableProps" unique_id=1014391310 instance=ExtResource("42_box05")]
+position = Vector2(658, 258)
+
+[node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox07" index="0" unique_id=858243829]
+material = SubResource("ShaderMaterial_305q2")
+position = Vector2(43, 75)
+scale = Vector2(0.2, 0.2)
+
+[node name="PhysicalCollision" parent="DestroyableProps/DestroyableCrateBox07" index="1" unique_id=302057026]
+position = Vector2(43.5, 76)
+shape = SubResource("RectangleShape2D_physical")
+
+[node name="CollisionShape2D" parent="DestroyableProps/DestroyableCrateBox07/Hurtbox" parent_id_path=PackedInt32Array(1014391310, 159292695) index="0" unique_id=1166124619]
+position = Vector2(43.5, 73.5)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="HitParticles" parent="DestroyableProps/DestroyableCrateBox07" index="3" unique_id=1446975494]
+position = Vector2(43, 69)
+lifetime = 0.48
+speed_scale = 0.7
+process_material = SubResource("ParticleProcessMaterial_hit")
+
+[node name="DestroyableCrateBox06" parent="DestroyableProps" unique_id=711107451 instance=ExtResource("42_box05")]
+position = Vector2(1985.0001, 239)
+scale = Vector2(1.2, 1.2)
+
+[node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox06" index="0" unique_id=858243829]
+material = SubResource("ShaderMaterial_uuyc6")
+position = Vector2(43, 75)
+scale = Vector2(0.2, 0.2)
+
+[node name="PhysicalCollision" parent="DestroyableProps/DestroyableCrateBox06" index="1" unique_id=302057026]
+position = Vector2(43.5, 76)
+shape = SubResource("RectangleShape2D_physical")
+
+[node name="CollisionShape2D" parent="DestroyableProps/DestroyableCrateBox06/Hurtbox" parent_id_path=PackedInt32Array(711107451, 159292695) index="0" unique_id=1166124619]
+position = Vector2(43.5, 73.5)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="HitParticles" parent="DestroyableProps/DestroyableCrateBox06" index="3" unique_id=1446975494]
+position = Vector2(44.166584, 71.66668)
+lifetime = 0.48
+speed_scale = 0.7
+process_material = SubResource("ParticleProcessMaterial_hit")
+
+[node name="DestroyableProp" parent="DestroyableProps" unique_id=1796859287 instance=ExtResource("43_uyhfn")]
+position = Vector2(5214, 8)
+
 [node name="Sprite2D" parent="DestroyableProps/DestroyableProp" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_wkxe6")
-texture = ExtResource("44_uuyc6")
+material = SubResource("ShaderMaterial_bfhwr")
 
 [node name="PhysicalCollision" parent="DestroyableProps/DestroyableProp" index="1" unique_id=302057026]
-position = Vector2(2.5, 17.499634)
-scale = Vector2(0.99999976, 0.99999976)
-
-[node name="CollisionShape2D" parent="DestroyableProps/DestroyableProp/Hurtbox" parent_id_path=PackedInt32Array(225876864, 159292695) index="0" unique_id=1166124619]
-position = Vector2(2.5, 10)
-scale = Vector2(0.9999998, 0.9999998)
+position = Vector2(3.5, 11.5)
 
 [node name="World" type="Node2D" parent="." unique_id=1990906156]
 
@@ -2262,5 +2344,7 @@ shape = SubResource("RectangleShape2D_xkw5e")
 [editable path="Enemies/MosquitoSwarm2"]
 [editable path="Enemies/MosquitoSwarm3"]
 [editable path="Enemies/MosquitoSwarm4"]
-[editable path="DestroyableProps/DestroyableCrate02"]
+[editable path="DestroyableProps/DestroyableCrateBox05"]
+[editable path="DestroyableProps/DestroyableCrateBox07"]
+[editable path="DestroyableProps/DestroyableCrateBox06"]
 [editable path="DestroyableProps/DestroyableProp"]

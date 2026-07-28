@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://cd8s8qjuurvl6"]
+
+[ext_resource type="PackedScene" uid="uid://dr6liuhxfhfah" path="res://scenes/props/destroyable/destroyable_prop.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://bvqxokhdmpcd5" path="res://art/props/box05.png" id="2_texture"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="3_shader"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_sound"]
+[ext_resource type="Texture2D" uid="uid://6d2v4o8ppabp" path="res://art/props/DestroyPieces/Box05_piece01.png" id="5_piece01"]
+[ext_resource type="Texture2D" uid="uid://cuubk4p2pf23c" path="res://art/props/DestroyPieces/Box05_piece02.png" id="6_piece02"]
+[ext_resource type="Texture2D" uid="uid://tmebbyipw3ug" path="res://art/props/DestroyPieces/Box05_piece03.png" id="7_piece03"]
+[ext_resource type="Texture2D" uid="uid://bquun2cttbimx" path="res://art/props/DestroyPieces/Box05_piece04.png" id="8_piece04"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qarog"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_suocs"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[node name="DestroyableCrateBox05" unique_id=522504920 instance=ExtResource("1_base")]
+hit_sound = ExtResource("4_sound")
+break_sound = ExtResource("4_sound")
+debris_textures = Array[Texture2D]([ExtResource("5_piece01"), ExtResource("6_piece02"), ExtResource("7_piece03"), ExtResource("8_piece04")])
+
+[node name="Sprite2D" parent="." index="0" unique_id=858243829]
+material = SubResource("ShaderMaterial_qarog")
+texture = ExtResource("2_texture")
+
+[node name="PhysicalCollision" parent="." index="1" unique_id=302057026]
+position = Vector2(2.5, 17.5)
+
+[node name="CollisionShape2D" parent="Hurtbox" parent_id_path=PackedInt32Array(159292695) index="0" unique_id=1166124619]
+position = Vector2(2.5, 10)
+
+[node name="HitParticles" parent="." index="3" unique_id=1446975494]
+material = SubResource("CanvasItemMaterial_suocs")
+position = Vector2(2, -20)
+emitting = false
+amount = 4
+lifetime = 0.41000000000000003
+one_shot = true
+speed_scale = 1.46
+randomness = 0.48

@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://c4ostpck37pmk" path="res://scenes/props/push_crate.tscn" id="1_sa601"]
 [ext_resource type="Script" uid="uid://ch38c7lx75j12" path="res://scripts/player/player.gd" id="2_asmw1"]
 [ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_sa601"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="5_b2gta"]
 [ext_resource type="Texture2D" uid="uid://be2r4hysjkuh3" path="res://art/hazards/spikes01.png" id="5_s3biy"]
+[ext_resource type="PackedScene" uid="uid://ckj6isn22w4ad" path="res://scenes/props/destroyable/destroyable_vines.tscn" id="6_hq2ek"]
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
 [ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="11_x4gfd"]
@@ -57,9 +59,42 @@
 [ext_resource type="Texture2D" uid="uid://dokpckg7f6qal" path="res://art/props/animations/checkpoint/frame0039.png" id="55_eqnpg"]
 [ext_resource type="PackedScene" uid="uid://d3g1clqub8sis" path="res://scenes/props/zipline_2d.tscn" id="56_zipline"]
 [ext_resource type="PackedScene" uid="uid://bh4elchfpf8cr" path="res://scenes/props/magazine_pickup.tscn" id="57_magazine"]
-[ext_resource type="Script" path="res://scripts/levels/test_room.gd" id="58_test_room"]
+[ext_resource type="Script" uid="uid://dersc8kvkwoeu" path="res://scripts/levels/test_room.gd" id="58_test_room"]
 [ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="59_game_ui"]
-[ext_resource type="PackedScene" path="res://scenes/props/destroyable/destroyable_crate.tscn" id="60_destroyable_crate"]
+[ext_resource type="PackedScene" uid="uid://cd8s8qjuurvl6" path="res://scenes/props/destroyable/destroyable_crate_box05.tscn" id="60_destroyable_box05"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hq2ek"]
+resource_local_to_scene = true
+shader = ExtResource("5_b2gta")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_physical"]
+size = Vector2(75, 69)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(83, 73)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hit"]
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 1)
+direction = Vector3(0, -1, 0)
+spread = 100.732
+initial_velocity_min = 74.2
+initial_velocity_max = 120.0
+gravity = Vector3(0, 160, 0)
+linear_accel_min = -2.6200023
+linear_accel_max = 3.2099977
+radial_accel_min = -6.930002
+radial_accel_max = 8.449998
+tangential_accel_min = -2.2351742e-06
+tangential_accel_max = -2.2351742e-06
+scale_min = 0.099999994
+scale_max = 0.19999999
+scale_over_velocity_max = 15.21
+color = Color(0.91, 0.68, 0.3, 1)
+hue_variation_min = -2.2351742e-08
+hue_variation_max = -2.2351742e-08
+anim_offset_max = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_51pqh"]
 size = Vector2(1248.5, 48)
@@ -205,15 +240,35 @@ size = Vector2(46, 73)
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
 script = ExtResource("58_test_room")
 
-[node name="GameUI" parent="." instance=ExtResource("59_game_ui")]
+[node name="GameUI" parent="." unique_id=1388854825 instance=ExtResource("59_game_ui")]
 
 [node name="Crate" parent="." unique_id=131320726 instance=ExtResource("1_sa601")]
 position = Vector2(-263, 119)
 collision_layer = 1
 collision_mask = 1
 
-[node name="DestroyableCrate" parent="." instance=ExtResource("60_destroyable_crate")]
-position = Vector2(120, 106)
+[node name="DestroyableCrateBox05" parent="." unique_id=553092874 instance=ExtResource("60_destroyable_box05")]
+position = Vector2(120, 108)
+scale = Vector2(0.32, 0.32)
+
+[node name="Sprite2D" parent="DestroyableCrateBox05" index="0" unique_id=858243829]
+material = SubResource("ShaderMaterial_hq2ek")
+
+[node name="PhysicalCollision" parent="DestroyableCrateBox05" index="1" unique_id=302057026]
+visible = false
+shape = SubResource("RectangleShape2D_physical")
+
+[node name="CollisionShape2D" parent="DestroyableCrateBox05/Hurtbox" parent_id_path=PackedInt32Array(553092874, 159292695) index="0" unique_id=1166124619]
+visible = false
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="HitParticles" parent="DestroyableCrateBox05" index="3" unique_id=1446975494]
+speed_scale = 1.0
+randomness = 0.21
+process_material = SubResource("ParticleProcessMaterial_hit")
+
+[node name="DestroyableProp" parent="." unique_id=1796859287 instance=ExtResource("6_hq2ek")]
+position = Vector2(527, 115)
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=2017400494]
 collision_mask = 0
@@ -317,7 +372,7 @@ speed_scale = 3.0
 [node name="AnimatedSprite2D" parent="." unique_id=354235826 instance=ExtResource("12_ronwj")]
 
 [node name="Torch" parent="." unique_id=1845595865 instance=ExtResource("13_o8emw")]
-position = Vector2(-24, 45)
+position = Vector2(373, 38)
 
 [node name="SunBeams" parent="." unique_id=445635109 instance=ExtResource("14_fma50")]
 
@@ -364,6 +419,7 @@ shape = SubResource("RectangleShape2D_4c4i7")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Checkpoint" unique_id=1790118017]
 position = Vector2(410, -18)
 
+[editable path="DestroyableCrateBox05"]
 [editable path="Player"]
 [editable path="Zipline2D"]
 [editable path="Enemy"]

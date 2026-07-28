@@ -8,12 +8,14 @@ func _ready() -> void:
 
 
 func run_test() -> void:
-	var crate_scene := load("res://scenes/props/destroyable/destroyable_crate.tscn") as PackedScene
+	var crate_scene := load("res://scenes/props/destroyable/destroyable_crate_box05.tscn") as PackedScene
+	var fallback_crate_scene := load("res://scenes/props/destroyable/destroyable_crate.tscn") as PackedScene
 	var player_scene := load("res://scenes/player/player.tscn") as PackedScene
-	check(crate_scene != null, "Destroyable crate scene should load.")
+	check(crate_scene != null, "Box05 destroyable crate scene should load.")
+	check(fallback_crate_scene != null, "Fallback destroyable crate scene should load.")
 	check(player_scene != null, "Player scene should load.")
 
-	if crate_scene == null or player_scene == null:
+	if crate_scene == null or fallback_crate_scene == null or player_scene == null:
 		finish_test()
 		return
 
@@ -28,7 +30,9 @@ func run_test() -> void:
 	var sprite := crate.get_node("Sprite2D") as Sprite2D
 
 	check(crate.health == 3, "Crate should begin with three health.")
+	check(not crate.has_node("BreakParticles"), "The retired break-particle effect should not be present.")
 	check(sprite.texture != null, "Crate should use its configured sprite texture.")
+	check(crate.debris_textures.size() == 4, "Box05 should configure four debris textures.")
 	check(hurtbox.is_in_group("destroyable_prop_hurtbox"), "Crate hurtbox should use the destroyable group.")
 	check(not hurtbox.is_in_group("enemy_hurtbox"), "Crate hurtbox should not be treated as an enemy.")
 	check(hurtbox.collision_layer == 64, "Crate hurtbox should use the destroyable physics layer.")
@@ -59,8 +63,52 @@ func run_test() -> void:
 	check(physical_collision.disabled, "A destroyed crate should disable physical collision.")
 	check(not sprite.visible, "A destroyed crate should hide its intact sprite.")
 
-	await get_tree().create_timer(1.0).timeout
+	var debris_pieces := get_tree().get_nodes_in_group("destroyable_debris")
+	check(debris_pieces.size() == 4, "Destroying Box05 should spawn exactly four debris pieces.")
+
+	var debris_textures: Array[Texture2D] = []
+	var has_leftward_piece := false
+	var has_rightward_piece := false
+	for piece in debris_pieces:
+		check(piece.collision_layer == 0, "Debris should not occupy a gameplay collision layer.")
+		check(piece.collision_mask == 8193, "Debris should collide with World and OneWayPlatform only.")
+		check(piece.linear_velocity.y < 0.0, "Debris should launch upward before falling.")
+		check(not is_zero_approx(piece.angular_velocity), "Debris should receive angular velocity.")
+		has_leftward_piece = has_leftward_piece or piece.linear_velocity.x < 0.0
+		has_rightward_piece = has_rightward_piece or piece.linear_velocity.x > 0.0
+		var piece_sprite := piece.get_node("Sprite2D") as Sprite2D
+		if piece_sprite.texture != null:
+			debris_textures.append(piece_sprite.texture)
+
+	check(debris_textures.size() == 4, "Every debris piece should have a texture.")
+	check(count_unique_textures(debris_textures) == 4, "Each Box05 fragment texture should be used once.")
+	check(has_leftward_piece and has_rightward_piece, "Debris should fan out to both sides.")
+
+	var fallback_crate := fallback_crate_scene.instantiate()
+	add_child(fallback_crate)
+	await get_tree().process_frame
+	fallback_crate.hit_sound = null
+	fallback_crate.break_sound = null
+	fallback_crate.take_damage(fallback_crate.max_health)
+	await get_tree().physics_frame
+	check(
+		get_tree().get_nodes_in_group("destroyable_debris").size() == 4,
+		"A prop without debris textures should keep the particle-only fallback."
+	)
+
+	await get_tree().create_timer(3.0).timeout
+	check(
+		get_tree().get_nodes_in_group("destroyable_debris").is_empty(),
+		"Debris should fade and free itself after its configured lifetime."
+	)
 	finish_test()
+
+
+func count_unique_textures(textures: Array[Texture2D]) -> int:
+	var unique_textures: Dictionary = {}
+	for texture in textures:
+		unique_textures[texture] = true
+	return unique_textures.size()
 
 
 func check(condition: bool, message: String) -> void:

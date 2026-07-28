@@ -5,24 +5,33 @@
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="3_hstdh"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_sound"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bh35q"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hstdh"]
 resource_local_to_scene = true
 shader = ExtResource("3_hstdh")
 shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_m3oxk"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [node name="DestroyableCrate" unique_id=1091323594 instance=ExtResource("1_base")]
 hit_sound = ExtResource("3_sound")
 break_sound = ExtResource("3_sound")
 
 [node name="Sprite2D" parent="." index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_bh35q")
+material = SubResource("ShaderMaterial_hstdh")
 texture = ExtResource("2_texture")
 
 [node name="PhysicalCollision" parent="." index="1" unique_id=302057026]
-position = Vector2(-0.5, 6)
+position = Vector2(-0.5, 4)
 
 [node name="CollisionShape2D" parent="Hurtbox" parent_id_path=PackedInt32Array(159292695) index="0" unique_id=1166124619]
-position = Vector2(-0.5, 4.5)
+position = Vector2(-0.5, 4)
 
 [node name="HitParticles" parent="." index="3" unique_id=1446975494]
-amount = 10
+material = SubResource("CanvasItemMaterial_m3oxk")
+emitting = false
+amount = 4
+one_shot = true

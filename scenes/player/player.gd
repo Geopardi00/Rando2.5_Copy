@@ -564,12 +564,12 @@ func _on_melee_hitbox_area_entered(area: Area2D) -> void:
 
 	if target.has_method("machete_hit"):
 		if is_destroyable_hurtbox:
-			target.machete_hit(melee_damage, area.global_position)
+			target.machete_hit(melee_damage, melee_hitbox.global_position)
 		else:
 			target.machete_hit(melee_damage)
 	elif target.has_method("take_damage"):
 		if is_destroyable_hurtbox:
-			target.take_damage(melee_damage, area.global_position, &"machete")
+			target.take_damage(melee_damage, melee_hitbox.global_position, &"machete")
 		else:
 			target.take_damage(melee_damage)
 

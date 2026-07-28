@@ -1,32 +1,26 @@
-[gd_scene format=3 uid="uid://dr6liuhxfhfah"]
+[gd_scene format=3 uid="uid://ckj6isn22w4ad"]
 
-[ext_resource type="Script" uid="uid://hqs14rl8affe" path="res://scripts/props/destroyable_prop.gd" id="1_script"]
-[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
-[ext_resource type="Texture2D" uid="uid://ulyykhf5mogu" path="res://art/props/DestroyPieces/HitParticles01spritesheet.png" id="3_sjfub"]
+[ext_resource type="Script" uid="uid://hqs14rl8affe" path="res://scripts/props/destroyable_prop.gd" id="1_aqv1x"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_wa1w0"]
+[ext_resource type="Texture2D" uid="uid://d0oqfwucnmcpi" path="res://art/props/destroyable_vines01.png" id="3_wa1w0"]
+[ext_resource type="Texture2D" uid="uid://c6wltkv73yodi" path="res://art/props/DestroyPieces/HitParticles02spritesheet.png" id="4_nchek"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
 resource_local_to_scene = true
-shader = ExtResource("2_shader")
+shader = ExtResource("2_wa1w0")
 shader_parameter/flash_amount = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_physical"]
-size = Vector2(45, 32.000004)
+size = Vector2(75, 69)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
-size = Vector2(51, 43)
+size = Vector2(83, 73)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7hmpi"]
 particles_animation = true
 particles_anim_h_frames = 4
 particles_anim_v_frames = 1
 particles_anim_loop = false
-
-[sub_resource type="Curve" id="Curve_sjfub"]
-_data = [Vector2(0.23111111, 1), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.6044445, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_7hmpi"]
-curve = SubResource("Curve_sjfub")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hit"]
 emission_shape = 3
@@ -43,23 +37,26 @@ radial_accel_max = 8.449998
 tangential_accel_min = -2.2351742e-06
 tangential_accel_max = -2.2351742e-06
 scale_min = 0.099999994
-scale_max = 0.29999998
+scale_max = 0.19999999
 scale_over_velocity_max = 15.21
-color = Color(0.9824018, 0.84158564, 0.6366545, 1)
-alpha_curve = SubResource("CurveTexture_7hmpi")
+color = Color(0.91, 0.68, 0.3, 1)
 hue_variation_min = -2.2351742e-08
 hue_variation_max = -2.2351742e-08
 anim_offset_max = 1.0
 
 [node name="DestroyableProp" type="StaticBody2D" unique_id=1796859287 groups=["destroyable_prop"]]
+position = Vector2(-298, -66)
 collision_mask = 0
-script = ExtResource("1_script")
+script = ExtResource("1_aqv1x")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=858243829]
 material = SubResource("ShaderMaterial_flash")
+position = Vector2(2, -2)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_wa1w0")
 
 [node name="PhysicalCollision" type="CollisionShape2D" parent="." unique_id=302057026]
-position = Vector2(0, 2)
+position = Vector2(3.5, -4.5)
 shape = SubResource("RectangleShape2D_physical")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=159292695 groups=["destroyable_prop_hurtbox"]]
@@ -68,15 +65,17 @@ collision_mask = 0
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1166124619]
+position = Vector2(2.5, -4.5)
 shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="HitParticles" type="GPUParticles2D" parent="." unique_id=1446975494]
 modulate = Color(0.6192392, 0.8555513, 0.77843004, 1)
 z_index = 2
 material = SubResource("CanvasItemMaterial_7hmpi")
+position = Vector2(2, -18)
 emitting = false
 amount = 5
-texture = ExtResource("3_sjfub")
+texture = ExtResource("4_nchek")
 lifetime = 0.79
 one_shot = true
 explosiveness = 1.0
