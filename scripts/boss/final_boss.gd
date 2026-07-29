@@ -129,6 +129,8 @@ var damaged_by_current_knife: Array[Node] = []
 var last_attack: StringName = &""
 var base_sprite_scale: Vector2 = Vector2.ONE
 var flash_timer: float = 0.0
+var jump_start_animation_active: bool = false
+var landing_animation_active: bool = false
 
 
 func _ready() -> void:
@@ -139,6 +141,7 @@ func _ready() -> void:
 
 	if animated_sprite != null:
 		sprite.visible = false
+		animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
 		animated_sprite.play(&"idle")
 
 	knife_hitbox.monitoring = false
@@ -199,8 +202,8 @@ func _physics_process(delta: float) -> void:
 
 	if state == State.JUMP_TO_PLATFORM and not jump_has_left_floor and not is_on_floor():
 		jump_has_left_floor = true
-	elif state == State.JUMP_TO_PLATFORM and jump_has_left_floor and is_on_floor() and velocity.y >= 0.0:
-		enter_decide(reposition_cooldown_time)
+	elif state == State.JUMP_TO_PLATFORM and jump_has_left_floor and is_on_floor() and velocity.y >= 0.0 and not landing_animation_active:
+		play_land_animation()
 
 
 func start_fight() -> void:
@@ -307,6 +310,7 @@ func update_run() -> void:
 func start_jump_to_marker() -> void:
 	state = State.JUMP_TO_PLATFORM
 	jump_has_left_floor = false
+	landing_animation_active = false
 	velocity.y = jump_velocity
 
 	var dir := signf(target_x - global_position.x)
@@ -314,9 +318,14 @@ func start_jump_to_marker() -> void:
 		dir = 1.0
 
 	velocity.x = dir * jump_horizontal_speed
+	play_jump_start_animation()
 
 
 func update_jump_to_platform() -> void:
+	if landing_animation_active:
+		velocity.x = 0.0
+		return
+
 	var dx := target_x - global_position.x
 	var dir := signf(dx)
 	if dir == 0.0:
@@ -329,12 +338,16 @@ func update_jump_to_platform() -> void:
 
 
 func update_drop_state() -> void:
+	if landing_animation_active:
+		velocity.x = 0.0
+		return
+
 	face_player()
 	if not is_on_floor() and target_marker != null:
 		var dx := target_x - global_position.x
 		velocity.x = signf(dx) * move_speed if absf(dx) > arrival_distance else 0.0
 	elif drop_through_timer <= 0.0 and is_on_floor():
-		enter_decide(reposition_cooldown_time)
+		play_land_animation()
 
 
 func is_target_above_current(target_y: float) -> bool:
@@ -603,6 +616,8 @@ func enter_recovery(duration: float) -> void:
 	state = State.RECOVERY
 	state_timer = duration
 	velocity.x = 0.0
+	jump_start_animation_active = false
+	landing_animation_active = false
 	set_visual_scale(base_sprite_scale)
 	telegraph.visible = false
 	held_grenade_sprite.visible = false
@@ -622,6 +637,8 @@ func enter_decide(delay: float) -> void:
 	state_timer = delay
 	target_marker = null
 	velocity.x = 0.0
+	jump_start_animation_active = false
+	landing_animation_active = false
 	set_visual_scale(base_sprite_scale)
 	telegraph.visible = false
 	held_grenade_sprite.visible = false
@@ -926,9 +943,13 @@ func update_flash(delta: float) -> void:
 func update_animation() -> void:
 	if animated_sprite == null:
 		return
+	if landing_animation_active or jump_start_animation_active:
+		return
 
 	var next_animation := &"idle"
-	if state == State.RUN or (state == State.JUMP_TO_PLATFORM and absf(velocity.x) > 1.0):
+	if state == State.JUMP_TO_PLATFORM:
+		next_animation = &"jump_air"
+	elif state == State.RUN:
 		next_animation = &"run"
 
 	if animated_sprite.animation != next_animation:
@@ -950,9 +971,48 @@ func set_visual_scale(new_scale: Vector2) -> void:
 		animated_sprite.scale = new_scale
 
 
+func play_jump_start_animation() -> void:
+	if animated_sprite == null or not animated_sprite.sprite_frames.has_animation(&"jump_start"):
+		jump_start_animation_active = false
+		return
+
+	jump_start_animation_active = true
+	landing_animation_active = false
+	animated_sprite.play(&"jump_start")
+
+
+func play_land_animation() -> void:
+	velocity.x = 0.0
+	jump_start_animation_active = false
+
+	if animated_sprite == null or not animated_sprite.sprite_frames.has_animation(&"land"):
+		enter_decide(reposition_cooldown_time)
+		return
+
+	landing_animation_active = true
+	set_visual_scale(base_sprite_scale)
+	animated_sprite.play(&"land")
+
+
+func _on_animated_sprite_animation_finished() -> void:
+	if animated_sprite == null:
+		return
+
+	if animated_sprite.animation == &"jump_start" and jump_start_animation_active:
+		jump_start_animation_active = false
+		if state == State.JUMP_TO_PLATFORM and not landing_animation_active:
+			animated_sprite.play(&"jump_air")
+	elif animated_sprite.animation == &"land" and landing_animation_active:
+		landing_animation_active = false
+		if state == State.JUMP_TO_PLATFORM or state == State.DROP_THROUGH:
+			enter_decide(reposition_cooldown_time)
+
+
 func die() -> void:
 	state = State.DEFEATED
 	velocity = Vector2.ZERO
+	jump_start_animation_active = false
+	landing_animation_active = false
 	hurtbox.monitoring = false
 	hurtbox_shape.disabled = true
 	knife_hitbox.monitoring = false

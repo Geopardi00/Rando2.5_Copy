@@ -1,6 +1,6 @@
-[gd_scene load_steps=34 format=3]
+[gd_scene format=3 uid="uid://b4ppderf1re7o"]
 
-[ext_resource type="Script" path="res://scripts/boss/final_boss.gd" id="1"]
+[ext_resource type="Script" uid="uid://d1f7i3nbaud7u" path="res://scripts/boss/final_boss.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://qfm5sopndty0" path="res://art/enemies/boss02.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://dyutp87truost" path="res://art/props/grenade.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://07yrqac122ev" path="res://art/enemies/animations/Boss02/idle/frame0000.png" id="4_idle_0000"]
@@ -28,6 +28,25 @@
 [ext_resource type="Texture2D" uid="uid://ckcf8c1qrl5yb" path="res://art/enemies/animations/Boss02/Run/frame0007.png" id="26_run_0007"]
 [ext_resource type="Texture2D" uid="uid://dq17nctqs2alo" path="res://art/enemies/animations/Boss02/Run/frame0008.png" id="27_run_0008"]
 [ext_resource type="Texture2D" uid="uid://cmjtrsh5iu5ws" path="res://art/enemies/animations/Boss02/Run/frame0009.png" id="28_run_0009"]
+[ext_resource type="Texture2D" uid="uid://dbhn4t0qyrhgt" path="res://art/enemies/animations/Boss02/jump_start/frame0000.png" id="29_jump_start_0000"]
+[ext_resource type="Texture2D" uid="uid://bhu72qu080dgu" path="res://art/enemies/animations/Boss02/jump_start/frame0001.png" id="30_jump_start_0001"]
+[ext_resource type="Texture2D" uid="uid://dt0gbyxn57jhl" path="res://art/enemies/animations/Boss02/jump_start/frame0002.png" id="31_jump_start_0002"]
+[ext_resource type="Texture2D" uid="uid://boaoiblxh8pyx" path="res://art/enemies/animations/Boss02/jump_start/frame0003.png" id="32_jump_start_0003"]
+[ext_resource type="Texture2D" uid="uid://c04j0d4wudjbv" path="res://art/enemies/animations/Boss02/jump_start/frame0004.png" id="33_jump_start_0004"]
+[ext_resource type="Texture2D" uid="uid://b3iqiav0qrabu" path="res://art/enemies/animations/Boss02/jump_start/frame0005.png" id="34_jump_start_0005"]
+[ext_resource type="Texture2D" uid="uid://v3x604yituh6" path="res://art/enemies/animations/Boss02/jump_air/frame0000.png" id="35_jump_air_0000"]
+[ext_resource type="Texture2D" uid="uid://b33qca0xhdg3e" path="res://art/enemies/animations/Boss02/jump_air/frame0001.png" id="36_jump_air_0001"]
+[ext_resource type="Texture2D" uid="uid://bnvmlkuis6f4v" path="res://art/enemies/animations/Boss02/jump_air/frame0002.png" id="37_jump_air_0002"]
+[ext_resource type="Texture2D" uid="uid://c8s436hjphtuw" path="res://art/enemies/animations/Boss02/jump_air/frame0003.png" id="38_jump_air_0003"]
+[ext_resource type="Texture2D" uid="uid://cu8asbfgaxhdq" path="res://art/enemies/animations/Boss02/land/frame0000.png" id="39_land_0000"]
+[ext_resource type="Texture2D" uid="uid://dgo7t43i5wxb7" path="res://art/enemies/animations/Boss02/land/frame0001.png" id="40_land_0001"]
+[ext_resource type="Texture2D" uid="uid://cwilduwnx1cue" path="res://art/enemies/animations/Boss02/land/frame0002.png" id="41_land_0002"]
+[ext_resource type="Texture2D" uid="uid://ibq8307eosls" path="res://art/enemies/animations/Boss02/land/frame0003.png" id="42_land_0003"]
+[ext_resource type="Texture2D" uid="uid://dim52a61uxfi2" path="res://art/enemies/animations/Boss02/land/frame0004.png" id="43_land_0004"]
+[ext_resource type="Texture2D" uid="uid://bhn0b5lt1bkcg" path="res://art/enemies/animations/Boss02/land/frame0005.png" id="44_land_0005"]
+[ext_resource type="Texture2D" uid="uid://48vfme0rj75d" path="res://art/enemies/animations/Boss02/land/frame0006.png" id="45_land_0006"]
+[ext_resource type="Texture2D" uid="uid://5bxbn56petwj" path="res://art/enemies/animations/Boss02/land/frame0007.png" id="46_land_0007"]
+[ext_resource type="Texture2D" uid="uid://djy21366a4d68" path="res://art/enemies/animations/Boss02/land/frame0008.png" id="47_land_0008"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_final_boss"]
 animations = [{
@@ -92,6 +111,78 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("35_jump_air_0000")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_jump_air_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_jump_air_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_jump_air_0003")
+}],
+"loop": true,
+"name": &"jump_air",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_jump_start_0000")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_jump_start_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_jump_start_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_jump_start_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_jump_start_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_jump_start_0005")
+}],
+"loop": false,
+"name": &"jump_start",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("39_land_0000")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_land_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_land_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_land_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_land_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_land_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_land_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_land_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_land_0008")
+}],
+"loop": false,
+"name": &"land",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("22_run_0003")
 }, {
 "duration": 1.0,
@@ -126,66 +217,60 @@ size = Vector2(38, 78)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_knife"]
 size = Vector2(68, 48)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ledge"]
-size = Vector2(2, 2)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
-size = Vector2(2, 46)
-
-[node name="FinalBoss" type="CharacterBody2D" groups=["enemy"]]
+[node name="FinalBoss" type="CharacterBody2D" unique_id=197457271 groups=["enemy"]]
 collision_layer = 4
 collision_mask = 8193
 script = ExtResource("1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1846841404]
 visible = false
 position = Vector2(0, -50)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=438473201]
 position = Vector2(0, -50)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_final_boss")
 animation = &"idle"
 autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1445881368]
 position = Vector2(0, -38)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Hurtbox" type="Area2D" parent="." groups=["enemy_hurtbox"]]
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1016630849 groups=["enemy_hurtbox"]]
 collision_layer = 16
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1998785788]
 position = Vector2(0, -39)
 shape = SubResource("RectangleShape2D_hurtbox")
 
-[node name="MuzzleMarker" type="Marker2D" parent="."]
+[node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1172088800]
 position = Vector2(30, -46)
 
-[node name="GrenadeThrowMarker" type="Marker2D" parent="."]
+[node name="GrenadeThrowMarker" type="Marker2D" parent="." unique_id=1982057569]
 position = Vector2(28, -58)
 
-[node name="HeldGrenadeSprite" type="Sprite2D" parent="."]
+[node name="HeldGrenadeSprite" type="Sprite2D" parent="." unique_id=1602630746]
 visible = false
 position = Vector2(28, -58)
 scale = Vector2(0.055, 0.055)
 texture = ExtResource("3")
 
-[node name="KnifeHitbox" type="Area2D" parent="."]
+[node name="KnifeHitbox" type="Area2D" parent="." unique_id=493319097]
 position = Vector2(46, -40)
 collision_layer = 0
 collision_mask = 2
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KnifeHitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KnifeHitbox" unique_id=1526134046]
 shape = SubResource("RectangleShape2D_knife")
 disabled = true
 
-[node name="Telegraph" type="ColorRect" parent="."]
+[node name="Telegraph" type="ColorRect" parent="." unique_id=1583345722]
 visible = false
 offset_left = -27.0
 offset_top = -91.0
@@ -194,22 +279,20 @@ offset_bottom = 2.0
 mouse_filter = 2
 color = Color(1, 0.15, 0.08, 0.65)
 
-[node name="FloorCheckLeft" type="RayCast2D" parent="."]
-position = Vector2(-22, -5)
+[node name="FloorCheckLeft" type="RayCast2D" parent="." unique_id=1903582904]
+position = Vector2(-27, -5)
 target_position = Vector2(0, 44)
 collision_mask = 8193
 
-[node name="FloorCheckRight" type="RayCast2D" parent="."]
-position = Vector2(22, -5)
+[node name="FloorCheckRight" type="RayCast2D" parent="." unique_id=1545573925]
+position = Vector2(25, -5)
 target_position = Vector2(0, 44)
 collision_mask = 8193
 
-[node name="WallCheckLeft" type="RayCast2D" parent="."]
+[node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=976421308]
 position = Vector2(-18, -38)
 target_position = Vector2(-18, 0)
-collision_mask = 1
 
-[node name="WallCheckRight" type="RayCast2D" parent="."]
+[node name="WallCheckRight" type="RayCast2D" parent="." unique_id=833126276]
 position = Vector2(18, -38)
 target_position = Vector2(18, 0)
-collision_mask = 1
