@@ -2,13 +2,25 @@
 
 Last updated: 2026-07-29
 
+## Latest Update - 2026-07-29 - Water Prototype
+- Added the reusable `WaterBody2D` prototype in `scenes/water/water_body_2d.tscn` with resizable body/head detection volumes, placeholder fill/surface visuals, splashes, bubbles, optional spring ripples, and an audio hook.
+- Added `scenes/levels/test_room_water.tscn`, a dedicated tuning room with dry spawn, multiple dive heights, a large deep pool, underwater obstacles, overlapping flooded tunnel water, and a dry air-pocket exit.
+- Player swimming is integrated into both duplicate player controllers and supports horizontal movement, `move_up`/`move_down` vertical movement, reduced underwater gravity, drag, capped fall speed, and a jump-button swim stroke.
+- Swimming state and head submersion are detected separately. Adjacent water bodies are tracked safely so leaving one overlapping volume does not incorrectly clear swimming or breath state.
+- Drowning uses the existing player health path: current tuning allows `7.0` seconds of breath and repeats damage every `4.0` seconds while the head remains submerged.
+- Player Inspector now exposes `Swimming Speed`, `Water Gravity`, and `Swim Jump Height` under the `Water` group; each water body retains local speed/gravity modifiers for environmental variation.
+- Current base `WaterBody2D` tuning uses `0.7` swim speed, `0.5` gravity, `100 px/s` maximum underwater fall speed, and `210` drag. The large pool opacity is currently `0.25`.
+- Added `move_up` input on keyboard `W`, Up Arrow, and joypad left-stick up. `move_down` remains keyboard `S`, Down Arrow, and joypad left-stick down.
+- Added `scripts/tests/water_system_smoke_test.gd` covering water transitions, overlapping volumes, four-direction response, drowning cadence, splash gating, flooded-tunnel behavior, and ripple impulses.
+- Project main scene is currently set to `scenes/levels/test_room_water.tscn` for focused water-system iteration.
+
 ## Latest Update - 2026-07-29
 - Boss 2/final boss visual prototype moved from the single placeholder `Sprite2D` toward an `AnimatedSprite2D` workflow.
 - Added Boss 2 idle and run animation frame imports under `art/enemies/animations/Boss02/`.
 - `scenes/boss/final_boss.tscn` now keeps the old `Sprite2D` hidden and uses a new `AnimatedSprite2D` with `idle` and `run` animations.
-- `scripts/boss/final_boss.gd` now wires animation playback to gameplay state: `run` plays during horizontal repositioning/jump travel, and `idle` covers decision, inactive, attack telegraph/active/recovery states until more clips are added.
+- `scripts/boss/final_boss.gd` now wires animation playback to gameplay state: `run` plays during horizontal repositioning, `idle` covers decision/attack states, and jump flow uses `jump_start`, looping `jump_air`, then `land` on jump or drop-through landing.
 - Boss 2 facing, damage flash tint, and telegraph squash/stretch now apply to the animated sprite as well as the legacy hidden sprite fallback.
-- Current Boss 2 animation gap: jump and grenade throw animation clips are intentionally pending and should be wired into the existing state resolver next.
+- Current Boss 2 animation gap: grenade throw animation wiring remains pending.
 - Project main scene is currently set to `scenes/levels/boss_test_room.tscn` for focused Boss 2 iteration.
 
 ## Latest Update - 2026-07-19

@@ -1,0 +1,270 @@
+[gd_scene format=3 uid="uid://foxx16oykbbv"]
+
+[ext_resource type="Script" uid="uid://cgsvfhc6klb0r" path="res://scripts/levels/test_room_water.gd" id="1_level"]
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://dx7qkeaybtgyw" path="res://scenes/player/bullet.tscn" id="3_bullet"]
+[ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="4_ui"]
+[ext_resource type="PackedScene" uid="uid://c7tikl5ek55li" path="res://scenes/water/water_body_2d.tscn" id="5_water"]
+
+[sub_resource type="RectangleShape2D" id="GroundLeftShape"]
+size = Vector2(700, 500)
+
+[sub_resource type="RectangleShape2D" id="PoolBottomShape"]
+size = Vector2(1100, 50)
+
+[sub_resource type="RectangleShape2D" id="PoolRightLedgeShape"]
+size = Vector2(150, 180)
+
+[sub_resource type="RectangleShape2D" id="TunnelCeilingShape"]
+size = Vector2(900, 40)
+
+[sub_resource type="RectangleShape2D" id="TunnelFloorShape"]
+size = Vector2(1000, 40)
+
+[sub_resource type="RectangleShape2D" id="AirPocketFloorShape"]
+size = Vector2(350, 120)
+
+[sub_resource type="RectangleShape2D" id="WorldWallShape"]
+size = Vector2(40, 1100)
+
+[sub_resource type="RectangleShape2D" id="UnderwaterShelfShape"]
+size = Vector2(260, 28)
+
+[sub_resource type="RectangleShape2D" id="UnderwaterPillarShape"]
+size = Vector2(90, 220)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="HighBoardShape"]
+size = Vector2(240, 18)
+
+[sub_resource type="RectangleShape2D" id="CrossBoardShape"]
+size = Vector2(180, 18)
+
+[sub_resource type="RectangleShape2D" id="AirStepShape"]
+size = Vector2(130, 24)
+
+[node name="TestRoomWater" type="Node2D" unique_id=550878625]
+script = ExtResource("1_level")
+
+[node name="Background" type="Polygon2D" parent="." unique_id=1504403912]
+z_index = -20
+color = Color(0.055, 0.075, 0.095, 1)
+polygon = PackedVector2Array(-2200, -700, 2600, -700, 2600, 1100, -2200, 1100)
+
+[node name="AirPocketBackdrop" type="Polygon2D" parent="." unique_id=56207569]
+z_index = -15
+color = Color(0.18, 0.16, 0.12, 1)
+polygon = PackedVector2Array(1550, 420, 1940, 420, 1940, 720, 1550, 720)
+
+[node name="Pool" parent="." unique_id=1020649982 instance=ExtResource("5_water")]
+position = Vector2(100, 300)
+water_size = Vector2(1100, 480)
+water_color = Color(0.04, 0.52, 0.82, 1)
+water_opacity = 0.25
+ripple_point_count = 32
+ripple_strength = 0.36
+
+[node name="FloodedTunnel" parent="." unique_id=524974824 instance=ExtResource("5_water")]
+position = Vector2(1100, 440)
+water_size = Vector2(1000, 280)
+water_color = Color(0.025, 0.38, 0.62, 1)
+water_opacity = 0.78
+has_visible_surface = false
+ripple_enabled = false
+
+[node name="SolidTerrain" type="Node2D" parent="." unique_id=474874215]
+
+[node name="LeftGround" type="StaticBody2D" parent="SolidTerrain" unique_id=98957309]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/LeftGround" unique_id=185963607]
+position = Vector2(-800, 550)
+shape = SubResource("GroundLeftShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/LeftGround" unique_id=1926212911]
+color = Color(0.2, 0.23, 0.24, 1)
+polygon = PackedVector2Array(-1150, 300, -450, 300, -450, 800, -1150, 800)
+
+[node name="PoolBottom" type="StaticBody2D" parent="SolidTerrain" unique_id=1936209179]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/PoolBottom" unique_id=2006668440]
+position = Vector2(100, 805)
+shape = SubResource("PoolBottomShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/PoolBottom" unique_id=516519877]
+color = Color(0.14, 0.18, 0.2, 1)
+polygon = PackedVector2Array(-450, 780, 650, 780, 650, 830, -450, 830)
+
+[node name="PoolRightLedge" type="StaticBody2D" parent="SolidTerrain" unique_id=1736247798]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/PoolRightLedge" unique_id=1138160202]
+position = Vector2(725, 390)
+shape = SubResource("PoolRightLedgeShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/PoolRightLedge" unique_id=919617380]
+color = Color(0.22, 0.25, 0.25, 1)
+polygon = PackedVector2Array(650, 300, 800, 300, 800, 480, 650, 480)
+
+[node name="TunnelCeiling" type="StaticBody2D" parent="SolidTerrain" unique_id=1834515786]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/TunnelCeiling" unique_id=1445439231]
+position = Vector2(1175, 420)
+shape = SubResource("TunnelCeilingShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/TunnelCeiling" unique_id=1051651181]
+color = Color(0.18, 0.2, 0.21, 1)
+polygon = PackedVector2Array(725, 400, 1625, 400, 1625, 440, 725, 440)
+
+[node name="TunnelFloor" type="StaticBody2D" parent="SolidTerrain" unique_id=512853431]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/TunnelFloor" unique_id=1364649489]
+position = Vector2(1125, 740)
+shape = SubResource("TunnelFloorShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/TunnelFloor" unique_id=1789148292]
+color = Color(0.14, 0.17, 0.18, 1)
+polygon = PackedVector2Array(625, 720, 1625, 720, 1625, 760, 625, 760)
+
+[node name="AirPocketFloor" type="StaticBody2D" parent="SolidTerrain" unique_id=165874496]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/AirPocketFloor" unique_id=166059045]
+position = Vector2(1785, 780)
+shape = SubResource("AirPocketFloorShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/AirPocketFloor" unique_id=1738480601]
+color = Color(0.25, 0.24, 0.2, 1)
+polygon = PackedVector2Array(1610, 720, 1960, 720, 1960, 840, 1610, 840)
+
+[node name="LeftBoundary" type="StaticBody2D" parent="SolidTerrain" unique_id=367921250]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/LeftBoundary" unique_id=1575218915]
+position = Vector2(-1170, 300)
+shape = SubResource("WorldWallShape")
+
+[node name="RightBoundary" type="StaticBody2D" parent="SolidTerrain" unique_id=1963933794]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/RightBoundary" unique_id=140192028]
+position = Vector2(1970, 300)
+shape = SubResource("WorldWallShape")
+
+[node name="UnderwaterShelf" type="StaticBody2D" parent="SolidTerrain" unique_id=1904402895]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/UnderwaterShelf" unique_id=1090130912]
+position = Vector2(20, 575)
+shape = SubResource("UnderwaterShelfShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/UnderwaterShelf" unique_id=839806929]
+color = Color(0.3, 0.34, 0.32, 1)
+polygon = PackedVector2Array(-110, 561, 150, 561, 150, 589, -110, 589)
+
+[node name="UnderwaterPillar" type="StaticBody2D" parent="SolidTerrain" unique_id=2126787465]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SolidTerrain/UnderwaterPillar" unique_id=1595849688]
+position = Vector2(390, 670)
+shape = SubResource("UnderwaterPillarShape")
+
+[node name="Visual" type="Polygon2D" parent="SolidTerrain/UnderwaterPillar" unique_id=1568873946]
+color = Color(0.27, 0.31, 0.3, 1)
+polygon = PackedVector2Array(345, 560, 435, 560, 435, 780, 345, 780)
+
+[node name="DivePlatforms" type="StaticBody2D" parent="." unique_id=1013701969]
+collision_layer = 8192
+collision_mask = 0
+
+[node name="LowStep" type="CollisionShape2D" parent="DivePlatforms" unique_id=432886419]
+position = Vector2(-385, 240)
+shape = SubResource("StepShape")
+one_way_collision = true
+one_way_collision_margin = 12.0
+
+[node name="LowStepVisual" type="Polygon2D" parent="DivePlatforms" unique_id=1588394069]
+color = Color(0.55, 0.68, 0.36, 1)
+polygon = PackedVector2Array(-455, 231, -315, 231, -315, 249, -455, 249)
+
+[node name="MidStep" type="CollisionShape2D" parent="DivePlatforms" unique_id=2121580304]
+position = Vector2(-250, 175)
+shape = SubResource("StepShape")
+one_way_collision = true
+one_way_collision_margin = 12.0
+
+[node name="MidStepVisual" type="Polygon2D" parent="DivePlatforms" unique_id=1477101288]
+color = Color(0.68, 0.64, 0.3, 1)
+polygon = PackedVector2Array(-320, 166, -180, 166, -180, 184, -320, 184)
+
+[node name="HighBoard" type="CollisionShape2D" parent="DivePlatforms" unique_id=1902948572]
+position = Vector2(-55, 110)
+shape = SubResource("HighBoardShape")
+one_way_collision = true
+one_way_collision_margin = 12.0
+
+[node name="HighBoardVisual" type="Polygon2D" parent="DivePlatforms" unique_id=1015984087]
+color = Color(0.78, 0.48, 0.22, 1)
+polygon = PackedVector2Array(-175, 101, 65, 101, 65, 119, -175, 119)
+
+[node name="CrossBoard" type="CollisionShape2D" parent="DivePlatforms" unique_id=450561856]
+position = Vector2(285, 200)
+shape = SubResource("CrossBoardShape")
+one_way_collision = true
+one_way_collision_margin = 12.0
+
+[node name="CrossBoardVisual" type="Polygon2D" parent="DivePlatforms" unique_id=365505684]
+color = Color(0.38, 0.64, 0.56, 1)
+polygon = PackedVector2Array(195, 191, 375, 191, 375, 209, 195, 209)
+
+[node name="ExitBoard" type="CollisionShape2D" parent="DivePlatforms" unique_id=550925415]
+position = Vector2(555, 250)
+shape = SubResource("StepShape")
+one_way_collision = true
+one_way_collision_margin = 12.0
+
+[node name="ExitBoardVisual" type="Polygon2D" parent="DivePlatforms" unique_id=1713247674]
+color = Color(0.42, 0.7, 0.46, 1)
+polygon = PackedVector2Array(485, 241, 625, 241, 625, 259, 485, 259)
+
+[node name="AirPocketSteps" type="StaticBody2D" parent="." unique_id=1327510694]
+collision_mask = 0
+
+[node name="StepOne" type="CollisionShape2D" parent="AirPocketSteps" unique_id=1058800833]
+position = Vector2(1690, 660)
+shape = SubResource("AirStepShape")
+
+[node name="StepOneVisual" type="Polygon2D" parent="AirPocketSteps" unique_id=895816953]
+color = Color(0.48, 0.43, 0.3, 1)
+polygon = PackedVector2Array(1625, 648, 1755, 648, 1755, 672, 1625, 672)
+
+[node name="StepTwo" type="CollisionShape2D" parent="AirPocketSteps" unique_id=795116763]
+position = Vector2(1840, 600)
+shape = SubResource("AirStepShape")
+
+[node name="StepTwoVisual" type="Polygon2D" parent="AirPocketSteps" unique_id=1383426390]
+color = Color(0.58, 0.5, 0.31, 1)
+polygon = PackedVector2Array(1775, 588, 1905, 588, 1905, 612, 1775, 612)
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1773377123]
+position = Vector2(-850, 274)
+
+[node name="Player" parent="." unique_id=162229099 groups=["player"] instance=ExtResource("2_player")]
+position = Vector2(-850, 274)
+bullet_scene = ExtResource("3_bullet")
+water_debug_enabled = true
+
+[node name="Camera2D" parent="Player" index="3" unique_id=2029278347]
+position = Vector2(40, -95)
+zoom = Vector2(1.35, 1.35)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
+[node name="GameUI" parent="." unique_id=2135777235 instance=ExtResource("4_ui")]
+
+[editable path="Player"]

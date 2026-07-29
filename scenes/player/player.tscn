@@ -654,6 +654,9 @@ size = Vector2(18, 35)
 [sub_resource type="RectangleShape2D" id="MeleeHitboxShape"]
 size = Vector2(22, 29)
 
+[sub_resource type="RectangleShape2D" id="WaterHeadSensorShape"]
+size = Vector2(8, 8)
+
 [node name="Player" type="CharacterBody2D" unique_id=1487025887]
 z_index = 1
 position = Vector2(44, -72)
@@ -698,6 +701,16 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=897226263]
 position = Vector2(0, 6.5)
 shape = SubResource("RectangleShape2D_dovo2")
+
+[node name="WaterHeadSensor" type="Area2D" parent="." groups=["water_head_sensor"]]
+position = Vector2(0, -9)
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+monitorable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterHeadSensor"]
+shape = SubResource("WaterHeadSensorShape")
 
 [node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=988886553]
 stream = ExtResource("2_dovo2")

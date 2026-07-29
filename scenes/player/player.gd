@@ -54,6 +54,12 @@ const ONE_WAY_PLATFORM_LAYER = 14
 @export_group("Zipline")
 @export var zipline_reattach_cooldown_time: float = 0.18
 
+@export_group("Water")
+@export var water_debug_enabled: bool = false
+@export var swimming_speed: float = 143.0
+@export var water_gravity: float = 220.0
+@export var swim_jump_height: float = 18.0
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
 @onready var hurtbox: Area2D = $Hurtbox
@@ -95,6 +101,11 @@ var melee_hit_targets: Array[Node] = []
 var drop_through_timer: float = 0.0
 var drop_through_floor_y: float = 0.0
 var drop_through_mask_was_enabled: bool = false
+var active_water_bodies: Array[Node] = []
+var submerged_head_water_bodies: Array[Node] = []
+var breath_elapsed: float = 0.0
+var next_drowning_damage_time: float = 5.0
+var water_debug_label: Label = null
 
 
 func _ready() -> void:
@@ -113,6 +124,7 @@ func _ready() -> void:
 	update_melee_hitbox_geometry()
 
 	air_jumps_left = extra_jumps
+	setup_water_debug_display()
 
 
 func _physics_process(delta: float) -> void:
@@ -123,6 +135,7 @@ func _physics_process(delta: float) -> void:
 	update_zipline_timers(delta)
 	update_melee_attack(delta)
 	update_drop_through(delta)
+	update_water_breath(delta)
 
 	if is_dead:
 		force_detach_from_zipline()
@@ -151,6 +164,12 @@ func _physics_process(delta: float) -> void:
 	if is_swatting:
 		force_detach_from_zipline()
 		update_swatting(delta)
+		move_and_slide()
+		update_animation()
+		return
+
+	if is_in_water():
+		update_swimming(delta)
 		move_and_slide()
 		update_animation()
 		return
@@ -303,6 +322,220 @@ func get_body_top_y() -> float:
 	return body_collision_shape.global_position.y
 
 
+func enter_water(water_body: Node) -> void:
+	if water_body == null or active_water_bodies.has(water_body):
+		return
+
+	var was_dry := active_water_bodies.is_empty()
+	active_water_bodies.append(water_body)
+	if not was_dry:
+		return
+
+	force_detach_from_zipline()
+	cancel_landing()
+	if is_melee_attacking or melee_hitbox_active:
+		call_deferred("cancel_melee_attack")
+	jump_buffer_timer = 0.0
+	coyote_timer = 0.0
+	air_jumps_left = extra_jumps
+	max_fall_speed = 0.0
+
+	var max_fall := get_water_float(&"maximum_underwater_fall_speed", 130.0)
+	var vertical_speed := get_water_float(&"vertical_swim_speed", move_speed * 0.55)
+	var entry_speed_limit := maxf(move_speed * 1.1, swimming_speed * 1.5)
+	velocity.x = clampf(velocity.x, -entry_speed_limit, entry_speed_limit)
+	velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
+
+
+func exit_water(water_body: Node, _surface_y: float, exited_through_surface: bool) -> void:
+	active_water_bodies.erase(water_body)
+	prune_water_bodies()
+	if not active_water_bodies.is_empty():
+		return
+
+	var exit_boost := get_water_float_from(water_body, &"surface_exit_boost", absf(jump_velocity) * 0.7)
+	if exited_through_surface and velocity.y < 0.0:
+		velocity.y = minf(velocity.y, -exit_boost)
+
+	submerged_head_water_bodies.clear()
+	reset_breath_timers()
+
+
+func set_head_submerged(water_body: Node, submerged: bool) -> void:
+	if submerged:
+		if not submerged_head_water_bodies.has(water_body):
+			submerged_head_water_bodies.append(water_body)
+		if submerged_head_water_bodies.size() == 1:
+			breath_elapsed = 0.0
+			next_drowning_damage_time = get_water_float_from(water_body, &"breath_duration", 5.0)
+	else:
+		submerged_head_water_bodies.erase(water_body)
+		prune_water_bodies()
+		if submerged_head_water_bodies.is_empty():
+			reset_breath_timers()
+
+
+func is_in_water() -> bool:
+	prune_water_bodies()
+	return not active_water_bodies.is_empty()
+
+
+func is_head_submerged() -> bool:
+	prune_water_bodies()
+	return not submerged_head_water_bodies.is_empty()
+
+
+func update_swimming(delta: float) -> void:
+	var input_axis := Input.get_axis("move_left", "move_right")
+	var vertical_axis := Input.get_axis("move_up", "move_down")
+	var speed_multiplier := get_water_float(&"swim_speed_multiplier", 1.0)
+	var acceleration_multiplier := get_water_float(&"swim_acceleration_multiplier", 0.5)
+	var gravity_multiplier := get_water_float(&"gravity_multiplier", 1.0)
+	var max_fall := get_water_float(&"maximum_underwater_fall_speed", 130.0)
+	var vertical_speed := get_water_float(&"vertical_swim_speed", move_speed * 0.55)
+	var drag := get_water_float(&"water_drag", 220.0)
+	var effective_swim_speed := swimming_speed * speed_multiplier
+	var effective_water_gravity := water_gravity * gravity_multiplier
+
+	if input_axis > 0.0:
+		facing = 1
+	elif input_axis < 0.0:
+		facing = -1
+	animated_sprite.flip_h = facing < 0
+	update_melee_hitbox_geometry()
+
+	var target_x := input_axis * effective_swim_speed
+	var horizontal_acceleration := maxf(swimming_speed, 1.0) * 8.0 * acceleration_multiplier
+	velocity.x = move_toward(velocity.x, target_x, horizontal_acceleration * delta)
+	if is_zero_approx(input_axis):
+		velocity.x = move_toward(velocity.x, 0.0, drag * delta)
+
+	if not is_zero_approx(vertical_axis):
+		velocity.y = move_toward(velocity.y, vertical_axis * vertical_speed, vertical_speed * 5.0 * delta)
+	else:
+		velocity.y += effective_water_gravity * delta
+		velocity.y = move_toward(velocity.y, 0.0, drag * 0.35 * delta)
+
+	if Input.is_action_just_pressed("jump"):
+		var swim_jump_velocity := sqrt(2.0 * maxf(effective_water_gravity, 1.0) * maxf(swim_jump_height, 0.0))
+		velocity.y = minf(velocity.y, -swim_jump_velocity)
+
+	velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
+	coyote_timer = 0.0
+	jump_buffer_timer = 0.0
+	max_fall_speed = 0.0
+
+	if Input.is_action_just_pressed("shoot"):
+		try_shoot()
+	if Input.is_action_just_pressed("slap"):
+		try_slap()
+
+
+func update_water_breath(delta: float) -> void:
+	if is_dead or not is_head_submerged():
+		return
+
+	breath_elapsed += delta
+	while breath_elapsed >= next_drowning_damage_time and not is_dead:
+		var water_body := get_active_head_water()
+		var damage := roundi(get_water_float_from(water_body, &"damage_amount", 1.0))
+		take_damage(maxi(damage, 1), true)
+		next_drowning_damage_time += maxf(get_water_float_from(water_body, &"damage_interval", 3.0), 0.1)
+
+
+func reset_breath_timers() -> void:
+	breath_elapsed = 0.0
+	var water_body := get_active_head_water()
+	next_drowning_damage_time = get_water_float_from(water_body, &"breath_duration", 5.0)
+
+
+func reset_water_state() -> void:
+	active_water_bodies.clear()
+	submerged_head_water_bodies.clear()
+	reset_breath_timers()
+
+
+func prune_water_bodies() -> void:
+	for index in range(active_water_bodies.size() - 1, -1, -1):
+		if not is_instance_valid(active_water_bodies[index]):
+			active_water_bodies.remove_at(index)
+	for index in range(submerged_head_water_bodies.size() - 1, -1, -1):
+		if not is_instance_valid(submerged_head_water_bodies[index]):
+			submerged_head_water_bodies.remove_at(index)
+
+
+func get_active_water() -> Node:
+	prune_water_bodies()
+	return active_water_bodies.back() if not active_water_bodies.is_empty() else null
+
+
+func get_active_head_water() -> Node:
+	prune_water_bodies()
+	return submerged_head_water_bodies.back() if not submerged_head_water_bodies.is_empty() else get_active_water()
+
+
+func get_water_float(property_name: StringName, fallback: float) -> float:
+	return get_water_float_from(get_active_water(), property_name, fallback)
+
+
+func get_water_float_from(water_body: Node, property_name: StringName, fallback: float) -> float:
+	if water_body == null or not is_instance_valid(water_body):
+		return fallback
+
+	var value: Variant = water_body.get(property_name)
+	return float(value) if value != null else fallback
+
+
+func setup_water_debug_display() -> void:
+	if not water_debug_enabled:
+		return
+
+	var canvas := CanvasLayer.new()
+	canvas.name = "WaterDebugCanvas"
+	canvas.layer = 20
+	add_child(canvas)
+
+	water_debug_label = Label.new()
+	water_debug_label.position = Vector2(18.0, 170.0)
+	water_debug_label.add_theme_color_override("font_color", Color(0.82, 0.96, 1.0))
+	water_debug_label.add_theme_color_override("font_outline_color", Color(0.02, 0.08, 0.12, 0.95))
+	water_debug_label.add_theme_constant_override("outline_size", 5)
+	water_debug_label.add_theme_font_size_override("font_size", 18)
+	canvas.add_child(water_debug_label)
+
+
+func _process(_delta: float) -> void:
+	if water_debug_label == null:
+		return
+
+	var movement_state := "GROUND"
+	if is_dead:
+		movement_state = "DEAD"
+	elif is_riding_zipline:
+		movement_state = "ZIPLINE"
+	elif is_swatting:
+		movement_state = "SWATTING"
+	elif is_in_water():
+		movement_state = "SWIMMING"
+	elif not is_on_floor():
+		movement_state = "AIRBORNE"
+
+	var breath_duration := get_water_float_from(get_active_head_water(), &"breath_duration", 5.0)
+	var breath_remaining := maxf(breath_duration - breath_elapsed, 0.0)
+	var damage_remaining := maxf(next_drowning_damage_time - breath_elapsed, 0.0)
+	water_debug_label.text = "State: %s\nIn water: %s  Head submerged: %s\nBreath: %.2fs  Next damage: %.2fs\nVelocity: (%.1f, %.1f)  Swim: %.1f  Water gravity: %.1f" % [
+		movement_state,
+		str(is_in_water()),
+		str(is_head_submerged()),
+		breath_remaining,
+		damage_remaining,
+		velocity.x,
+		velocity.y,
+		swimming_speed * get_water_float(&"swim_speed_multiplier", 1.0),
+		water_gravity * get_water_float(&"gravity_multiplier", 1.0),
+	]
+
+
 func play_animation_safe(name: StringName, fallback: StringName = &"idle") -> void:
 	var frames: SpriteFrames = animated_sprite.sprite_frames
 
@@ -348,6 +581,11 @@ func update_animation() -> void:
 	if landing_animation_timer > 0.0:
 		animated_sprite.speed_scale = 1.0
 		play_animation_safe(&"landing", &"idle")
+		return
+
+	if is_in_water():
+		animated_sprite.speed_scale = 0.75
+		play_animation_safe(&"swim", &"jump")
 		return
 
 	if not is_on_floor():
@@ -647,8 +885,8 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 	take_damage(damage)
 
 
-func take_damage(amount: int = 1) -> void:
-	if is_dead or invulnerability_timer > 0.0:
+func take_damage(amount: int = 1, ignore_invulnerability: bool = false) -> void:
+	if is_dead or (invulnerability_timer > 0.0 and not ignore_invulnerability):
 		return
 
 	current_hp -= amount
@@ -911,6 +1149,7 @@ func die() -> void:
 
 	force_detach_from_zipline()
 	cancel_melee_attack()
+	reset_water_state()
 	is_dead = true
 	current_hp = 0
 	health_changed.emit(current_hp, max_hp)
