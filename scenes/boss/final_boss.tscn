@@ -1,8 +1,121 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=34 format=3]
 
 [ext_resource type="Script" path="res://scripts/boss/final_boss.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://qfm5sopndty0" path="res://art/enemies/boss02.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://dyutp87truost" path="res://art/props/grenade.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://07yrqac122ev" path="res://art/enemies/animations/Boss02/idle/frame0000.png" id="4_idle_0000"]
+[ext_resource type="Texture2D" uid="uid://bbqktqevqb810" path="res://art/enemies/animations/Boss02/idle/frame0001.png" id="5_idle_0001"]
+[ext_resource type="Texture2D" uid="uid://dah7t0xuxwo8b" path="res://art/enemies/animations/Boss02/idle/frame0002.png" id="6_idle_0002"]
+[ext_resource type="Texture2D" uid="uid://2ytq7b5oyu6b" path="res://art/enemies/animations/Boss02/idle/frame0003.png" id="7_idle_0003"]
+[ext_resource type="Texture2D" uid="uid://dgo3b3y58465f" path="res://art/enemies/animations/Boss02/idle/frame0004.png" id="8_idle_0004"]
+[ext_resource type="Texture2D" uid="uid://blpj0cbiyx153" path="res://art/enemies/animations/Boss02/idle/frame0005.png" id="9_idle_0005"]
+[ext_resource type="Texture2D" uid="uid://bpk87knwl4a77" path="res://art/enemies/animations/Boss02/idle/frame0006.png" id="10_idle_0006"]
+[ext_resource type="Texture2D" uid="uid://dakuj2kqukbk8" path="res://art/enemies/animations/Boss02/idle/frame0007.png" id="11_idle_0007"]
+[ext_resource type="Texture2D" uid="uid://y5by7rrk6mqg" path="res://art/enemies/animations/Boss02/idle/frame0008.png" id="12_idle_0008"]
+[ext_resource type="Texture2D" uid="uid://53fpoxmpb8d4" path="res://art/enemies/animations/Boss02/idle/frame0009.png" id="13_idle_0009"]
+[ext_resource type="Texture2D" uid="uid://r5kmui3uvfhm" path="res://art/enemies/animations/Boss02/idle/frame0010.png" id="14_idle_0010"]
+[ext_resource type="Texture2D" uid="uid://bk02srt2nqoc4" path="res://art/enemies/animations/Boss02/idle/frame0011.png" id="15_idle_0011"]
+[ext_resource type="Texture2D" uid="uid://cc4q3cvtal8md" path="res://art/enemies/animations/Boss02/idle/frame0012.png" id="16_idle_0012"]
+[ext_resource type="Texture2D" uid="uid://ddeoyq7yfp7l7" path="res://art/enemies/animations/Boss02/idle/frame0013.png" id="17_idle_0013"]
+[ext_resource type="Texture2D" uid="uid://g2xelgufreft" path="res://art/enemies/animations/Boss02/idle/frame0014.png" id="18_idle_0014"]
+[ext_resource type="Texture2D" uid="uid://j68j5vspw633" path="res://art/enemies/animations/Boss02/idle/frame0015.png" id="19_idle_0015"]
+[ext_resource type="Texture2D" uid="uid://by3kk0buj4ck6" path="res://art/enemies/animations/Boss02/idle/frame0016.png" id="20_idle_0016"]
+[ext_resource type="Texture2D" uid="uid://dl56ffspkroiy" path="res://art/enemies/animations/Boss02/idle/frame0017.png" id="21_idle_0017"]
+[ext_resource type="Texture2D" uid="uid://c53bjgv0r6s1a" path="res://art/enemies/animations/Boss02/Run/frame0003.png" id="22_run_0003"]
+[ext_resource type="Texture2D" uid="uid://ebidxq2la1ty" path="res://art/enemies/animations/Boss02/Run/frame0004.png" id="23_run_0004"]
+[ext_resource type="Texture2D" uid="uid://cgvqmh8gb6mlk" path="res://art/enemies/animations/Boss02/Run/frame0005.png" id="24_run_0005"]
+[ext_resource type="Texture2D" uid="uid://btkcvaf2a672t" path="res://art/enemies/animations/Boss02/Run/frame0006.png" id="25_run_0006"]
+[ext_resource type="Texture2D" uid="uid://ckcf8c1qrl5yb" path="res://art/enemies/animations/Boss02/Run/frame0007.png" id="26_run_0007"]
+[ext_resource type="Texture2D" uid="uid://dq17nctqs2alo" path="res://art/enemies/animations/Boss02/Run/frame0008.png" id="27_run_0008"]
+[ext_resource type="Texture2D" uid="uid://cmjtrsh5iu5ws" path="res://art/enemies/animations/Boss02/Run/frame0009.png" id="28_run_0009"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_final_boss"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_idle_0000")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_idle_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_idle_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_idle_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_idle_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_idle_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_idle_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_idle_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_idle_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_idle_0009")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_idle_0010")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_idle_0011")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_idle_0012")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_idle_0013")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_idle_0014")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_idle_0015")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_idle_0016")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_idle_0017")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_run_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_run_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_run_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_run_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_run_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_run_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_run_0009")
+}],
+"loop": true,
+"name": &"run",
+"speed": 12.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(34, 76)
@@ -25,9 +138,17 @@ collision_mask = 8193
 script = ExtResource("1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, -50)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -50)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_final_boss")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -38)

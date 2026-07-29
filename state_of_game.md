@@ -1,6 +1,15 @@
 # State of Game
 
-Last updated: 2026-07-19
+Last updated: 2026-07-29
+
+## Latest Update - 2026-07-29
+- Boss 2/final boss visual prototype moved from the single placeholder `Sprite2D` toward an `AnimatedSprite2D` workflow.
+- Added Boss 2 idle and run animation frame imports under `art/enemies/animations/Boss02/`.
+- `scenes/boss/final_boss.tscn` now keeps the old `Sprite2D` hidden and uses a new `AnimatedSprite2D` with `idle` and `run` animations.
+- `scripts/boss/final_boss.gd` now wires animation playback to gameplay state: `run` plays during horizontal repositioning/jump travel, and `idle` covers decision, inactive, attack telegraph/active/recovery states until more clips are added.
+- Boss 2 facing, damage flash tint, and telegraph squash/stretch now apply to the animated sprite as well as the legacy hidden sprite fallback.
+- Current Boss 2 animation gap: jump and grenade throw animation clips are intentionally pending and should be wired into the existing state resolver next.
+- Project main scene is currently set to `scenes/levels/boss_test_room.tscn` for focused Boss 2 iteration.
 
 ## Latest Update - 2026-07-19
 - Level 03 foreground/parallax dressing pass continued with many new placed sprites across `ForegroundFar`, `ForegroundMid`, and `ForegroundNear`, extending the scene's layered jungle/stone depth farther across the current playable span.
@@ -164,7 +173,7 @@ Last updated: 2026-07-19
 
 ### Boss 2 Prototype
 - Separate from the existing first boss implementation.
-- Uses `art/enemies/boss02.png` as a placeholder sprite.
+- Uses an `AnimatedSprite2D` in `scenes/boss/final_boss.tscn`; idle and run are wired to gameplay, while jump and grenade throw animation clips are pending.
 - Has HP, `enemy_hurtbox` damage compatibility, hit flash, and `boss_defeated`.
 - Has no automatic body contact damage.
 - Current attacks are horizontal-only rifle burst, close-range knife combo, and a boss-specific throwable grenade.

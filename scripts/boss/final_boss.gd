@@ -92,6 +92,7 @@ enum State {
 @export var debug_enabled: bool = false
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 @onready var body_collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var hurtbox_shape: CollisionShape2D = $Hurtbox/CollisionShape2D
@@ -133,8 +134,12 @@ var flash_timer: float = 0.0
 func _ready() -> void:
 	add_to_group("enemy")
 	hp = max_hp
-	base_sprite_scale = sprite.scale
+	base_sprite_scale = get_visual_scale()
 	health_changed.emit(hp, max_hp)
+
+	if animated_sprite != null:
+		sprite.visible = false
+		animated_sprite.play(&"idle")
 
 	knife_hitbox.monitoring = false
 	knife_hitbox_shape.disabled = true
@@ -189,6 +194,7 @@ func _physics_process(delta: float) -> void:
 		State.RECOVERY:
 			update_recovery(delta)
 
+	update_animation()
 	move_and_slide()
 
 	if state == State.JUMP_TO_PLATFORM and not jump_has_left_floor and not is_on_floor():
@@ -455,7 +461,7 @@ func update_grenade_telegraph(delta: float) -> void:
 	if state_timer <= 0.0:
 		state = State.GRENADE_RELEASE
 		state_timer = grenade_release_time
-		sprite.scale = base_sprite_scale
+		set_visual_scale(base_sprite_scale)
 		telegraph.visible = false
 		spawn_grenade()
 
@@ -597,7 +603,7 @@ func enter_recovery(duration: float) -> void:
 	state = State.RECOVERY
 	state_timer = duration
 	velocity.x = 0.0
-	sprite.scale = base_sprite_scale
+	set_visual_scale(base_sprite_scale)
 	telegraph.visible = false
 	held_grenade_sprite.visible = false
 
@@ -616,7 +622,7 @@ func enter_decide(delay: float) -> void:
 	state_timer = delay
 	target_marker = null
 	velocity.x = 0.0
-	sprite.scale = base_sprite_scale
+	set_visual_scale(base_sprite_scale)
 	telegraph.visible = false
 	held_grenade_sprite.visible = false
 	knife_hitbox.monitoring = false
@@ -877,6 +883,8 @@ func update_facing(direction: int) -> void:
 
 	facing = direction
 	sprite.flip_h = facing < 0
+	if animated_sprite != null:
+		animated_sprite.flip_h = facing < 0
 	muzzle_marker.position.x = abs(muzzle_marker.position.x) * facing
 	grenade_throw_marker.position.x = abs(grenade_throw_marker.position.x) * facing
 	held_grenade_sprite.position.x = abs(held_grenade_sprite.position.x) * facing
@@ -889,7 +897,7 @@ func update_knife_hitbox_direction() -> void:
 
 func pulse_telegraph() -> void:
 	var pulse := 1.0 + sin(Time.get_ticks_msec() * 0.04) * 0.08
-	sprite.scale = Vector2(base_sprite_scale.x * pulse, base_sprite_scale.y * (2.0 - pulse))
+	set_visual_scale(Vector2(base_sprite_scale.x * pulse, base_sprite_scale.y * (2.0 - pulse)))
 
 
 func take_damage(amount: int = 1) -> void:
@@ -905,11 +913,41 @@ func take_damage(amount: int = 1) -> void:
 
 
 func update_flash(delta: float) -> void:
+	var flash_color := Color(1.0, 1.0, 1.0, 1.0)
 	if flash_timer > 0.0:
 		flash_timer -= delta
-		sprite.modulate = Color(1.0, 0.45, 0.45, 1.0)
-	else:
-		sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		flash_color = Color(1.0, 0.45, 0.45, 1.0)
+
+	sprite.modulate = flash_color
+	if animated_sprite != null:
+		animated_sprite.modulate = flash_color
+
+
+func update_animation() -> void:
+	if animated_sprite == null:
+		return
+
+	var next_animation := &"idle"
+	if state == State.RUN or (state == State.JUMP_TO_PLATFORM and absf(velocity.x) > 1.0):
+		next_animation = &"run"
+
+	if animated_sprite.animation != next_animation:
+		animated_sprite.play(next_animation)
+	elif not animated_sprite.is_playing():
+		animated_sprite.play()
+
+
+func get_visual_scale() -> Vector2:
+	if animated_sprite != null:
+		return animated_sprite.scale
+
+	return sprite.scale
+
+
+func set_visual_scale(new_scale: Vector2) -> void:
+	sprite.scale = new_scale
+	if animated_sprite != null:
+		animated_sprite.scale = new_scale
 
 
 func die() -> void:
