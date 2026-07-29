@@ -10,10 +10,10 @@ shader = ExtResource("2_shader")
 shader_parameter/flash_amount = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_physical"]
-size = Vector2(45, 32.000004)
+size = Vector2(230, 210)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
-size = Vector2(51, 43)
+size = Vector2(260, 230)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7hmpi"]
 particles_animation = true

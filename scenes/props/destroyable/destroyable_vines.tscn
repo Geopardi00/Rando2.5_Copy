@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://ckj6isn22w4ad"]
 
 [ext_resource type="Script" uid="uid://hqs14rl8affe" path="res://scripts/props/destroyable_prop.gd" id="1_aqv1x"]
+[ext_resource type="AudioStream" uid="uid://dqf6q5aec5u8l" path="res://audio/sfx/machete_hit.wav" id="2_fojb0"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_wa1w0"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_u5n0t"]
 [ext_resource type="Texture2D" uid="uid://d0oqfwucnmcpi" path="res://art/props/destroyable_vines01.png" id="3_wa1w0"]
 [ext_resource type="Texture2D" uid="uid://c6wltkv73yodi" path="res://art/props/DestroyPieces/HitParticles02spritesheet.png" id="4_nchek"]
 
@@ -48,6 +50,8 @@ anim_offset_max = 1.0
 position = Vector2(-298, -66)
 collision_mask = 0
 script = ExtResource("1_aqv1x")
+hit_sound = ExtResource("2_fojb0")
+break_sound = ExtResource("3_u5n0t")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=858243829]
 material = SubResource("ShaderMaterial_flash")
