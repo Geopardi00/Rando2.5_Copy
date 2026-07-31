@@ -59,6 +59,11 @@ const ONE_WAY_PLATFORM_LAYER = 14
 @export var swimming_speed: float = 143.0
 @export var water_gravity: float = 220.0
 @export var swim_jump_height: float = 18.0
+@export var surface_float_offset: float = 12.0
+@export var surface_capture_distance: float = 6.0
+@export var surface_entry_max_fall_speed: float = 80.0
+@export var surface_exit_recovery_time: float = 0.25
+@export var water_state_debug_lines: bool = true
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var fire_timer: Timer = $FireRateTimer
@@ -106,6 +111,12 @@ var submerged_head_water_bodies: Array[Node] = []
 var breath_elapsed: float = 0.0
 var next_drowning_damage_time: float = 5.0
 var water_debug_label: Label = null
+var is_surface_swimming: bool = false
+var surface_jump_active: bool = false
+var surface_water_body: Node = null
+var surface_recovery_water_body: Node = null
+var surface_recovery_timer: float = 0.0
+var debug_surface_water_body: Node = null
 
 
 func _ready() -> void:
@@ -136,6 +147,7 @@ func _physics_process(delta: float) -> void:
 	update_melee_attack(delta)
 	update_drop_through(delta)
 	update_water_breath(delta)
+	update_surface_recovery(delta)
 
 	if is_dead:
 		force_detach_from_zipline()
@@ -149,6 +161,8 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		update_animation()
 		return
+
+	reconcile_water_overlaps()
 
 	if is_riding_zipline:
 		if Input.is_action_just_pressed("jump"):
@@ -168,7 +182,10 @@ func _physics_process(delta: float) -> void:
 		update_animation()
 		return
 
-	if is_in_water():
+	if surface_jump_active and is_in_water() and velocity.y >= 0.0:
+		surface_jump_active = false
+
+	if is_in_water() and not surface_jump_active:
 		update_swimming(delta)
 		move_and_slide()
 		update_animation()
@@ -323,14 +340,26 @@ func get_body_top_y() -> float:
 
 
 func enter_water(water_body: Node) -> void:
-	if water_body == null or active_water_bodies.has(water_body):
+	if water_body == null:
+		return
+	if bool(water_body.get("has_visible_surface")):
+		debug_surface_water_body = water_body
+	if active_water_bodies.has(water_body):
+		if surface_recovery_water_body == water_body:
+			surface_recovery_water_body = null
+			surface_recovery_timer = 0.0
+		try_capture_water_surface()
 		return
 
 	var was_dry := active_water_bodies.is_empty()
 	active_water_bodies.append(water_body)
 	if not was_dry:
+		try_capture_water_surface()
 		return
 
+	surface_jump_active = false
+	is_surface_swimming = false
+	surface_water_body = null
 	force_detach_from_zipline()
 	cancel_landing()
 	if is_melee_attacking or melee_hitbox_active:
@@ -345,18 +374,34 @@ func enter_water(water_body: Node) -> void:
 	var entry_speed_limit := maxf(move_speed * 1.1, swimming_speed * 1.5)
 	velocity.x = clampf(velocity.x, -entry_speed_limit, entry_speed_limit)
 	velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
+	try_capture_water_surface()
 
 
 func exit_water(water_body: Node, _surface_y: float, exited_through_surface: bool) -> void:
+	if exited_through_surface and not surface_jump_active and bool(water_body.get("has_visible_surface")):
+		surface_water_body = water_body
+		is_surface_swimming = true
+		surface_recovery_water_body = water_body
+		surface_recovery_timer = maxf(surface_exit_recovery_time, 0.0)
+		velocity.y = maxf(velocity.y, 0.0)
+		return
+
+	finish_water_exit(water_body)
+
+
+func finish_water_exit(water_body: Node) -> void:
 	active_water_bodies.erase(water_body)
+	if surface_water_body == water_body:
+		is_surface_swimming = false
+		surface_water_body = null
+	if surface_recovery_water_body == water_body:
+		surface_recovery_water_body = null
+		surface_recovery_timer = 0.0
 	prune_water_bodies()
 	if not active_water_bodies.is_empty():
 		return
 
-	var exit_boost := get_water_float_from(water_body, &"surface_exit_boost", absf(jump_velocity) * 0.7)
-	if exited_through_surface and velocity.y < 0.0:
-		velocity.y = minf(velocity.y, -exit_boost)
-
+	surface_jump_active = false
 	submerged_head_water_bodies.clear()
 	reset_breath_timers()
 
@@ -385,6 +430,30 @@ func is_head_submerged() -> bool:
 	return not submerged_head_water_bodies.is_empty()
 
 
+func reconcile_water_overlaps() -> void:
+	if get_tree() == null:
+		return
+
+	for water_body in get_tree().get_nodes_in_group("water_body"):
+		if not is_instance_valid(water_body) or not water_body.has_method("contains_body"):
+			continue
+		var geometrically_inside := bool(water_body.call("contains_body", self))
+		if geometrically_inside:
+			if not active_water_bodies.has(water_body):
+				enter_water(water_body)
+			if water_body.has_method("contains_head_sensor"):
+				set_head_submerged(water_body, bool(water_body.call("contains_head_sensor", self)))
+			continue
+		set_head_submerged(water_body, false)
+		if not active_water_bodies.has(water_body) or surface_recovery_water_body == water_body:
+			continue
+
+		var exited_through_surface := false
+		if water_body.has_method("is_body_above_surface"):
+			exited_through_surface = bool(water_body.call("is_body_above_surface", self))
+		exit_water(water_body, get_water_surface_y(water_body), exited_through_surface)
+
+
 func update_swimming(delta: float) -> void:
 	var input_axis := Input.get_axis("move_left", "move_right")
 	var vertical_axis := Input.get_axis("move_up", "move_down")
@@ -396,6 +465,8 @@ func update_swimming(delta: float) -> void:
 	var drag := get_water_float(&"water_drag", 220.0)
 	var effective_swim_speed := swimming_speed * speed_multiplier
 	var effective_water_gravity := water_gravity * gravity_multiplier
+	var jump_pressed := Input.is_action_just_pressed("jump")
+	var holding_up := vertical_axis < 0.0
 
 	if input_axis > 0.0:
 		facing = 1
@@ -410,17 +481,31 @@ func update_swimming(delta: float) -> void:
 	if is_zero_approx(input_axis):
 		velocity.x = move_toward(velocity.x, 0.0, drag * delta)
 
-	if not is_zero_approx(vertical_axis):
+	if is_surface_swimming and not holding_up and not jump_pressed:
+		is_surface_swimming = false
+		surface_water_body = null
+	elif not is_surface_swimming and holding_up:
+		try_capture_water_surface()
+
+	if is_surface_swimming and jump_pressed:
+		start_surface_jump()
+	elif is_surface_swimming:
+		update_surface_float(delta, vertical_speed)
+	elif not is_zero_approx(vertical_axis):
 		velocity.y = move_toward(velocity.y, vertical_axis * vertical_speed, vertical_speed * 5.0 * delta)
 	else:
-		velocity.y += effective_water_gravity * delta
 		velocity.y = move_toward(velocity.y, 0.0, drag * 0.35 * delta)
 
-	if Input.is_action_just_pressed("jump"):
+	if not surface_jump_active:
+		velocity.y += effective_water_gravity * delta
+
+	if jump_pressed and not is_surface_swimming and not surface_jump_active:
 		var swim_jump_velocity := sqrt(2.0 * maxf(effective_water_gravity, 1.0) * maxf(swim_jump_height, 0.0))
 		velocity.y = minf(velocity.y, -swim_jump_velocity)
 
-	velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
+	if not surface_jump_active:
+		velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
+	prevent_unintentional_surface_exit(delta, vertical_speed)
 	coyote_timer = 0.0
 	jump_buffer_timer = 0.0
 	max_fall_speed = 0.0
@@ -429,6 +514,111 @@ func update_swimming(delta: float) -> void:
 		try_shoot()
 	if Input.is_action_just_pressed("slap"):
 		try_slap()
+
+
+func try_capture_water_surface() -> bool:
+	if not Input.is_action_pressed("move_up"):
+		return false
+
+	var candidate := get_nearest_surface_water()
+	if candidate == null or velocity.y > surface_entry_max_fall_speed:
+		return false
+
+	var target_y := get_surface_target_y(candidate)
+	if global_position.y > target_y + surface_capture_distance:
+		return false
+
+	surface_water_body = candidate
+	is_surface_swimming = true
+	return true
+
+
+func update_surface_float(delta: float, vertical_speed: float) -> void:
+	if surface_water_body == null or not is_instance_valid(surface_water_body):
+		is_surface_swimming = false
+		surface_water_body = null
+		return
+
+	var distance := get_surface_target_y(surface_water_body) - global_position.y
+	if absf(distance) <= 0.05:
+		velocity.y = 0.0
+		return
+
+	velocity.y = clampf(distance / maxf(delta, 0.0001), -vertical_speed, vertical_speed)
+
+
+func prevent_unintentional_surface_exit(delta: float, vertical_speed: float) -> void:
+	if surface_jump_active or is_surface_swimming or velocity.y >= 0.0 or not Input.is_action_pressed("move_up"):
+		return
+
+	var candidate := get_nearest_surface_water()
+	if candidate == null:
+		return
+
+	var capture_y := get_surface_target_y(candidate) + surface_capture_distance
+	if global_position.y + velocity.y * delta > capture_y:
+		return
+
+	surface_water_body = candidate
+	is_surface_swimming = true
+	update_surface_float(delta, vertical_speed)
+
+
+func update_surface_recovery(delta: float) -> void:
+	if surface_recovery_water_body == null:
+		return
+	if not is_instance_valid(surface_recovery_water_body):
+		surface_recovery_water_body = null
+		surface_recovery_timer = 0.0
+		return
+
+	surface_recovery_timer -= delta
+	if surface_recovery_timer > 0.0:
+		return
+
+	var expired_water := surface_recovery_water_body
+	surface_recovery_water_body = null
+	surface_recovery_timer = 0.0
+	finish_water_exit(expired_water)
+
+
+func start_surface_jump() -> void:
+	var exit_boost := get_water_float_from(surface_water_body, &"surface_exit_boost", absf(jump_velocity) * 0.7)
+	is_surface_swimming = false
+	surface_jump_active = true
+	surface_water_body = null
+	velocity.y = -maxf(exit_boost, 0.0)
+
+
+func get_nearest_surface_water() -> Node:
+	prune_water_bodies()
+	var nearest: Node = null
+	var nearest_distance := INF
+	for water_body in active_water_bodies:
+		if not bool(water_body.get("has_visible_surface")):
+			continue
+		var distance := absf(global_position.y - get_water_surface_y(water_body))
+		if distance < nearest_distance:
+			nearest = water_body
+			nearest_distance = distance
+	return nearest
+
+
+func get_water_surface_y(water_body: Node) -> float:
+	var water_node := water_body as Node2D
+	return water_node.global_position.y if water_node != null else global_position.y
+
+
+func get_surface_target_y(water_body: Node) -> float:
+	return get_water_surface_y(water_body) - maxf(surface_float_offset, 0.0)
+
+
+func get_applied_gravity() -> float:
+	if is_in_water() and not surface_jump_active:
+		return water_gravity * get_water_float(&"gravity_multiplier", 1.0)
+	if not is_on_floor():
+		return gravity
+	return 0.0
 
 
 func update_water_breath(delta: float) -> void:
@@ -452,6 +642,12 @@ func reset_breath_timers() -> void:
 func reset_water_state() -> void:
 	active_water_bodies.clear()
 	submerged_head_water_bodies.clear()
+	is_surface_swimming = false
+	surface_jump_active = false
+	surface_water_body = null
+	surface_recovery_water_body = null
+	surface_recovery_timer = 0.0
+	debug_surface_water_body = null
 	reset_breath_timers()
 
 
@@ -462,6 +658,9 @@ func prune_water_bodies() -> void:
 	for index in range(submerged_head_water_bodies.size() - 1, -1, -1):
 		if not is_instance_valid(submerged_head_water_bodies[index]):
 			submerged_head_water_bodies.remove_at(index)
+	if surface_water_body != null and not is_instance_valid(surface_water_body):
+		is_surface_swimming = false
+		surface_water_body = null
 
 
 func get_active_water() -> Node:
@@ -505,6 +704,8 @@ func setup_water_debug_display() -> void:
 
 
 func _process(_delta: float) -> void:
+	if water_debug_enabled and water_state_debug_lines:
+		queue_redraw()
 	if water_debug_label == null:
 		return
 
@@ -515,6 +716,10 @@ func _process(_delta: float) -> void:
 		movement_state = "ZIPLINE"
 	elif is_swatting:
 		movement_state = "SWATTING"
+	elif surface_jump_active:
+		movement_state = "AIRBORNE"
+	elif is_surface_swimming:
+		movement_state = "SURFACE"
 	elif is_in_water():
 		movement_state = "SWIMMING"
 	elif not is_on_floor():
@@ -523,17 +728,56 @@ func _process(_delta: float) -> void:
 	var breath_duration := get_water_float_from(get_active_head_water(), &"breath_duration", 5.0)
 	var breath_remaining := maxf(breath_duration - breath_elapsed, 0.0)
 	var damage_remaining := maxf(next_drowning_damage_time - breath_elapsed, 0.0)
-	water_debug_label.text = "State: %s\nIn water: %s  Head submerged: %s\nBreath: %.2fs  Next damage: %.2fs\nVelocity: (%.1f, %.1f)  Swim: %.1f  Water gravity: %.1f" % [
+	var geometry_overlap := false
+	var area_overlap := false
+	if debug_surface_water_body != null and is_instance_valid(debug_surface_water_body):
+		if debug_surface_water_body.has_method("contains_body"):
+			geometry_overlap = bool(debug_surface_water_body.call("contains_body", self))
+		if debug_surface_water_body.has_method("is_body_reported_inside"):
+			area_overlap = bool(debug_surface_water_body.call("is_body_reported_inside", self))
+	water_debug_label.text = "State: %s\nIn water: %s  Head submerged: %s\nGeometry overlap: %s  Area overlap: %s\nBreath: %.2fs  Next damage: %.2fs\nVelocity: (%.1f, %.1f)  Swim: %.1f  Applied gravity: %.1f\nLines: surface cyan | capture yellow | float green | body white" % [
 		movement_state,
 		str(is_in_water()),
 		str(is_head_submerged()),
+		str(geometry_overlap),
+		str(area_overlap),
 		breath_remaining,
 		damage_remaining,
 		velocity.x,
 		velocity.y,
 		swimming_speed * get_water_float(&"swim_speed_multiplier", 1.0),
-		water_gravity * get_water_float(&"gravity_multiplier", 1.0),
+		get_applied_gravity(),
 	]
+
+
+func _draw() -> void:
+	if not water_debug_enabled or not water_state_debug_lines:
+		return
+	if debug_surface_water_body == null or not is_instance_valid(debug_surface_water_body):
+		return
+	if not bool(debug_surface_water_body.get("has_visible_surface")):
+		return
+
+	var half_width := 90.0
+	var surface_y := get_water_surface_y(debug_surface_water_body) - global_position.y
+	var float_y := surface_y - maxf(surface_float_offset, 0.0)
+	var capture_y := float_y + maxf(surface_capture_distance, 0.0)
+	var body_bottom_y := get_body_bottom_y() - global_position.y
+	draw_line(Vector2(-half_width, surface_y), Vector2(half_width, surface_y), Color(0.1, 0.9, 1.0), 2.0)
+	draw_line(Vector2(-half_width, capture_y), Vector2(half_width, capture_y), Color(1.0, 0.82, 0.15), 2.0)
+	draw_line(Vector2(-half_width, float_y), Vector2(half_width, float_y), Color(0.2, 1.0, 0.35), 2.0)
+	draw_line(Vector2(-30.0, body_bottom_y), Vector2(30.0, body_bottom_y), Color.WHITE, 2.0)
+
+
+func get_body_bottom_y() -> float:
+	if body_collision_shape == null:
+		return global_position.y
+
+	var rectangle := body_collision_shape.shape as RectangleShape2D
+	if rectangle != null:
+		return body_collision_shape.global_position.y + rectangle.size.y * 0.5 * abs(body_collision_shape.global_scale.y)
+
+	return body_collision_shape.global_position.y
 
 
 func play_animation_safe(name: StringName, fallback: StringName = &"idle") -> void:
@@ -583,7 +827,7 @@ func update_animation() -> void:
 		play_animation_safe(&"landing", &"idle")
 		return
 
-	if is_in_water():
+	if is_in_water() and not surface_jump_active:
 		animated_sprite.speed_scale = 0.75
 		play_animation_safe(&"swim", &"jump")
 		return

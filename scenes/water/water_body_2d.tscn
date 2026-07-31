@@ -11,9 +11,9 @@ size = Vector2(800, 360)
 [node name="WaterBody2D" type="Node2D" unique_id=1721704375]
 script = ExtResource("1_water")
 swim_speed_multiplier = 0.7000000000000001
-gravity_multiplier = 0.5
 maximum_underwater_fall_speed = 100.0
 water_drag = 210.0
+surface_exit_boost = 200.0
 breath_duration = 7.0
 damage_interval = 4.0
 

@@ -1,6 +1,16 @@
 # State of Game
 
-Last updated: 2026-07-29
+Last updated: 2026-07-31
+
+## Latest Update - 2026-07-31 - Stable Water Swimming
+- Water detection now reconciles `Area2D` signals with the authored water geometry every physics frame, preventing false airborne state while the player is visibly underwater; body and head-submersion state both use this fallback.
+- Surface swimming is input-driven: hold Up to swim to and remain at the surface, release Up to sink under water gravity, press Down to dive directly, and press Jump at the surface to launch out with the configured exit boost.
+- Player Water Inspector tuning now includes swimming speed, water gravity, swim jump height, surface float/capture thresholds, surface exit recovery, and optional state-debug lines. Current Player scene water gravity is `110` and base WaterBody surface exit boost is `200`.
+- Water debug output distinguishes geometric overlap from physics-Area overlap and draws the water surface, capture boundary, float target, and player collider bottom.
+- Ripple timing now uses actual surface crossings instead of noisy Area enter/exit events: downward entry triggers when the collider bottom touches the surface, and upward swimming triggers when the player reaches the surface. Deep overlap events no longer create early ripples.
+- Expanded `water_system_smoke_test.gd` covers overlap-state repair, head submersion, hold-Up ascent, gravity-driven sinking, Down-to-dive behavior, intentional jump exits, and precise ripple crossing timing.
+- Both duplicate player controllers remain byte-identical, and the water smoke test plus headless playable-room validation pass on Godot 4.6.1.
+- Project main scene is currently back on `scenes/levels/level_01.tscn`.
 
 ## Latest Update - 2026-07-29 - Water Prototype
 - Added the reusable `WaterBody2D` prototype in `scenes/water/water_body_2d.tscn` with resizable body/head detection volumes, placeholder fill/surface visuals, splashes, bubbles, optional spring ripples, and an audio hook.
@@ -9,10 +19,10 @@ Last updated: 2026-07-29
 - Swimming state and head submersion are detected separately. Adjacent water bodies are tracked safely so leaving one overlapping volume does not incorrectly clear swimming or breath state.
 - Drowning uses the existing player health path: current tuning allows `7.0` seconds of breath and repeats damage every `4.0` seconds while the head remains submerged.
 - Player Inspector now exposes `Swimming Speed`, `Water Gravity`, and `Swim Jump Height` under the `Water` group; each water body retains local speed/gravity modifiers for environmental variation.
-- Current base `WaterBody2D` tuning uses `0.7` swim speed, `0.5` gravity, `100 px/s` maximum underwater fall speed, and `210` drag. The large pool opacity is currently `0.25`.
+- Current base `WaterBody2D` tuning uses `0.7` swim speed, the default `1.0` gravity multiplier, `100 px/s` maximum underwater fall speed, and `210` drag. The large pool opacity is currently `0.25`.
 - Added `move_up` input on keyboard `W`, Up Arrow, and joypad left-stick up. `move_down` remains keyboard `S`, Down Arrow, and joypad left-stick down.
 - Added `scripts/tests/water_system_smoke_test.gd` covering water transitions, overlapping volumes, four-direction response, drowning cadence, splash gating, flooded-tunnel behavior, and ripple impulses.
-- Project main scene is currently set to `scenes/levels/test_room_water.tscn` for focused water-system iteration.
+- At this prototype checkpoint, the main scene was temporarily set to `scenes/levels/test_room_water.tscn` for focused water-system iteration.
 
 ## Latest Update - 2026-07-29
 - Boss 2/final boss visual prototype moved from the single placeholder `Sprite2D` toward an `AnimatedSprite2D` workflow.

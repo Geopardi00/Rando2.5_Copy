@@ -35,6 +35,38 @@ func run_test() -> void:
 	check(pool.water_head_area.collision_mask == 256, "Water head detection should scan only the head-sensor layer.")
 	check(pool.water_shape.position.y == pool.water_size.y * 0.5, "Water volume should extend downward from its surface origin.")
 	check(not tunnel.water_surface.visible, "Flooded tunnel should not draw a false surface.")
+	check(pool.is_in_group("water_body"), "Reusable water bodies should register for geometric overlap reconciliation.")
+
+	var geometry_player := player_scene.instantiate()
+	add_child(geometry_player)
+	await get_tree().process_frame
+	geometry_player.set_physics_process(false)
+	geometry_player.global_position = pool.global_position + Vector2(0.0, 100.0)
+	check(pool.contains_body(geometry_player), "Visible water bounds should contain a player positioned below the surface.")
+	geometry_player.reset_water_state()
+	geometry_player.reconcile_water_overlaps()
+	check(geometry_player.is_in_water(), "Geometric reconciliation should repair a missing Area2D water state while the player remains inside.")
+	check(geometry_player.is_head_submerged(), "Geometric reconciliation should repair missing head-submersion state at depth.")
+	var lost_water_while_ascending := false
+	Input.action_press("move_up")
+	for frame in 90:
+		geometry_player.update_swimming(1.0 / 60.0)
+		geometry_player.move_and_slide()
+		geometry_player.reconcile_water_overlaps()
+		lost_water_while_ascending = lost_water_while_ascending or not geometry_player.is_in_water()
+		await get_tree().physics_frame
+	Input.action_release("move_up")
+	check(not lost_water_while_ascending, "Holding Up from underwater should never transition through airborne state.")
+	check(geometry_player.is_surface_swimming, "Holding Up should reach the surface-swimming state without Jump.")
+	var held_surface_y: float = geometry_player.global_position.y
+	for frame in 12:
+		geometry_player.update_swimming(1.0 / 60.0)
+		geometry_player.move_and_slide()
+		geometry_player.reconcile_water_overlaps()
+		await get_tree().physics_frame
+	check(not geometry_player.is_surface_swimming, "Releasing Up should release the surface boundary.")
+	check(geometry_player.global_position.y > held_surface_y + 0.05, "Water gravity should make the player sink after releasing Up.")
+	geometry_player.queue_free()
 
 	player.enter_water(pool)
 	player.enter_water(tunnel)
@@ -81,6 +113,29 @@ func run_test() -> void:
 	tunnel.create_surface_splash(player, true)
 	check(splash_events == 1, "A flooded tunnel should not create surface splashes.")
 
+	pool.splash_cooldowns.erase(player)
+	pool.tracked_surface_positions.erase(player)
+	player.global_position = pool.global_position + Vector2(0.0, -40.0)
+	player.velocity.y = 240.0
+	pool.update_surface_crossings()
+	player.global_position.y = pool.global_position.y - 20.0
+	pool.update_surface_crossings()
+	check(splash_events == 2, "Crossing the surface downward should create an entry ripple.")
+
+	pool.splash_cooldowns.erase(player)
+	player.global_position.y = pool.global_position.y + 30.0
+	player.velocity.y = -100.0
+	pool.update_surface_crossings()
+	player.global_position.y = pool.global_position.y - 1.0
+	pool.update_surface_crossings()
+	check(splash_events == 3, "Swimming upward from depth should ripple when the player reaches the surface.")
+
+	pool.splash_cooldowns.erase(player)
+	var events_before_deep_exit := splash_events
+	player.global_position.y = pool.global_position.y + 100.0
+	pool._on_body_exited(player)
+	check(splash_events == events_before_deep_exit, "A deep Area2D exit should not create an early surface ripple.")
+
 	var ripple_active := false
 	for ripple_velocity in pool.ripple_velocities:
 		ripple_active = ripple_active or not is_zero_approx(ripple_velocity)
@@ -91,6 +146,80 @@ func run_test() -> void:
 	check(is_zero_approx(player.breath_elapsed), "Reaching air should reset the breath timer.")
 	player.exit_water(tunnel, 0.0, false)
 	check(not player.is_in_water(), "Exiting the last water volume should restore land mode.")
+
+	var surface_player := player_scene.instantiate()
+	add_child(surface_player)
+	await get_tree().process_frame
+	surface_player.set_physics_process(false)
+	var surface_target: float = pool.global_position.y - surface_player.surface_float_offset
+
+	surface_player.global_position = Vector2(0.0, surface_target - 8.0)
+	surface_player.velocity.y = surface_player.surface_entry_max_fall_speed + 120.0
+	surface_player.enter_water(pool)
+	check(not surface_player.is_surface_swimming, "A fast water entry should submerge instead of snapping to the surface.")
+	check(surface_player.is_in_water(), "A fast entry should switch to swimming on the first body overlap.")
+	surface_player.exit_water(pool, pool.global_position.y, false)
+
+	surface_player.global_position = Vector2(0.0, surface_target - 8.0)
+	surface_player.velocity.y = surface_player.surface_entry_max_fall_speed * 0.5
+	Input.action_press("move_up")
+	surface_player.enter_water(pool)
+	check(surface_player.is_surface_swimming, "Holding Up during a gentle entry should capture the visible surface.")
+	check(is_equal_approx(surface_player.get_applied_gravity(), surface_player.water_gravity * pool.gravity_multiplier), "Water gravity should remain active at the surface.")
+	surface_player.global_position.y = surface_target + 4.0
+	surface_player.update_surface_float(0.1, pool.vertical_swim_speed)
+	check(is_equal_approx(surface_player.global_position.y + surface_player.velocity.y * 0.1, surface_target), "Surface movement should stop at the configured float target without overshooting.")
+	Input.action_release("move_up")
+
+	Input.action_press("move_down")
+	surface_player.update_swimming(0.1)
+	Input.action_release("move_down")
+	check(not surface_player.is_surface_swimming, "Down input should release the surface hold for diving.")
+	check(surface_player.velocity.y > 0.0, "Down input should move the player deeper into the water.")
+
+	surface_player.global_position.y = surface_target + surface_player.surface_capture_distance
+	surface_player.velocity.y = -20.0
+	Input.action_press("move_up")
+	surface_player.update_swimming(0.1)
+	Input.action_release("move_up")
+	check(surface_player.is_surface_swimming, "Swimming upward should capture the surface near its target.")
+	Input.action_press("jump")
+	surface_player.update_swimming(0.1)
+	Input.action_release("jump")
+	check(surface_player.surface_jump_active, "Jump at the surface should enter the intentional airborne phase.")
+	check(is_equal_approx(surface_player.velocity.y, -pool.surface_exit_boost), "Surface jump should apply the configured exit boost once.")
+	check(is_equal_approx(surface_player.get_applied_gravity(), surface_player.gravity), "Intentional jump-out should report airborne gravity while leaving water.")
+
+	surface_player.velocity.y = -35.0
+	surface_player.exit_water(pool, pool.global_position.y, true)
+	check(is_equal_approx(surface_player.velocity.y, -35.0), "A generic surface exit should not apply an automatic boost.")
+	check(not surface_player.surface_jump_active, "Leaving the water area should clear the jump-out override.")
+
+	surface_player.global_position = Vector2(0.0, surface_target + surface_player.surface_capture_distance + 10.0)
+	surface_player.velocity.y = -pool.vertical_swim_speed
+	surface_player.enter_water(pool)
+	Input.action_press("move_up")
+	surface_player.prevent_unintentional_surface_exit(0.1, pool.vertical_swim_speed)
+	Input.action_release("move_up")
+	check(surface_player.is_surface_swimming, "An upward physics step that crosses the capture line should enter surface holding predictively.")
+	check(surface_player.global_position.y + surface_player.velocity.y * 0.1 >= surface_target, "Predictive capture should prevent movement beyond the float target.")
+
+	surface_player.is_surface_swimming = false
+	surface_player.surface_water_body = null
+	surface_player.velocity.y = -35.0
+	surface_player.exit_water(pool, pool.global_position.y, true)
+	check(surface_player.is_in_water() and surface_player.is_surface_swimming, "An unintended top exit should retain swimming during the recovery window.")
+	check(surface_player.velocity.y >= 0.0, "Surface recovery should cancel upward escape without applying an airborne knockback.")
+	surface_player.enter_water(pool)
+	check(surface_player.surface_recovery_water_body == null, "Re-entering the water area should clear surface recovery.")
+	surface_player.finish_water_exit(pool)
+
+	surface_player.global_position = Vector2(tunnel.global_position.x, tunnel.global_position.y - 8.0)
+	surface_player.velocity.y = 0.0
+	surface_player.enter_water(tunnel)
+	check(not surface_player.is_surface_swimming, "Water without a visible surface should not activate surface holding.")
+	check(is_equal_approx(surface_player.get_applied_gravity(), surface_player.water_gravity * tunnel.gravity_multiplier), "Swimming should report the effective configured water gravity.")
+	surface_player.exit_water(tunnel, tunnel.global_position.y, false)
 
 	var overlap_player := player_scene.instantiate()
 	overlap_player.position = Vector2(520.0, -100.0)

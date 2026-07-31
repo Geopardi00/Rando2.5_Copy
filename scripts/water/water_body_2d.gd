@@ -67,9 +67,11 @@ var ripple_heights: PackedFloat32Array = PackedFloat32Array()
 var ripple_velocities: PackedFloat32Array = PackedFloat32Array()
 var submerged_players: Array[Node2D] = []
 var splash_cooldowns: Dictionary = {}
+var tracked_surface_positions: Dictionary = {}
 
 
 func _ready() -> void:
+	add_to_group("water_body")
 	water_area.body_entered.connect(_on_body_entered)
 	water_area.body_exited.connect(_on_body_exited)
 	water_head_area.area_entered.connect(_on_area_entered)
@@ -78,8 +80,64 @@ func _ready() -> void:
 	configure_volume()
 
 
+func contains_body(body: Node2D) -> bool:
+	if body == null:
+		return false
+
+	var shape_node := body.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	return contains_collision_shape(shape_node, body.global_position)
+
+
+func contains_head_sensor(body: Node2D) -> bool:
+	if body == null:
+		return false
+
+	var shape_node := body.get_node_or_null("WaterHeadSensor/CollisionShape2D") as CollisionShape2D
+	return contains_collision_shape(shape_node, body.global_position)
+
+
+func contains_collision_shape(shape_node: CollisionShape2D, fallback_center: Vector2) -> bool:
+	var body_center := fallback_center
+	var body_half_size := Vector2.ZERO
+	if shape_node != null:
+		body_center = shape_node.global_position
+		var rectangle := shape_node.shape as RectangleShape2D
+		if rectangle != null:
+			body_half_size = rectangle.size * 0.5 * shape_node.global_scale.abs()
+
+	var corners := [
+		body_center + Vector2(-body_half_size.x, -body_half_size.y),
+		body_center + Vector2(body_half_size.x, -body_half_size.y),
+		body_center + Vector2(body_half_size.x, body_half_size.y),
+		body_center + Vector2(-body_half_size.x, body_half_size.y),
+	]
+	var local_min := Vector2(INF, INF)
+	var local_max := Vector2(-INF, -INF)
+	for corner in corners:
+		var local_corner := to_local(corner)
+		local_min.x = minf(local_min.x, local_corner.x)
+		local_min.y = minf(local_min.y, local_corner.y)
+		local_max.x = maxf(local_max.x, local_corner.x)
+		local_max.y = maxf(local_max.y, local_corner.y)
+
+	var half_width := water_size.x * 0.5
+	return local_max.x >= -half_width and local_min.x <= half_width and local_max.y >= 0.0 and local_min.y <= water_size.y
+
+
+func is_body_above_surface(body: Node2D) -> bool:
+	if body == null or not has_visible_surface:
+		return false
+	var local_body := to_local(body.global_position)
+	return local_body.y <= 0.0 and absf(local_body.x) <= water_size.x * 0.5 + 4.0
+
+
+func is_body_reported_inside(body: Node2D) -> bool:
+	return body != null and water_area.overlaps_body(body)
+
+
 func _physics_process(delta: float) -> void:
 	update_splash_cooldowns(delta)
+	update_surface_crossings()
 	update_ripple(delta)
 	update_bubbles()
 
@@ -222,10 +280,6 @@ func create_surface_splash(body: Node2D, entering: bool) -> void:
 	var character_body := body as CharacterBody2D
 	if character_body != null:
 		vertical_speed = character_body.velocity.y
-	if entering and vertical_speed < splash_minimum_entry_speed:
-		return
-	if not entering and vertical_speed >= -splash_minimum_entry_speed * 0.65:
-		return
 
 	var local_body := to_local(body.global_position)
 	if absf(local_body.y) > 72.0:
@@ -248,6 +302,49 @@ func create_surface_splash(body: Node2D, entering: bool) -> void:
 	if splash_audio.stream != null:
 		splash_audio.play()
 	surface_crossed.emit(body, Vector2(body.global_position.x, global_position.y), strength, entering)
+
+
+func update_surface_crossings() -> void:
+	if not has_visible_surface or get_tree() == null:
+		tracked_surface_positions.clear()
+		return
+
+	var seen_players: Dictionary = {}
+	for node in get_tree().get_nodes_in_group("player"):
+		var body := node as Node2D
+		if body == null or not is_instance_valid(body):
+			continue
+		seen_players[body] = true
+
+		var local_root := to_local(body.global_position)
+		var current_positions := Vector2(local_root.y, get_body_bottom_local_y(body))
+		if tracked_surface_positions.has(body):
+			var previous_positions: Vector2 = tracked_surface_positions[body]
+			var character_body := body as CharacterBody2D
+			var vertical_velocity := character_body.velocity.y if character_body != null else current_positions.x - previous_positions.x
+			var within_surface_width := absf(local_root.x) <= water_size.x * 0.5 + 16.0
+			if within_surface_width and previous_positions.y < 0.0 and current_positions.y >= 0.0 and vertical_velocity >= 0.0:
+				create_surface_splash(body, true)
+			elif within_surface_width and previous_positions.x > 0.0 and current_positions.x <= 0.0 and vertical_velocity < 0.0:
+				create_surface_splash(body, false)
+
+		tracked_surface_positions[body] = current_positions
+
+	for body in tracked_surface_positions.keys():
+		if not seen_players.has(body) or not is_instance_valid(body):
+			tracked_surface_positions.erase(body)
+
+
+func get_body_bottom_local_y(body: Node2D) -> float:
+	var shape_node := body.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if shape_node == null:
+		return to_local(body.global_position).y
+
+	var bottom_position := shape_node.global_position
+	var rectangle := shape_node.shape as RectangleShape2D
+	if rectangle != null:
+		bottom_position.y += rectangle.size.y * 0.5 * absf(shape_node.global_scale.y)
+	return to_local(bottom_position).y
 
 
 func update_splash_cooldowns(delta: float) -> void:
@@ -277,15 +374,14 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 
 	body.call("enter_water", self)
-	create_surface_splash(body, true)
 
 
 func _on_body_exited(body: Node2D) -> void:
 	if not body.is_in_group("player") or not body.has_method("exit_water"):
 		return
 
-	var exited_through_surface := has_visible_surface and absf(to_local(body.global_position).y) <= 72.0
-	create_surface_splash(body, false)
+	var local_body := to_local(body.global_position)
+	var exited_through_surface := has_visible_surface and local_body.y <= 0.0 and absf(local_body.x) <= water_size.x * 0.5 + 4.0
 	body.call("exit_water", self, global_position.y, exited_through_surface)
 
 
