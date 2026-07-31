@@ -23,6 +23,10 @@ water_drag = 210.0
 surface_exit_boost = 200.0
 breath_duration = 7.0
 damage_interval = 4.0
+ripple_tension = 38.5
+ripple_damping = 1.8
+ripple_impact_scale = 12.63
+ripple_maximum_height = 200.0
 
 [node name="WaterArea" type="Area2D" parent="." unique_id=1003098927]
 collision_layer = 0

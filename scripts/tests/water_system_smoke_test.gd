@@ -2,6 +2,7 @@ extends Node
 
 var failures: int = 0
 var splash_events: int = 0
+var last_splash_strength: float = 0.0
 
 
 func _ready() -> void:
@@ -12,10 +13,12 @@ func run_test() -> void:
 	var player_scene := load("res://scenes/player/player.tscn") as PackedScene
 	var water_scene := load("res://scenes/water/water_body_2d.tscn") as PackedScene
 	var level_scene := load("res://scenes/levels/test_room_water.tscn") as PackedScene
+	var crate_scene := load("res://scenes/props/push_crate.tscn") as PackedScene
 	check(player_scene != null, "Player scene should load.")
 	check(water_scene != null, "Reusable water scene should load.")
 	check(level_scene != null, "Water test room should load.")
-	if player_scene == null or water_scene == null or level_scene == null:
+	check(crate_scene != null, "Push crate scene should load.")
+	if player_scene == null or water_scene == null or level_scene == null or crate_scene == null:
 		finish_test()
 		return
 
@@ -36,6 +39,16 @@ func run_test() -> void:
 	check(pool.water_shape.position.y == pool.water_size.y * 0.5, "Water volume should extend downward from its surface origin.")
 	check(not tunnel.water_surface.visible, "Flooded tunnel should not draw a false surface.")
 	check(pool.is_in_group("water_body"), "Reusable water bodies should register for geometric overlap reconciliation.")
+	check(not pool.splash_particles.emitting, "Legacy splash particles should remain inactive.")
+	check(pool.splash_particles.process_mode == Node.PROCESS_MODE_DISABLED, "Legacy splash particles should remain disabled.")
+	check(pool.bubble_particles != null and pool.bubble_particles.texture != null, "Underwater bubble particles should remain available.")
+
+	var test_room := level_scene.instantiate()
+	var test_crate := test_room.get_node_or_null("WaterImpactCrate") as RigidBody2D
+	check(test_crate != null, "Water test room should include a push crate for manual impact testing.")
+	if test_crate != null:
+		check((test_crate.collision_mask & 1) != 0, "Water test crate should collide with world geometry.")
+	test_room.free()
 
 	var geometry_player := player_scene.instantiate()
 	add_child(geometry_player)
@@ -141,6 +154,91 @@ func run_test() -> void:
 		ripple_active = ripple_active or not is_zero_approx(ripple_velocity)
 	check(ripple_active, "Surface splash should impulse the pool ripple.")
 
+	var wave_pool := water_scene.instantiate()
+	wave_pool.position = Vector2(3000.0, 0.0)
+	add_child(wave_pool)
+	await get_tree().process_frame
+	wave_pool.set_physics_process(false)
+	var center_index: int = roundi(float(wave_pool.ripple_heights.size() - 1) * 0.5)
+
+	wave_pool.configure_ripple()
+	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, 180.0)
+	wave_pool.update_ripple(1.0 / 60.0)
+	var localized_height: float = absf(wave_pool.ripple_heights[center_index])
+	check(localized_height > 1.0, "A surface impact should visibly displace the nearest spring by more than one pixel.")
+	var neighbor_motion: float = absf(wave_pool.ripple_heights[center_index - 1]) + absf(wave_pool.ripple_heights[center_index + 1])
+	check(neighbor_motion > 0.001, "Neighbor springs should move during propagation passes.")
+
+	wave_pool.configure_ripple()
+	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, 120.0)
+	wave_pool.update_ripple(1.0 / 60.0)
+	var downward_height: float = wave_pool.ripple_heights[center_index]
+	wave_pool.configure_ripple()
+	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, -120.0)
+	wave_pool.update_ripple(1.0 / 60.0)
+	var upward_height: float = wave_pool.ripple_heights[center_index]
+	check(downward_height > 0.0 and upward_height < 0.0, "Entry and resurfacing should initially displace the surface in opposite directions.")
+
+	var unsaturated_speed: float = wave_pool.ripple_maximum_impact_speed / maxf(wave_pool.ripple_impact_scale, 0.001)
+	wave_pool.configure_ripple()
+	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, unsaturated_speed * 0.15)
+	wave_pool.update_ripple(1.0 / 60.0)
+	var slow_wave_height := maximum_absolute(wave_pool.ripple_heights)
+	wave_pool.configure_ripple()
+	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, unsaturated_speed * 0.45)
+	wave_pool.update_ripple(1.0 / 60.0)
+	var fast_wave_height := maximum_absolute(wave_pool.ripple_heights)
+	check(fast_wave_height > slow_wave_height, "Faster player impacts should produce larger waves.")
+
+	var initial_wave_height := fast_wave_height
+	for frame in 600:
+		wave_pool.update_ripple(1.0 / 60.0, false)
+	var settled_wave_height := maximum_absolute(wave_pool.ripple_heights)
+	check(settled_wave_height < initial_wave_height * 0.25, "Spring waves should decay toward their rest height.")
+
+	wave_pool.configure_ripple()
+	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, 100000.0)
+	for frame in 120:
+		wave_pool.update_ripple(1.0 / 60.0, false)
+	check(ripple_values_are_stable(wave_pool), "Spring values should remain finite and respect configured clamps.")
+
+	wave_pool.configure_ripple()
+	player.global_position = wave_pool.global_position
+	player.velocity.y = unsaturated_speed * 0.2
+	wave_pool.splash_cooldowns.clear()
+	var player_impulse: float = absf(wave_pool.create_surface_splash(player, true))
+	var impact_crate := crate_scene.instantiate() as RigidBody2D
+	impact_crate.freeze = true
+	add_child(impact_crate)
+	impact_crate.global_position = wave_pool.global_position
+	impact_crate.linear_velocity.y = unsaturated_speed * 0.2
+	wave_pool.configure_ripple()
+	wave_pool.splash_cooldowns.clear()
+	var crate_impulse: float = absf(wave_pool.create_surface_splash(impact_crate, true))
+	check(crate_impulse > player_impulse, "A crate impact should use mass-scaled momentum and exceed an equal-speed player impact.")
+
+	wave_pool.configure_ripple()
+	wave_pool.splash_cooldowns.clear()
+	wave_pool.tracked_surface_positions.clear()
+	wave_pool.surface_crossed.connect(_on_surface_crossed)
+	var events_before_crate_crossing := splash_events
+	impact_crate.global_position = wave_pool.global_position + Vector2(0.0, -30.0)
+	impact_crate.linear_velocity.y = 140.0
+	wave_pool.update_surface_crossings()
+	impact_crate.global_position.y = wave_pool.global_position.y - 15.0
+	impact_crate.linear_velocity.y = 20.0
+	wave_pool.update_surface_crossings()
+	wave_pool.update_surface_crossings()
+	check(splash_events == events_before_crate_crossing + 1, "One crate surface crossing should emit one deduplicated event.")
+	check(last_splash_strength > 150.0, "Crate entry should retain the stronger pre-crossing velocity before applying mass.")
+
+	var tunnel_height_before := maximum_absolute(tunnel.ripple_heights)
+	tunnel.apply_ripple_impulse(tunnel.global_position.x, 220.0, 2.0)
+	tunnel.update_ripple(1.0 / 60.0)
+	check(is_equal_approx(maximum_absolute(tunnel.ripple_heights), tunnel_height_before), "Flooded-tunnel water should remain flat.")
+	impact_crate.queue_free()
+	wave_pool.queue_free()
+
 	player.set_head_submerged(tunnel, false)
 	check(not player.is_head_submerged(), "Reaching air should clear head submersion.")
 	check(is_zero_approx(player.breath_elapsed), "Reaching air should reset the breath timer.")
@@ -238,8 +336,26 @@ func run_test() -> void:
 	finish_test()
 
 
-func _on_surface_crossed(_body: Node2D, _position: Vector2, _strength: float, _entering: bool) -> void:
+func _on_surface_crossed(_body: Node2D, _position: Vector2, strength: float, _entering: bool) -> void:
 	splash_events += 1
+	last_splash_strength = strength
+
+
+func maximum_absolute(values: PackedFloat32Array) -> float:
+	var maximum_value := 0.0
+	for value in values:
+		maximum_value = maxf(maximum_value, absf(value))
+	return maximum_value
+
+
+func ripple_values_are_stable(water_body: WaterBody2D) -> bool:
+	for value in water_body.ripple_heights:
+		if not is_finite(value) or absf(value) > water_body.ripple_maximum_height + 0.001:
+			return false
+	for value in water_body.ripple_velocities:
+		if not is_finite(value) or absf(value) > water_body.ripple_maximum_impact_speed + 0.001:
+			return false
+	return true
 
 
 func check(condition: bool, message: String) -> void:
