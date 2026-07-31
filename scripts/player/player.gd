@@ -61,8 +61,10 @@ const ONE_WAY_PLATFORM_LAYER = 14
 @export var swim_jump_height: float = 18.0
 @export var surface_float_offset: float = 12.0
 @export var surface_capture_distance: float = 6.0
+@export var surface_jump_distance: float = 20.0
 @export var surface_entry_max_fall_speed: float = 80.0
 @export var surface_exit_recovery_time: float = 0.25
+@export var surface_jump_exit_grace_time: float = 0.35
 @export var water_state_debug_lines: bool = true
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -116,6 +118,7 @@ var surface_jump_active: bool = false
 var surface_water_body: Node = null
 var surface_recovery_water_body: Node = null
 var surface_recovery_timer: float = 0.0
+var surface_jump_exit_timer: float = 0.0
 var debug_surface_water_body: Node = null
 
 
@@ -148,6 +151,7 @@ func _physics_process(delta: float) -> void:
 	update_drop_through(delta)
 	update_water_breath(delta)
 	update_surface_recovery(delta)
+	surface_jump_exit_timer = maxf(surface_jump_exit_timer - delta, 0.0)
 
 	if is_dead:
 		force_detach_from_zipline()
@@ -358,6 +362,7 @@ func enter_water(water_body: Node) -> void:
 		return
 
 	surface_jump_active = false
+	surface_jump_exit_timer = 0.0
 	is_surface_swimming = false
 	surface_water_body = null
 	force_detach_from_zipline()
@@ -378,6 +383,16 @@ func enter_water(water_body: Node) -> void:
 
 
 func exit_water(water_body: Node, _surface_y: float, exited_through_surface: bool) -> void:
+	if not active_water_bodies.has(water_body):
+		return
+
+	if exited_through_surface and not surface_jump_active and surface_jump_exit_timer > 0.0 and bool(water_body.get("has_visible_surface")):
+		var exit_boost := get_water_float_from(water_body, &"surface_exit_boost", absf(jump_velocity) * 0.7)
+		velocity.y = minf(velocity.y, -maxf(exit_boost, 0.0))
+		surface_jump_exit_timer = 0.0
+		finish_water_exit(water_body)
+		return
+
 	if exited_through_surface and not surface_jump_active and bool(water_body.get("has_visible_surface")):
 		surface_water_body = water_body
 		is_surface_swimming = true
@@ -402,6 +417,7 @@ func finish_water_exit(water_body: Node) -> void:
 		return
 
 	surface_jump_active = false
+	surface_jump_exit_timer = 0.0
 	submerged_head_water_bodies.clear()
 	reset_breath_timers()
 
@@ -467,6 +483,9 @@ func update_swimming(delta: float) -> void:
 	var effective_water_gravity := water_gravity * gravity_multiplier
 	var jump_pressed := Input.is_action_just_pressed("jump")
 	var holding_up := vertical_axis < 0.0
+	var jump_surface := get_nearby_jump_surface() if jump_pressed else null
+	if jump_pressed:
+		surface_jump_exit_timer = maxf(surface_jump_exit_grace_time, 0.0)
 
 	if input_axis > 0.0:
 		facing = 1
@@ -487,8 +506,8 @@ func update_swimming(delta: float) -> void:
 	elif not is_surface_swimming and holding_up:
 		try_capture_water_surface()
 
-	if is_surface_swimming and jump_pressed:
-		start_surface_jump()
+	if jump_surface != null:
+		start_surface_jump(jump_surface)
 	elif is_surface_swimming:
 		update_surface_float(delta, vertical_speed)
 	elif not is_zero_approx(vertical_axis):
@@ -582,12 +601,21 @@ func update_surface_recovery(delta: float) -> void:
 	finish_water_exit(expired_water)
 
 
-func start_surface_jump() -> void:
-	var exit_boost := get_water_float_from(surface_water_body, &"surface_exit_boost", absf(jump_velocity) * 0.7)
+func start_surface_jump(water_body: Node) -> void:
+	var exit_boost := get_water_float_from(water_body, &"surface_exit_boost", absf(jump_velocity) * 0.7)
 	is_surface_swimming = false
 	surface_jump_active = true
 	surface_water_body = null
 	velocity.y = -maxf(exit_boost, 0.0)
+
+
+func get_nearby_jump_surface() -> Node:
+	var candidate := get_nearest_surface_water()
+	if candidate == null:
+		return null
+
+	var maximum_y := get_water_surface_y(candidate) + maxf(surface_jump_distance, 0.0)
+	return candidate if get_body_top_y() <= maximum_y else null
 
 
 func get_nearest_surface_water() -> Node:
@@ -644,6 +672,7 @@ func reset_water_state() -> void:
 	submerged_head_water_bodies.clear()
 	is_surface_swimming = false
 	surface_jump_active = false
+	surface_jump_exit_timer = 0.0
 	surface_water_body = null
 	surface_recovery_water_body = null
 	surface_recovery_timer = 0.0

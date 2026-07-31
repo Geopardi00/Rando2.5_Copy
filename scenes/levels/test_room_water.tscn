@@ -63,7 +63,7 @@ polygon = PackedVector2Array(1550, 420, 1940, 420, 1940, 720, 1550, 720)
 position = Vector2(100, 300)
 water_size = Vector2(1100, 480)
 water_color = Color(0.04, 0.52, 0.82, 1)
-water_opacity = 0.25
+ripple_spread = 5.6
 
 [node name="FloodedTunnel" parent="." unique_id=524974824 instance=ExtResource("5_water")]
 position = Vector2(1100, 440)
@@ -211,10 +211,6 @@ one_way_collision_margin = 12.0
 color = Color(0.78, 0.48, 0.22, 1)
 polygon = PackedVector2Array(-175, 101, 65, 101, 65, 119, -175, 119)
 
-[node name="WaterImpactCrate" parent="." instance=ExtResource("6_crate")]
-position = Vector2(-55, 75)
-collision_mask = 8195
-
 [node name="CrossBoard" type="CollisionShape2D" parent="DivePlatforms" unique_id=450561856]
 position = Vector2(285, 200)
 shape = SubResource("CrossBoardShape")
@@ -234,6 +230,10 @@ one_way_collision_margin = 12.0
 [node name="ExitBoardVisual" type="Polygon2D" parent="DivePlatforms" unique_id=1713247674]
 color = Color(0.42, 0.7, 0.46, 1)
 polygon = PackedVector2Array(485, 241, 625, 241, 625, 259, 485, 259)
+
+[node name="WaterImpactCrate" parent="." unique_id=1185851505 instance=ExtResource("6_crate")]
+position = Vector2(-55, 75)
+collision_mask = 8195
 
 [node name="AirPocketSteps" type="StaticBody2D" parent="." unique_id=1327510694]
 collision_mask = 0
@@ -270,4 +270,5 @@ position_smoothing_speed = 8.0
 
 [node name="GameUI" parent="." unique_id=2135777235 instance=ExtResource("4_ui")]
 
+[editable path="Pool"]
 [editable path="Player"]

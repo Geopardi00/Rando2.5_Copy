@@ -27,6 +27,14 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 		if is_node_ready():
 			configure_ripple()
 
+@export_group("Bubbles")
+@export_range(0.05, 1.0, 0.01) var bubble_spawn_interval: float = 0.22
+@export var bubble_emitter_offset: Vector2 = Vector2(0.0, -12.0)
+@export var bubble_rise_speed_min: float = 18.0
+@export var bubble_rise_speed_max: float = 30.0
+@export var bubble_lifetime: float = 2.4
+@export var bubble_surface_fade_distance: float = 20.0
+
 @export_group("Swimming")
 @export_range(0.05, 1.5, 0.05) var swim_speed_multiplier: float = 1.0
 @export_range(0.05, 1.5, 0.05) var swim_acceleration_multiplier: float = 0.5
@@ -71,6 +79,8 @@ var ripple_left_deltas: PackedFloat32Array = PackedFloat32Array()
 var ripple_right_deltas: PackedFloat32Array = PackedFloat32Array()
 var ripple_is_active: bool = false
 var submerged_players: Array[Node2D] = []
+var active_bubbles: Array[Dictionary] = []
+var bubble_spawn_timer: float = 0.0
 var splash_cooldowns: Dictionary = {}
 var tracked_surface_positions: Dictionary = {}
 
@@ -144,7 +154,7 @@ func _physics_process(delta: float) -> void:
 	update_splash_cooldowns(delta)
 	update_surface_crossings()
 	update_ripple(delta)
-	update_bubbles()
+	update_bubbles(delta)
 
 
 func configure_volume() -> void:
@@ -203,13 +213,15 @@ func configure_particles() -> void:
 	bubble_material.initial_velocity_min = 8.0
 	bubble_material.initial_velocity_max = 22.0
 	bubble_material.scale_min = 0.01
-	bubble_material.scale_max = 1.0
+	bubble_material.scale_max = 0.5
 	bubble_material.color = Color(0.75, 0.95, 1.0, 0.72)
 	bubble_particles.process_material = bubble_material
 	bubble_particles.amount = 10
 	bubble_particles.lifetime = 1.3
 	bubble_particles.randomness = 0.7
 	bubble_particles.emitting = false
+	bubble_particles.visible = false
+	bubble_particles.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 func update_ripple(delta: float, refresh_surface_geometry: bool = true) -> void:
@@ -397,17 +409,74 @@ func update_splash_cooldowns(delta: float) -> void:
 			splash_cooldowns[body] = remaining
 
 
-func update_bubbles() -> void:
+func update_bubbles(delta: float) -> void:
 	for index in range(submerged_players.size() - 1, -1, -1):
 		if not is_instance_valid(submerged_players[index]):
 			submerged_players.remove_at(index)
 
-	if submerged_players.is_empty():
-		bubble_particles.emitting = false
+	update_active_bubbles(delta)
+	if submerged_players.is_empty() or bubble_particles.texture == null:
 		return
 
-	bubble_particles.global_position = submerged_players[0].global_position + Vector2(0.0, -12.0)
-	bubble_particles.emitting = true
+	bubble_spawn_timer -= delta
+	if bubble_spawn_timer > 0.0:
+		return
+
+	bubble_spawn_timer = maxf(bubble_spawn_interval, 0.05) * randf_range(0.8, 1.2)
+	var emitter_position := submerged_players[0].global_position + bubble_emitter_offset
+	if has_visible_surface and to_local(emitter_position).y <= 0.0:
+		return
+	spawn_bubble(emitter_position)
+
+
+func spawn_bubble(emitter_position: Vector2) -> void:
+	var bubble := Sprite2D.new()
+	bubble.texture = bubble_particles.texture
+	bubble.z_index = bubble_particles.z_index
+	add_child(bubble)
+	bubble.global_position = emitter_position + Vector2(randf_range(-7.0, 7.0), 0.0)
+	var bubble_scale := randf_range(0.4, 1.05)
+	bubble.scale = Vector2.ONE * bubble_scale
+	bubble.modulate = Color(0.75, 0.95, 1.0, 0.72)
+
+	var minimum_speed := minf(bubble_rise_speed_min, bubble_rise_speed_max)
+	var maximum_speed := maxf(bubble_rise_speed_min, bubble_rise_speed_max)
+	active_bubbles.append({
+		"sprite": bubble,
+		"velocity": Vector2(randf_range(-6.0, 6.0), -randf_range(minimum_speed, maximum_speed)),
+		"age": 0.0,
+		"lifetime": maxf(bubble_lifetime * randf_range(0.85, 1.15), 0.1),
+	})
+
+
+func update_active_bubbles(delta: float) -> void:
+	for index in range(active_bubbles.size() - 1, -1, -1):
+		var bubble_data: Dictionary = active_bubbles[index]
+		var bubble := bubble_data.get("sprite") as Sprite2D
+		if bubble == null or not is_instance_valid(bubble):
+			active_bubbles.remove_at(index)
+			continue
+
+		var age := float(bubble_data.get("age", 0.0)) + delta
+		var lifetime := float(bubble_data.get("lifetime", 0.1))
+		var velocity: Vector2 = bubble_data.get("velocity", Vector2.ZERO)
+		bubble.global_position += velocity * delta
+		bubble_data["age"] = age
+
+		var opacity := clampf((lifetime - age) / 0.35, 0.0, 1.0)
+		var reached_surface := false
+		if has_visible_surface:
+			var surface_depth := to_local(bubble.global_position).y
+			var fade_distance := maxf(bubble_surface_fade_distance, 0.01)
+			opacity = minf(opacity, clampf(surface_depth / fade_distance, 0.0, 1.0))
+			reached_surface = surface_depth <= 0.0
+
+		var bubble_color := bubble.modulate
+		bubble_color.a = opacity * 0.72
+		bubble.modulate = bubble_color
+		if age >= lifetime or reached_surface or opacity <= 0.001:
+			bubble.queue_free()
+			active_bubbles.remove_at(index)
 
 
 func _on_body_entered(body: Node2D) -> void:

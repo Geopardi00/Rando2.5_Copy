@@ -42,6 +42,25 @@ func run_test() -> void:
 	check(not pool.splash_particles.emitting, "Legacy splash particles should remain inactive.")
 	check(pool.splash_particles.process_mode == Node.PROCESS_MODE_DISABLED, "Legacy splash particles should remain disabled.")
 	check(pool.bubble_particles != null and pool.bubble_particles.texture != null, "Underwater bubble particles should remain available.")
+	pool.submerged_players.append(player)
+	player.global_position = pool.global_position + Vector2(0.0, 100.0)
+	pool.update_bubbles(0.1)
+	check(pool.active_bubbles.size() == 1, "Submerged players should emit individual bubbles.")
+	pool.spawn_bubble(pool.global_position + Vector2(0.0, 10.0))
+	pool.update_active_bubbles(0.01)
+	var deep_bubble := pool.active_bubbles[0].get("sprite") as Sprite2D
+	var surface_bubble := pool.active_bubbles[1].get("sprite") as Sprite2D
+	check(surface_bubble.modulate.a < deep_bubble.modulate.a, "Each bubble should fade independently as it approaches the visible surface.")
+	surface_bubble.global_position.y = pool.global_position.y - 1.0
+	pool.update_active_bubbles(0.01)
+	check(pool.active_bubbles.size() == 1 and pool.active_bubbles[0].get("sprite") == deep_bubble, "A bubble touching the surface should disappear without removing deeper bubbles.")
+	pool.submerged_players.clear()
+	tunnel.submerged_players.append(player)
+	player.global_position = tunnel.global_position + Vector2(0.0, 10.0)
+	tunnel.update_bubbles(0.1)
+	check(tunnel.active_bubbles.size() == 1, "Flooded-tunnel bubbles should remain available without a visible surface.")
+	tunnel.submerged_players.clear()
+	tunnel.update_bubbles(0.1)
 
 	var test_room := level_scene.instantiate()
 	var test_crate := test_room.get_node_or_null("WaterImpactCrate") as RigidBody2D
@@ -292,6 +311,36 @@ func run_test() -> void:
 	surface_player.exit_water(pool, pool.global_position.y, true)
 	check(is_equal_approx(surface_player.velocity.y, -35.0), "A generic surface exit should not apply an automatic boost.")
 	check(not surface_player.surface_jump_active, "Leaving the water area should clear the jump-out override.")
+	surface_player.exit_water(pool, pool.global_position.y, true)
+	check(is_equal_approx(surface_player.velocity.y, -35.0), "A duplicate surface-exit notification should not cancel upward velocity.")
+	check(not surface_player.is_surface_swimming and surface_player.surface_recovery_water_body == null, "A duplicate surface-exit notification should not enter recovery.")
+
+	surface_player.global_position = pool.global_position + Vector2(0.0, 30.0)
+	surface_player.velocity = Vector2.ZERO
+	surface_player.enter_water(pool)
+	surface_player.is_surface_swimming = false
+	surface_player.surface_water_body = null
+	Input.action_press("jump")
+	surface_player.update_swimming(0.1)
+	Input.action_release("jump")
+	check(surface_player.surface_jump_active, "Jump near a visible surface should launch even when surface holding is inactive.")
+	check(is_equal_approx(surface_player.velocity.y, -pool.surface_exit_boost), "Near-surface Jump should use the full configured exit boost on its first press.")
+	surface_player.exit_water(pool, pool.global_position.y, true)
+
+	var configured_jump_distance: float = surface_player.surface_jump_distance
+	surface_player.surface_jump_distance = 0.0
+	surface_player.global_position = pool.global_position + Vector2(0.0, 15.0)
+	surface_player.velocity = Vector2.ZERO
+	surface_player.enter_water(pool)
+	Input.action_press("jump")
+	surface_player.update_swimming(0.1)
+	Input.action_release("jump")
+	check(not surface_player.surface_jump_active, "The fallback test should begin as an ordinary underwater jump.")
+	surface_player.global_position.y = pool.global_position.y - 1.0
+	surface_player.exit_water(pool, pool.global_position.y, true)
+	check(not surface_player.is_in_water(), "A Jump-requested surface crossing should leave water instead of entering recovery.")
+	check(is_equal_approx(surface_player.velocity.y, -pool.surface_exit_boost), "A Jump-requested surface crossing should be promoted to the full exit boost.")
+	surface_player.surface_jump_distance = configured_jump_distance
 
 	surface_player.global_position = Vector2(0.0, surface_target + surface_player.surface_capture_distance + 10.0)
 	surface_player.velocity.y = -pool.vertical_swim_speed

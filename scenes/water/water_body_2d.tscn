@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://7xas7n8e8hom" path="res://art/props/water_bubble.png" id="2_2p7fc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water"]
-size = Vector2(800, 360)
+size = Vector2(799, 359)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_head"]
 size = Vector2(800, 360)
@@ -17,7 +17,7 @@ scale_max = 0.03
 
 [node name="WaterBody2D" type="Node2D" unique_id=1721704375]
 script = ExtResource("1_water")
-water_opacity = 0.61
+water_opacity = 0.25
 swim_speed_multiplier = 0.8500000000000001
 swim_acceleration_multiplier = 0.15000000000000002
 maximum_underwater_fall_speed = 100.0
@@ -27,8 +27,9 @@ breath_duration = 7.0
 damage_interval = 4.0
 ripple_point_count = 40
 ripple_tension = 68.0
-ripple_damping = 1.2
-ripple_propagation_passes = 4
+ripple_damping = 3.7
+ripple_spread = 5.7
+ripple_propagation_passes = 6
 ripple_impact_scale = 20.0
 ripple_maximum_impact_speed = 300.0
 ripple_maximum_height = 200.0
