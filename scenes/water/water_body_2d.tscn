@@ -17,15 +17,20 @@ scale_max = 0.03
 
 [node name="WaterBody2D" type="Node2D" unique_id=1721704375]
 script = ExtResource("1_water")
-swim_speed_multiplier = 0.7000000000000001
+water_opacity = 0.61
+swim_speed_multiplier = 0.8500000000000001
+swim_acceleration_multiplier = 0.15000000000000002
 maximum_underwater_fall_speed = 100.0
 water_drag = 210.0
-surface_exit_boost = 200.0
+surface_exit_boost = 400.0
 breath_duration = 7.0
 damage_interval = 4.0
-ripple_tension = 38.5
-ripple_damping = 1.8
-ripple_impact_scale = 12.63
+ripple_point_count = 40
+ripple_tension = 68.0
+ripple_damping = 1.2
+ripple_propagation_passes = 4
+ripple_impact_scale = 20.0
+ripple_maximum_impact_speed = 300.0
 ripple_maximum_height = 200.0
 
 [node name="WaterArea" type="Area2D" parent="." unique_id=1003098927]
