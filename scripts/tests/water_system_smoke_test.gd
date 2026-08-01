@@ -42,6 +42,26 @@ func run_test() -> void:
 	check(not pool.splash_particles.emitting, "Legacy splash particles should remain inactive.")
 	check(pool.splash_particles.process_mode == Node.PROCESS_MODE_DISABLED, "Legacy splash particles should remain disabled.")
 	check(pool.bubble_particles != null and pool.bubble_particles.texture != null, "Underwater bubble particles should remain available.")
+	var original_player_material: Material = player.animated_sprite.material
+	player.reset_water_state()
+	pool.player_underwater_shader_enabled = true
+	player.enter_water(pool)
+	check(player.player_underwater_shader_active, "An enabled water body should activate the player-only underwater shader.")
+	check(player.animated_sprite.material == player.player_underwater_material, "The underwater effect should apply only to the animated player sprite.")
+	check(is_equal_approx(float(player.player_underwater_material.get_shader_parameter(&"wobble_strength")), pool.player_underwater_wobble_strength), "The player shader should use the active water body's wobble tuning.")
+	player.is_surface_swimming = true
+	player.update_player_underwater_shader()
+	check(not player.player_underwater_shader_active, "Reaching the swimming surface should disable the player shader before becoming airborne.")
+	check(player.animated_sprite.material == original_player_material, "Surface swimming should restore the player's original sprite material.")
+	player.is_surface_swimming = false
+	player.surface_jump_active = true
+	player.update_player_underwater_shader()
+	check(not player.player_underwater_shader_active, "A surface jump should keep the player shader disabled while leaving the water collider.")
+	player.surface_jump_active = false
+	player.finish_water_exit(pool)
+	check(not player.player_underwater_shader_active, "Leaving the last affected water body should disable the player shader.")
+	check(player.animated_sprite.material == original_player_material, "Leaving water should restore the player's original sprite material.")
+	pool.player_underwater_shader_enabled = false
 	pool.submerged_players.append(player)
 	player.global_position = pool.global_position + Vector2(0.0, 100.0)
 	pool.update_bubbles(0.1)

@@ -27,6 +27,17 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 		if is_node_ready():
 			configure_ripple()
 
+@export_group("Player Underwater Shader")
+@export var player_underwater_shader_enabled: bool = false
+@export var player_underwater_tint: Color = Color(0.53, 0.82, 0.95, 1.0)
+@export_range(0.0, 1.0, 0.01) var player_underwater_tint_strength: float = 0.3
+@export_range(0.0, 0.25, 0.005) var player_underwater_shimmer_strength: float = 0.04
+@export_range(1.0, 40.0, 0.5) var player_underwater_shimmer_frequency: float = 14.0
+@export_range(0.0, 10.0, 0.1) var player_underwater_shimmer_speed: float = 2.0
+@export_range(0.0, 12.0, 0.1) var player_underwater_wobble_strength: float = 4.0
+@export_range(0.005, 0.1, 0.001) var player_underwater_wobble_frequency: float = 0.035
+@export_range(0.0, 10.0, 0.1) var player_underwater_wobble_speed: float = 2.8
+
 @export_group("Bubbles")
 @export_range(0.05, 1.0, 0.01) var bubble_spawn_interval: float = 0.22
 @export var bubble_emitter_offset: Vector2 = Vector2(0.0, -12.0)

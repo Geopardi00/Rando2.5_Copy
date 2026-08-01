@@ -485,9 +485,6 @@ size = Vector2(62, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dd7cg"]
 size = Vector2(135, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gc2gi"]
-size = Vector2(711, 20)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k553b"]
 size = Vector2(1094, 20)
 
@@ -509,7 +506,7 @@ seamless_blend_skirt = 0.908
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f1ask"]
 shader = ExtResource("57_mjy70")
-shader_parameter/color = Color(0.7390784, 0.9516664, 0.99494153, 1)
+shader_parameter/color = Color(0.5305441, 0.8200617, 0.39537737, 1)
 shader_parameter/fast_noise = SubResource("NoiseTexture2D_iesfj")
 shader_parameter/speed = Vector2(0.02, 0.03)
 shader_parameter/wave_strength = 1.5
@@ -721,18 +718,18 @@ texture = ExtResource("8_ywt2b")
 flip_v = true
 
 [node name="Platform22" type="Sprite2D" parent="Platforms" unique_id=1166159401]
-position = Vector2(1601, -224)
+position = Vector2(1601, -227)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("9_3qhov")
 
 [node name="Platform23" type="Sprite2D" parent="Platforms" unique_id=480757823]
-position = Vector2(1822, -222)
+position = Vector2(1822, -226)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("9_3qhov")
 
 [node name="Platform24" type="Sprite2D" parent="Platforms" unique_id=1285738349]
-position = Vector2(2061, -223)
-scale = Vector2(0.5, 0.5)
+position = Vector2(2057.875, -226)
+scale = Vector2(0.5112613, 0.5)
 texture = ExtResource("9_3qhov")
 
 [node name="Platform27" type="Sprite2D" parent="Platforms" unique_id=1300956721]
@@ -1181,7 +1178,7 @@ flip_h = true
 
 [node name="Stone40" type="Sprite2D" parent="Terrain2" unique_id=1552826918]
 modulate = Color(0.9411765, 0.79607844, 0.7176471, 1)
-z_index = -1
+z_index = -2
 position = Vector2(1644.0001, -282.00003)
 rotation = -1.5498524
 scale = Vector2(0.587581, 2.138039)
@@ -1985,38 +1982,6 @@ shape = SubResource("RectangleShape2D_lixxo")
 
 [node name="Spikes" type="Node2D" parent="Hazards" unique_id=1682903156]
 
-[node name="UpperLevelSpikes" type="Node2D" parent="Hazards/Spikes" unique_id=1465012294]
-
-[node name="Spikes03" type="Sprite2D" parent="Hazards/Spikes/UpperLevelSpikes" unique_id=183312283]
-position = Vector2(1634, -259)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("13_q2ypb")
-
-[node name="Spikes04" type="Sprite2D" parent="Hazards/Spikes/UpperLevelSpikes" unique_id=2077116250]
-position = Vector2(1853.0001, -259)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("13_q2ypb")
-
-[node name="Spikes06" type="Sprite2D" parent="Hazards/Spikes/UpperLevelSpikes" unique_id=377908526]
-position = Vector2(2100, -265)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("14_e8ejq")
-
-[node name="Spikes05" type="Sprite2D" parent="Hazards/Spikes/UpperLevelSpikes" unique_id=1485825972]
-position = Vector2(1977, -259)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("13_q2ypb")
-
-[node name="Spikes01" type="Sprite2D" parent="Hazards/Spikes/UpperLevelSpikes" unique_id=249750289]
-position = Vector2(1535, -259)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("13_q2ypb")
-
-[node name="Spikes02" type="Sprite2D" parent="Hazards/Spikes/UpperLevelSpikes" unique_id=1031001560]
-position = Vector2(1738, -264)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("14_64imb")
-
 [node name="MiddleLevelSpikes" type="Node2D" parent="Hazards/Spikes" unique_id=1353454524]
 
 [node name="Spikes05" type="Sprite2D" parent="Hazards/Spikes/MiddleLevelSpikes" unique_id=933837690]
@@ -2079,15 +2044,6 @@ script = ExtResource("14_etqni")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone4" unique_id=2117265931]
 position = Vector2(125, -34)
 shape = SubResource("RectangleShape2D_dd7cg")
-
-[node name="SpikeHazard_KillZone" type="Area2D" parent="Hazards/Spikes" unique_id=1264158994]
-position = Vector2(1511, -253)
-collision_mask = 2
-script = ExtResource("14_etqni")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Spikes/SpikeHazard_KillZone" unique_id=74765478]
-position = Vector2(313, -30)
-shape = SubResource("RectangleShape2D_gc2gi")
 
 [node name="SpikeHazard_KillZone2" type="Area2D" parent="Hazards/Spikes" unique_id=1331301610]
 collision_mask = 2
@@ -2631,18 +2587,28 @@ texture = ExtResource("55_1x8vi")
 [node name="WaterBody2D" parent="." unique_id=1721704375 instance=ExtResource("56_mhych")]
 z_index = -1
 position = Vector2(1827, -428)
+water_size = Vector2(800, 500)
 water_opacity = 0.07
+player_underwater_shader_enabled = true
+player_underwater_tint = Color(0.5305441, 0.8200617, 0.39537737, 1)
+player_underwater_tint_strength = 0.28
+player_underwater_shimmer_strength = 0.25
+player_underwater_shimmer_frequency = 22.5
+player_underwater_shimmer_speed = 5.1
+player_underwater_wobble_strength = 4.5
+player_underwater_wobble_speed = 1.5
 
 [node name="CollisionShape2D" parent="WaterBody2D/WaterArea" parent_id_path=PackedInt32Array(1721704375, 1003098927) index="0" unique_id=1994384253]
 position = Vector2(0.5, 179.5)
 
 [node name="CollisionShape2D" parent="WaterBody2D/WaterHeadArea" parent_id_path=PackedInt32Array(1721704375, 65933640) index="0" unique_id=813532039]
-position = Vector2(0, 86.5)
+position = Vector2(0, 104.5)
 
 [node name="WaterFill" parent="WaterBody2D" index="2" unique_id=806794729]
 position = Vector2(0, -3.0000005)
-scale = Vector2(0.92370975, 0.47851557)
-color = Color(0.45687985, 0.9484922, 0.94343156, 0.16078432)
+scale = Vector2(0.92370975, 0.5069422)
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, 360, 385.4026, 409.60007, 4.3304443, 422.13885, -378.90686, 407.51028, -400, 360)
 
 [node name="WaterSurface" parent="WaterBody2D" index="3" unique_id=1468966274]
 z_index = -1
@@ -2655,8 +2621,8 @@ z_index = -1
 
 [node name="Icon" type="Sprite2D" parent="WaterBody2D/Shader" unique_id=2145151425]
 material = SubResource("ShaderMaterial_f1ask")
-position = Vector2(-7.500044, 86.00001)
-scale = Vector2(5.695312, 1.3281249)
+position = Vector2(-7.500044, 104.5)
+scale = Vector2(5.695312, 1.6171873)
 texture = ExtResource("58_28gp1")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1680936928]

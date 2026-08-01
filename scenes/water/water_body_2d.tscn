@@ -7,7 +7,7 @@
 size = Vector2(799, 359)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_head"]
-size = Vector2(800, 173)
+size = Vector2(800, 209)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2p7fc"]
 particle_flag_disable_z = true

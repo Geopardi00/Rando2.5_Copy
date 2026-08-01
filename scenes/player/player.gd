@@ -10,6 +10,7 @@ signal ammo_changed(current_ammo: int, max_ammo: int)
 const PUSH_FORCE = 100
 const BLOCK_MAX_VELOCITY = 180
 const ONE_WAY_PLATFORM_LAYER = 14
+const PLAYER_UNDERWATER_SHADER: Shader = preload("res://shaders/player_underwater.gdshader")
 
 @export var coyote_time: float = 0.10
 @export var jump_buffer_time: float = 0.10
@@ -120,6 +121,9 @@ var surface_recovery_water_body: Node = null
 var surface_recovery_timer: float = 0.0
 var surface_jump_exit_timer: float = 0.0
 var debug_surface_water_body: Node = null
+var default_animated_sprite_material: Material = null
+var player_underwater_material: ShaderMaterial = null
+var player_underwater_shader_active: bool = false
 
 
 func _ready() -> void:
@@ -138,6 +142,7 @@ func _ready() -> void:
 	update_melee_hitbox_geometry()
 
 	air_jumps_left = extra_jumps
+	setup_player_underwater_shader()
 	setup_water_debug_display()
 
 
@@ -167,6 +172,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	reconcile_water_overlaps()
+	update_player_underwater_shader()
 
 	if is_riding_zipline:
 		if Input.is_action_just_pressed("jump"):
@@ -191,6 +197,7 @@ func _physics_process(delta: float) -> void:
 
 	if is_in_water() and not surface_jump_active:
 		update_swimming(delta)
+		update_player_underwater_shader()
 		move_and_slide()
 		update_animation()
 		return
@@ -353,12 +360,14 @@ func enter_water(water_body: Node) -> void:
 			surface_recovery_water_body = null
 			surface_recovery_timer = 0.0
 		try_capture_water_surface()
+		update_player_underwater_shader()
 		return
 
 	var was_dry := active_water_bodies.is_empty()
 	active_water_bodies.append(water_body)
 	if not was_dry:
 		try_capture_water_surface()
+		update_player_underwater_shader()
 		return
 
 	surface_jump_active = false
@@ -380,6 +389,7 @@ func enter_water(water_body: Node) -> void:
 	velocity.x = clampf(velocity.x, -entry_speed_limit, entry_speed_limit)
 	velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
 	try_capture_water_surface()
+	update_player_underwater_shader()
 
 
 func exit_water(water_body: Node, _surface_y: float, exited_through_surface: bool) -> void:
@@ -413,6 +423,7 @@ func finish_water_exit(water_body: Node) -> void:
 		surface_recovery_water_body = null
 		surface_recovery_timer = 0.0
 	prune_water_bodies()
+	update_player_underwater_shader()
 	if not active_water_bodies.is_empty():
 		return
 
@@ -678,6 +689,7 @@ func reset_water_state() -> void:
 	surface_recovery_timer = 0.0
 	debug_surface_water_body = null
 	reset_breath_timers()
+	update_player_underwater_shader()
 
 
 func prune_water_bodies() -> void:
@@ -695,6 +707,40 @@ func prune_water_bodies() -> void:
 func get_active_water() -> Node:
 	prune_water_bodies()
 	return active_water_bodies.back() if not active_water_bodies.is_empty() else null
+
+
+func setup_player_underwater_shader() -> void:
+	default_animated_sprite_material = animated_sprite.material
+	player_underwater_material = ShaderMaterial.new()
+	player_underwater_material.shader = PLAYER_UNDERWATER_SHADER
+
+
+func update_player_underwater_shader() -> void:
+	if animated_sprite == null or player_underwater_material == null:
+		return
+
+	var water_body := get_active_water()
+	var should_enable := (
+		water_body != null
+		and bool(water_body.get("player_underwater_shader_enabled"))
+		and not is_surface_swimming
+		and not surface_jump_active
+	)
+	if should_enable:
+		player_underwater_material.set_shader_parameter(&"underwater_tint", water_body.get("player_underwater_tint"))
+		player_underwater_material.set_shader_parameter(&"tint_strength", water_body.get("player_underwater_tint_strength"))
+		player_underwater_material.set_shader_parameter(&"shimmer_strength", water_body.get("player_underwater_shimmer_strength"))
+		player_underwater_material.set_shader_parameter(&"shimmer_frequency", water_body.get("player_underwater_shimmer_frequency"))
+		player_underwater_material.set_shader_parameter(&"shimmer_speed", water_body.get("player_underwater_shimmer_speed"))
+		player_underwater_material.set_shader_parameter(&"wobble_strength", water_body.get("player_underwater_wobble_strength"))
+		player_underwater_material.set_shader_parameter(&"wobble_frequency", water_body.get("player_underwater_wobble_frequency"))
+		player_underwater_material.set_shader_parameter(&"wobble_speed", water_body.get("player_underwater_wobble_speed"))
+		if animated_sprite.material != player_underwater_material:
+			animated_sprite.material = player_underwater_material
+	elif animated_sprite.material == player_underwater_material:
+		animated_sprite.material = default_animated_sprite_material
+
+	player_underwater_shader_active = should_enable
 
 
 func get_active_head_water() -> Node:
