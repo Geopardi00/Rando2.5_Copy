@@ -11,19 +11,24 @@ config_version=5
 [application]
 
 config/name="Rambo 2.5"
-run/main_scene="uid://7c4gq5eqxlum"
+run/main_scene="uid://mobxq5bdc0px"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 StateOfGame="*res://scripts/state_of_game.gd"
+PhantomCameraManager="*uid://duq6jhf6unyis"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")
 
 [global_group]
 

@@ -1,0 +1,82 @@
+extends SceneTree
+
+const TEST_LEVELS: Array[String] = [
+	"res://scenes/levels/level_01.tscn",
+	"res://scenes/levels/level_03.tscn",
+]
+
+var failures: int = 0
+
+
+func _initialize() -> void:
+	_run_test.call_deferred()
+
+
+func _run_test() -> void:
+	for level_path in TEST_LEVELS:
+		await validate_level_camera(level_path)
+
+	finish_test()
+
+
+func validate_level_camera(level_path: String) -> void:
+	var level_scene := load(level_path) as PackedScene
+	check(level_scene != null, "%s should load." % level_path)
+	if level_scene == null:
+		return
+
+	var level := level_scene.instantiate()
+	root.add_child(level)
+	for frame in 5:
+		await process_frame
+		await physics_frame
+
+	var player := level.get_node_or_null("Player") as Node2D
+	var legacy_camera := level.get_node_or_null("Player/Camera2D") as Camera2D
+	var camera := level.get_node_or_null("CameraRig/Camera2D") as Camera2D
+	var host := level.get_node_or_null("CameraRig/Camera2D/PhantomCameraHost")
+	var phantom_camera := level.get_node_or_null("CameraRig/PhantomCamera2D") as Node2D
+
+	check(player != null, "%s should provide a player target." % level_path)
+	check(legacy_camera != null and not legacy_camera.enabled, "%s should disable the legacy player camera." % level_path)
+	check(camera != null and root.get_camera_2d() == camera, "%s should give viewport control to the rig Camera2D." % level_path)
+	check(phantom_camera != null and phantom_camera.get("follow_target") == player, "%s should bind PhantomCamera2D to its player." % level_path)
+	check(phantom_camera != null and bool(phantom_camera.call("is_following")), "%s should activate PhantomCamera2D follow logic." % level_path)
+	check(host != null and host.call("get_active_pcam") == phantom_camera, "%s should select the player follow camera on its host." % level_path)
+
+	stop_level_audio(level)
+	level.queue_free()
+	for frame in 3:
+		await process_frame
+
+	var phantom_camera_manager := root.get_node_or_null("PhantomCameraManager")
+	if phantom_camera_manager != null and phantom_camera_manager.has_method("scene_changed"):
+		phantom_camera_manager.call("scene_changed")
+
+
+func stop_level_audio(level: Node) -> void:
+	for audio_player in level.find_children("*", "AudioStreamPlayer", true, false):
+		var player := audio_player as AudioStreamPlayer
+		player.stop()
+		player.stream = null
+	for audio_player in level.find_children("*", "AudioStreamPlayer2D", true, false):
+		var player := audio_player as AudioStreamPlayer2D
+		player.stop()
+		player.stream = null
+
+
+func check(condition: bool, message: String) -> void:
+	if condition:
+		return
+
+	failures += 1
+	push_error(message)
+
+
+func finish_test() -> void:
+	if failures == 0:
+		print("Camera rig smoke test passed.")
+	else:
+		push_error("Camera rig smoke test failed with %d error(s)." % failures)
+
+	quit(failures)

@@ -78,6 +78,7 @@
 [ext_resource type="Texture2D" uid="uid://dqqhbj20q6o1g" path="res://art/level01/ver2.0/foregroundplant02.png" id="53_cxsoa"]
 [ext_resource type="Texture2D" uid="uid://b7xy52y7bqo2o" path="res://art/level01/ver2.0/foregroundstone03.png" id="53_nip07"]
 [ext_resource type="Texture2D" uid="uid://bxly5c1wdhvq3" path="res://art/level01/ver2.0/foregroundplant01.png" id="54_a10ds"]
+[ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="54_vsw2t"]
 [ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="56_66fwr"]
 [ext_resource type="Texture2D" uid="uid://c10wgxk5bjuly" path="res://art/props/animations/waterfall/stonewall.png" id="57_31wr4"]
 [ext_resource type="Texture2D" uid="uid://cttfni15wqepf" path="res://art/props/animations/waterfall/stonewall03.png" id="57_odj57"]
@@ -1380,7 +1381,7 @@ texture = ExtResource("6_8w8tq")
 one_shot = true
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(4282, 97)
+position = Vector2(-1635, 203)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
@@ -1393,6 +1394,8 @@ offset = Vector2(0, 50)
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Player" unique_id=1275277816]
 position = Vector2(-2, 23)
 occluder = SubResource("OccluderPolygon2D_qsts2")
+
+[node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("54_vsw2t")]
 
 [node name="Goal" type="Area2D" parent="." unique_id=1575876299]
 position = Vector2(1090, 224)
