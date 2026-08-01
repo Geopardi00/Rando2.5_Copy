@@ -2,12 +2,37 @@
 
 [ext_resource type="Script" uid="uid://ds55s0e4qdtvt" path="res://scripts/water/water_body_2d.gd" id="1_water"]
 [ext_resource type="Texture2D" uid="uid://7xas7n8e8hom" path="res://art/props/water_bubble.png" id="2_2p7fc"]
+[ext_resource type="Shader" uid="uid://brcjnktlso07j" path="res://shaders/underwater_shader.gdshader" id="3_underwater_shader"]
+[ext_resource type="Texture2D" uid="uid://rgp6tekviq7y" path="res://icon.svg" id="4_shader_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water"]
-size = Vector2(799, 359)
+size = Vector2(595, 227)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_head"]
-size = Vector2(800, 209)
+size = Vector2(581, 209)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_underwater"]
+noise_type = 2
+seed = 5
+frequency = 0.0174
+fractal_type = 2
+fractal_octaves = 8
+fractal_lacunarity = 3.0
+fractal_gain = 0.3
+fractal_weighted_strength = 0.2
+cellular_distance_function = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_underwater"]
+noise = SubResource("FastNoiseLite_underwater")
+seamless = true
+seamless_blend_skirt = 0.908
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_underwater"]
+shader = ExtResource("3_underwater_shader")
+shader_parameter/color = Color(0.5305441, 0.8200617, 0.39537737, 1)
+shader_parameter/fast_noise = SubResource("NoiseTexture2D_underwater")
+shader_parameter/speed = Vector2(0.02, 0.03)
+shader_parameter/wave_strength = 1.5
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2p7fc"]
 particle_flag_disable_z = true
@@ -16,8 +41,18 @@ scale_min = 0.01
 scale_max = 0.03
 
 [node name="WaterBody2D" type="Node2D" unique_id=1721704375]
+z_index = -1
 script = ExtResource("1_water")
-water_opacity = 0.25
+water_size = Vector2(800, 500)
+water_opacity = 0.07
+player_underwater_shader_enabled = true
+player_underwater_tint = Color(0.5305441, 0.8200617, 0.39537737, 1)
+player_underwater_tint_strength = 0.28
+player_underwater_shimmer_strength = 0.25
+player_underwater_shimmer_frequency = 22.5
+player_underwater_shimmer_speed = 5.1
+player_underwater_wobble_strength = 4.5
+player_underwater_wobble_speed = 1.5
 swim_speed_multiplier = 0.8500000000000001
 swim_acceleration_multiplier = 0.15000000000000002
 maximum_underwater_fall_speed = 100.0
@@ -39,7 +74,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea" unique_id=1994384253]
-position = Vector2(0, 180)
+position = Vector2(0.5, 179.5)
 shape = SubResource("RectangleShape2D_water")
 
 [node name="WaterHeadArea" type="Area2D" parent="." unique_id=65933640]
@@ -47,22 +82,33 @@ collision_layer = 0
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterHeadArea" unique_id=813532039]
-position = Vector2(0, 180)
+position = Vector2(0, 104.5)
 shape = SubResource("RectangleShape2D_water_head")
 
 [node name="WaterFill" type="Polygon2D" parent="." unique_id=806794729]
 z_index = -1
-color = Color(0.08, 0.55, 0.82, 0.68)
-polygon = PackedVector2Array(-400, 0, 400, 0, 400, 360, -400, 360)
+position = Vector2(0, -3.0000005)
+scale = Vector2(0.92370975, 0.5069422)
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, 360, 385.4026, 409.60007, 4.3304443, 422.13885, -378.90686, 407.51028, -400, 360)
 
 [node name="WaterSurface" type="Line2D" parent="." unique_id=1468966274]
-z_index = 2
+z_index = -1
+scale = Vector2(0.915595, 1.2289451)
 points = PackedVector2Array(-400, 0, 400, 0)
-width = 4.0
-default_color = Color(0.48, 0.86, 1, 0.9)
+width = 3.0
+default_color = Color(0.8901961, 0.96862745, 1, 0.23137255)
 begin_cap_mode = 2
 end_cap_mode = 2
 antialiased = true
+
+[node name="Shader" type="Node2D" parent="." unique_id=499410625]
+z_index = -1
+
+[node name="Icon" type="Sprite2D" parent="Shader" unique_id=2145151425]
+material = SubResource("ShaderMaterial_underwater")
+position = Vector2(-7.500044, 104.5)
+scale = Vector2(5.695312, 1.6171873)
+texture = ExtResource("4_shader_texture")
 
 [node name="SplashEffects" type="GPUParticles2D" parent="." unique_id=2035338052]
 z_index = 3
