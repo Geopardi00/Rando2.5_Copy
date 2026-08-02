@@ -4,7 +4,8 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 
 enum State {
 	PATROL,
-	CHASE
+	CHASE,
+	BARK
 }
 
 @export var patrol_speed: float = 60.0
@@ -59,6 +60,8 @@ func _physics_process(delta: float) -> void:
 			run_patrol()
 		State.CHASE:
 			run_chase()
+		State.BARK:
+			run_bark()
 
 	move_and_slide()
 	update_visual()
@@ -89,6 +92,9 @@ func is_player_targetable() -> bool:
 
 
 func update_state() -> void:
+	if state == State.BARK:
+		return
+
 	if not is_player_targetable():
 		state = State.PATROL
 		return
@@ -136,6 +142,22 @@ func run_chase() -> void:
 	velocity.x = move_direction * chase_speed
 
 
+func run_bark() -> void:
+	velocity.x = 0.0
+
+
+func on_player_killed(victim: Node2D) -> void:
+	var dx := victim.global_position.x - global_position.x
+	if not is_zero_approx(dx):
+		move_direction = 1 if dx > 0.0 else -1
+
+	player = victim
+	state = State.BARK
+	velocity.x = 0.0
+	update_visual()
+	update_animation()
+
+
 func should_turn_around() -> bool:
 	if move_direction < 0:
 		if wall_check_left.is_colliding():
@@ -164,12 +186,16 @@ func update_visual() -> void:
 
 
 func update_animation() -> void:
-	if state == State.CHASE:
-		if animated_sprite.animation != "charge":
-			animated_sprite.play("charge")
-	else:
-		if animated_sprite.animation != "walk":
-			animated_sprite.play("walk")
+	match state:
+		State.CHASE:
+			if animated_sprite.animation != &"charge":
+				animated_sprite.play(&"charge")
+		State.BARK:
+			if animated_sprite.animation != &"bark":
+				animated_sprite.play(&"bark")
+		_:
+			if animated_sprite.animation != &"walk":
+				animated_sprite.play(&"walk")
 
 
 func take_damage(amount: int = 1) -> void:
@@ -227,6 +253,7 @@ func spawn_hit_sound() -> void:
 	sfx.stream = hit_sound.stream
 	sfx.volume_db = hit_sound.volume_db
 	sfx.pitch_scale = hit_sound.pitch_scale
+	sfx.bus = hit_sound.bus
 	sfx.global_position = global_position
 
 	get_tree().current_scene.add_child(sfx)

@@ -170,6 +170,7 @@ func spawn_sound(stream: AudioStream, pitch: float) -> void:
 	sound.stream = stream
 	sound.volume_db = -4.0
 	sound.pitch_scale = pitch * randf_range(0.94, 1.06)
+	sound.bus = &"Sound Effects"
 	sound.global_position = global_position
 	get_tree().current_scene.add_child(sound)
 	sound.finished.connect(sound.queue_free)

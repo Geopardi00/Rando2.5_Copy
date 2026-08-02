@@ -128,3 +128,4 @@ randomness = 0.7
 process_material = SubResource("ParticleProcessMaterial_2p7fc")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=389360903]
+bus = &"Sound Effects"

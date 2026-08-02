@@ -177,6 +177,7 @@ func spawn_hit_sound() -> void:
 	sfx.stream = hit_sound.stream
 	sfx.volume_db = hit_sound.volume_db
 	sfx.pitch_scale = hit_sound.pitch_scale
+	sfx.bus = hit_sound.bus
 	sfx.global_position = global_position
 
 	get_tree().current_scene.add_child(sfx)

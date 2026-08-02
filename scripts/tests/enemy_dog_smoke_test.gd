@@ -49,6 +49,23 @@ func _run_test() -> void:
 	check(int(dog.get("state")) == 0, "Chase movement should defensively reject a dead player.")
 	check(is_equal_approx(dog.velocity.x, float(dog.get("patrol_speed"))), "The dog should continue at patrol speed after rejecting a dead player.")
 
+	player.set("is_dead", false)
+	player.set("current_hp", int(player.get("max_hp")))
+	dog.set("player", player)
+	dog.set("state", 1)
+	dog.set("move_direction", -1)
+	dog.velocity.x = -float(dog.get("chase_speed"))
+	player.call("_on_hurtbox_body_entered", dog)
+	check(bool(player.get("is_dead")), "Dog contact damage should kill a full-health player with the current tuning.")
+	check(int(dog.get("state")) == 2, "The dog that delivers lethal contact damage should enter bark state.")
+	check(is_zero_approx(dog.velocity.x), "A barking dog should stop horizontal movement.")
+	dog.call("update_state")
+	dog.call("run_bark")
+	dog.call("update_animation")
+	check(int(dog.get("state")) == 2 and is_zero_approx(dog.velocity.x), "Bark state should stay locked while the dead player remains in the scene.")
+	check(dog.get_node("AnimatedSprite2D").animation == &"bark", "The killing dog should play the bark animation.")
+	check(dog.get_node("AnimatedSprite2D").sprite_frames.get_frame_count(&"bark") == 6, "Bark animation should use all six imported frames.")
+
 	test_root.queue_free()
 	await process_frame
 	finish_test()

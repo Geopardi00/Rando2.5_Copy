@@ -101,6 +101,7 @@
 [ext_resource type="Texture2D" uid="uid://bhdcah7txc6v2" path="res://art/level01/ver2.0/vines03B.png" id="90_1kwrj"]
 [ext_resource type="Texture2D" uid="uid://cf2yixs7l7k7r" path="res://art/level01/ver2.0/vines01B.png" id="91_8c2w4"]
 [ext_resource type="Texture2D" uid="uid://nopepxe4hkir" path="res://art/props/Tree02Blur.png" id="91_8nt0r"]
+[ext_resource type="PackedScene" uid="uid://ctenikv670e23" path="res://scenes/water/water_reclection_01.tscn" id="96_4wl77"]
 [ext_resource type="Texture2D" uid="uid://37yhhfevfls0" path="res://art/props/WaterfallFog.png" id="99_1c306"]
 
 [sub_resource type="Environment" id="Environment_level03"]
@@ -512,6 +513,7 @@ checkpoint_glow_scale = 1.0
 stream = ExtResource("2_ambience")
 volume_db = -11.263
 autoplay = true
+bus = &"Music"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=475558959]
 environment = SubResource("Environment_level03")
@@ -1497,6 +1499,7 @@ volume_db = -3.255
 autoplay = true
 max_distance = 1046.0
 attenuation = 0.93303317
+bus = &"Sound Effects"
 
 [node name="WaterfallFog" type="CPUParticles2D" parent="World/BackgroundNearest/Waterfall2" unique_id=1560537763]
 position = Vector2(5246, 410)
@@ -2831,12 +2834,8 @@ position = Vector2(3573, 16)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("91_8nt0r")
 
-[node name="WaterReclection01" type="Sprite2D" parent="." unique_id=2667231]
-z_index = 6
-material = SubResource("ShaderMaterial_xunku")
+[node name="WaterReclection01" parent="." unique_id=1437381671 instance=ExtResource("96_4wl77")]
 position = Vector2(-1319.5, 482)
-scale = Vector2(0.8828125, 1)
-texture = ExtResource("13_iaq7h")
 
 [node name="WaterReflection02" type="Sprite2D" parent="." unique_id=1084365630]
 z_index = 4

@@ -1207,7 +1207,10 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 	if body.get("contact_damage") != null:
 		damage = int(body.get("contact_damage"))
 
+	var was_alive := not is_dead
 	take_damage(damage)
+	if was_alive and is_dead and body.has_method("on_player_killed"):
+		body.call("on_player_killed", self)
 
 
 func take_damage(amount: int = 1, ignore_invulnerability: bool = false) -> void:
@@ -1491,6 +1494,9 @@ func die() -> void:
 
 
 func respawn_after_delay() -> void:
+	if get_tree().current_scene == null:
+		return
+
 	await get_tree().create_timer(1.5).timeout
 	respawn()
 

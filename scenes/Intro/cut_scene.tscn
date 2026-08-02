@@ -50,6 +50,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="Voice" type="AudioStreamPlayer" parent="." unique_id=767689164]
 stream = ExtResource("7_hwm30")
+bus = &"Sound Effects"
 
 [node name="SkipLabel" type="Label" parent="." unique_id=1308100843]
 layout_mode = 1

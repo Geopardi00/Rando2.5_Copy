@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ctenikv670e23"]
+
+[ext_resource type="Shader" uid="uid://blvqo0op0manb" path="res://scenes/levels/water_shader.gdshader" id="1_5t8ns"]
+[ext_resource type="Texture2D" uid="uid://5w7ihpg0xmsd" path="res://art/level03/watershader.png" id="2_cd50f"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iaubp"]
+frequency = 0.03
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xunku"]
+noise = SubResource("FastNoiseLite_iaubp")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xunku"]
+shader = ExtResource("1_5t8ns")
+shader_parameter/water_color = Color(0, 0.20024168, 0.17641518, 1)
+shader_parameter/wave_noise = SubResource("NoiseTexture2D_xunku")
+
+[node name="WaterReclection01" type="Sprite2D" unique_id=1437381671]
+z_index = 6
+material = SubResource("ShaderMaterial_xunku")
+scale = Vector2(0.8828125, 1)
+texture = ExtResource("2_cd50f")

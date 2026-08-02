@@ -791,6 +791,7 @@ shape = SubResource("WaterHeadSensorShape")
 [node name="ShootSound" type="AudioStreamPlayer2D" parent="." unique_id=988886553]
 stream = ExtResource("2_dovo2")
 volume_db = -9.517
+bus = &"Sound Effects"
 
 [node name="MeleeHitbox" type="Area2D" parent="." unique_id=2064503526]
 position = Vector2(40, 8)

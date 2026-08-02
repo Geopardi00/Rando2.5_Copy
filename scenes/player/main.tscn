@@ -51,6 +51,7 @@ script = ExtResource("14_rvktu")
 [node name="Bullethitenemy" type="AudioStreamPlayer" parent="." unique_id=392160146]
 stream = ExtResource("15_rvktu")
 volume_db = -2.761
+bus = &"Sound Effects"
 
 [node name="CutScene" parent="." unique_id=1704074574 instance=ExtResource("16_77dtu")]
 

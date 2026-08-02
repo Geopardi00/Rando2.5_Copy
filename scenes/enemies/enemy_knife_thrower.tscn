@@ -142,3 +142,4 @@ shape = SubResource("RectangleShape2D_o6rux")
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=83865021]
 stream = ExtResource("5_n0xlh")
 volume_db = -21.585
+bus = &"Sound Effects"
