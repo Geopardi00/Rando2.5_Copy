@@ -32,17 +32,15 @@
 [ext_resource type="Texture2D" uid="uid://vdn5p0fuudf1" path="res://art/level02/ver2.0/Stone09.png" id="22_1g3op"]
 [ext_resource type="Texture2D" uid="uid://bgsktj305ij57" path="res://art/level02/ver2.0/Stone05.png" id="24_g84t8"]
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="33_trw33"]
-[ext_resource type="Texture2D" uid="uid://b7xy52y7bqo2o" path="res://art/level01/ver2.0/foregroundstone03.png" id="45_gcwyd"]
+[ext_resource type="Texture2D" uid="uid://oxdn0qsfrpw" path="res://art/level01/ver2.0/foregroundstone03Blur.png" id="40_g84t8"]
+[ext_resource type="Texture2D" uid="uid://c5b4nujjhuuvq" path="res://art/level01/ver2.0/foregroundstone05Blur.png" id="41_4dyjh"]
 [ext_resource type="Texture2D" uid="uid://ckqbaapv1nem4" path="res://art/level02/ver2.0/Foreground_stone01.png" id="45_urdbc"]
 [ext_resource type="Texture2D" uid="uid://dejy7w1lrsc38" path="res://art/level02/ver2.0/Foreground_stone02.png" id="46_tvgqv"]
-[ext_resource type="Texture2D" uid="uid://285e8l2xy0v3" path="res://art/level01/ver2.0/foregroundstone05.png" id="46_vchln"]
 [ext_resource type="Texture2D" uid="uid://c2mruofp2fijr" path="res://art/level02/ver2.0/Foreground_stone03.png" id="47_05g6j"]
 [ext_resource type="Texture2D" uid="uid://dguddqju7vhei" path="res://art/level02/ver2.0/Foreground_stone05.png" id="48_jgcx6"]
 [ext_resource type="Texture2D" uid="uid://c14jy2tl8c0k5" path="res://art/level02/ver2.0/Foreground_stone04.png" id="48_mns36"]
 [ext_resource type="Texture2D" uid="uid://b5raqmlcqvs5h" path="res://art/level02/ver2.0/Foreground_stone06.png" id="50_molec"]
 [ext_resource type="Texture2D" uid="uid://dmxtsipsqq6yf" path="res://art/level02/ver2.0/Foreground_stone08.png" id="51_ml4s5"]
-[ext_resource type="Texture2D" uid="uid://bcatiphxnu4vd" path="res://art/level02/ver2.0/Foreground_stone07.png" id="52_14354"]
-[ext_resource type="Texture2D" uid="uid://bx66alymdq632" path="res://art/level01/ver2.0/foregroundstone02.png" id="55_1x8vi"]
 [ext_resource type="PackedScene" uid="uid://c7tikl5ek55li" path="res://scenes/water/water_body_2d.tscn" id="56_mhych"]
 
 [sub_resource type="Environment" id="Environment_dd7cg"]
@@ -1569,105 +1567,11 @@ position = Vector2(2472.6, -299.58002)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("48_mns36")
 
-[node name="Sprite2D22" type="Sprite2D" parent="World/ForegroundSoft" unique_id=2145316713]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3201.0002, -153.99994)
-rotation = 0.34382987
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("48_mns36")
-
 [node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1021292564]
 modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
 position = Vector2(2354.6, -235.58002)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("45_urdbc")
-
-[node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1325161420]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(2793.6, -234.1)
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("45_urdbc")
-
-[node name="Sprite2D19" type="Sprite2D" parent="World/ForegroundSoft" unique_id=395358722]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(2965.6003, -157.09998)
-scale = Vector2(0.626284, 0.50113314)
-texture = ExtResource("52_14354")
-
-[node name="Sprite2D20" type="Sprite2D" parent="World/ForegroundSoft" unique_id=374247360]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3097.6, -144.09991)
-rotation = 0.17278759
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("50_molec")
-
-[node name="Sprite2D21" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1522473056]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3367.6, -137.09998)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("50_molec")
-flip_h = true
-
-[node name="Sprite2D23" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1583109891]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(2757, -117.00001)
-scale = Vector2(0.6, 0.4)
-texture = ExtResource("45_urdbc")
-flip_v = true
-
-[node name="Sprite2D24" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1364617754]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3362, -97)
-scale = Vector2(0.6, 0.25217393)
-texture = ExtResource("45_urdbc")
-flip_v = true
-
-[node name="Sprite2D25" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1937357374]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3003.0002, -93)
-scale = Vector2(0.6, 0.33591732)
-texture = ExtResource("46_tvgqv")
-flip_v = true
-
-[node name="Sprite2D26" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1197114573]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3220, -88)
-scale = Vector2(0.6, 0.30966058)
-texture = ExtResource("47_05g6j")
-flip_v = true
-
-[node name="Sprite2D27" type="Sprite2D" parent="World/ForegroundSoft" unique_id=181089502]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3532, -82.00001)
-scale = Vector2(0.6, 0.4)
-texture = ExtResource("47_05g6j")
-flip_v = true
-
-[node name="Sprite2D28" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1606535247]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3799, -90.00001)
-scale = Vector2(0.6, 0.30966058)
-texture = ExtResource("47_05g6j")
-flip_v = true
-
-[node name="Sprite2D29" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1240285951]
-visible = false
-modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
-position = Vector2(3671, -90.00001)
-scale = Vector2(0.6, 0.4)
-texture = ExtResource("45_urdbc")
-flip_v = true
 
 [node name="Sprite2D30" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1123577405]
 modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
@@ -1693,6 +1597,50 @@ position = Vector2(3421.4, -72.39999)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("47_05g6j")
 
+[node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundSoft" unique_id=800057726]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(4007.239, -70.17999)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("51_ml4s5")
+
+[node name="Sprite2D19" type="Sprite2D" parent="World/ForegroundSoft" unique_id=728712431]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(3659, -104.00009)
+rotation = 0.17278759
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("50_molec")
+
+[node name="Sprite2D34" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1208720408]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(3780, -35.000004)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("47_05g6j")
+
+[node name="Sprite2D20" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1646388308]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(3929.239, -65.17999)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("50_molec")
+flip_h = true
+
+[node name="Sprite2D21" type="Sprite2D" parent="World/ForegroundSoft" unique_id=59563704]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(4485.2393, -219.18)
+scale = Vector2(0.76, 0.76)
+texture = ExtResource("48_jgcx6")
+
+[node name="Sprite2D22" type="Sprite2D" parent="World/ForegroundSoft" unique_id=590550502]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(4328.839, -177.58003)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("48_mns36")
+
+[node name="Sprite2D23" type="Sprite2D" parent="World/ForegroundSoft" unique_id=1183271636]
+modulate = Color(0.5372549, 0.42352942, 0.28235295, 1)
+position = Vector2(4210.839, -113.58003)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("45_urdbc")
+
 [node name="ForegroundNear" type="Parallax2D" parent="World" unique_id=672778077]
 z_index = 10
 scroll_scale = Vector2(1.3, 1)
@@ -1702,28 +1650,28 @@ modulate = Color(0, 0, 0, 1)
 texture_filter = 2
 position = Vector2(184.00002, 45)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("45_gcwyd")
+texture = ExtResource("40_g84t8")
 
 [node name="Sprite2D2" type="Sprite2D" parent="World/ForegroundNear" unique_id=1970222970]
 modulate = Color(0, 0, 0, 1)
 texture_filter = 2
 position = Vector2(662, 73)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("45_gcwyd")
+texture = ExtResource("40_g84t8")
 flip_h = true
 
 [node name="Sprite2D3" type="Sprite2D" parent="World/ForegroundNear" unique_id=1026995149]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(963, -44)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 
 [node name="Sprite2D4" type="Sprite2D" parent="World/ForegroundNear" unique_id=813840420]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(1236, -113.999985)
 rotation = -0.18151425
 scale = Vector2(0.3, 0.45687374)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D5" type="Sprite2D" parent="World/ForegroundNear" unique_id=2029882735]
@@ -1731,7 +1679,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(1282, -53.999992)
 rotation = -0.18151425
 scale = Vector2(0.3, 0.45687374)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D6" type="Sprite2D" parent="World/ForegroundNear" unique_id=1561784507]
@@ -1739,7 +1687,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(1389, -153)
 rotation = 0.28874958
 scale = Vector2(0.3, 0.45687374)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D7" type="Sprite2D" parent="World/ForegroundNear" unique_id=2023832914]
@@ -1747,7 +1695,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(1689.0001, -161)
 rotation = -0.016873568
 scale = Vector2(0.38051936, 0.33760682)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D10" type="Sprite2D" parent="World/ForegroundNear" unique_id=284130077]
@@ -1755,7 +1703,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(2462, -166)
 rotation = -0.016873568
 scale = Vector2(0.38051936, 0.33760682)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D8" type="Sprite2D" parent="World/ForegroundNear" unique_id=433138114]
@@ -1763,7 +1711,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(1956.0002, -161)
 rotation = -0.016873568
 scale = Vector2(0.38051936, 0.33760682)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D9" type="Sprite2D" parent="World/ForegroundNear" unique_id=783383652]
@@ -1771,7 +1719,7 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(2114.9998, -162.99998)
 rotation = -0.016873568
 scale = Vector2(0.38051936, 0.33760682)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
 
 [node name="Sprite2D11" type="Sprite2D" parent="World/ForegroundNear" unique_id=1518159806]
@@ -1779,59 +1727,60 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(2748.3972, -141.48306)
 rotation = -0.016873566
 scale = Vector2(0.38051936, 0.29166877)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
 flip_h = true
-
-[node name="Sprite2D13" type="Sprite2D" parent="World/ForegroundNear" unique_id=411355236]
-visible = false
-modulate = Color(0, 0, 0, 1)
-position = Vector2(3242.0002, -118)
-rotation = -0.016873566
-scale = Vector2(0.38051936, 0.24768648)
-texture = ExtResource("46_vchln")
-flip_h = true
-
-[node name="Sprite2D12" type="Sprite2D" parent="World/ForegroundNear" unique_id=300654598]
-visible = false
-modulate = Color(0, 0, 0, 1)
-position = Vector2(3001, -128)
-scale = Vector2(0.3, 0.15507813)
-texture = ExtResource("55_1x8vi")
-
-[node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundNear" unique_id=1090587301]
-visible = false
-modulate = Color(0, 0, 0, 1)
-position = Vector2(3527, -116)
-scale = Vector2(0.3, 0.12480468)
-texture = ExtResource("55_1x8vi")
-
-[node name="Sprite2D15" type="Sprite2D" parent="World/ForegroundNear" unique_id=1946577587]
-visible = false
-modulate = Color(0, 0, 0, 1)
-position = Vector2(3737, -123)
-scale = Vector2(0.3, 0.15507813)
-texture = ExtResource("55_1x8vi")
 
 [node name="Sprite2D16" type="Sprite2D" parent="World/ForegroundNear" unique_id=2131848160]
 modulate = Color(0, 0, 0, 1)
 texture_filter = 2
 position = Vector2(2826.2, 76)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("45_gcwyd")
+texture = ExtResource("40_g84t8")
 
 [node name="Sprite2D17" type="Sprite2D" parent="World/ForegroundNear" unique_id=354007811]
 modulate = Color(0, 0, 0, 1)
 texture_filter = 2
 position = Vector2(3304.2, 104)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("45_gcwyd")
+texture = ExtResource("40_g84t8")
 flip_h = true
 
 [node name="Sprite2D18" type="Sprite2D" parent="World/ForegroundNear" unique_id=496187660]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(3605.2, -13)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("46_vchln")
+texture = ExtResource("41_4dyjh")
+
+[node name="Sprite2D12" type="Sprite2D" parent="World/ForegroundNear" unique_id=446307977]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(3951, -45.999985)
+rotation = -0.016873566
+scale = Vector2(0.38051936, 0.33760682)
+texture = ExtResource("41_4dyjh")
+flip_h = true
+
+[node name="Sprite2D13" type="Sprite2D" parent="World/ForegroundNear" unique_id=963080507]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(4172, 8.000008)
+rotation = -0.016873566
+scale = Vector2(0.38051936, 0.33760682)
+texture = ExtResource("41_4dyjh")
+flip_h = true
+
+[node name="Sprite2D14" type="Sprite2D" parent="World/ForegroundNear" unique_id=1171923003]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(4349, -8.999992)
+rotation = -0.016873566
+scale = Vector2(0.38051936, 0.33760682)
+texture = ExtResource("41_4dyjh")
+flip_h = true
+
+[node name="Sprite2D19" type="Sprite2D" parent="World/ForegroundNear" unique_id=1401788862]
+modulate = Color(0, 0, 0, 1)
+texture_filter = 2
+position = Vector2(4689, 20)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("40_g84t8")
 
 [node name="WaterBody2D" parent="." unique_id=1721704375 instance=ExtResource("56_mhych")]
 position = Vector2(1827, -428)
