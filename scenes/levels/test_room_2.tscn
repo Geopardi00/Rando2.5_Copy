@@ -44,6 +44,7 @@
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="23_tnob1"]
 [ext_resource type="Texture2D" uid="uid://bgsktj305ij57" path="res://art/level02/ver2.0/Stone05.png" id="24_g84t8"]
 [ext_resource type="PackedScene" uid="uid://biopl3d1oalud" path="res://scenes/props/checkpoint.tscn" id="27_dwpg4"]
+[ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="33_trw33"]
 [ext_resource type="Texture2D" uid="uid://b7xy52y7bqo2o" path="res://art/level01/ver2.0/foregroundstone03.png" id="45_gcwyd"]
 [ext_resource type="Texture2D" uid="uid://ckqbaapv1nem4" path="res://art/level02/ver2.0/Foreground_stone01.png" id="45_urdbc"]
 [ext_resource type="Texture2D" uid="uid://dejy7w1lrsc38" path="res://art/level02/ver2.0/Foreground_stone02.png" id="46_tvgqv"]
@@ -1845,6 +1846,8 @@ bullet_scene = ExtResource("5_7ptk6")
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Player" unique_id=2024061254]
 position = Vector2(-6, 2)
 occluder = SubResource("OccluderPolygon2D_dd7cg")
+
+[node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("33_trw33")]
 
 [node name="Bullet" parent="." unique_id=1682380724 instance=ExtResource("5_7ptk6")]
 

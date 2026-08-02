@@ -1,7 +1,5 @@
 extends Node
 
-const SIMPLE_FOLLOW_MODE := 2
-
 @export var follow_target_group: StringName = &"player"
 @export var camera_priority: int = 10
 @export var follow_offset: Vector2 = Vector2(52.0, -137.0)
@@ -24,7 +22,6 @@ func _bind_follow_target() -> void:
 		return
 
 	phantom_camera_2d.set("follow_target", target)
-	phantom_camera_2d.set("follow_mode", SIMPLE_FOLLOW_MODE)
 	phantom_camera_2d.set("follow_offset", follow_offset)
 	phantom_camera_2d.set("priority", camera_priority)
 	if phantom_camera_2d.has_method("teleport_position"):

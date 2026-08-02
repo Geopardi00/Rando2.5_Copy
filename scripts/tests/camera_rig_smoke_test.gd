@@ -3,6 +3,7 @@ extends SceneTree
 const TEST_LEVELS: Array[String] = [
 	"res://scenes/levels/level_01.tscn",
 	"res://scenes/levels/level_03.tscn",
+	"res://scenes/levels/test_room_2.tscn",
 ]
 
 var failures: int = 0
@@ -42,6 +43,8 @@ func validate_level_camera(level_path: String) -> void:
 	check(camera != null and root.get_camera_2d() == camera, "%s should give viewport control to the rig Camera2D." % level_path)
 	check(phantom_camera != null and phantom_camera.get("follow_target") == player, "%s should bind PhantomCamera2D to its player." % level_path)
 	check(phantom_camera != null and bool(phantom_camera.call("is_following")), "%s should activate PhantomCamera2D follow logic." % level_path)
+	check(phantom_camera != null and int(phantom_camera.get("follow_mode")) == 5, "%s should preserve the tuned Framed follow mode at runtime." % level_path)
+	check(phantom_camera != null and bool(phantom_camera.get("follow_damping")), "%s should preserve follow damping at runtime." % level_path)
 	check(host != null and host.call("get_active_pcam") == phantom_camera, "%s should select the player follow camera on its host." % level_path)
 
 	stop_level_audio(level)
