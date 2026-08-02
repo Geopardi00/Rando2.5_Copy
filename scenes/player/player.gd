@@ -903,8 +903,13 @@ func update_animation() -> void:
 		return
 
 	if is_in_water() and not surface_jump_active:
-		animated_sprite.speed_scale = 0.75
-		play_animation_safe(&"swim", &"jump")
+		var swim_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		if not swim_input.is_zero_approx():
+			animated_sprite.speed_scale = 0.75
+			play_animation_safe(&"swim", &"idle")
+		else:
+			animated_sprite.speed_scale = 1.0
+			play_animation_safe(&"swim_idle", &"idle")
 		return
 
 	if not is_on_floor():
