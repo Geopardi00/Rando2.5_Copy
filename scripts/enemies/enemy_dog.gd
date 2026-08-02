@@ -73,12 +73,23 @@ func apply_gravity(delta: float) -> void:
 
 
 func refresh_player_reference() -> void:
-	if not is_instance_valid(player):
-		player = get_tree().get_first_node_in_group("player") as Node2D
+	if is_player_targetable():
+		return
+
+	player = null
+	for candidate in get_tree().get_nodes_in_group("player"):
+		var candidate_player := candidate as Node2D
+		if candidate_player != null and not bool(candidate_player.get("is_dead")):
+			player = candidate_player
+			return
+
+
+func is_player_targetable() -> bool:
+	return is_instance_valid(player) and not bool(player.get("is_dead"))
 
 
 func update_state() -> void:
-	if not is_instance_valid(player):
+	if not is_player_targetable():
 		state = State.PATROL
 		return
 
@@ -103,9 +114,9 @@ func run_patrol() -> void:
 
 
 func run_chase() -> void:
-	if not is_instance_valid(player):
+	if not is_player_targetable():
 		state = State.PATROL
-		velocity.x = 0.0
+		velocity.x = move_direction * patrol_speed
 		return
 
 	var dx: float = player.global_position.x - global_position.x

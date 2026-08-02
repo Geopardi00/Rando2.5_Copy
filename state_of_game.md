@@ -1,6 +1,16 @@
 # State of Game
 
-Last updated: 2026-07-31
+Last updated: 2026-08-02
+
+## Latest Update - 2026-08-02 - Swim Visuals, Phantom Camera, and Dog AI
+- Player swimming now uses the 15-frame looping `swim` animation while directional input is held; neutral movement in water uses `swim/frame0000.png` as the dedicated `swim_idle` pose.
+- The reusable WaterBody template carries the current player-only underwater tint, shimmer, and wobble tuning. The effect turns off at the swimming surface before the player becomes airborne.
+- Phantom Camera is installed and integrated through the reusable `scenes/Camera/camera_rig.tscn`, which binds to the player group at runtime and is used by Level 01, Level 03, and `test_room_2`.
+- The current camera uses Framed follow mode with damping and a tuned dead zone. Camera Inspector values remain authoritative instead of being overwritten by the runtime target-binding script.
+- Hard landings now emit a player signal from the same method that starts the landing dust animation. CameraRig responds with a short, Inspector-tunable Phantom Camera noise burst that is stronger vertically than horizontally and does not rotate the camera.
+- Enemy dogs now treat dead players as invalid chase targets. After killing the player, a dog releases the target, preserves its current direction, and immediately continues walking at patrol speed instead of oscillating over the body.
+- `camera_rig_smoke_test.gd` covers all three camera-enabled scenes and hard-landing shake wiring. The new `enemy_dog_smoke_test.gd` verifies live-player chase, dead-player release, retained direction, and resumed patrol movement.
+- Project main scene is currently `scenes/levels/level_03.tscn`.
 
 ## Latest Update - 2026-07-31 - Stable Water Swimming
 - Water detection now reconciles `Area2D` signals with the authored water geometry every physics frame, preventing false airborne state while the player is visibly underwater; body and head-submersion state both use this fallback.
