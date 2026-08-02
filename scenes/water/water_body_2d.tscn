@@ -31,8 +31,8 @@ seamless_blend_skirt = 0.908
 shader = ExtResource("3_underwater_shader")
 shader_parameter/color = Color(0.5305441, 0.8200617, 0.39537737, 1)
 shader_parameter/fast_noise = SubResource("NoiseTexture2D_underwater")
-shader_parameter/speed = Vector2(0.02, 0.03)
-shader_parameter/wave_strength = 1.5
+shader_parameter/speed = Vector2(0.02, 0)
+shader_parameter/wave_strength = 1.1
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2p7fc"]
 particle_flag_disable_z = true
