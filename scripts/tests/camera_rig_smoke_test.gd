@@ -37,6 +37,8 @@ func validate_level_camera(level_path: String) -> void:
 	var camera := level.get_node_or_null("CameraRig/Camera2D") as Camera2D
 	var host := level.get_node_or_null("CameraRig/Camera2D/PhantomCameraHost")
 	var phantom_camera := level.get_node_or_null("CameraRig/PhantomCamera2D") as Node2D
+	var landing_shake_emitter := level.get_node_or_null("CameraRig/LandingShakeEmitter") as Node2D
+	var landing_shake_noise := landing_shake_emitter.get("noise") as Resource if landing_shake_emitter != null else null
 
 	check(player != null, "%s should provide a player target." % level_path)
 	check(legacy_camera != null and not legacy_camera.enabled, "%s should disable the legacy player camera." % level_path)
@@ -46,6 +48,18 @@ func validate_level_camera(level_path: String) -> void:
 	check(phantom_camera != null and int(phantom_camera.get("follow_mode")) == 5, "%s should preserve the tuned Framed follow mode at runtime." % level_path)
 	check(phantom_camera != null and bool(phantom_camera.get("follow_damping")), "%s should preserve follow damping at runtime." % level_path)
 	check(host != null and host.call("get_active_pcam") == phantom_camera, "%s should select the player follow camera on its host." % level_path)
+	check(landing_shake_emitter != null, "%s should provide the reusable hard-landing shake emitter." % level_path)
+	check(landing_shake_noise != null, "%s should configure Phantom Camera positional noise for hard landings." % level_path)
+	check(phantom_camera != null and landing_shake_emitter != null and (int(phantom_camera.get("noise_emitter_layer")) & int(landing_shake_emitter.get("noise_emitter_layer"))) != 0, "%s should use matching Phantom Camera noise layers." % level_path)
+	check(landing_shake_noise != null and not bool(landing_shake_noise.get("rotational_noise")), "%s landing shake should not rotate the camera." % level_path)
+	check(landing_shake_noise != null and float(landing_shake_noise.get("positional_multiplier_y")) > float(landing_shake_noise.get("positional_multiplier_x")), "%s landing shake should be stronger vertically than horizontally." % level_path)
+
+	if player != null and landing_shake_emitter != null:
+		landing_shake_emitter.call("stop", false)
+		player.call("start_hard_landing")
+		check(float(player.get("landing_animation_timer")) > 0.0, "%s hard landing should start the dust animation timer." % level_path)
+		check(bool(landing_shake_emitter.call("is_emitting")), "%s hard landing should start Phantom Camera noise on the same event." % level_path)
+		landing_shake_emitter.call("stop", false)
 
 	stop_level_audio(level)
 	level.queue_free()

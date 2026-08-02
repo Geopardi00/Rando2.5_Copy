@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 signal health_changed(current_hp: int, max_hp: int)
 signal ammo_changed(current_ammo: int, max_ammo: int)
+signal hard_landed
 
 @export var move_speed: float = 220.0
 @export var jump_velocity: float = -400.0
@@ -1432,6 +1433,7 @@ func start_hard_landing() -> void:
 	landing_animation_timer = hard_landing_animation_time
 	landing_stop_timer = hard_landing_stop_time
 	velocity.x = 0.0
+	hard_landed.emit()
 
 
 func cancel_landing() -> void:
