@@ -71,6 +71,12 @@ func _run_test() -> void:
 	player.set_stealth_active(true)
 	check(player.is_stealth_active(), "Stealth should activate while an area is available.")
 	check(not player.is_detectable_by_enemies(), "An active stealth player should not be detectable.")
+	var player_frames: SpriteFrames = player.animated_sprite.sprite_frames
+	check(player_frames.has_animation(&"stealth_walk"), "Player SpriteFrames should contain the stealth_walk animation.")
+	check(player_frames.get_frame_count(&"stealth_walk") == 14 and player_frames.get_animation_loop(&"stealth_walk"), "stealth_walk should contain all 14 frames and loop.")
+	check(player.get_ground_walk_animation() == &"stealth_walk", "Ground movement should select stealth_walk while hidden.")
+	check(player.stealth_walk_speed_multiplier < 1.0 and is_equal_approx(player.get_horizontal_move_speed(true), player.move_speed * player.stealth_walk_speed_multiplier), "Ground movement speed should use the authored stealth multiplier while hidden.")
+	check(is_equal_approx(player.get_horizontal_move_speed(false), player.move_speed), "Air movement speed should remain unchanged while hidden.")
 	check(player.animated_sprite.self_modulate == player.stealth_tint, "Stealth should darken the player sprite.")
 	check(player.stealth_highlight.visible, "Stealth should enable the player outline.")
 	check(player.stealth_highlight is AnimatedSprite2D, "The stealth outline should use an AnimatedSprite2D overlay.")
@@ -105,6 +111,7 @@ func _run_test() -> void:
 	second_area.call("_on_body_exited", player)
 	check(not player.is_stealth_available(), "Leaving the final ShadowArea should remove availability.")
 	check(not player.is_stealth_active(), "Leaving the final ShadowArea should cancel stealth.")
+	check(player.get_ground_walk_animation() == &"walk" and is_equal_approx(player.get_horizontal_move_speed(true), player.move_speed), "Normal ground animation and speed should return after stealth ends.")
 	check(player.animated_sprite.self_modulate == player.default_player_self_modulate, "Ending stealth should restore the original sprite modulation.")
 	check(not player.stealth_highlight.visible, "Ending stealth should hide the highlight.")
 

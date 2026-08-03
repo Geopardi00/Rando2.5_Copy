@@ -44,6 +44,7 @@ const DAMAGE_SOURCE_GENERIC: StringName = &"generic"
 
 @export_group("Stealth")
 @export var stealth_tint: Color = Color(0.35, 0.42, 0.5, 1.0)
+@export_range(0.1, 1.0, 0.05) var stealth_walk_speed_multiplier: float = 0.5
 
 @export_group("Melee Attack")
 @export var melee_damage: int = 2
@@ -246,10 +247,11 @@ func _physics_process(delta: float) -> void:
 	update_melee_hitbox_geometry()
 
 	# Horizontal movement
+	var horizontal_move_speed := get_horizontal_move_speed(was_on_floor)
 	if landing_stop_timer > 0.0 or melee_ground_stop_timer > 0.0:
 		velocity.x = 0.0
 	elif input_axis != 0.0:
-		velocity.x = input_axis * move_speed
+		velocity.x = input_axis * horizontal_move_speed
 	else:
 		velocity.x = 0.0
 
@@ -895,6 +897,17 @@ func play_animation_safe(name: StringName, fallback: StringName = &"idle") -> vo
 			animated_sprite.play(fallback)
 
 
+func get_horizontal_move_speed(on_floor: bool) -> float:
+	if stealth_active and on_floor:
+		return move_speed * stealth_walk_speed_multiplier
+
+	return move_speed
+
+
+func get_ground_walk_animation() -> StringName:
+	return &"stealth_walk" if stealth_active else &"walk"
+
+
 func update_animation() -> void:
 	if is_dead:
 		animated_sprite.speed_scale = 1.0
@@ -946,8 +959,9 @@ func update_animation() -> void:
 		return
 
 	if abs(velocity.x) > 5.0:
-		play_animation_safe(&"walk", &"idle")
-		animated_sprite.speed_scale = clamp(abs(velocity.x) / move_speed, 0.85, 1.15)
+		play_animation_safe(get_ground_walk_animation(), &"walk")
+		var ground_move_speed := maxf(get_horizontal_move_speed(true), 1.0)
+		animated_sprite.speed_scale = clamp(abs(velocity.x) / ground_move_speed, 0.85, 1.15)
 	else:
 		play_animation_safe(&"idle")
 		animated_sprite.speed_scale = 1.0

@@ -131,6 +131,20 @@
 [ext_resource type="Texture2D" uid="uid://cartxkc8reqya" path="res://art/characters/animations/slap/frame0007.png" id="slap_07"]
 [ext_resource type="Texture2D" uid="uid://ctsww2lne6mc0" path="res://art/characters/animations/slap/frame0008.png" id="slap_08"]
 [ext_resource type="Shader" uid="uid://bs5uwl67c0isx" path="res://shaders/player_stealth_outline.gdshader" id="stealth_outline_shader"]
+[ext_resource type="Texture2D" uid="uid://bdoeg1yyt0jfa" path="res://art/characters/animations/Stealth_walk/frame0000.png" id="stealth_walk_00"]
+[ext_resource type="Texture2D" uid="uid://ba0nlarkxlstp" path="res://art/characters/animations/Stealth_walk/frame0001.png" id="stealth_walk_01"]
+[ext_resource type="Texture2D" uid="uid://dma7q5gxvt4m4" path="res://art/characters/animations/Stealth_walk/frame0002.png" id="stealth_walk_02"]
+[ext_resource type="Texture2D" uid="uid://qwrec8gin508" path="res://art/characters/animations/Stealth_walk/frame0003.png" id="stealth_walk_03"]
+[ext_resource type="Texture2D" uid="uid://bd3liq3i27mdj" path="res://art/characters/animations/Stealth_walk/frame0004.png" id="stealth_walk_04"]
+[ext_resource type="Texture2D" uid="uid://graw1aer1olr" path="res://art/characters/animations/Stealth_walk/frame0005.png" id="stealth_walk_05"]
+[ext_resource type="Texture2D" uid="uid://dlf8b3wv7inky" path="res://art/characters/animations/Stealth_walk/frame0006.png" id="stealth_walk_06"]
+[ext_resource type="Texture2D" uid="uid://tkj3fbmbia85" path="res://art/characters/animations/Stealth_walk/frame0007.png" id="stealth_walk_07"]
+[ext_resource type="Texture2D" uid="uid://b1avh8lijqttf" path="res://art/characters/animations/Stealth_walk/frame0008.png" id="stealth_walk_08"]
+[ext_resource type="Texture2D" uid="uid://cb3ooqmi2iehr" path="res://art/characters/animations/Stealth_walk/frame0009.png" id="stealth_walk_09"]
+[ext_resource type="Texture2D" uid="uid://j47xwxv2cp2j" path="res://art/characters/animations/Stealth_walk/frame0010.png" id="stealth_walk_10"]
+[ext_resource type="Texture2D" uid="uid://cyt56meg6k31c" path="res://art/characters/animations/Stealth_walk/frame0011.png" id="stealth_walk_11"]
+[ext_resource type="Texture2D" uid="uid://cls1q4scm3rlk" path="res://art/characters/animations/Stealth_walk/frame0012.png" id="stealth_walk_12"]
+[ext_resource type="Texture2D" uid="uid://hqfaobo5i6bk" path="res://art/characters/animations/Stealth_walk/frame0013.png" id="stealth_walk_13"]
 [ext_resource type="Texture2D" uid="uid://dncgk06mycp3h" path="res://art/characters/animations/swatting/frame0000.png" id="swat_00"]
 [ext_resource type="Texture2D" uid="uid://xnv8c0fx58vo" path="res://art/characters/animations/swatting/frame0001.png" id="swat_01"]
 [ext_resource type="Texture2D" uid="uid://ckdpvsfwxiu1q" path="res://art/characters/animations/swatting/frame0002.png" id="swat_02"]
@@ -501,6 +515,53 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("stealth_walk_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("stealth_walk_11")
+}, {
+"duration": 0.7,
+"texture": ExtResource("stealth_walk_12")
+}, {
+"duration": 1.3,
+"texture": ExtResource("stealth_walk_13")
+}],
+"loop": true,
+"name": &"stealth_walk",
+"speed": 23.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("swat_00")
 }, {
 "duration": 1.0,
@@ -725,11 +786,11 @@ animations = [{
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_stealth_outline"]
 resource_local_to_scene = true
 shader = ExtResource("stealth_outline_shader")
-shader_parameter/outline_color_start = Color(0.78, 0.95, 1, 1)
-shader_parameter/outline_color_end = Color(0.52, 0.78, 1, 1)
-shader_parameter/outline_width = 6.0
+shader_parameter/outline_color_start = Color(0.07646953, 0.42688474, 0.3983916, 0.84705883)
+shader_parameter/outline_color_end = Color(0.08429777, 0.35527438, 0.26959315, 0.8156863)
+shader_parameter/outline_width = 6.5
 shader_parameter/color_cycle_seconds = 2.5
-shader_parameter/alpha_threshold = 0.1
+shader_parameter/alpha_threshold = 0.05600000266
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(18, 35)
@@ -750,6 +811,7 @@ max_ammo = 20
 starting_ammo = 15
 slap_height = 60.0
 stealth_tint = Color(0.2847788, 0.34698352, 0.4195011, 1)
+stealth_walk_speed_multiplier = 0.25
 melee_damage = 1
 melee_range = 42.0
 melee_ground_stop_time = 0.2
@@ -765,9 +827,8 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"landing"
-frame = 7
-frame_progress = 1.0
+animation = &"stealth_walk"
+frame_progress = 0.3374754
 
 [node name="StealthHighlight" type="AnimatedSprite2D" parent="AnimatedSprite2D" unique_id=223827841]
 visible = false
