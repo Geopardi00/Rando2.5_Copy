@@ -2,6 +2,16 @@
 
 Last updated: 2026-08-03
 
+## Latest Update - 2026-08-03 - Flamethrower Enemy Prototype
+- Added the reusable `EnemyFlamethrower` in `scenes/enemies/enemy_flamethrower.tscn` and `scripts/enemies/enemy_flamethrower.gd`. It patrols inside an exported spawn-centered distance, turns at walls and ledges, and uses horizontal range, vertical tolerance, facing, World-only line of sight, and the existing stealth detectability API before attacking.
+- Its timer-driven flow is `PATROL -> WIND_UP -> FIRING -> COOLDOWN -> PATROL`. Wind-up currently lasts `0.65s`, cancels when the target is clearly lost, and locks the firing direction so crossing behind the enemy after ignition remains a fair dodge.
+- Flame visuals use a narrow additive `GPUParticles2D` stream with `art/props/flame.png`; gameplay damage remains separate. A World-only reach ray clamps the effective collision shape at walls, and direct flame damage is polled every `0.8s` through `take_damage(..., false, &"enemy")`, preserving player invulnerability and stealth immunity.
+- Added reusable `BurningGround` content in `scenes/Hazards/burning_ground.tscn` and `scripts/Hazards/burning_ground.gd`. The MVP uses one downward probe and at most one patch per burst; nearby patches refresh instead of stacking, damage on controlled enemy-category ticks, stop immediately at expiry, fade, and free themselves.
+- The flamethrower reuses the existing enemy body/hurtbox layers, contact damage, hit-flash shader, detached hit sound, blood burst, defeat statistics, player attack compatibility, scene-reload respawn behavior, and stealth foreground ordering.
+- The nine `512x512` walk frames under `art/enemies/animations/Flamethrower/walk/` are wired as a 10 FPS loop at sprite scale `0.10`. Idle, wind-up, fire, and cooldown currently use static walk-frame placeholders; dedicated animations and flame/warning audio remain later polish.
+- Added one prototype instance on the second platform in `test_room.tscn`, near `Vector2(1500, 380)`, with a `200px` patrol distance. The project main scene remains the test room.
+- Added `scripts/tests/enemy_flamethrower_smoke_test.gd`, covering scene/collision contracts, patrol limits/walls/ledges, perception and cover, stealth/death rejection, state transitions, locked left/right firing, wall-clamped reach, timed damage, ground-fire placement/deduplication/lifetime, and health/death cleanup. The new smoke test, existing stealth and dog tests, and a headless `test_room.tscn` load pass on Godot 4.6.1; manual feel/VFX tuning remains.
+
 ## Latest Update - 2026-08-03 - Reusable Shadow-Area Stealth Prototype
 - Added reusable `ShadowArea` content in `scenes/stealth/shadow_area.tscn` and `scripts/stealth/shadow_area.gd`. Each area is editor-resizable, uses layer 0/mask 2, can draw an optional low-alpha tint, and safely unregisters tracked players when it exits the tree.
 - Player stealth is overlap-safe across multiple shadow areas. Entering a shadow makes stealth available; `Q` or joypad right shoulder/RB toggles it, and leaving the final shadow cancels it immediately.

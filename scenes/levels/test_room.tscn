@@ -63,6 +63,7 @@
 [ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="59_game_ui"]
 [ext_resource type="PackedScene" uid="uid://cd8s8qjuurvl6" path="res://scenes/props/destroyable/destroyable_crate_box05.tscn" id="60_destroyable_box05"]
 [ext_resource type="PackedScene" path="res://scenes/stealth/shadow_area.tscn" id="61_shadow_area"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_flamethrower.tscn" id="62_flamethrower"]
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="64_56r4m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_loe4b"]
@@ -403,6 +404,11 @@ texture = ExtResource("15_l652x")
 
 [node name="EnemyMosquito" parent="." unique_id=1591869900 instance=ExtResource("16_mosquito")]
 position = Vector2(660, 5)
+
+[node name="EnemyFlamethrower" parent="." instance=ExtResource("62_flamethrower")]
+position = Vector2(1500, 380)
+move_direction = 1
+patrol_distance = 200.0
 
 [node name="MosquitoSwarm" parent="." unique_id=1248282254 instance=ExtResource("15_4c4i7")]
 position = Vector2(562, -120)

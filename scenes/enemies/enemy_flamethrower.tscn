@@ -1,0 +1,241 @@
+[gd_scene format=3 uid="uid://4nug12t66own"]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_flamethrower.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_hit_sound"]
+[ext_resource type="Texture2D" uid="uid://dubhyfm7ohi6a" path="res://art/props/flame.png" id="4_flame"]
+[ext_resource type="Texture2D" uid="uid://cyv7ndj6b2smr" path="res://art/enemies/animations/Flamethrower/walk/frame0001.png" id="5_walk_01"]
+[ext_resource type="Texture2D" uid="uid://dsyhs5lg7dxlf" path="res://art/enemies/animations/Flamethrower/walk/frame0002.png" id="6_walk_02"]
+[ext_resource type="Texture2D" uid="uid://br4ag7catrofk" path="res://art/enemies/animations/Flamethrower/walk/frame0003.png" id="7_walk_03"]
+[ext_resource type="Texture2D" uid="uid://ci7iwhbh60w5s" path="res://art/enemies/animations/Flamethrower/walk/frame0004.png" id="8_walk_04"]
+[ext_resource type="Texture2D" uid="uid://msa1h3a2jjhw" path="res://art/enemies/animations/Flamethrower/walk/frame0005.png" id="9_walk_05"]
+[ext_resource type="Texture2D" uid="uid://j2vfeibrvvhp" path="res://art/enemies/animations/Flamethrower/walk/frame0006.png" id="10_walk_06"]
+[ext_resource type="Texture2D" uid="uid://vt4kkddltk0s" path="res://art/enemies/animations/Flamethrower/walk/frame0007.png" id="11_walk_07"]
+[ext_resource type="Texture2D" uid="uid://cbyan78c78pnb" path="res://art/enemies/animations/Flamethrower/walk/frame0008.png" id="12_walk_08"]
+[ext_resource type="Texture2D" uid="uid://de7st42fflgoh" path="res://art/enemies/animations/Flamethrower/walk/frame0009.png" id="13_walk_09"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(22, 38)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hit_flash"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_flamethrower"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_walk_07")
+}],
+"loop": false,
+"name": &"cooldown",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_walk_05")
+}],
+"loop": true,
+"name": &"fire",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_walk_01")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_walk_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_walk_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_walk_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_walk_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_walk_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_walk_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_walk_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_walk_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_walk_09")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 13.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_walk_03")
+}],
+"loop": false,
+"name": &"wind_up",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(24, 38)
+
+[sub_resource type="Gradient" id="Gradient_nozzle_glow"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.66, 0.16, 0.75, 1, 0.22, 0.02, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nozzle_glow"]
+gradient = SubResource("Gradient_nozzle_glow")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_flame_additive"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_flame_alpha"]
+_data = [Vector2(0, 0), 0.0, 8.0, 0, 0, Vector2(0.08, 1), 0.0, 0.0, 0, 0, Vector2(0.72, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_flame_alpha"]
+curve = SubResource("Curve_flame_alpha")
+
+[sub_resource type="Gradient" id="Gradient_flame_color"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.82, 0.35, 0.95, 1, 0.24, 0.03, 0.45)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_flame_color"]
+gradient = SubResource("Gradient_flame_color")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_flame"]
+particle_flag_disable_z = true
+spread = 3.0
+initial_velocity_min = 270.84
+initial_velocity_max = 331.41
+gravity = Vector3(0, 0, 0)
+damping_min = 12.0
+damping_max = 30.0
+scale_min = 0.045
+scale_max = 0.09
+color_initial_ramp = SubResource("GradientTexture1D_flame_color")
+alpha_curve = SubResource("CurveTexture_flame_alpha")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flame"]
+resource_local_to_scene = true
+size = Vector2(234, 28)
+
+[node name="EnemyFlamethrower" type="CharacterBody2D" unique_id=408113816 groups=["enemy"]]
+collision_layer = 4
+script = ExtResource("1_script")
+flame_range = 360.0
+flame_width = 16.0
+ground_fire_spawn_delay = 0.8
+ground_patch_duplicate_radius = 600.0
+max_ground_patches_per_burst = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2069021992]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2046304446]
+material = SubResource("ShaderMaterial_hit_flash")
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_flamethrower")
+animation = &"wind_up"
+autoplay = "idle"
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1415281411 groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1758895792]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=1939923534]
+position = Vector2(-11, 1)
+target_position = Vector2(-8, 0)
+
+[node name="WallCheckRight" type="RayCast2D" parent="." unique_id=878104534]
+position = Vector2(11, 1)
+target_position = Vector2(8, 0)
+
+[node name="FloorCheckLeft" type="RayCast2D" parent="." unique_id=1983717601]
+position = Vector2(-7, 18)
+target_position = Vector2(0, 8)
+
+[node name="FloorCheckRight" type="RayCast2D" parent="." unique_id=1888400612]
+position = Vector2(7, 18)
+target_position = Vector2(0, 8)
+
+[node name="SightOrigin" type="Marker2D" parent="." unique_id=83982981]
+position = Vector2(0, -7)
+
+[node name="FlamePivot" type="Node2D" parent="." unique_id=2102414855]
+
+[node name="FlameOrigin" type="Marker2D" parent="FlamePivot" unique_id=173096278]
+position = Vector2(20, 7)
+
+[node name="NozzleGlow" type="PointLight2D" parent="FlamePivot/FlameOrigin" unique_id=260156941]
+position = Vector2(-2, 0)
+scale = Vector2(0.65, 0.45)
+enabled = false
+color = Color(1, 0.57, 0.1, 1)
+energy = 1.85
+texture = SubResource("GradientTexture2D_nozzle_glow")
+
+[node name="FlameParticles" type="GPUParticles2D" parent="FlamePivot/FlameOrigin" unique_id=1085873212]
+z_index = 1
+material = SubResource("CanvasItemMaterial_flame_additive")
+emitting = false
+amount = 78
+texture = ExtResource("4_flame")
+lifetime = 0.8
+randomness = 0.35
+visibility_rect = Rect2(-32, -48, 340, 96)
+process_material = SubResource("ParticleProcessMaterial_flame")
+
+[node name="FlameReachRay" type="RayCast2D" parent="FlamePivot/FlameOrigin" unique_id=799910054]
+target_position = Vector2(271, 0)
+
+[node name="FlameDamageArea" type="Area2D" parent="FlamePivot/FlameOrigin" unique_id=1267774907]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlamePivot/FlameOrigin/FlameDamageArea" unique_id=597255809]
+position = Vector2(117, 0)
+shape = SubResource("RectangleShape2D_flame")
+disabled = true
+
+[node name="GroundRayFar" type="RayCast2D" parent="FlamePivot/FlameOrigin" unique_id=2025013067]
+position = Vector2(270, 0)
+target_position = Vector2(0, 72)
+
+[node name="DamageTickTimer" type="Timer" parent="." unique_id=618540057]
+wait_time = 0.8
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=1923613399]
+stream = ExtResource("3_hit_sound")
+volume_db = -21.586
+pitch_scale = 0.99
+bus = &"Sound Effects"
+
+[node name="WindUpSound" type="AudioStreamPlayer2D" parent="." unique_id=831079735]
+bus = &"Sound Effects"
+
+[node name="FlameLoopSound" type="AudioStreamPlayer2D" parent="." unique_id=374679109]
+bus = &"Sound Effects"

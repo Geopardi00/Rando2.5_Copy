@@ -19,6 +19,7 @@ size = Vector2(24, 18)
 
 [node name="MagazinePickup" type="Area2D" unique_id=1306324502]
 modulate = Color(1.2227312, 1.2227312, 1.2227312, 1)
+scale = Vector2(1.5, 1.5)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_script")
@@ -35,9 +36,9 @@ texture = ExtResource("2_texture")
 position = Vector2(0, -1)
 scale = Vector2(1.6, 1.15)
 color = Color(0.8806186, 0.81072783, 0.62335527, 1)
-energy = 2.06
+energy = 1.07
 texture = SubResource("GradientTexture2D_magazine_glow")
-texture_scale = 0.7
+texture_scale = 1.04
 script = ExtResource("3_torch_flicker")
 min_energy = 0.5
 max_energy = 0.6

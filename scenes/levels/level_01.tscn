@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://0w4h40pcyyhs" path="res://art/tiles/b01_pillar_01.png" id="8_cwffn"]
 [ext_resource type="PackedScene" uid="uid://dxau7e3ddsbqg" path="res://scenes/Non_lethal/mosquito_swarm.tscn" id="8_uvhx5"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="10_r72dd"]
+[ext_resource type="PackedScene" uid="uid://4nug12t66own" path="res://scenes/enemies/enemy_flamethrower.tscn" id="10_uuyc6"]
 [ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="11_jmes4"]
 [ext_resource type="Texture2D" uid="uid://b4758l3kh40yg" path="res://art/props/tunneldoor.png" id="12_1uvka"]
 [ext_resource type="Script" uid="uid://onylvomacabe" path="res://scripts/goal.gd" id="12_gi8m4"]
@@ -148,7 +149,7 @@ sources/0 = SubResource("TileSetAtlasSource_yj8ph")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lswbx"]
 size = Vector2(63, 61)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uuyc6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhwr"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
@@ -181,17 +182,17 @@ hue_variation_min = -2.2351742e-08
 hue_variation_max = -2.2351742e-08
 anim_offset_max = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhwr"]
-resource_local_to_scene = true
-shader = ExtResource("43_uuyc6")
-shader_parameter/flash_amount = 0.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxe6"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_amtgl"]
+resource_local_to_scene = true
+shader = ExtResource("43_uuyc6")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bevd5"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
@@ -320,7 +321,7 @@ blend_mode = 2
 z_index = 1
 
 [node name="Enemy" parent="Enemies" unique_id=83899896 instance=ExtResource("10_r72dd")]
-position = Vector2(937, 292)
+position = Vector2(2540, 268)
 
 [node name="Enemy2" parent="Enemies" unique_id=373038677 instance=ExtResource("10_r72dd")]
 position = Vector2(3239, 274)
@@ -410,6 +411,9 @@ scale = Vector2(0.4, 0.4)
 [node name="EnemyMosquito3" parent="Enemies" unique_id=2066386988 instance=ExtResource("7_syaoa")]
 position = Vector2(4885, -82.999985)
 scale = Vector2(0.4, 0.4)
+
+[node name="EnemyFlamethrower" parent="Enemies" unique_id=408113816 instance=ExtResource("10_uuyc6")]
+position = Vector2(991, 311)
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=492750461]
 position = Vector2(497, 252)
@@ -1119,7 +1123,7 @@ texture = ExtResource("54_3jppf")
 position = Vector2(614, 258)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox05" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_uuyc6")
+material = SubResource("ShaderMaterial_bfhwr")
 position = Vector2(43, 75)
 scale = Vector2(0.2, 0.2)
 
@@ -1142,7 +1146,7 @@ position = Vector2(1985.0001, 239)
 scale = Vector2(1.2, 1.2)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox06" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_bfhwr")
+material = SubResource("ShaderMaterial_wkxe6")
 position = Vector2(43, 75)
 scale = Vector2(0.2, 0.2)
 
@@ -1164,7 +1168,7 @@ process_material = SubResource("ParticleProcessMaterial_hit")
 position = Vector2(5214, 8)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableProp" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_wkxe6")
+material = SubResource("ShaderMaterial_amtgl")
 
 [node name="PhysicalCollision" parent="DestroyableProps/DestroyableProp" index="1" unique_id=302057026]
 position = Vector2(3.5, 11.5)
@@ -1174,7 +1178,7 @@ position = Vector2(3311, 298)
 scale = Vector2(0.2, 0.2)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox07" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_amtgl")
+material = SubResource("ShaderMaterial_bevd5")
 
 [node name="PhysicalCollision" parent="DestroyableProps/DestroyableCrateBox07" index="1" unique_id=302057026]
 position = Vector2(0, 25)
