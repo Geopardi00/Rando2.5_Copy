@@ -85,7 +85,7 @@ const DAMAGE_SOURCE_GENERIC: StringName = &"generic"
 @onready var body_collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var melee_hitbox: Area2D = $MeleeHitbox
 @onready var melee_hitbox_shape: CollisionShape2D = $MeleeHitbox/CollisionShape2D
-@onready var stealth_highlight: CanvasItem = $StealthHighlight
+@onready var stealth_highlight: AnimatedSprite2D = $AnimatedSprite2D/StealthHighlight
 
 var facing: int = 1
 var coyote_timer: float = 0.0
@@ -161,7 +161,7 @@ func _ready() -> void:
 	setup_water_debug_display()
 	default_player_self_modulate = animated_sprite.self_modulate
 	apply_stealth_visual()
-
+	sync_stealth_highlight()
 
 func _physics_process(delta: float) -> void:
 	prune_shadow_areas()
@@ -802,6 +802,7 @@ func setup_water_debug_display() -> void:
 
 
 func _process(_delta: float) -> void:
+	sync_stealth_highlight()
 	if water_debug_enabled and water_state_debug_lines:
 		queue_redraw()
 	if water_debug_label == null:
@@ -1618,6 +1619,22 @@ func apply_stealth_visual() -> void:
 
 	if stealth_highlight != null:
 		stealth_highlight.visible = stealth_active
+
+
+func sync_stealth_highlight() -> void:
+	if animated_sprite == null or stealth_highlight == null:
+		return
+
+	if stealth_highlight.sprite_frames != animated_sprite.sprite_frames:
+		stealth_highlight.sprite_frames = animated_sprite.sprite_frames
+	if stealth_highlight.animation != animated_sprite.animation:
+		stealth_highlight.animation = animated_sprite.animation
+
+	stealth_highlight.set_frame_and_progress(animated_sprite.frame, animated_sprite.frame_progress)
+	stealth_highlight.flip_h = animated_sprite.flip_h
+	stealth_highlight.flip_v = animated_sprite.flip_v
+	stealth_highlight.centered = animated_sprite.centered
+	stealth_highlight.offset = animated_sprite.offset
 
 
 func refresh_stealth_enemy_render_order() -> void:

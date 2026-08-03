@@ -72,7 +72,30 @@ func _run_test() -> void:
 	check(player.is_stealth_active(), "Stealth should activate while an area is available.")
 	check(not player.is_detectable_by_enemies(), "An active stealth player should not be detectable.")
 	check(player.animated_sprite.self_modulate == player.stealth_tint, "Stealth should darken the player sprite.")
-	check(player.stealth_highlight.visible, "Stealth should enable the bright player highlight.")
+	check(player.stealth_highlight.visible, "Stealth should enable the player outline.")
+	check(player.stealth_highlight is AnimatedSprite2D, "The stealth outline should use an AnimatedSprite2D overlay.")
+	var outline_material := player.stealth_highlight.material as ShaderMaterial
+	check(outline_material != null, "The stealth outline should use its own ShaderMaterial.")
+	if outline_material != null:
+		check(outline_material.shader.resource_path == "res://shaders/player_stealth_outline.gdshader", "The stealth overlay should use the outline-only shader.")
+		check(float(outline_material.get_shader_parameter(&"color_cycle_seconds")) > 0.0, "The stealth outline should have a timed color cycle.")
+	var original_animation: StringName = player.animated_sprite.animation
+	var original_frame: int = player.animated_sprite.frame
+	var original_frame_progress: float = player.animated_sprite.frame_progress
+	var original_flip_h: bool = player.animated_sprite.flip_h
+	player.animated_sprite.animation = &"idle"
+	player.animated_sprite.set_frame_and_progress(2, 0.4)
+	player.animated_sprite.flip_h = not original_flip_h
+	player.sync_stealth_highlight()
+	check(player.stealth_highlight.animation == &"idle" and player.stealth_highlight.frame == 2, "The stealth outline should mirror the player animation and frame.")
+	check(is_equal_approx(player.stealth_highlight.frame_progress, 0.4) and player.stealth_highlight.flip_h == player.animated_sprite.flip_h, "The stealth outline should mirror frame progress and facing.")
+	player.animated_sprite.visible = false
+	check(not player.stealth_highlight.is_visible_in_tree(), "The stealth outline should inherit invulnerability blinking visibility.")
+	player.animated_sprite.visible = true
+	player.animated_sprite.animation = original_animation
+	player.animated_sprite.set_frame_and_progress(original_frame, original_frame_progress)
+	player.animated_sprite.flip_h = original_flip_h
+	player.sync_stealth_highlight()
 	check(ui.get_node("StealthPrompt/PromptLabel").text.contains("LEAVE"), "The active prompt should offer leaving stealth.")
 
 	second_area.call("_on_body_entered", player)

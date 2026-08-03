@@ -130,6 +130,7 @@
 [ext_resource type="Texture2D" uid="uid://dld4og2r5iwvl" path="res://art/characters/animations/slap/frame0006.png" id="slap_06"]
 [ext_resource type="Texture2D" uid="uid://cartxkc8reqya" path="res://art/characters/animations/slap/frame0007.png" id="slap_07"]
 [ext_resource type="Texture2D" uid="uid://ctsww2lne6mc0" path="res://art/characters/animations/slap/frame0008.png" id="slap_08"]
+[ext_resource type="Shader" uid="uid://bs5uwl67c0isx" path="res://shaders/player_stealth_outline.gdshader" id="stealth_outline_shader"]
 [ext_resource type="Texture2D" uid="uid://dncgk06mycp3h" path="res://art/characters/animations/swatting/frame0000.png" id="swat_00"]
 [ext_resource type="Texture2D" uid="uid://xnv8c0fx58vo" path="res://art/characters/animations/swatting/frame0001.png" id="swat_01"]
 [ext_resource type="Texture2D" uid="uid://ckdpvsfwxiu1q" path="res://art/characters/animations/swatting/frame0002.png" id="swat_02"]
@@ -721,6 +722,15 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_stealth_outline"]
+resource_local_to_scene = true
+shader = ExtResource("stealth_outline_shader")
+shader_parameter/outline_color_start = Color(0.78, 0.95, 1, 1)
+shader_parameter/outline_color_end = Color(0.52, 0.78, 1, 1)
+shader_parameter/outline_width = 6.0
+shader_parameter/color_cycle_seconds = 2.5
+shader_parameter/alpha_threshold = 0.1
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dovo2"]
 size = Vector2(18, 35)
 
@@ -729,22 +739,6 @@ size = Vector2(8, 8)
 
 [sub_resource type="RectangleShape2D" id="MeleeHitboxShape"]
 size = Vector2(22, 29)
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_stealth_highlight"]
-blend_mode = 1
-light_mode = 1
-
-[sub_resource type="Gradient" id="Gradient_stealth_highlight"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0.7, 0.94, 1, 0.92, 0.35, 0.78, 1, 0.42, 0.15, 0.55, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_stealth_highlight"]
-gradient = SubResource("Gradient_stealth_highlight")
-width = 128
-height = 160
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 0.5)
 
 [node name="Player" type="CharacterBody2D" unique_id=1487025887]
 z_index = 1
@@ -755,6 +749,7 @@ script = ExtResource("player_script")
 max_ammo = 20
 starting_ammo = 15
 slap_height = 60.0
+stealth_tint = Color(0.2847788, 0.34698352, 0.4195011, 1)
 melee_damage = 1
 melee_range = 42.0
 melee_ground_stop_time = 0.2
@@ -774,14 +769,13 @@ animation = &"landing"
 frame = 7
 frame_progress = 1.0
 
-[node name="StealthHighlight" type="Sprite2D" parent="."]
+[node name="StealthHighlight" type="AnimatedSprite2D" parent="AnimatedSprite2D" unique_id=223827841]
 visible = false
-show_behind_parent = true
-z_index = -1
-material = SubResource("CanvasItemMaterial_stealth_highlight")
-position = Vector2(0, 7)
-scale = Vector2(0.42, 0.42)
-texture = SubResource("GradientTexture2D_stealth_highlight")
+material = SubResource("ShaderMaterial_stealth_outline")
+sprite_frames = SubResource("SpriteFrames_ioxgp")
+animation = &"landing"
+frame = 7
+frame_progress = 1.0
 
 [node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]
 position = Vector2(19, 8)
@@ -790,8 +784,8 @@ position = Vector2(19, 8)
 visible = false
 top_level = true
 position = Vector2(52, -137)
-zoom = Vector2(1.5, 1.5)
 enabled = false
+zoom = Vector2(1.5, 1.5)
 
 [node name="FireRateTimer" type="Timer" parent="." unique_id=1567559696]
 one_shot = true
