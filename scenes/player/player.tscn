@@ -730,6 +730,22 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="MeleeHitboxShape"]
 size = Vector2(22, 29)
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_stealth_highlight"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_stealth_highlight"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.7, 0.94, 1, 0.92, 0.35, 0.78, 1, 0.42, 0.15, 0.55, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_stealth_highlight"]
+gradient = SubResource("Gradient_stealth_highlight")
+width = 128
+height = 160
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
 [node name="Player" type="CharacterBody2D" unique_id=1487025887]
 z_index = 1
 position = Vector2(44, -72)
@@ -757,6 +773,15 @@ sprite_frames = SubResource("SpriteFrames_ioxgp")
 animation = &"landing"
 frame = 7
 frame_progress = 1.0
+
+[node name="StealthHighlight" type="Sprite2D" parent="."]
+visible = false
+show_behind_parent = true
+z_index = -1
+material = SubResource("CanvasItemMaterial_stealth_highlight")
+position = Vector2(0, 7)
+scale = Vector2(0.42, 0.42)
+texture = SubResource("GradientTexture2D_stealth_highlight")
 
 [node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]
 position = Vector2(19, 8)

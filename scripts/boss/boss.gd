@@ -445,7 +445,7 @@ func _on_contact_damage_body_entered(body: Node) -> void:
 
 	current_contact_targets.append(body)
 	if body.has_method("take_damage"):
-		body.take_damage(contact_damage)
+		body.take_damage(contact_damage, false, &"enemy")
 	elif body.has_method("die"):
 		body.die()
 
@@ -464,7 +464,7 @@ func _damage_with_stomp(body: Node) -> void:
 
 	damaged_by_current_stomp.append(body)
 	if body.has_method("take_damage"):
-		body.take_damage(stomp_damage)
+		body.take_damage(stomp_damage, false, &"enemy")
 	elif body.has_method("die"):
 		body.die()
 

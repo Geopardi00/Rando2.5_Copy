@@ -28,15 +28,18 @@
 [ext_resource type="Texture2D" uid="uid://c0y65qm3dcmnn" path="res://art/level02/ver2.0/platform06.png" id="15_phk7v"]
 [ext_resource type="PackedScene" uid="uid://c4ostpck37pmk" path="res://scenes/props/push_crate.tscn" id="18_gc2gi"]
 [ext_resource type="Texture2D" uid="uid://dwrbdf3m5pk1r" path="res://art/level02/ver2.0/Stalactite03(11).png" id="19_1g3op"]
-[ext_resource type="PackedScene" uid="uid://b8mb1736qqexw" path="res://scenes/props/torch.tscn" id="20_dd7cg"]
 [ext_resource type="Texture2D" uid="uid://vdn5p0fuudf1" path="res://art/level02/ver2.0/Stone09.png" id="22_1g3op"]
 [ext_resource type="Texture2D" uid="uid://bgsktj305ij57" path="res://art/level02/ver2.0/Stone05.png" id="24_g84t8"]
+[ext_resource type="Texture2D" uid="uid://bx1sob7xrdmha" path="res://art/level02/props/Cable01.png" id="27_4dyjh"]
+[ext_resource type="Texture2D" uid="uid://cx633qnoq0dav" path="res://art/level02/props/dirtpile01.png" id="28_gcwyd"]
+[ext_resource type="Texture2D" uid="uid://b0fb4ua4rben7" path="res://art/level02/props/woodpile01.png" id="29_vchln"]
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="33_trw33"]
 [ext_resource type="Texture2D" uid="uid://oxdn0qsfrpw" path="res://art/level01/ver2.0/foregroundstone03Blur.png" id="40_g84t8"]
 [ext_resource type="Texture2D" uid="uid://c5b4nujjhuuvq" path="res://art/level01/ver2.0/foregroundstone05Blur.png" id="41_4dyjh"]
 [ext_resource type="Texture2D" uid="uid://ckqbaapv1nem4" path="res://art/level02/ver2.0/Foreground_stone01.png" id="45_urdbc"]
 [ext_resource type="Texture2D" uid="uid://dejy7w1lrsc38" path="res://art/level02/ver2.0/Foreground_stone02.png" id="46_tvgqv"]
 [ext_resource type="Texture2D" uid="uid://c2mruofp2fijr" path="res://art/level02/ver2.0/Foreground_stone03.png" id="47_05g6j"]
+[ext_resource type="PackedScene" uid="uid://bsvvvhpinadkw" path="res://scenes/props/worklight.tscn" id="47_tvgqv"]
 [ext_resource type="Texture2D" uid="uid://dguddqju7vhei" path="res://art/level02/ver2.0/Foreground_stone05.png" id="48_jgcx6"]
 [ext_resource type="Texture2D" uid="uid://c14jy2tl8c0k5" path="res://art/level02/ver2.0/Foreground_stone04.png" id="48_mns36"]
 [ext_resource type="Texture2D" uid="uid://b5raqmlcqvs5h" path="res://art/level02/ver2.0/Foreground_stone06.png" id="50_molec"]
@@ -49,8 +52,9 @@ background_energy_multiplier = 1.1
 tonemap_exposure = 0.56
 tonemap_white = 2.2
 glow_enabled = true
-glow_intensity = 1.01
-glow_bloom = 0.05
+glow_intensity = 0.71
+glow_strength = 0.5
+glow_bloom = 0.8
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mhych"]
 polygon = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
@@ -465,7 +469,7 @@ environment = SubResource("Environment_dd7cg")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1148530813]
 visible = false
-color = Color(0.6190342, 0.72773075, 0.9589204, 1)
+color = Color(0.71570146, 0.8131196, 0.95351094, 1)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=317828693]
 modulate = Color(0.5689727, 0.56897277, 0.5689727, 1)
@@ -670,8 +674,8 @@ scale = Vector2(0.5112613, 0.5)
 texture = ExtResource("9_3qhov")
 
 [node name="Platform27" type="Sprite2D" parent="Platforms" unique_id=1300956721]
-position = Vector2(2365.5999, -484)
-scale = Vector2(0.6144651, 0.6)
+position = Vector2(2363.4998, -478)
+scale = Vector2(0.6210689, 0.6636363)
 texture = ExtResource("15_phk7v")
 
 [node name="Platform31" type="Sprite2D" parent="Platforms" unique_id=1834394681]
@@ -824,9 +828,9 @@ flip_h = true
 [node name="Stone43" type="Sprite2D" parent="Terrain2" unique_id=1205628355]
 modulate = Color(0.9411765, 0.79607844, 0.7176471, 1)
 z_index = -1
-position = Vector2(2545, -475.99997)
+position = Vector2(2551, -474)
 rotation = 1.548107
-scale = Vector2(0.50220406, 0.575)
+scale = Vector2(0.30609927, 0.43159014)
 texture = ExtResource("9_pdtp8")
 flip_h = true
 
@@ -1084,9 +1088,9 @@ texture = ExtResource("11_3qhov")
 [node name="Stone41" type="Sprite2D" parent="Terrain2" unique_id=2117311883]
 modulate = Color(0.99215686, 0.8627451, 0.69411767, 1)
 z_index = -1
-position = Vector2(2192.0002, -472)
+position = Vector2(2179.9998, -473)
 rotation = -1.4643313
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.5, 0.35016036)
 texture = ExtResource("11_3qhov")
 
 [node name="Stalactite01" type="Sprite2D" parent="Terrain2" unique_id=507854571]
@@ -1372,6 +1376,31 @@ scale = Vector2(0.16091329, 0.2)
 texture = ExtResource("24_g84t8")
 flip_v = true
 
+[node name="Props" type="Node2D" parent="." unique_id=381500026]
+
+[node name="Cable01" type="Sprite2D" parent="Props" unique_id=2051010800]
+position = Vector2(382, -268)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("27_4dyjh")
+
+[node name="DirtPile01" type="Sprite2D" parent="Props" unique_id=2037468364]
+modulate = Color(0.83033526, 0.83033514, 0.83033514, 1)
+position = Vector2(698, -263)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("28_gcwyd")
+
+[node name="WoodPile01" type="Sprite2D" parent="Props" unique_id=1947994251]
+position = Vector2(1094, -327)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("29_vchln")
+flip_h = true
+
+[node name="Worklight" parent="Props" unique_id=615812140 instance=ExtResource("47_tvgqv")]
+position = Vector2(780, -287)
+
+[node name="Worklight2" parent="Props" unique_id=964161040 instance=ExtResource("47_tvgqv")]
+position = Vector2(2790, -217)
+
 [node name="PushableProps" type="Node2D" parent="." unique_id=304053924]
 
 [node name="PushableCrate01" parent="PushableProps" unique_id=1943324784 instance=ExtResource("18_gc2gi")]
@@ -1396,62 +1425,6 @@ occluder = SubResource("OccluderPolygon2D_dd7cg")
 [node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("33_trw33")]
 
 [node name="Bullet" parent="." unique_id=1682380724 instance=ExtResource("5_7ptk6")]
-
-[node name="Torches" type="Node2D" parent="." unique_id=873373556]
-
-[node name="Torch" parent="Torches" unique_id=1845595865 instance=ExtResource("20_dd7cg")]
-visible = false
-position = Vector2(411, -315)
-
-[node name="Torch2" parent="Torches" unique_id=832688138 instance=ExtResource("20_dd7cg")]
-position = Vector2(871, -315)
-
-[node name="PointLight2D" parent="Torches/Torch2" index="2" unique_id=1913179842]
-energy = 1.57
-range_z_min = -972
-range_z_max = 226
-
-[node name="Torch3" parent="Torches" unique_id=437801037 instance=ExtResource("20_dd7cg")]
-position = Vector2(1447, -574)
-
-[node name="PointLight2D" parent="Torches/Torch3" index="2" unique_id=1913179842]
-energy = 1.01
-
-[node name="Torch5" parent="Torches" unique_id=1314353658 instance=ExtResource("20_dd7cg")]
-visible = false
-position = Vector2(1826, -464)
-
-[node name="Torch7" parent="Torches" unique_id=652944949 instance=ExtResource("20_dd7cg")]
-position = Vector2(2362, -547)
-
-[node name="Torch8" parent="Torches" unique_id=824418290 instance=ExtResource("20_dd7cg")]
-position = Vector2(3157, -251)
-
-[node name="Torch9" parent="Torches" unique_id=1157250722 instance=ExtResource("20_dd7cg")]
-position = Vector2(2844, -251)
-
-[node name="Torch10" parent="Torches" unique_id=182961552 instance=ExtResource("20_dd7cg")]
-position = Vector2(3442, -256)
-
-[node name="Torch11" parent="Torches" unique_id=1288449806 instance=ExtResource("20_dd7cg")]
-visible = false
-position = Vector2(3784, -386)
-
-[node name="Torch12" parent="Torches" unique_id=1851883502 instance=ExtResource("20_dd7cg")]
-position = Vector2(3935, -429)
-
-[node name="Torch13" parent="Torches" unique_id=711764816 instance=ExtResource("20_dd7cg")]
-position = Vector2(4368, -169)
-
-[node name="Node2D" type="Node2D" parent="Torches" unique_id=1478594547]
-position = Vector2(3013, -486)
-
-[node name="Torch" parent="Torches/Node2D" unique_id=1895751163 instance=ExtResource("20_dd7cg")]
-
-[node name="Node2D2" type="Node2D" parent="Torches" unique_id=1147611680]
-
-[node name="Torch" parent="Torches/Node2D2" unique_id=1018611411 instance=ExtResource("20_dd7cg")]
-position = Vector2(3328, -486)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=183194662]
 visible = false
@@ -1803,7 +1776,7 @@ position = Vector2(0, 180)
 
 [node name="WaterFill" parent="WaterBody2D" index="2" unique_id=806794729]
 position = Vector2(0, 0)
-scale = Vector2(1, 1)
+scale = Vector2(1, 0.6166667)
 color = Color(0.08, 0.55, 0.82, 0.68)
 polygon = PackedVector2Array(-400, 0, 400, 0, 400, 360, -400, 360)
 
@@ -1813,13 +1786,15 @@ scale = Vector2(1, 0.375)
 width = 4.0
 default_color = Color(0.48, 0.86, 1, 0.9)
 
-[node name="Icon" parent="WaterBody2D/Shader" parent_id_path=PackedInt32Array(1721704375, 499410625) index="0" unique_id=2145151425]
+[node name="Shader" parent="WaterBody2D" index="4" unique_id=499410625]
+visible = true
+
+[node name="Icon" parent="WaterBody2D/Shader" index="0" unique_id=2145151425]
+visible = true
 position = Vector2(-7.500044, 103)
 scale = Vector2(5.695312, 1.6406248)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1680936928]
 occluder = SubResource("OccluderPolygon2D_um5if")
 
-[editable path="Torches/Torch2"]
-[editable path="Torches/Torch3"]
 [editable path="WaterBody2D"]

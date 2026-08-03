@@ -6,6 +6,22 @@
 [ext_resource type="Texture2D" uid="uid://b4vvqxvvtytgr" path="res://art/FX/blood.png" id="4_fct72"]
 [ext_resource type="Texture2D" uid="uid://dqe1lwjs7o28t" path="res://art/props/magazine.png" id="5_magazine"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stealth_prompt"]
+bg_color = Color(0.025, 0.045, 0.09, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.42, 0.86, 1, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+
 [sub_resource type="Gradient" id="Gradient_fct72"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
@@ -177,6 +193,32 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "CHECKPOINT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StealthPrompt" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -175.0
+offset_top = -100.0
+offset_right = 175.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_stealth_prompt")
+
+[node name="PromptLabel" type="Label" parent="StealthPrompt"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.94, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "Q / RB: ENTER STEALTH"
 horizontal_alignment = 1
 vertical_alignment = 1
 

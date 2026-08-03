@@ -3,6 +3,8 @@ extends CharacterBody2D
 signal health_changed(current_hp: int, max_hp: int)
 signal ammo_changed(current_ammo: int, max_ammo: int)
 signal hard_landed
+signal stealth_availability_changed(available: bool)
+signal stealth_changed(active: bool)
 
 @export var move_speed: float = 220.0
 @export var jump_velocity: float = -400.0
@@ -12,6 +14,9 @@ const PUSH_FORCE = 100
 const BLOCK_MAX_VELOCITY = 180
 const ONE_WAY_PLATFORM_LAYER = 14
 const PLAYER_UNDERWATER_SHADER: Shader = preload("res://shaders/player_underwater.gdshader")
+const DAMAGE_SOURCE_ENEMY: StringName = &"enemy"
+const DAMAGE_SOURCE_ENVIRONMENT: StringName = &"environment"
+const DAMAGE_SOURCE_GENERIC: StringName = &"generic"
 
 @export var coyote_time: float = 0.10
 @export var jump_buffer_time: float = 0.10
@@ -36,6 +41,9 @@ const PLAYER_UNDERWATER_SHADER: Shader = preload("res://shaders/player_underwate
 @export var slap_duration: float = 0.10
 @export var slap_cooldown: float = 0.25
 @export var mosquito_immunity_time: float = 1.0
+
+@export_group("Stealth")
+@export var stealth_tint: Color = Color(0.35, 0.42, 0.5, 1.0)
 
 @export_group("Melee Attack")
 @export var melee_damage: int = 2
@@ -77,6 +85,7 @@ const PLAYER_UNDERWATER_SHADER: Shader = preload("res://shaders/player_underwate
 @onready var body_collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var melee_hitbox: Area2D = $MeleeHitbox
 @onready var melee_hitbox_shape: CollisionShape2D = $MeleeHitbox/CollisionShape2D
+@onready var stealth_highlight: CanvasItem = $StealthHighlight
 
 var facing: int = 1
 var coyote_timer: float = 0.0
@@ -125,6 +134,10 @@ var debug_surface_water_body: Node = null
 var default_animated_sprite_material: Material = null
 var player_underwater_material: ShaderMaterial = null
 var player_underwater_shader_active: bool = false
+var active_shadow_areas: Array[Area2D] = []
+var stealth_active: bool = false
+var stealth_available_cached: bool = false
+var default_player_self_modulate: Color = Color.WHITE
 
 
 func _ready() -> void:
@@ -145,9 +158,15 @@ func _ready() -> void:
 	air_jumps_left = extra_jumps
 	setup_player_underwater_shader()
 	setup_water_debug_display()
+	default_player_self_modulate = animated_sprite.self_modulate
+	apply_stealth_visual()
 
 
 func _physics_process(delta: float) -> void:
+	prune_shadow_areas()
+	if not is_dead and Input.is_action_just_pressed("toggle_stealth"):
+		set_stealth_active(not stealth_active)
+
 	update_invulnerability(delta)
 	update_mosquito_immunity(delta)
 	update_slap_timers(delta)
@@ -669,7 +688,7 @@ func update_water_breath(delta: float) -> void:
 	while breath_elapsed >= next_drowning_damage_time and not is_dead:
 		var water_body := get_active_head_water()
 		var damage := roundi(get_water_float_from(water_body, &"damage_amount", 1.0))
-		take_damage(maxi(damage, 1), true)
+		take_damage(maxi(damage, 1), true, DAMAGE_SOURCE_ENVIRONMENT)
 		next_drowning_damage_time += maxf(get_water_float_from(water_body, &"damage_interval", 3.0), 0.1)
 
 
@@ -943,6 +962,7 @@ func try_shoot() -> void:
 	if not fire_timer.is_stopped():
 		return
 
+	cancel_stealth()
 	fire_timer.start()
 	consume_ammo(1)
 	fire_bullet()
@@ -982,6 +1002,7 @@ func try_slap() -> void:
 	if is_dead or is_swatting or is_melee_attacking or slap_cooldown_timer > 0.0:
 		return
 
+	cancel_stealth()
 	slap_cooldown_timer = slap_cooldown
 	slap_animation_timer = slap_duration
 	play_animation_safe(&"slap", &"idle")
@@ -1037,6 +1058,7 @@ func try_melee_attack() -> void:
 
 
 func start_melee_attack() -> void:
+	cancel_stealth()
 	is_melee_attacking = true
 	melee_attack_timer = 0.0
 	melee_hitbox_active = false
@@ -1208,12 +1230,15 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 		damage = int(body.get("contact_damage"))
 
 	var was_alive := not is_dead
-	take_damage(damage)
+	take_damage(damage, false, DAMAGE_SOURCE_ENEMY)
 	if was_alive and is_dead and body.has_method("on_player_killed"):
 		body.call("on_player_killed", self)
 
 
-func take_damage(amount: int = 1, ignore_invulnerability: bool = false) -> void:
+func take_damage(amount: int = 1, ignore_invulnerability: bool = false, source_category: StringName = DAMAGE_SOURCE_GENERIC) -> void:
+	if stealth_active and source_category == DAMAGE_SOURCE_ENEMY:
+		return
+
 	if is_dead or (invulnerability_timer > 0.0 and not ignore_invulnerability):
 		return
 
@@ -1445,7 +1470,7 @@ func cancel_landing() -> void:
 
 
 func mosquito_attack() -> void:
-	if is_dead or is_swatting or mosquito_immunity_timer > 0.0:
+	if is_dead or stealth_active or is_swatting or mosquito_immunity_timer > 0.0:
 		return
 
 	force_detach_from_zipline()
@@ -1476,6 +1501,8 @@ func die() -> void:
 	if is_dead:
 		return
 
+	cancel_stealth()
+	clear_shadow_areas()
 	force_detach_from_zipline()
 	cancel_melee_attack()
 	reset_water_state()
@@ -1503,3 +1530,84 @@ func respawn_after_delay() -> void:
 
 func respawn() -> void:
 	get_tree().reload_current_scene()
+
+
+func register_shadow_area(area: Area2D) -> void:
+	if area == null or not is_instance_valid(area) or active_shadow_areas.has(area):
+		return
+
+	active_shadow_areas.append(area)
+	refresh_stealth_availability()
+
+
+func unregister_shadow_area(area: Area2D) -> void:
+	if not active_shadow_areas.has(area):
+		return
+
+	active_shadow_areas.erase(area)
+	refresh_stealth_availability()
+
+
+func prune_shadow_areas() -> void:
+	var removed_area := false
+	for index in range(active_shadow_areas.size() - 1, -1, -1):
+		if not is_instance_valid(active_shadow_areas[index]):
+			active_shadow_areas.remove_at(index)
+			removed_area = true
+
+	if removed_area:
+		refresh_stealth_availability()
+
+
+func clear_shadow_areas() -> void:
+	if active_shadow_areas.is_empty() and not stealth_available_cached:
+		return
+
+	active_shadow_areas.clear()
+	refresh_stealth_availability()
+
+
+func refresh_stealth_availability() -> void:
+	var available := not active_shadow_areas.is_empty() and not is_dead
+	if not available:
+		cancel_stealth()
+
+	if available == stealth_available_cached:
+		return
+
+	stealth_available_cached = available
+	stealth_availability_changed.emit(available)
+
+
+func is_stealth_available() -> bool:
+	return stealth_available_cached and not is_dead
+
+
+func is_stealth_active() -> bool:
+	return stealth_active
+
+
+func is_detectable_by_enemies() -> bool:
+	return not is_dead and not stealth_active
+
+
+func set_stealth_active(enabled: bool) -> void:
+	var next_active := enabled and is_stealth_available()
+	if next_active == stealth_active:
+		return
+
+	stealth_active = next_active
+	apply_stealth_visual()
+	stealth_changed.emit(stealth_active)
+
+
+func cancel_stealth() -> void:
+	set_stealth_active(false)
+
+
+func apply_stealth_visual() -> void:
+	if animated_sprite != null:
+		animated_sprite.self_modulate = stealth_tint if stealth_active else default_player_self_modulate
+
+	if stealth_highlight != null:
+		stealth_highlight.visible = stealth_active

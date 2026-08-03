@@ -53,6 +53,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player") as Node2D
+	if not is_player_detectable():
+		reset_to_scan_after_target_loss()
+		_update_scan(delta)
+		update_spotlight_ground_fade()
+		return
 
 	match state:
 		State.SCAN:
@@ -107,7 +112,7 @@ func _update_scan(delta: float) -> void:
 
 
 func can_see_player() -> bool:
-	if not is_instance_valid(player):
+	if not is_player_detectable():
 		return false
 
 	var origin := vision_pivot.global_position
@@ -131,7 +136,7 @@ func can_see_player() -> bool:
 
 
 func has_clear_line_to_player() -> bool:
-	if not is_instance_valid(player):
+	if not is_player_detectable():
 		return false
 
 	var origin := vision_pivot.global_position
@@ -148,7 +153,7 @@ func has_clear_line_to_player() -> bool:
 
 
 func aim_vision_at_player() -> void:
-	if not is_instance_valid(player):
+	if not is_player_detectable():
 		return
 
 	var to_player := get_player_aim_point() - vision_pivot.global_position
@@ -195,6 +200,10 @@ func is_blocked_by_cover(origin: Vector2, target: Vector2) -> bool:
 
 
 func _enter_alert() -> void:
+	if not is_player_detectable():
+		reset_to_scan_after_target_loss()
+		return
+
 	state = State.ALERT
 	alert_timer = alert_delay
 	print("Sniper: Hey!")
@@ -211,7 +220,7 @@ func _enter_hold() -> void:
 
 
 func shoot_at_player() -> void:
-	if bullet_scene == null or not is_instance_valid(player):
+	if bullet_scene == null or not is_player_detectable():
 		return
 
 	var bullet := bullet_scene.instantiate()
@@ -234,3 +243,23 @@ func shoot_at_player() -> void:
 
 func _on_fire_cooldown_timeout() -> void:
 	pass
+
+
+func is_player_detectable() -> bool:
+	if not is_instance_valid(player) or bool(player.get("is_dead")):
+		return false
+
+	if player.has_method("is_detectable_by_enemies"):
+		return bool(player.call("is_detectable_by_enemies"))
+
+	return true
+
+
+func reset_to_scan_after_target_loss() -> void:
+	if state == State.SCAN:
+		return
+
+	state = State.SCAN
+	alert_timer = 0.0
+	hold_timer = 0.0
+	fire_cooldown_timer.stop()

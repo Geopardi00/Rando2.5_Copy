@@ -148,7 +148,7 @@ func damage_body(body: Node) -> void:
 
 	damaged_bodies.append(body)
 	if body.has_method("take_damage"):
-		body.take_damage(damage)
+		body.take_damage(damage, false, &"enemy")
 	elif body.has_method("die"):
 		body.die()
 

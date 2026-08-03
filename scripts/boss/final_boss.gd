@@ -1034,7 +1034,7 @@ func damage_with_knife(body: Node) -> void:
 
 	damaged_by_current_knife.append(body)
 	if body.has_method("take_damage"):
-		body.take_damage(knife_damage)
+		body.take_damage(knife_damage, false, &"enemy")
 	elif body.has_method("die"):
 		body.die()
 

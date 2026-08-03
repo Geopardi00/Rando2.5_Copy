@@ -62,8 +62,10 @@
 [ext_resource type="Script" uid="uid://dersc8kvkwoeu" path="res://scripts/levels/test_room.gd" id="58_test_room"]
 [ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="59_game_ui"]
 [ext_resource type="PackedScene" uid="uid://cd8s8qjuurvl6" path="res://scenes/props/destroyable/destroyable_crate_box05.tscn" id="60_destroyable_box05"]
+[ext_resource type="PackedScene" path="res://scenes/stealth/shadow_area.tscn" id="61_shadow_area"]
+[ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="64_56r4m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hq2ek"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_loe4b"]
 resource_local_to_scene = true
 shader = ExtResource("5_b2gta")
 shader_parameter/flash_amount = 0.0
@@ -252,7 +254,7 @@ position = Vector2(120, 108)
 scale = Vector2(0.32, 0.32)
 
 [node name="Sprite2D" parent="DestroyableCrateBox05" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_hq2ek")
+material = SubResource("ShaderMaterial_loe4b")
 
 [node name="PhysicalCollision" parent="DestroyableCrateBox05" index="1" unique_id=302057026]
 visible = false
@@ -318,6 +320,17 @@ animation = &"slap"
 frame = 8
 frame_progress = 0.0
 
+[node name="ShadowAreas" type="Node2D" parent="." unique_id=1211744798]
+
+[node name="ShadowArea" parent="ShadowAreas" unique_id=255445335 instance=ExtResource("61_shadow_area")]
+position = Vector2(270, 88)
+area_size = Vector2(300, 116)
+
+[node name="ShadowArea2" parent="ShadowAreas" unique_id=1674764133 instance=ExtResource("61_shadow_area")]
+position = Vector2(430, 88)
+area_size = Vector2(300, 116)
+shadow_tint_color = Color(0.025, 0.045, 0.1, 0.28)
+
 [node name="MagazinePickup" parent="." unique_id=344168263 instance=ExtResource("57_magazine")]
 position = Vector2(247, 67)
 
@@ -364,7 +377,7 @@ texture = ExtResource("8_op2op")
 [node name="level_03" type="Node2D" parent="." unique_id=2011995481]
 
 [node name="Enemy" parent="." unique_id=83899896 instance=ExtResource("11_x4gfd")]
-position = Vector2(1988, 92)
+position = Vector2(620, 104)
 
 [node name="AnimatedSprite2D" parent="Enemy" index="1" unique_id=939382343]
 speed_scale = 3.0
@@ -419,6 +432,8 @@ shape = SubResource("RectangleShape2D_4c4i7")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Checkpoint" unique_id=1790118017]
 position = Vector2(410, -18)
 bus = &"Sound Effects"
+
+[node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("64_56r4m")]
 
 [editable path="DestroyableCrateBox05"]
 [editable path="Player"]

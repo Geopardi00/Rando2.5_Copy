@@ -82,13 +82,23 @@ func refresh_player_reference() -> void:
 	player = null
 	for candidate in get_tree().get_nodes_in_group("player"):
 		var candidate_player := candidate as Node2D
-		if candidate_player != null and not bool(candidate_player.get("is_dead")):
+		if is_candidate_detectable(candidate_player):
 			player = candidate_player
 			return
 
 
 func is_player_targetable() -> bool:
-	return is_instance_valid(player) and not bool(player.get("is_dead"))
+	return is_candidate_detectable(player)
+
+
+func is_candidate_detectable(candidate: Node2D) -> bool:
+	if not is_instance_valid(candidate) or bool(candidate.get("is_dead")):
+		return false
+
+	if candidate.has_method("is_detectable_by_enemies"):
+		return bool(candidate.call("is_detectable_by_enemies"))
+
+	return true
 
 
 func update_state() -> void:

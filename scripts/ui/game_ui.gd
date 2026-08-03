@@ -32,6 +32,8 @@ extends CanvasLayer
 @onready var checkpoint_glow_text: Label = get_node_or_null("MessageUI/CheckpointGlowText") as Label
 @onready var checkpoint_particles: CPUParticles2D = get_node_or_null("MessageUI/CheckpointParticles") as CPUParticles2D
 @onready var damage_vignette: CanvasItem = $ScreenEffects/DamageVignette
+@onready var stealth_prompt: Control = $StealthPrompt
+@onready var stealth_prompt_label: Label = $StealthPrompt/PromptLabel
 
 var bound_player: Node = null
 var last_hp: int = -1
@@ -44,6 +46,7 @@ func _ready() -> void:
 	ammo_ui.visible = false
 	message_ui.visible = false
 	speedrun_timer_ui.visible = false
+	stealth_prompt.visible = false
 	damage_vignette.visible = true
 	damage_vignette.modulate.a = 0.0
 	_apply_checkpoint_text_style()
@@ -58,10 +61,19 @@ func bind_player(player: Node) -> void:
 		var ammo_callable := Callable(self, "_on_player_ammo_changed")
 		if bound_player.is_connected("ammo_changed", ammo_callable):
 			bound_player.disconnect("ammo_changed", ammo_callable)
+	if bound_player != null and bound_player.has_signal("stealth_availability_changed"):
+		var availability_callable := Callable(self, "_on_stealth_availability_changed")
+		if bound_player.is_connected("stealth_availability_changed", availability_callable):
+			bound_player.disconnect("stealth_availability_changed", availability_callable)
+	if bound_player != null and bound_player.has_signal("stealth_changed"):
+		var stealth_callable := Callable(self, "_on_stealth_changed")
+		if bound_player.is_connected("stealth_changed", stealth_callable):
+			bound_player.disconnect("stealth_changed", stealth_callable)
 
 	bound_player = player
 
 	if bound_player == null:
+		stealth_prompt.visible = false
 		return
 
 	if bound_player.has_signal("health_changed"):
@@ -72,6 +84,14 @@ func bind_player(player: Node) -> void:
 		var new_ammo_callable := Callable(self, "_on_player_ammo_changed")
 		if not bound_player.is_connected("ammo_changed", new_ammo_callable):
 			bound_player.connect("ammo_changed", new_ammo_callable)
+	if bound_player.has_signal("stealth_availability_changed"):
+		var new_availability_callable := Callable(self, "_on_stealth_availability_changed")
+		if not bound_player.is_connected("stealth_availability_changed", new_availability_callable):
+			bound_player.connect("stealth_availability_changed", new_availability_callable)
+	if bound_player.has_signal("stealth_changed"):
+		var new_stealth_callable := Callable(self, "_on_stealth_changed")
+		if not bound_player.is_connected("stealth_changed", new_stealth_callable):
+			bound_player.connect("stealth_changed", new_stealth_callable)
 
 	var current_hp := int(bound_player.get("current_hp"))
 	var max_hp := int(bound_player.get("max_hp"))
@@ -83,6 +103,8 @@ func bind_player(player: Node) -> void:
 		update_ammo(int(current_ammo), int(max_ammo))
 	else:
 		ammo_ui.visible = false
+
+	refresh_stealth_prompt()
 
 
 func update_health(current_hp: int, max_hp: int) -> void:
@@ -204,6 +226,30 @@ func _on_player_health_changed(current_hp: int, max_hp: int) -> void:
 
 func _on_player_ammo_changed(current_ammo: int, max_ammo: int) -> void:
 	update_ammo(current_ammo, max_ammo)
+
+
+func _on_stealth_availability_changed(_available: bool) -> void:
+	refresh_stealth_prompt()
+
+
+func _on_stealth_changed(_active: bool) -> void:
+	refresh_stealth_prompt()
+
+
+func refresh_stealth_prompt() -> void:
+	if bound_player == null or not is_instance_valid(bound_player):
+		stealth_prompt.visible = false
+		return
+
+	var available := false
+	var active := false
+	if bound_player.has_method("is_stealth_available"):
+		available = bool(bound_player.call("is_stealth_available"))
+	if bound_player.has_method("is_stealth_active"):
+		active = bool(bound_player.call("is_stealth_active"))
+
+	stealth_prompt.visible = available
+	stealth_prompt_label.text = "Q / RB: LEAVE STEALTH" if active else "Q / RB: ENTER STEALTH"
 
 
 func _create_heart_rect() -> TextureRect:

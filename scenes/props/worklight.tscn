@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bsvvvhpinadkw"]
+
+[ext_resource type="Texture2D" uid="uid://cx13rd6g5lyid" path="res://art/level02/props/worklight01.png" id="1_jnqu4"]
+[ext_resource type="Script" uid="uid://cvbtj5fv4wcul" path="res://scenes/props/level03_torches.gd" id="2_flicker"]
+
+[sub_resource type="Gradient" id="Gradient_venil"]
+offsets = PackedFloat32Array(0, 0.004115226, 0.5390946)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iuxm6"]
+gradient = SubResource("Gradient_venil")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[node name="Worklight" type="Node2D" unique_id=615812140]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1848181489]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_jnqu4")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=751393006]
+position = Vector2(1.9999924, -17.500002)
+scale = Vector2(9.9375, 3.578125)
+color = Color(0.9754197, 0.7474928, 0.30426386, 1)
+energy = 1.69
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_iuxm6")
+script = ExtResource("2_flicker")
+min_energy = 1.35
+max_energy = 1.85
+min_scale = 0.92
+max_scale = 1.08
+min_time = 0.08
+max_time = 0.18

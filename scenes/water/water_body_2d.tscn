@@ -11,28 +11,24 @@ size = Vector2(595, 227)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_head"]
 size = Vector2(581, 209)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_underwater"]
-noise_type = 2
-seed = 5
-frequency = 0.0174
-fractal_type = 2
-fractal_octaves = 8
-fractal_lacunarity = 3.0
-fractal_gain = 0.3
-fractal_weighted_strength = 0.2
-cellular_distance_function = 1
+[sub_resource type="Gradient" id="Gradient_yhgyd"]
+offsets = PackedFloat32Array(0.17061612, 0.66824645, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.63033175, 0.63033175, 0.63033175, 1, 1, 1, 1, 1)
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_underwater"]
-noise = SubResource("FastNoiseLite_underwater")
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5litj"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sj274"]
+noise = SubResource("FastNoiseLite_5litj")
+color_ramp = SubResource("Gradient_yhgyd")
 seamless = true
-seamless_blend_skirt = 0.724
+seamless_blend_skirt = 0.74
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_underwater"]
 shader = ExtResource("3_underwater_shader")
-shader_parameter/color = Color(0.6784745, 0.88190013, 0.98923427, 1)
-shader_parameter/fast_noise = SubResource("NoiseTexture2D_underwater")
+shader_parameter/color = Color(0.81460804, 0.8645672, 0.81519544, 1)
+shader_parameter/fast_noise = SubResource("NoiseTexture2D_sj274")
 shader_parameter/speed = Vector2(0.01, 0.02)
-shader_parameter/wave_strength = 1.15
+shader_parameter/wave_strength = 1.5
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2p7fc"]
 particle_flag_disable_z = true
@@ -90,6 +86,7 @@ shape = SubResource("RectangleShape2D_water_head")
 z_index = -1
 position = Vector2(0, -3.0000005)
 scale = Vector2(0.92370975, 0.5069422)
+color = Color(0.42710918, 0.70373017, 0.7697592, 1)
 polygon = PackedVector2Array(-400, 0, 400, 0, 400, 360, 385.4026, 409.60007, 4.3304443, 422.13885, -378.90686, 407.51028, -400, 360)
 
 [node name="WaterSurface" type="Line2D" parent="." unique_id=1468966274]

@@ -1,6 +1,18 @@
 # State of Game
 
-Last updated: 2026-08-02
+Last updated: 2026-08-03
+
+## Latest Update - 2026-08-03 - Reusable Shadow-Area Stealth Prototype
+- Added reusable `ShadowArea` content in `scenes/stealth/shadow_area.tscn` and `scripts/stealth/shadow_area.gd`. Each area is editor-resizable, uses layer 0/mask 2, can draw an optional low-alpha tint, and safely unregisters tracked players when it exits the tree.
+- Player stealth is overlap-safe across multiple shadow areas. Entering a shadow makes stealth available; `Q` or joypad right shoulder/RB toggles it, and leaving the final shadow cancels it immediately.
+- Stealth keeps ordinary movement, jumping, swimming, ziplines, pickups, checkpoints, collision, and environmental hazards active. Successful shooting, slap, or machete startup exposes the player; failed attacks do not.
+- Hidden-player feedback uses a cool dark modulation on the existing animated sprite plus a separate additive blue-white halo, so the underwater material and invulnerability blinking remain compatible. `GameUI` now shows a contextual bottom-center `Q / RB` prompt.
+- Enemy-origin damage now uses the explicit `&"enemy"` source category and is ignored only while stealth is active. `&"environment"` and default `&"generic"` damage remain effective; drowning is explicitly environmental and direct-death hazards are unchanged.
+- Dog, knife thrower, mosquito, and Level 03 watchtower sniper now reject hidden targets and disengage their active chase/attack flow. The sniper resumes normal scanning after target loss.
+- Boss bullets, grenades, contact, stomp, and Boss 2 knife damage are categorized as enemy damage, but boss targeting/state machines remain intentionally unchanged. No shadow areas were added to boss arenas; explicit boss disengagement is deferred until shadows are considered for those arenas.
+- `test_room.tscn` contains two partially overlapping shadow areas on the starting platform and is currently the project main scene for focused playtesting.
+- Added `scripts/tests/stealth_system_smoke_test.gd`, covering input, scene geometry, overlap cleanup, state/signals/UI/visuals, successful-versus-failed attack cancellation, damage categories, non-boss target loss, projectile/grenade behavior, and byte equality of both player controller copies.
+- Verified on Godot 4.6.1: stealth, dog, water, destroyable-prop, and camera smoke tests pass; `test_room.tscn`, `level_03.tscn`, the Boss 1 arena, and the Boss 2 test room load headlessly. Manual editor playtesting remains the next validation step.
 
 ## Latest Update - 2026-08-02 - Swim Visuals, Phantom Camera, and Dog AI
 - Player swimming now uses the 15-frame looping `swim` animation while directional input is held; neutral movement in water uses `swim/frame0000.png` as the dedicated `swim_idle` pose.
