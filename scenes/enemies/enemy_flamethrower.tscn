@@ -4,15 +4,25 @@
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_hit_sound"]
 [ext_resource type="Texture2D" uid="uid://dubhyfm7ohi6a" path="res://art/props/flame.png" id="4_flame"]
+[ext_resource type="Texture2D" uid="uid://bvdcswxiilv4d" path="res://art/enemies/animations/Flamethrower/shoot/frame0002.png" id="4_hptv3"]
+[ext_resource type="Texture2D" uid="uid://cy68ro2144bjp" path="res://art/enemies/animations/Flamethrower/shoot/frame0003.png" id="5_3lnnu"]
 [ext_resource type="Texture2D" uid="uid://cyv7ndj6b2smr" path="res://art/enemies/animations/Flamethrower/walk/frame0001.png" id="5_walk_01"]
+[ext_resource type="Texture2D" uid="uid://43jsbqubhlu0" path="res://art/enemies/animations/Flamethrower/shoot/frame0004.png" id="6_fvg50"]
 [ext_resource type="Texture2D" uid="uid://dsyhs5lg7dxlf" path="res://art/enemies/animations/Flamethrower/walk/frame0002.png" id="6_walk_02"]
+[ext_resource type="Texture2D" uid="uid://bqhbequ0nck4s" path="res://art/enemies/animations/Flamethrower/shoot/frame0005.png" id="7_73jsv"]
 [ext_resource type="Texture2D" uid="uid://br4ag7catrofk" path="res://art/enemies/animations/Flamethrower/walk/frame0003.png" id="7_walk_03"]
+[ext_resource type="Texture2D" uid="uid://n3qu202o5pfx" path="res://art/enemies/animations/Flamethrower/shoot/frame0006.png" id="8_dipuj"]
 [ext_resource type="Texture2D" uid="uid://ci7iwhbh60w5s" path="res://art/enemies/animations/Flamethrower/walk/frame0004.png" id="8_walk_04"]
 [ext_resource type="Texture2D" uid="uid://msa1h3a2jjhw" path="res://art/enemies/animations/Flamethrower/walk/frame0005.png" id="9_walk_05"]
+[ext_resource type="Texture2D" uid="uid://dq0265xijg64h" path="res://art/enemies/animations/Flamethrower/shoot/frame0007.png" id="9_wfoi6"]
+[ext_resource type="Texture2D" uid="uid://cgw4s48b257i" path="res://art/enemies/animations/Flamethrower/shoot/frame0008.png" id="10_rwvv7"]
 [ext_resource type="Texture2D" uid="uid://j2vfeibrvvhp" path="res://art/enemies/animations/Flamethrower/walk/frame0006.png" id="10_walk_06"]
+[ext_resource type="Texture2D" uid="uid://st7ykvjf7pfr" path="res://art/enemies/animations/Flamethrower/shoot/frame0009.png" id="11_udreh"]
 [ext_resource type="Texture2D" uid="uid://vt4kkddltk0s" path="res://art/enemies/animations/Flamethrower/walk/frame0007.png" id="11_walk_07"]
+[ext_resource type="Texture2D" uid="uid://be2crtluru0h7" path="res://art/enemies/animations/Flamethrower/shoot/frame0010.png" id="12_8x5yr"]
 [ext_resource type="Texture2D" uid="uid://cbyan78c78pnb" path="res://art/enemies/animations/Flamethrower/walk/frame0008.png" id="12_walk_08"]
 [ext_resource type="Texture2D" uid="uid://de7st42fflgoh" path="res://art/enemies/animations/Flamethrower/walk/frame0009.png" id="13_walk_09"]
+[ext_resource type="Texture2D" uid="uid://v4htatu8mjts" path="res://art/enemies/animations/Flamethrower/shoot/frame0011.png" id="13_xtakv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(22, 38)
@@ -34,11 +44,38 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_walk_05")
+"texture": ExtResource("4_hptv3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3lnnu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_fvg50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_73jsv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dipuj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_wfoi6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_rwvv7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_udreh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_8x5yr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_xtakv")
 }],
 "loop": true,
 "name": &"fire",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -153,8 +190,10 @@ shape = SubResource("RectangleShape2D_body")
 material = SubResource("ShaderMaterial_hit_flash")
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_flamethrower")
-animation = &"wind_up"
+animation = &"fire"
 autoplay = "idle"
+frame = 5
+frame_progress = 0.96433014
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1415281411 groups=["enemy_hurtbox"]]
 collision_layer = 16
