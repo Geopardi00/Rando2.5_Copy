@@ -170,6 +170,18 @@ func check_enemy_target_loss(test_root: Node2D, player: Variant, dog_scene: Pack
 	dog.set_physics_process(false)
 	thrower.set_physics_process(false)
 	mosquito.set_physics_process(false)
+	dog.z_index = -3
+	dog.z_as_relative = true
+	var grouped_hazard := Node2D.new()
+	grouped_hazard.z_index = -4
+	grouped_hazard.add_to_group("enemy")
+	test_root.add_child(grouped_hazard)
+	player.refresh_stealth_enemy_render_order()
+	check(not dog.z_as_relative and dog.z_index > player.z_index, "Enemies should render in front of the player while stealth is active.")
+	check(grouped_hazard.z_index == -4, "Non-enemy hazards in the legacy enemy group should keep their render order.")
+	player.cancel_stealth()
+	check(dog.z_as_relative and dog.z_index == -3, "Ending stealth should restore each enemy's exact render order.")
+	player.set_stealth_active(true)
 
 	dog.player = player
 	dog.state = 1

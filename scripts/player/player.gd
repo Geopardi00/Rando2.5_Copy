@@ -138,6 +138,7 @@ var active_shadow_areas: Array[Area2D] = []
 var stealth_active: bool = false
 var stealth_available_cached: bool = false
 var default_player_self_modulate: Color = Color.WHITE
+var stealth_enemy_render_restore: Dictionary = {}
 
 
 func _ready() -> void:
@@ -166,6 +167,8 @@ func _physics_process(delta: float) -> void:
 	prune_shadow_areas()
 	if not is_dead and Input.is_action_just_pressed("toggle_stealth"):
 		set_stealth_active(not stealth_active)
+	if stealth_active:
+		refresh_stealth_enemy_render_order()
 
 	update_invulnerability(delta)
 	update_mosquito_immunity(delta)
@@ -1598,6 +1601,10 @@ func set_stealth_active(enabled: bool) -> void:
 
 	stealth_active = next_active
 	apply_stealth_visual()
+	if stealth_active:
+		refresh_stealth_enemy_render_order()
+	else:
+		restore_enemy_render_order()
 	stealth_changed.emit(stealth_active)
 
 
@@ -1611,3 +1618,48 @@ func apply_stealth_visual() -> void:
 
 	if stealth_highlight != null:
 		stealth_highlight.visible = stealth_active
+
+
+func refresh_stealth_enemy_render_order() -> void:
+	if not stealth_active:
+		return
+
+	var foreground_z := mini(z_index + 1, 4096)
+	for candidate in get_tree().get_nodes_in_group("enemy"):
+		var enemy := candidate as CanvasItem
+		if not is_stealth_render_enemy(enemy):
+			continue
+
+		var instance_id := enemy.get_instance_id()
+		if not stealth_enemy_render_restore.has(instance_id):
+			stealth_enemy_render_restore[instance_id] = {
+				"enemy": weakref(enemy),
+				"z_index": enemy.z_index,
+				"z_as_relative": enemy.z_as_relative,
+			}
+
+		enemy.z_as_relative = false
+		enemy.z_index = maxi(enemy.z_index, foreground_z)
+
+
+func is_stealth_render_enemy(candidate: CanvasItem) -> bool:
+	if candidate == null or candidate == self or not is_instance_valid(candidate):
+		return false
+
+	return candidate.has_method("take_damage") or candidate.has_method("is_player_detectable")
+
+
+func restore_enemy_render_order() -> void:
+	for entry in stealth_enemy_render_restore.values():
+		var enemy_reference := entry.get("enemy") as WeakRef
+		if enemy_reference == null:
+			continue
+
+		var enemy := enemy_reference.get_ref() as CanvasItem
+		if not is_instance_valid(enemy):
+			continue
+
+		enemy.z_index = int(entry.get("z_index", enemy.z_index))
+		enemy.z_as_relative = bool(entry.get("z_as_relative", enemy.z_as_relative))
+
+	stealth_enemy_render_restore.clear()
