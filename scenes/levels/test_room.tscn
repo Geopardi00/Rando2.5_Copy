@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ckj6isn22w4ad" path="res://scenes/props/destroyable/destroyable_vines.tscn" id="6_hq2ek"]
 [ext_resource type="Texture2D" uid="uid://cn4f87tvemy1e" path="res://art/level01/sand.png" id="7_ff50h"]
 [ext_resource type="Texture2D" uid="uid://wvhi1vkh2ypw" path="res://art/level01/b01_grassplatform_01.png" id="8_op2op"]
+[ext_resource type="Shader" uid="uid://bs5uwl67c0isx" path="res://shaders/player_stealth_outline.gdshader" id="10_ggn54"]
 [ext_resource type="PackedScene" uid="uid://be4fypp1qggw" path="res://scenes/enemies/enemy.tscn" id="11_x4gfd"]
 [ext_resource type="PackedScene" uid="uid://6kw4h5wsrr37" path="res://scenes/props/muzzle_flash.tscn" id="12_ronwj"]
 [ext_resource type="PackedScene" uid="uid://b8mb1736qqexw" path="res://scenes/props/torch.tscn" id="13_o8emw"]
@@ -63,10 +64,15 @@
 [ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="59_game_ui"]
 [ext_resource type="PackedScene" uid="uid://cd8s8qjuurvl6" path="res://scenes/props/destroyable/destroyable_crate_box05.tscn" id="60_destroyable_box05"]
 [ext_resource type="PackedScene" path="res://scenes/stealth/shadow_area.tscn" id="61_shadow_area"]
-[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_flamethrower.tscn" id="62_flamethrower"]
+[ext_resource type="PackedScene" uid="uid://4nug12t66own" path="res://scenes/enemies/enemy_flamethrower.tscn" id="62_flamethrower"]
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="64_56r4m"]
+[ext_resource type="Texture2D" uid="uid://raj5b2nx02fq" path="res://art/enemies/animations/drone/idle_flying/frame0000.png" id="67_ne5eg"]
+[ext_resource type="Texture2D" uid="uid://t7aptsj3rm87" path="res://art/enemies/animations/drone/idle_flying/frame0001.png" id="68_6hjym"]
+[ext_resource type="Texture2D" uid="uid://ckghalu182e2t" path="res://art/enemies/animations/drone/idle_flying/frame0002.png" id="69_g5vl8"]
+[ext_resource type="Texture2D" uid="uid://crc3lgtabo8jr" path="res://art/enemies/animations/drone/idle_flying/frame0003.png" id="70_kuspg"]
+[ext_resource type="Texture2D" uid="uid://14ej6oap6q78" path="res://art/enemies/animations/drone/idle_flying/frame0004.png" id="71_ctwp5"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_loe4b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aeuyy"]
 resource_local_to_scene = true
 shader = ExtResource("5_b2gta")
 shader_parameter/flash_amount = 0.0
@@ -104,6 +110,15 @@ size = Vector2(1248.5, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
 size = Vector2(36, 162)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cdfxl"]
+resource_local_to_scene = true
+shader = ExtResource("10_ggn54")
+shader_parameter/outline_color_start = Color(0.07646953, 0.42688474, 0.3983916, 0.84705883)
+shader_parameter/outline_color_end = Color(0.08429777, 0.35527438, 0.26959315, 0.8156863)
+shader_parameter/outline_width = 6.5
+shader_parameter/color_cycle_seconds = 2.5
+shader_parameter/alpha_threshold = 0.05600000266
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4c4i7"]
 shader = ExtResource("15_ity2g")
@@ -240,6 +255,29 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c4i7"]
 size = Vector2(46, 73)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_2gg1i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_ne5eg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_6hjym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_g5vl8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_kuspg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_ctwp5")
+}],
+"loop": true,
+"name": &"idle_flying",
+"speed": 14.0
+}]
+
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
 script = ExtResource("58_test_room")
 
@@ -255,7 +293,7 @@ position = Vector2(120, 108)
 scale = Vector2(0.32, 0.32)
 
 [node name="Sprite2D" parent="DestroyableCrateBox05" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_loe4b")
+material = SubResource("ShaderMaterial_aeuyy")
 
 [node name="PhysicalCollision" parent="DestroyableCrateBox05" index="1" unique_id=302057026]
 visible = false
@@ -320,6 +358,9 @@ slap_height = 74.0
 animation = &"slap"
 frame = 8
 frame_progress = 0.0
+
+[node name="StealthHighlight" parent="Player/AnimatedSprite2D" index="0" unique_id=223827841]
+material = SubResource("ShaderMaterial_cdfxl")
 
 [node name="ShadowAreas" type="Node2D" parent="." unique_id=1211744798]
 
@@ -405,10 +446,8 @@ texture = ExtResource("15_l652x")
 [node name="EnemyMosquito" parent="." unique_id=1591869900 instance=ExtResource("16_mosquito")]
 position = Vector2(660, 5)
 
-[node name="EnemyFlamethrower" parent="." instance=ExtResource("62_flamethrower")]
+[node name="EnemyFlamethrower" parent="." unique_id=1063872192 instance=ExtResource("62_flamethrower")]
 position = Vector2(1500, 380)
-move_direction = 1
-patrol_distance = 200.0
 
 [node name="MosquitoSwarm" parent="." unique_id=1248282254 instance=ExtResource("15_4c4i7")]
 position = Vector2(562, -120)
@@ -440,6 +479,16 @@ position = Vector2(410, -18)
 bus = &"Sound Effects"
 
 [node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("64_56r4m")]
+
+[node name="EnemyDrone" type="Node2D" parent="." unique_id=722869981]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyDrone" unique_id=1275765218]
+position = Vector2(276.99997, -80.99999)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_2gg1i")
+animation = &"idle_flying"
+autoplay = "idle_flying"
+frame_progress = 0.18249416
 
 [editable path="DestroyableCrateBox05"]
 [editable path="Player"]

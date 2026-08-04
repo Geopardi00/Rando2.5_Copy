@@ -6,10 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://rgp6tekviq7y" path="res://icon.svg" id="4_shader_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water"]
-size = Vector2(595, 227)
+resource_local_to_scene = true
+size = Vector2(800, 500)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_head"]
-size = Vector2(581, 209)
+resource_local_to_scene = true
+size = Vector2(800, 500)
 
 [sub_resource type="Gradient" id="Gradient_yhgyd"]
 offsets = PackedFloat32Array(0.17061612, 0.66824645, 1)
@@ -71,7 +73,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterArea" unique_id=1994384253]
-position = Vector2(0.5, 179.5)
+position = Vector2(0, 250)
 shape = SubResource("RectangleShape2D_water")
 
 [node name="WaterHeadArea" type="Area2D" parent="." unique_id=65933640]
@@ -79,19 +81,16 @@ collision_layer = 0
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterHeadArea" unique_id=813532039]
-position = Vector2(0, 104.5)
+position = Vector2(0, 250)
 shape = SubResource("RectangleShape2D_water_head")
 
 [node name="WaterFill" type="Polygon2D" parent="." unique_id=806794729]
 z_index = -1
-position = Vector2(0, -3.0000005)
-scale = Vector2(0.92370975, 0.5069422)
 color = Color(0.42710918, 0.70373017, 0.7697592, 1)
-polygon = PackedVector2Array(-400, 0, 400, 0, 400, 360, 385.4026, 409.60007, 4.3304443, 422.13885, -378.90686, 407.51028, -400, 360)
+polygon = PackedVector2Array(-400, 0, 400, 0, 400, 500, -400, 500)
 
 [node name="WaterSurface" type="Line2D" parent="." unique_id=1468966274]
 z_index = -1
-scale = Vector2(0.915595, 1.2289451)
 points = PackedVector2Array(-400, 0, 400, 0)
 width = 3.0
 default_color = Color(0.8901961, 0.96862745, 1, 0.23137255)
@@ -104,8 +103,8 @@ z_index = -1
 
 [node name="Icon" type="Sprite2D" parent="Shader" unique_id=2145151425]
 material = SubResource("ShaderMaterial_underwater")
-position = Vector2(-7.500044, 104.5)
-scale = Vector2(5.695312, 1.6171873)
+position = Vector2(0, 250)
+scale = Vector2(6.25, 3.90625)
 texture = ExtResource("4_shader_texture")
 
 [node name="SplashEffects" type="GPUParticles2D" parent="." unique_id=2035338052]

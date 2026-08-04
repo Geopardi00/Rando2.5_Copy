@@ -1,3 +1,4 @@
+@tool
 class_name WaterBody2D
 extends Node2D
 
@@ -80,6 +81,7 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 @onready var water_head_shape: CollisionShape2D = $WaterHeadArea/CollisionShape2D
 @onready var water_fill: Polygon2D = $WaterFill
 @onready var water_surface: Line2D = $WaterSurface
+@onready var shader_rectangle: Sprite2D = $Shader/Icon
 @onready var splash_particles: GPUParticles2D = $SplashEffects
 @onready var bubble_particles: GPUParticles2D = $BubbleParticles
 @onready var splash_audio: AudioStreamPlayer2D = $AudioStreamPlayer2D
@@ -97,13 +99,17 @@ var tracked_surface_positions: Dictionary = {}
 
 
 func _ready() -> void:
+	configure_volume()
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+		return
+
 	add_to_group("water_body")
 	water_area.body_entered.connect(_on_body_entered)
 	water_area.body_exited.connect(_on_body_exited)
 	water_head_area.area_entered.connect(_on_area_entered)
 	water_head_area.area_exited.connect(_on_area_exited)
 	configure_particles()
-	configure_volume()
 
 
 func contains_body(body: Node2D) -> bool:
@@ -183,8 +189,32 @@ func configure_volume() -> void:
 		water_head_shape.shape = head_rectangle
 	head_rectangle.size = water_size
 	water_head_shape.position = Vector2(0.0, water_size.y * 0.5)
+
+	# Water Size is the single source of truth. Resetting inherited child
+	# transforms prevents level-specific scale overrides from distorting the
+	# generated collision, fill, ripple surface, or shader rectangle.
+	water_fill.position = Vector2.ZERO
+	water_fill.scale = Vector2.ONE
+	water_surface.position = Vector2.ZERO
+	water_surface.scale = Vector2.ONE
+	configure_shader_rectangle()
 	configure_ripple()
 	update_visuals()
+
+
+func configure_shader_rectangle() -> void:
+	if shader_rectangle == null or shader_rectangle.texture == null:
+		return
+
+	var texture_size := shader_rectangle.texture.get_size()
+	if texture_size.x <= 0.0 or texture_size.y <= 0.0:
+		return
+
+	shader_rectangle.position = Vector2(0.0, water_size.y * 0.5)
+	shader_rectangle.scale = Vector2(
+		water_size.x / texture_size.x,
+		water_size.y / texture_size.y
+	)
 
 
 func configure_ripple() -> void:
