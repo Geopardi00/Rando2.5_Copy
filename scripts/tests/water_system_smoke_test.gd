@@ -14,15 +14,21 @@ func run_test() -> void:
 	var water_scene := load("res://scenes/water/water_body_2d.tscn") as PackedScene
 	var level_scene := load("res://scenes/levels/test_room_water.tscn") as PackedScene
 	var crate_scene := load("res://scenes/props/push_crate.tscn") as PackedScene
+	var game_ui_scene := load("res://scenes/ui/game_ui.tscn") as PackedScene
 	check(player_scene != null, "Player scene should load.")
 	check(water_scene != null, "Reusable water scene should load.")
 	check(level_scene != null, "Water test room should load.")
 	check(crate_scene != null, "Push crate scene should load.")
-	if player_scene == null or water_scene == null or level_scene == null or crate_scene == null:
+	check(game_ui_scene != null, "Game UI scene should load.")
+	if player_scene == null or water_scene == null or level_scene == null or crate_scene == null or game_ui_scene == null:
 		finish_test()
 		return
 
 	var player := player_scene.instantiate()
+	var game_ui := game_ui_scene.instantiate()
+	game_ui.underwater_vignette_color = Color(0.02, 0.25, 0.95, 0.6)
+	game_ui.underwater_vignette_pulse_count = 2
+	game_ui.underwater_vignette_pulse_duration = 0.05
 	var pool := water_scene.instantiate()
 	var tunnel := water_scene.instantiate()
 	tunnel.has_visible_surface = false
@@ -31,8 +37,10 @@ func run_test() -> void:
 	add_child(pool)
 	add_child(tunnel)
 	add_child(player)
+	add_child(game_ui)
 	await get_tree().process_frame
 	player.set_physics_process(false)
+	game_ui.bind_player(player)
 
 	check(pool.water_area.collision_mask == 2, "Water body detection should scan the player layer.")
 	check(pool.water_head_area.collision_mask == 256, "Water head detection should scan only the head-sensor layer.")
@@ -158,6 +166,9 @@ func run_test() -> void:
 	player.set_head_submerged(tunnel, true)
 	player.set_head_submerged(pool, false)
 	check(player.is_head_submerged(), "Leaving one overlapping head volume should not reset breath.")
+	player.breath_elapsed = 1.25
+	player.set_head_submerged(tunnel, true)
+	check(is_equal_approx(player.breath_elapsed, 1.25), "Repeated submerged overlap reports should not reset elapsed breath.")
 
 	player.current_hp = player.max_hp
 	var configured_breath: float = tunnel.breath_duration
@@ -168,10 +179,15 @@ func run_test() -> void:
 	check(player.current_hp == player.max_hp, "Drowning should not damage before the configured breath duration.")
 	player.update_water_breath(0.02)
 	check(player.current_hp == player.max_hp - 1, "First drowning damage should occur at the configured breath duration.")
+	check(game_ui.damage_vignette.color.is_equal_approx(game_ui.underwater_vignette_color), "Drowning damage should use the configured underwater vignette color.")
+	check(game_ui.damage_vignette_tween != null, "Drowning damage should start the underwater vignette pulse sequence.")
 	player.update_water_breath(configured_damage_interval - 0.02)
 	check(player.current_hp == player.max_hp - 1, "Repeat drowning damage should wait for the configured interval.")
 	player.update_water_breath(0.02)
 	check(player.current_hp == player.max_hp - 2, "Drowning should bypass unrelated invulnerability on its configured cycle.")
+	await get_tree().create_timer(0.14).timeout
+	check(game_ui.damage_vignette.modulate.a <= 0.001, "Underwater vignette should fade out after the configured pulse count and duration.")
+	check(game_ui.damage_vignette.color.is_equal_approx(game_ui.default_damage_vignette_color), "Underwater vignette should restore the normal damage color after pulsing.")
 
 	player.velocity = Vector2.ZERO
 	Input.action_press("move_right")
@@ -415,6 +431,10 @@ func run_test() -> void:
 	check(is_equal_approx(surface_player.get_applied_gravity(), surface_player.water_gravity * tunnel.gravity_multiplier), "Swimming should report the effective configured water gravity.")
 	surface_player.exit_water(tunnel, tunnel.global_position.y, false)
 
+	var original_pool_breath_duration: float = pool.breath_duration
+	var original_pool_damage_interval: float = pool.damage_interval
+	pool.breath_duration = 0.05
+	pool.damage_interval = 0.05
 	var overlap_player := player_scene.instantiate()
 	overlap_player.position = Vector2(520.0, -100.0)
 	add_child(overlap_player)
@@ -424,10 +444,13 @@ func run_test() -> void:
 	await get_tree().create_timer(0.12).timeout
 	check(overlap_player.is_in_water(), "WaterArea body overlap should enter swimming automatically.")
 	check(overlap_player.is_head_submerged(), "WaterArea head-sensor overlap should start breath tracking automatically.")
+	check(overlap_player.current_hp < overlap_player.max_hp, "Continuous submerged overlap reconciliation should allow breath to expire and deal drowning damage.")
 	overlap_player.global_position = Vector2(520.0, -100.0)
 	await get_tree().create_timer(0.12).timeout
 	check(not overlap_player.is_in_water(), "Leaving the WaterArea should exit swimming automatically.")
 	check(not overlap_player.is_head_submerged(), "Leaving the WaterArea should reset head submersion automatically.")
+	pool.breath_duration = original_pool_breath_duration
+	pool.damage_interval = original_pool_damage_interval
 
 	finish_test()
 

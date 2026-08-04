@@ -5,8 +5,16 @@
 [ext_resource type="Texture2D" uid="uid://dgwbqq3sshlxv" path="res://art/ui/ui_heart_full.png" id="3_heart_full"]
 [ext_resource type="Texture2D" uid="uid://b4vvqxvvtytgr" path="res://art/FX/blood.png" id="4_fct72"]
 [ext_resource type="Texture2D" uid="uid://dqe1lwjs7o28t" path="res://art/props/magazine.png" id="5_magazine"]
+[ext_resource type="Shader" uid="uid://bfp0vsl5cct71" path="res://shaders/damage_vignette.gdshader" id="6_damage_vignette"]
+
+[sub_resource type="Gradient" id="Gradient_fct72"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stealth_prompt"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
 bg_color = Color(0.025, 0.045, 0.09, 0.88)
 border_width_left = 2
 border_width_top = 2
@@ -17,13 +25,12 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-content_margin_left = 18.0
-content_margin_top = 8.0
-content_margin_right = 18.0
-content_margin_bottom = 8.0
 
-[sub_resource type="Gradient" id="Gradient_fct72"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_damage_vignette"]
+shader = ExtResource("6_damage_vignette")
+shader_parameter/clear_radius = 0.56999998725936
+shader_parameter/full_edge_radius = 0.9999999962745301
+shader_parameter/falloff_power = 2.85000003874312
 
 [node name="GameUI" type="CanvasLayer" unique_id=1670715133]
 layer = 10
@@ -196,7 +203,7 @@ text = "CHECKPOINT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StealthPrompt" type="PanelContainer" parent="."]
+[node name="StealthPrompt" type="PanelContainer" parent="." unique_id=365876785]
 visible = false
 anchors_preset = 7
 anchor_left = 0.5
@@ -212,7 +219,7 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_stealth_prompt")
 
-[node name="PromptLabel" type="Label" parent="StealthPrompt"]
+[node name="PromptLabel" type="Label" parent="StealthPrompt" unique_id=1186949140]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.78, 0.94, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
@@ -233,6 +240,7 @@ mouse_filter = 2
 
 [node name="DamageVignette" type="ColorRect" parent="ScreenEffects" unique_id=1605253816]
 modulate = Color(1, 1, 1, 0)
+material = SubResource("ShaderMaterial_damage_vignette")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

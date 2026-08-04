@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal health_changed(current_hp: int, max_hp: int)
+signal damage_taken(amount: int, source_category: StringName, underwater: bool)
 signal ammo_changed(current_ammo: int, max_ammo: int)
 signal hard_landed
 signal stealth_availability_changed(available: bool)
@@ -461,10 +462,11 @@ func finish_water_exit(water_body: Node) -> void:
 func set_head_submerged(water_body: Node, submerged: bool) -> void:
 	if submerged:
 		if not submerged_head_water_bodies.has(water_body):
+			var was_breathing_air := submerged_head_water_bodies.is_empty()
 			submerged_head_water_bodies.append(water_body)
-		if submerged_head_water_bodies.size() == 1:
-			breath_elapsed = 0.0
-			next_drowning_damage_time = get_water_float_from(water_body, &"breath_duration", 5.0)
+			if was_breathing_air:
+				breath_elapsed = 0.0
+				next_drowning_damage_time = get_water_float_from(water_body, &"breath_duration", 5.0)
 	else:
 		submerged_head_water_bodies.erase(water_body)
 		prune_water_bodies()
@@ -1261,6 +1263,7 @@ func take_damage(amount: int = 1, ignore_invulnerability: bool = false, source_c
 		return
 
 	current_hp -= amount
+	damage_taken.emit(amount, source_category, is_head_submerged())
 
 	if debug_enabled:
 		print("Player damage received: ", amount, " HP: ", current_hp, "/", max_hp)

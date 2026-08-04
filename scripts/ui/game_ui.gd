@@ -20,6 +20,11 @@ extends CanvasLayer
 @export_group("Screen Effects")
 @export var damage_vignette_time: float = 0.25
 
+@export_group("Underwater Damage Vignette")
+@export var underwater_vignette_color: Color = Color(0.04, 0.3, 1.0, 0.48)
+@export_range(1, 12, 1) var underwater_vignette_pulse_count: int = 3
+@export_range(0.05, 3.0, 0.05) var underwater_vignette_pulse_duration: float = 0.45
+
 @onready var head_icon: TextureRect = $HUD/HealthUI/HeadIcon
 @onready var hearts_container: HBoxContainer = $HUD/HealthUI/HeartsContainer
 @onready var speedrun_timer_ui: Control = $HUD/SpeedrunTimerUI
@@ -31,13 +36,15 @@ extends CanvasLayer
 @onready var checkpoint_text: Label = $MessageUI/CheckpointText
 @onready var checkpoint_glow_text: Label = get_node_or_null("MessageUI/CheckpointGlowText") as Label
 @onready var checkpoint_particles: CPUParticles2D = get_node_or_null("MessageUI/CheckpointParticles") as CPUParticles2D
-@onready var damage_vignette: CanvasItem = $ScreenEffects/DamageVignette
+@onready var damage_vignette: ColorRect = $ScreenEffects/DamageVignette
 @onready var stealth_prompt: Control = $StealthPrompt
 @onready var stealth_prompt_label: Label = $StealthPrompt/PromptLabel
 
 var bound_player: Node = null
 var last_hp: int = -1
 var checkpoint_tween: Tween = null
+var damage_vignette_tween: Tween = null
+var default_damage_vignette_color: Color = Color(0.9, 0.0, 0.0, 0.35)
 
 
 func _ready() -> void:
@@ -49,6 +56,7 @@ func _ready() -> void:
 	stealth_prompt.visible = false
 	damage_vignette.visible = true
 	damage_vignette.modulate.a = 0.0
+	default_damage_vignette_color = damage_vignette.color
 	_apply_checkpoint_text_style()
 
 
@@ -57,6 +65,10 @@ func bind_player(player: Node) -> void:
 		var health_callable := Callable(self, "_on_player_health_changed")
 		if bound_player.is_connected("health_changed", health_callable):
 			bound_player.disconnect("health_changed", health_callable)
+	if bound_player != null and bound_player.has_signal("damage_taken"):
+		var damage_callable := Callable(self, "_on_player_damage_taken")
+		if bound_player.is_connected("damage_taken", damage_callable):
+			bound_player.disconnect("damage_taken", damage_callable)
 	if bound_player != null and bound_player.has_signal("ammo_changed"):
 		var ammo_callable := Callable(self, "_on_player_ammo_changed")
 		if bound_player.is_connected("ammo_changed", ammo_callable):
@@ -80,6 +92,10 @@ func bind_player(player: Node) -> void:
 		var new_health_callable := Callable(self, "_on_player_health_changed")
 		if not bound_player.is_connected("health_changed", new_health_callable):
 			bound_player.connect("health_changed", new_health_callable)
+	if bound_player.has_signal("damage_taken"):
+		var new_damage_callable := Callable(self, "_on_player_damage_taken")
+		if not bound_player.is_connected("damage_taken", new_damage_callable):
+			bound_player.connect("damage_taken", new_damage_callable)
 	if bound_player.has_signal("ammo_changed"):
 		var new_ammo_callable := Callable(self, "_on_player_ammo_changed")
 		if not bound_player.is_connected("ammo_changed", new_ammo_callable):
@@ -183,11 +199,38 @@ func _hide_checkpoint_message() -> void:
 
 
 func flash_damage_vignette() -> void:
+	_prepare_damage_vignette(default_damage_vignette_color)
+
+	damage_vignette_tween = create_tween()
+	damage_vignette_tween.tween_property(damage_vignette, "modulate:a", 0.45, damage_vignette_time * 0.35)
+	damage_vignette_tween.tween_property(damage_vignette, "modulate:a", 0.0, damage_vignette_time * 0.65)
+	damage_vignette_tween.tween_callback(_finish_damage_vignette)
+
+
+func pulse_underwater_damage_vignette() -> void:
+	_prepare_damage_vignette(underwater_vignette_color)
+
+	var half_pulse_duration := maxf(underwater_vignette_pulse_duration, 0.05) * 0.5
+	damage_vignette_tween = create_tween()
+	for _pulse_index in maxi(underwater_vignette_pulse_count, 1):
+		damage_vignette_tween.tween_property(damage_vignette, "modulate:a", 1.0, half_pulse_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		damage_vignette_tween.tween_property(damage_vignette, "modulate:a", 0.0, half_pulse_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	damage_vignette_tween.tween_callback(_finish_damage_vignette)
+
+
+func _prepare_damage_vignette(color: Color) -> void:
+	if damage_vignette_tween != null and damage_vignette_tween.is_valid():
+		damage_vignette_tween.kill()
+
+	damage_vignette_tween = null
+	damage_vignette.color = color
 	damage_vignette.modulate.a = 0.0
 
-	var tween := create_tween()
-	tween.tween_property(damage_vignette, "modulate:a", 0.45, damage_vignette_time * 0.35)
-	tween.tween_property(damage_vignette, "modulate:a", 0.0, damage_vignette_time * 0.65)
+
+func _finish_damage_vignette() -> void:
+	damage_vignette.modulate.a = 0.0
+	damage_vignette.color = default_damage_vignette_color
+	damage_vignette_tween = null
 
 
 func set_timer_visible(enabled: bool) -> void:
@@ -218,10 +261,19 @@ func _apply_checkpoint_label_style(label: Label, color: Color) -> void:
 
 
 func _on_player_health_changed(current_hp: int, max_hp: int) -> void:
-	if last_hp >= 0 and current_hp < last_hp:
+	# Compatibility fallback for player-like test doubles and older controllers
+	# that do not expose the source-aware damage signal.
+	if last_hp >= 0 and current_hp < last_hp and (bound_player == null or not bound_player.has_signal("damage_taken")):
 		flash_damage_vignette()
 
 	update_health(current_hp, max_hp)
+
+
+func _on_player_damage_taken(_amount: int, _source_category: StringName, underwater: bool) -> void:
+	if underwater:
+		pulse_underwater_damage_vignette()
+	else:
+		flash_damage_vignette()
 
 
 func _on_player_ammo_changed(current_ammo: int, max_ammo: int) -> void:

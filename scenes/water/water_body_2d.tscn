@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ds55s0e4qdtvt" path="res://scripts/water/water_body_2d.gd" id="1_water"]
 [ext_resource type="Texture2D" uid="uid://7xas7n8e8hom" path="res://art/props/water_bubble.png" id="2_2p7fc"]
-[ext_resource type="Shader" uid="uid://brcjnktlso07j" path="res://shaders/underwater_shader.gdshader" id="3_underwater_shader"]
+[ext_resource type="Shader" uid="uid://bka5jpqkworta" path="res://shaders/underwater2.gdshader" id="2_f7lak"]
 [ext_resource type="Texture2D" uid="uid://rgp6tekviq7y" path="res://icon.svg" id="4_shader_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water"]
@@ -13,24 +13,13 @@ size = Vector2(800, 500)
 resource_local_to_scene = true
 size = Vector2(800, 500)
 
-[sub_resource type="Gradient" id="Gradient_yhgyd"]
-offsets = PackedFloat32Array(0.17061612, 0.66824645, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.63033175, 0.63033175, 0.63033175, 1, 1, 1, 1, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_5litj"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sj274"]
-noise = SubResource("FastNoiseLite_5litj")
-color_ramp = SubResource("Gradient_yhgyd")
-seamless = true
-seamless_blend_skirt = 0.74
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_underwater"]
-shader = ExtResource("3_underwater_shader")
-shader_parameter/color = Color(0.81460804, 0.8645672, 0.81519544, 1)
-shader_parameter/fast_noise = SubResource("NoiseTexture2D_sj274")
-shader_parameter/speed = Vector2(0.01, 0.02)
-shader_parameter/wave_strength = 1.5
+shader = ExtResource("2_f7lak")
+shader_parameter/water = Color(0.8235294, 1, 0.9764706, 1)
+shader_parameter/effect_strength = 0.999999977648
+shader_parameter/speed = 0.38999999128272
+shader_parameter/wave = 22.20000033080664
+shader_parameter/warp = 4.99999989196532
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2p7fc"]
 particle_flag_disable_z = true
@@ -86,22 +75,22 @@ shape = SubResource("RectangleShape2D_water_head")
 
 [node name="WaterFill" type="Polygon2D" parent="." unique_id=806794729]
 z_index = -1
-color = Color(0.42710918, 0.70373017, 0.7697592, 1)
-polygon = PackedVector2Array(-400, 0, 400, 0, 400, 500, -400, 500)
+color = Color(0.56078434, 0.80784315, 0.99607843, 0.01345098)
+polygon = PackedVector2Array(-400, 0, -379.48718, 0, -358.97437, 0, -338.46155, 0, -317.94873, 0, -297.43588, 0, -276.92307, 0, -256.41025, 0, -235.89743, 0, -215.38461, 0, -194.8718, 0, -174.35898, 0, -153.84616, 0, -133.33333, 0, -112.82051, 0, -92.30769, 0, -71.79487, 0, -51.28205, 0, -30.76923, 0, -10.256411, 0, 10.256411, 0, 30.76923, 0, 51.28205, 0, 71.79487, 0, 92.30769, 0, 112.82051, 0, 133.33333, 0, 153.84616, 0, 174.35898, 0, 194.8718, 0, 215.38461, 0, 235.89743, 0, 256.41025, 0, 276.92307, 0, 297.43588, 0, 317.94873, 0, 338.46155, 0, 358.97437, 0, 379.48718, 0, 400, 0, 400, 500, -400, 500)
 
 [node name="WaterSurface" type="Line2D" parent="." unique_id=1468966274]
 z_index = -1
-points = PackedVector2Array(-400, 0, 400, 0)
+points = PackedVector2Array(-400, 0, -379.48718, 0, -358.97437, 0, -338.46155, 0, -317.94873, 0, -297.43588, 0, -276.92307, 0, -256.41025, 0, -235.89743, 0, -215.38461, 0, -194.8718, 0, -174.35898, 0, -153.84616, 0, -133.33333, 0, -112.82051, 0, -92.30769, 0, -71.79487, 0, -51.28205, 0, -30.76923, 0, -10.256411, 0, 10.256411, 0, 30.76923, 0, 51.28205, 0, 71.79487, 0, 92.30769, 0, 112.82051, 0, 133.33333, 0, 153.84616, 0, 174.35898, 0, 194.8718, 0, 215.38461, 0, 235.89743, 0, 256.41025, 0, 276.92307, 0, 297.43588, 0, 317.94873, 0, 338.46155, 0, 358.97437, 0, 379.48718, 0, 400, 0)
 width = 3.0
-default_color = Color(0.8901961, 0.96862745, 1, 0.23137255)
+default_color = Color(0.7452549, 0.88854903, 0.9977255, 0.29)
 begin_cap_mode = 2
 end_cap_mode = 2
 antialiased = true
 
 [node name="Shader" type="Node2D" parent="." unique_id=499410625]
-z_index = -1
 
 [node name="Icon" type="Sprite2D" parent="Shader" unique_id=2145151425]
+z_index = -1
 material = SubResource("ShaderMaterial_underwater")
 position = Vector2(0, 250)
 scale = Vector2(6.25, 3.90625)

@@ -71,8 +71,16 @@
 [ext_resource type="Texture2D" uid="uid://ckghalu182e2t" path="res://art/enemies/animations/drone/idle_flying/frame0002.png" id="69_g5vl8"]
 [ext_resource type="Texture2D" uid="uid://crc3lgtabo8jr" path="res://art/enemies/animations/drone/idle_flying/frame0003.png" id="70_kuspg"]
 [ext_resource type="Texture2D" uid="uid://14ej6oap6q78" path="res://art/enemies/animations/drone/idle_flying/frame0004.png" id="71_ctwp5"]
+[ext_resource type="Texture2D" uid="uid://cqm5ogu4itu4t" path="res://art/enemies/animations/drone/release/frame0000.png" id="72_2gg1i"]
+[ext_resource type="Texture2D" uid="uid://tokn0588idr6" path="res://art/enemies/animations/drone/release/frame0001.png" id="73_plwkn"]
+[ext_resource type="Texture2D" uid="uid://d25xecrppqnie" path="res://art/enemies/animations/drone/release/frame0002.png" id="74_3sm7y"]
+[ext_resource type="Texture2D" uid="uid://bkerum4ixch7m" path="res://art/enemies/animations/drone/release/frame0003.png" id="75_c6hpq"]
+[ext_resource type="Texture2D" uid="uid://3qy1ow5qyc7e" path="res://art/enemies/animations/drone/release/frame0004.png" id="76_r86j6"]
+[ext_resource type="Texture2D" uid="uid://d3fcsryplad0r" path="res://art/enemies/animations/drone/release/frame0005.png" id="77_7dx1u"]
+[ext_resource type="Texture2D" uid="uid://bm83p683wje8s" path="res://art/enemies/animations/drone/release/frame0006.png" id="78_nvk0s"]
+[ext_resource type="Texture2D" uid="uid://c1swx2aw5bsqx" path="res://art/enemies/animations/drone/release/frame0007.png" id="79_8jd0t"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aeuyy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i72k8"]
 resource_local_to_scene = true
 shader = ExtResource("5_b2gta")
 shader_parameter/flash_amount = 0.0
@@ -111,7 +119,7 @@ size = Vector2(1248.5, 48)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4q130"]
 size = Vector2(36, 162)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cdfxl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y2u4f"]
 resource_local_to_scene = true
 shader = ExtResource("10_ggn54")
 shader_parameter/outline_color_start = Color(0.07646953, 0.42688474, 0.3983916, 0.84705883)
@@ -276,6 +284,35 @@ animations = [{
 "loop": true,
 "name": &"idle_flying",
 "speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("72_2gg1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_plwkn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_3sm7y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_c6hpq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_r86j6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_7dx1u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_nvk0s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_8jd0t")
+}],
+"loop": false,
+"name": &"release",
+"speed": 12.0
 }]
 
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
@@ -293,7 +330,7 @@ position = Vector2(120, 108)
 scale = Vector2(0.32, 0.32)
 
 [node name="Sprite2D" parent="DestroyableCrateBox05" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_aeuyy")
+material = SubResource("ShaderMaterial_i72k8")
 
 [node name="PhysicalCollision" parent="DestroyableCrateBox05" index="1" unique_id=302057026]
 visible = false
@@ -360,7 +397,7 @@ frame = 8
 frame_progress = 0.0
 
 [node name="StealthHighlight" parent="Player/AnimatedSprite2D" index="0" unique_id=223827841]
-material = SubResource("ShaderMaterial_cdfxl")
+material = SubResource("ShaderMaterial_y2u4f")
 
 [node name="ShadowAreas" type="Node2D" parent="." unique_id=1211744798]
 
@@ -486,9 +523,10 @@ bus = &"Sound Effects"
 position = Vector2(276.99997, -80.99999)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_2gg1i")
-animation = &"idle_flying"
+animation = &"release"
 autoplay = "idle_flying"
-frame_progress = 0.18249416
+frame = 7
+frame_progress = 1.0
 
 [editable path="DestroyableCrateBox05"]
 [editable path="Player"]
