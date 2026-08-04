@@ -465,11 +465,11 @@ size = Vector2(800, 360)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_urdbc"]
 resource_local_to_scene = true
-size = Vector2(1800, 500)
+size = Vector2(1800, 150)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tvgqv"]
 resource_local_to_scene = true
-size = Vector2(1800, 500)
+size = Vector2(1800, 150)
 
 [node name="TestRoom2" type="Node2D" unique_id=495586300]
 script = ExtResource("1_45klw")
@@ -1813,24 +1813,27 @@ scale = Vector2(6.25, 2.8125)
 
 [node name="WaterBody2D2" parent="WaterBodies" unique_id=774745936 instance=ExtResource("56_mhych")]
 position = Vector2(5050, -99)
-water_size = Vector2(1800, 500)
+water_size = Vector2(1800, 150)
 
 [node name="CollisionShape2D" parent="WaterBodies/WaterBody2D2/WaterArea" parent_id_path=PackedInt32Array(774745936, 1003098927) index="0" unique_id=1994384253]
+position = Vector2(0, 75)
 shape = SubResource("RectangleShape2D_urdbc")
 
 [node name="CollisionShape2D" parent="WaterBodies/WaterBody2D2/WaterHeadArea" parent_id_path=PackedInt32Array(774745936, 65933640) index="0" unique_id=813532039]
+position = Vector2(0, 75)
 shape = SubResource("RectangleShape2D_tvgqv")
 
 [node name="WaterFill" parent="WaterBodies/WaterBody2D2" index="2" unique_id=806794729]
 color = Color(0.56078434, 0.80784315, 0.99607843, 0.01345098)
-polygon = PackedVector2Array(-900, 0, -853.8461, 0, -807.6923, 0, -761.53845, 0, -715.38464, 0, -669.2308, 0, -623.0769, 0, -576.9231, 0, -530.7692, 0, -484.6154, 0, -438.46155, 0, -392.30768, 0, -346.15384, 0, -300, 0, -253.84616, 0, -207.6923, 0, -161.53847, 0, -115.38461, 0, -69.23077, 0, -23.076923, 0, 23.076923, 0, 69.23077, 0, 115.38461, 0, 161.53847, 0, 207.6923, 0, 253.84616, 0, 300, 0, 346.15384, 0, 392.30768, 0, 438.46155, 0, 484.6154, 0, 530.7692, 0, 576.9231, 0, 623.0769, 0, 669.2308, 0, 715.38464, 0, 761.53845, 0, 807.6923, 0, 853.8461, 0, 900, 0, 900, 500, -900, 500)
+polygon = PackedVector2Array(-900, 0, -853.8461, 0, -807.6923, 0, -761.53845, 0, -715.38464, 0, -669.2308, 0, -623.0769, 0, -576.9231, 0, -530.7692, 0, -484.6154, 0, -438.46155, 0, -392.30768, 0, -346.15384, 0, -300, 0, -253.84616, 0, -207.6923, 0, -161.53847, 0, -115.38461, 0, -69.23077, 0, -23.076923, 0, 23.076923, 0, 69.23077, 0, 115.38461, 0, 161.53847, 0, 207.6923, 0, 253.84616, 0, 300, 0, 346.15384, 0, 392.30768, 0, 438.46155, 0, 484.6154, 0, 530.7692, 0, 576.9231, 0, 623.0769, 0, 669.2308, 0, 715.38464, 0, 761.53845, 0, 807.6923, 0, 853.8461, 0, 900, 0, 900, 150, -900, 150)
 
 [node name="WaterSurface" parent="WaterBodies/WaterBody2D2" index="3" unique_id=1468966274]
 points = PackedVector2Array(-900, 0, -853.8461, 0, -807.6923, 0, -761.53845, 0, -715.38464, 0, -669.2308, 0, -623.0769, 0, -576.9231, 0, -530.7692, 0, -484.6154, 0, -438.46155, 0, -392.30768, 0, -346.15384, 0, -300, 0, -253.84616, 0, -207.6923, 0, -161.53847, 0, -115.38461, 0, -69.23077, 0, -23.076923, 0, 23.076923, 0, 69.23077, 0, 115.38461, 0, 161.53847, 0, 207.6923, 0, 253.84616, 0, 300, 0, 346.15384, 0, 392.30768, 0, 438.46155, 0, 484.6154, 0, 530.7692, 0, 576.9231, 0, 623.0769, 0, 669.2308, 0, 715.38464, 0, 761.53845, 0, 807.6923, 0, 853.8461, 0, 900, 0)
 default_color = Color(0.7452549, 0.88854903, 0.9977255, 0.29)
 
 [node name="Icon" parent="WaterBodies/WaterBody2D2/Shader" parent_id_path=PackedInt32Array(774745936, 499410625) index="0" unique_id=2145151425]
-scale = Vector2(14.0625, 3.90625)
+position = Vector2(0, 75)
+scale = Vector2(14.0625, 1.171875)
 
 [editable path="WaterBodies/WaterBody2D"]
 [editable path="WaterBodies/WaterBody2D2"]
