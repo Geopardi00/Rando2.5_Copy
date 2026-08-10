@@ -78,6 +78,8 @@ func _run_test() -> void:
 	check(player.last_source_category == &"environment", "Underwater mine damage should remain environmental during stealth.")
 	mine.call("_damage_player_once", player)
 	check(player.damage_received == int(mine.get("damage")), "One mine explosion should not damage the same player twice.")
+	await create_timer(0.5).timeout
+	check(not (mine.get_node("Explosion") as AnimatedSprite2D).visible, "The last explosion frame should hide as soon as its animation finishes.")
 
 	check_level_instances(level_scene)
 	(mine.get_node("ExplosionSound") as AudioStreamPlayer2D).stop()
@@ -104,8 +106,14 @@ func check_mine_contract(mine: Variant) -> void:
 	check(int(mine.get("warning_flash_count")) == 3, "Mine warning should default to three red flashes.")
 	var bright_color: Color = mine.get("warning_white_color")
 	check(bright_color.r > 1.0 and bright_color.g > 1.0 and bright_color.b > 1.0, "Warning sequence should include a clearly visible bright-white flash.")
-	check(mine.get_node_or_null("ShockwaveEffect") is Sprite2D, "Mine should provide a dedicated future shockwave shader surface.")
-	check(mine.get("shockwave_progress_parameter") == &"progress", "Shockwave hook should animate a standard progress shader parameter.")
+	check(mine.get_node_or_null("ShockwaveLayer/ShockwaveEffect") is ColorRect, "Mine shockwave should use the full-screen ColorRect required by its screen-space shader.")
+	var shockwave_material := (mine.get_node("ShockwaveLayer/ShockwaveEffect") as ColorRect).material as ShaderMaterial
+	check(shockwave_material != null and shockwave_material.get_shader_parameter(&"radius") != null, "Shockwave shader should expose the radius value animated by the mine.")
+	check(float(mine.get("shockwave_radius")) > 0.0, "Shockwave radius should be editable on the mine.")
+	check(float(mine.get("shockwave_speed")) > 0.0, "Shockwave speed should be editable on the mine.")
+	check(float(mine.get("shockwave_width")) > 0.0, "Shockwave width should be editable on the mine.")
+	check(float(mine.get("shockwave_strength")) >= 0.0, "Shockwave strength should be editable on the mine.")
+	check(float(mine.get("shockwave_aberration")) >= 0.0, "Shockwave aberration should be editable on the mine.")
 
 
 func check_level_instances(level_scene: PackedScene) -> void:

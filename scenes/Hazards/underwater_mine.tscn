@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dn6o4ejjgdx75"]
 
 [ext_resource type="Script" uid="uid://irxrpmd4fut7" path="res://scripts/Hazards/underwater_mine.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://dvw0pcegnobhk" path="res://shaders/underwater_sw2.gdshader" id="2_kinmo"]
 [ext_resource type="Texture2D" uid="uid://dpu1i3llqnje" path="res://art/level02/ver2.0/mine.png" id="2_mine"]
 [ext_resource type="Shader" uid="uid://cdhsmt4wykdjb" path="res://shaders/underwaterplants.gdshader" id="3_underwater"]
 [ext_resource type="Texture2D" uid="uid://dayrws7v2hhtt" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0000.png" id="4_explosion0"]
@@ -12,6 +13,15 @@
 [ext_resource type="Texture2D" uid="uid://dltt2i2ejnei5" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0006.png" id="10_explosion6"]
 [ext_resource type="Texture2D" uid="uid://byt8cudls5q16" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0007.png" id="11_explosion7"]
 [ext_resource type="AudioStream" uid="uid://18krgcs6tind" path="res://audio/sfx/explosion1.wav" id="12_sound"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1wo3g"]
+shader = ExtResource("2_kinmo")
+shader_parameter/radius = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/width = 0.007000000332500001
+shader_parameter/strength = 0.02000000095
+shader_parameter/aberration = 0.2000000095
+shader_parameter/feather = 0.017000000807500002
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mine"]
 resource_local_to_scene = true
@@ -27,11 +37,11 @@ shader_parameter/wobble_speed = 1.7150000814625002
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_prx3m"]
 resource_local_to_scene = true
-radius = 64.99999
+radius = 49.999996
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_trigger"]
 resource_local_to_scene = true
-radius = 69.99999
+radius = 54.999996
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
 resource_local_to_scene = true
@@ -69,23 +79,14 @@ animations = [{
 "speed": 19.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_shockwave"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_shockwave"]
-gradient = SubResource("Gradient_shockwave")
-width = 256
-height = 256
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 0.5)
-
 [node name="UnderwaterMine" type="Node2D" unique_id=1966351808]
 script = ExtResource("1_script")
 flash_on_duration = 0.18
 flash_off_duration = 0.18
 warning_color = Color(0.7695717, 0, 0.14274472, 1)
 explosion_radius = 78.0
+shockwave_material = SubResource("ShaderMaterial_1wo3g")
+shockwave_strength = 0.015
 
 [node name="Mine" type="Sprite2D" parent="." unique_id=1511901400]
 material = SubResource("ShaderMaterial_mine")
@@ -128,11 +129,16 @@ scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_explosion")
 animation = &"explode"
 
-[node name="ShockwaveEffect" type="Sprite2D" parent="." unique_id=85833429]
+[node name="ShockwaveLayer" type="CanvasLayer" parent="." unique_id=937712999]
+
+[node name="ShockwaveEffect" type="ColorRect" parent="ShockwaveLayer" unique_id=85833429]
 visible = false
-z_index = 4
-position = Vector2(1, 9)
-texture = SubResource("GradientTexture2D_shockwave")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1699520044]
 stream = ExtResource("12_sound")

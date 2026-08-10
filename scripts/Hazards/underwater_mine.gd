@@ -25,10 +25,13 @@ const DAMAGE_SOURCE_ENVIRONMENT: StringName = &"environment"
 @export var mine_flip_h: bool = false
 @export var mine_flip_v: bool = false
 
-@export_group("Future Shockwave")
+@export_group("Shockwave")
 @export var shockwave_material: ShaderMaterial
-@export var shockwave_duration: float = 0.45
-@export var shockwave_progress_parameter: StringName = &"progress"
+@export_range(0.01, 1.0, 0.01) var shockwave_radius: float = 0.28
+@export_range(0.01, 3.0, 0.01) var shockwave_speed: float = 0.7
+@export_range(0.001, 0.25, 0.001) var shockwave_width: float = 0.04
+@export_range(0.0, 0.1, 0.001) var shockwave_strength: float = 0.02
+@export_range(0.0, 1.0, 0.001) var shockwave_aberration: float = 0.425
 
 @onready var mine_sprite: Sprite2D = $Mine
 @onready var mine_body: StaticBody2D = $Mine/MineBody
@@ -39,7 +42,7 @@ const DAMAGE_SOURCE_ENVIRONMENT: StringName = &"environment"
 @onready var explosion_shape: CollisionShape2D = $ExplosionArea/CollisionShape2D
 @onready var explosion_sprite: AnimatedSprite2D = $Explosion
 @onready var explosion_sound: AudioStreamPlayer2D = $ExplosionSound
-@onready var shockwave_effect: Sprite2D = $ShockwaveEffect
+@onready var shockwave_effect: ColorRect = $ShockwaveLayer/ShockwaveEffect
 
 var is_triggered: bool = false
 var has_exploded: bool = false
@@ -58,6 +61,7 @@ func _ready() -> void:
 	shockwave_effect.visible = false
 	if shockwave_material != null:
 		shockwave_effect.material = shockwave_material.duplicate()
+		_apply_shockwave_settings()
 	var mine_body_circle := mine_body_shape.shape as CircleShape2D
 	var trigger_circle := trigger_shape.shape as CircleShape2D
 	if mine_body_circle != null and trigger_circle != null:
@@ -76,6 +80,7 @@ func _ready() -> void:
 	explosion_shape.disabled = true
 	trigger_area.body_entered.connect(_on_trigger_area_body_entered)
 	explosion_area.body_entered.connect(_on_explosion_area_body_entered)
+	explosion_sprite.animation_finished.connect(_on_explosion_animation_finished)
 
 
 func _on_trigger_area_body_entered(body: Node) -> void:
@@ -148,6 +153,11 @@ func _on_explosion_area_body_entered(body: Node) -> void:
 		_damage_player_once(body)
 
 
+func _on_explosion_animation_finished() -> void:
+	if has_exploded and explosion_sprite.animation == &"explode":
+		explosion_sprite.visible = false
+
+
 func _damage_player_once(body: Node) -> void:
 	if damage <= 0 or not body.is_in_group("player") or damaged_bodies.has(body):
 		return
@@ -163,17 +173,39 @@ func _play_shockwave_if_configured() -> void:
 		return
 
 	shockwave_effect.visible = true
-	shader_material.set_shader_parameter(shockwave_progress_parameter, 0.0)
+	_apply_shockwave_settings()
+	_set_shockwave_radius(0.0)
 	if shockwave_tween != null:
 		shockwave_tween.kill()
+	var duration := maxf(shockwave_radius, 0.01) / maxf(shockwave_speed, 0.01)
 	shockwave_tween = create_tween()
-	shockwave_tween.tween_method(
-		func(value: float) -> void: shader_material.set_shader_parameter(shockwave_progress_parameter, value),
-		0.0,
-		1.0,
-		maxf(shockwave_duration, 0.02)
-	)
+	shockwave_tween.tween_method(_set_shockwave_radius, 0.0, maxf(shockwave_radius, 0.01), duration)
 	shockwave_tween.tween_callback(func() -> void: shockwave_effect.visible = false)
+
+
+func _apply_shockwave_settings() -> void:
+	var shader_material := shockwave_effect.material as ShaderMaterial
+	if shader_material == null:
+		return
+	shader_material.set_shader_parameter(&"width", shockwave_width)
+	shader_material.set_shader_parameter(&"strength", shockwave_strength)
+	shader_material.set_shader_parameter(&"aberration", shockwave_aberration)
+
+
+func _set_shockwave_radius(value: float) -> void:
+	var shader_material := shockwave_effect.material as ShaderMaterial
+	if shader_material == null:
+		return
+	shader_material.set_shader_parameter(&"radius", value)
+	shader_material.set_shader_parameter(&"center", _get_shockwave_screen_center())
+
+
+func _get_shockwave_screen_center() -> Vector2:
+	var viewport_size := get_viewport_rect().size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return Vector2(0.5, 0.5)
+	var screen_position := get_viewport().get_canvas_transform() * explosion_sprite.global_position
+	return screen_position / viewport_size
 
 
 func _wait_for_effects() -> void:
