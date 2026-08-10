@@ -76,18 +76,22 @@ animations = [{
 }],
 "loop": false,
 "name": &"explode",
-"speed": 19.0
+"speed": 17.0
 }]
 
 [node name="UnderwaterMine" type="Node2D" unique_id=1966351808]
 script = ExtResource("1_script")
 flash_on_duration = 0.18
 flash_off_duration = 0.18
-warning_color = Color(0.7695717, 0, 0.14274472, 1)
-warning_white_color = Color(1.9107511, 1.9107512, 1.9107511, 1)
+warning_color = Color(0.52697855, 0.0862155, 0.24134916, 1)
+warning_white_color = Color(0.98196, 0.76016515, 0.785482, 1)
 explosion_radius = 78.0
 shockwave_material = SubResource("ShaderMaterial_1wo3g")
-shockwave_strength = 0.015
+shockwave_radius = 0.24000000000000002
+shockwave_speed = 0.8
+shockwave_width = 0.017
+shockwave_strength = 0.012
+shockwave_aberration = 0.092
 
 [node name="Mine" type="Sprite2D" parent="." unique_id=1511901400]
 material = SubResource("ShaderMaterial_mine")
@@ -123,12 +127,13 @@ shape = SubResource("CircleShape2D_explosion")
 disabled = true
 
 [node name="Explosion" type="AnimatedSprite2D" parent="." unique_id=1671193713]
-visible = false
 z_index = 3
 position = Vector2(1, 9)
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_explosion")
 animation = &"explode"
+frame = 7
+frame_progress = 1.0
 
 [node name="ShockwaveLayer" type="CanvasLayer" parent="." unique_id=937712999]
 
