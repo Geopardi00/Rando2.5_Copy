@@ -66,19 +66,7 @@
 [ext_resource type="PackedScene" path="res://scenes/stealth/shadow_area.tscn" id="61_shadow_area"]
 [ext_resource type="PackedScene" uid="uid://4nug12t66own" path="res://scenes/enemies/enemy_flamethrower.tscn" id="62_flamethrower"]
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="64_56r4m"]
-[ext_resource type="Texture2D" uid="uid://raj5b2nx02fq" path="res://art/enemies/animations/drone/idle_flying/frame0000.png" id="67_ne5eg"]
-[ext_resource type="Texture2D" uid="uid://t7aptsj3rm87" path="res://art/enemies/animations/drone/idle_flying/frame0001.png" id="68_6hjym"]
-[ext_resource type="Texture2D" uid="uid://ckghalu182e2t" path="res://art/enemies/animations/drone/idle_flying/frame0002.png" id="69_g5vl8"]
-[ext_resource type="Texture2D" uid="uid://crc3lgtabo8jr" path="res://art/enemies/animations/drone/idle_flying/frame0003.png" id="70_kuspg"]
-[ext_resource type="Texture2D" uid="uid://14ej6oap6q78" path="res://art/enemies/animations/drone/idle_flying/frame0004.png" id="71_ctwp5"]
-[ext_resource type="Texture2D" uid="uid://cqm5ogu4itu4t" path="res://art/enemies/animations/drone/release/frame0000.png" id="72_2gg1i"]
-[ext_resource type="Texture2D" uid="uid://tokn0588idr6" path="res://art/enemies/animations/drone/release/frame0001.png" id="73_plwkn"]
-[ext_resource type="Texture2D" uid="uid://d25xecrppqnie" path="res://art/enemies/animations/drone/release/frame0002.png" id="74_3sm7y"]
-[ext_resource type="Texture2D" uid="uid://bkerum4ixch7m" path="res://art/enemies/animations/drone/release/frame0003.png" id="75_c6hpq"]
-[ext_resource type="Texture2D" uid="uid://3qy1ow5qyc7e" path="res://art/enemies/animations/drone/release/frame0004.png" id="76_r86j6"]
-[ext_resource type="Texture2D" uid="uid://d3fcsryplad0r" path="res://art/enemies/animations/drone/release/frame0005.png" id="77_7dx1u"]
-[ext_resource type="Texture2D" uid="uid://bm83p683wje8s" path="res://art/enemies/animations/drone/release/frame0006.png" id="78_nvk0s"]
-[ext_resource type="Texture2D" uid="uid://c1swx2aw5bsqx" path="res://art/enemies/animations/drone/release/frame0007.png" id="79_8jd0t"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/drone_enemy.tscn" id="65_drone_enemy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i72k8"]
 resource_local_to_scene = true
@@ -263,57 +251,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c4i7"]
 size = Vector2(46, 73)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_2gg1i"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("67_ne5eg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("68_6hjym")
-}, {
-"duration": 1.0,
-"texture": ExtResource("69_g5vl8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("70_kuspg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("71_ctwp5")
-}],
-"loop": true,
-"name": &"idle_flying",
-"speed": 14.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("72_2gg1i")
-}, {
-"duration": 1.0,
-"texture": ExtResource("73_plwkn")
-}, {
-"duration": 1.0,
-"texture": ExtResource("74_3sm7y")
-}, {
-"duration": 1.0,
-"texture": ExtResource("75_c6hpq")
-}, {
-"duration": 1.0,
-"texture": ExtResource("76_r86j6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("77_7dx1u")
-}, {
-"duration": 1.0,
-"texture": ExtResource("78_nvk0s")
-}, {
-"duration": 1.0,
-"texture": ExtResource("79_8jd0t")
-}],
-"loop": false,
-"name": &"release",
-"speed": 12.0
-}]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_drone_occluder"]
+size = Vector2(48, 80)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_drone_occluder"]
+polygon = PackedVector2Array(-24, -40, 24, -40, 24, 40, -24, 40)
 
 [node name="TestRoom" type="Node2D" unique_id=1808438456]
 script = ExtResource("58_test_room")
@@ -384,6 +326,22 @@ offset_left = -19.0
 offset_top = -81.0
 offset_right = 18.0
 offset_bottom = 77.0
+
+[node name="DroneOcclusionBlocker" type="StaticBody2D" parent="."]
+position = Vector2(420, 106)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DroneOcclusionBlocker"]
+shape = SubResource("RectangleShape2D_drone_occluder")
+
+[node name="BlockerVisual" type="Polygon2D" parent="DroneOcclusionBlocker"]
+polygon = PackedVector2Array(-24, -40, 24, -40, 24, 40, -24, 40)
+color = Color(0.16, 0.12, 0.12, 1)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="DroneOcclusionBlocker"]
+occluder = SubResource("OccluderPolygon2D_drone_occluder")
+occluder_light_mask = 1
 
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("1_knmjg")]
 script = ExtResource("2_asmw1")
@@ -517,16 +475,8 @@ bus = &"Sound Effects"
 
 [node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("64_56r4m")]
 
-[node name="EnemyDrone" type="Node2D" parent="." unique_id=722869981]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyDrone" unique_id=1275765218]
-position = Vector2(276.99997, -80.99999)
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_2gg1i")
-animation = &"release"
-autoplay = "idle_flying"
-frame = 7
-frame_progress = 1.0
+[node name="EnemyDrone" parent="." instance=ExtResource("65_drone_enemy")]
+position = Vector2(277, -81)
 
 [editable path="DestroyableCrateBox05"]
 [editable path="Player"]

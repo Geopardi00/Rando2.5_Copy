@@ -1,6 +1,16 @@
 # State of Game
 
-Last updated: 2026-08-03
+Last updated: 2026-08-04
+
+## Latest Update - 2026-08-04 - Reusable Flying Drone Prototype
+- Completed the reusable `DroneEnemy` in `scenes/enemies/drone_enemy.tscn` and `scripts/enemies/enemy_drone.gd`. It flies between spawn-centered horizontal limits, pauses before reversing, smoothly leans only its visual pivot, and keeps its root physics body and collisions unrotated.
+- The drone uses a red, shadow-casting search cone whose visual and player-only broad-phase shape rotate together. Gameplay detection additionally requires World-only physics line of sight, a short confirmation time, a living target, and the existing stealth detectability API.
+- Drone combat uses `PATROL`, `TURN_PAUSE`, and `ATTACK`. A confirmed target stops the drone, brightens its front light, and plays the non-looping `release` animation. The separate grenade appears on zero-based frame `7`, exactly when the grenade disappears from the baked animation, with a per-attack guard preventing duplicate drops.
+- Added a reusable enemy-grenade foundation while preserving the Final Boss grenade scene path, setup API, fuse, bounce behavior, and lifecycle signals. The drone variant uses `art/enemies/animations/drone/release/drone_grenade.png`, drops straight down with zero horizontal velocity, has no bounce or airborne fuse, and explodes on its first World or one-way-platform contact. A six-second safety lifetime silently removes drops that never reach ground.
+- Drone grenade explosions reuse the existing ten Boss grenade explosion frames and `audio/sfx/explosion1.wav`. Their Area scans only the player body and applies one `&"enemy"` damage hit, so stealth blocks the blast and drones or other enemies are not affected.
+- The drone follows existing enemy health integration with a layer-5 `enemy_hurtbox`, hit flash, detached hit sound, bullet/slap/machete compatibility, contact damage, and `StateOfGame` defeat registration. Released grenades remain independent if the drone dies; scene reload removes all remaining projectiles and resets authored drone state.
+- `test_room.tscn` now instances the reusable drone at the location of the previous inline visual-only preview. The duplicated drone textures/SpriteFrames were removed, and a narrow prototype blocker with both World collision and a matching light occluder was added beneath the patrol lane for visual-cone and LOS testing.
+- Added `scripts/tests/enemy_drone_smoke_test.gd` for drone scene contracts, patrol/lean/cone behavior, perception and stealth, frame-exact single release, straight-fall grenade behavior, impact-only explosion, damage categorization, safety cleanup, and Final Boss grenade compatibility. No generic explosion camera shake or particles were added because the project does not currently expose reusable versions.
 
 ## Latest Update - 2026-08-03 - Flamethrower Enemy Prototype
 - Added the reusable `EnemyFlamethrower` in `scenes/enemies/enemy_flamethrower.tscn` and `scripts/enemies/enemy_flamethrower.gd`. It patrols inside an exported spawn-centered distance, turns at walls and ledges, and uses horizontal range, vertical tolerance, facing, World-only line of sight, and the existing stealth detectability API before attacking.

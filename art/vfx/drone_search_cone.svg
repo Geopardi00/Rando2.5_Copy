@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="cone_fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.72"/>
+      <stop offset="0.18" stop-color="#ffffff" stop-opacity="0.46"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+  <path d="M 256 256 L 344 511 L 168 511 Z" fill="url(#cone_fill)"/>
+  <path d="M 256 256 L 344 511" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="4"/>
+  <path d="M 256 256 L 168 511" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="4"/>
+</svg>

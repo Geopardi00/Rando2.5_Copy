@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/projectiles/enemy_grenade.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dyutp87truost" path="res://art/props/grenade.png" id="2_grenade"]
+[ext_resource type="Texture2D" uid="uid://ewj5t23iovfx" path="res://art/enemies/animations/Boss/grenade/explosion/frame0000.png" id="3_explosion_0"]
+[ext_resource type="Texture2D" uid="uid://dhgjtft552g73" path="res://art/enemies/animations/Boss/grenade/explosion/frame0001.png" id="4_explosion_1"]
+[ext_resource type="Texture2D" uid="uid://b33u3x1lf7phs" path="res://art/enemies/animations/Boss/grenade/explosion/frame0002.png" id="5_explosion_2"]
+[ext_resource type="Texture2D" uid="uid://cyyl4yghwh4c8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0003.png" id="6_explosion_3"]
+[ext_resource type="Texture2D" uid="uid://cpc0mxu2s1xww" path="res://art/enemies/animations/Boss/grenade/explosion/frame0004.png" id="7_explosion_4"]
+[ext_resource type="Texture2D" uid="uid://dlx1lv68k5awt" path="res://art/enemies/animations/Boss/grenade/explosion/frame0005.png" id="8_explosion_5"]
+[ext_resource type="Texture2D" uid="uid://cno6ln2hh8yyq" path="res://art/enemies/animations/Boss/grenade/explosion/frame0006.png" id="9_explosion_6"]
+[ext_resource type="Texture2D" uid="uid://bbelnt40wefi8" path="res://art/enemies/animations/Boss/grenade/explosion/frame0007.png" id="10_explosion_7"]
+[ext_resource type="Texture2D" uid="uid://eut65yqjgw1j" path="res://art/enemies/animations/Boss/grenade/explosion/frame0008.png" id="11_explosion_8"]
+[ext_resource type="Texture2D" uid="uid://cdmkii0w4oxey" path="res://art/enemies/animations/Boss/grenade/explosion/frame0009.png" id="12_explosion_9"]
+[ext_resource type="AudioStream" uid="uid://18krgcs6tind" path="res://audio/sfx/explosion1.wav" id="13_explosion_sound"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
+resource_local_to_scene = true
+radius = 92.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_explosion"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_explosion_0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_explosion_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_explosion_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_explosion_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_explosion_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_explosion_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_explosion_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_explosion_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_explosion_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_explosion_9")
+}],
+"loop": false,
+"name": &"explode",
+"speed": 16.0
+}]
+
+[node name="EnemyGrenade" type="CharacterBody2D"]
+z_index = 4
+collision_layer = 0
+collision_mask = 8193
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("2_grenade")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="ExplosionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea"]
+shape = SubResource("CircleShape2D_explosion")
+disabled = true
+
+[node name="ExplosionSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(4, -159)
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_explosion")
+animation = &"explode"
+frame = 9
+frame_progress = 1.0
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_explosion_sound")
+bus = &"Sound Effects"

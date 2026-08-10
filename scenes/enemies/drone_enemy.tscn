@@ -1,0 +1,164 @@
+[gd_scene format=3 uid="uid://cgmxhkl5lqc0c"]
+
+[ext_resource type="Script" uid="uid://dojx67eo6f8b8" path="res://scripts/enemies/enemy_drone.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
+[ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_hit_sound"]
+[ext_resource type="Texture2D" uid="uid://raj5b2nx02fq" path="res://art/enemies/animations/drone/idle_flying/frame0000.png" id="5_idle_0"]
+[ext_resource type="Texture2D" uid="uid://t7aptsj3rm87" path="res://art/enemies/animations/drone/idle_flying/frame0001.png" id="6_idle_1"]
+[ext_resource type="Texture2D" uid="uid://ckghalu182e2t" path="res://art/enemies/animations/drone/idle_flying/frame0002.png" id="7_idle_2"]
+[ext_resource type="Texture2D" uid="uid://crc3lgtabo8jr" path="res://art/enemies/animations/drone/idle_flying/frame0003.png" id="8_idle_3"]
+[ext_resource type="Texture2D" uid="uid://14ej6oap6q78" path="res://art/enemies/animations/drone/idle_flying/frame0004.png" id="9_idle_4"]
+[ext_resource type="Texture2D" uid="uid://cqm5ogu4itu4t" path="res://art/enemies/animations/drone/release/frame0000.png" id="10_release_0"]
+[ext_resource type="Texture2D" uid="uid://tokn0588idr6" path="res://art/enemies/animations/drone/release/frame0001.png" id="11_release_1"]
+[ext_resource type="Texture2D" uid="uid://d25xecrppqnie" path="res://art/enemies/animations/drone/release/frame0002.png" id="12_release_2"]
+[ext_resource type="Texture2D" uid="uid://bkerum4ixch7m" path="res://art/enemies/animations/drone/release/frame0003.png" id="13_release_3"]
+[ext_resource type="Texture2D" uid="uid://3qy1ow5qyc7e" path="res://art/enemies/animations/drone/release/frame0004.png" id="14_release_4"]
+[ext_resource type="Texture2D" uid="uid://d3fcsryplad0r" path="res://art/enemies/animations/drone/release/frame0005.png" id="15_release_5"]
+[ext_resource type="Texture2D" uid="uid://bqfpv07djjl6" path="res://art/props/dronelight.png" id="16_7cjew"]
+[ext_resource type="Texture2D" uid="uid://bm83p683wje8s" path="res://art/enemies/animations/drone/release/frame0006.png" id="16_release_6"]
+[ext_resource type="Texture2D" uid="uid://c1swx2aw5bsqx" path="res://art/enemies/animations/drone/release/frame0007.png" id="17_release_7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(94, 46)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(112, 68)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hit_flash"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_drone"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_idle_0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_idle_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_idle_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_idle_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_idle_4")
+}],
+"loop": true,
+"name": &"idle_flying",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_release_0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_release_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_release_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_release_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_release_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_release_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_release_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_release_7")
+}],
+"loop": false,
+"name": &"release",
+"speed": 12.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_front_dot"]
+offsets = PackedFloat32Array(0, 0.32, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.42, 0.32, 0.72, 1, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_front_dot"]
+gradient = SubResource("Gradient_front_dot")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="DroneEnemy" type="CharacterBody2D" unique_id=2076150378 groups=["enemy"]]
+scale = Vector2(0.8, 0.8)
+collision_layer = 4
+motion_mode = 1
+script = ExtResource("1_script")
+patrol_speed = 180.0
+patrol_distance = 280.0
+detection_confirmation_time = 0.15
+grenade_damage = 2
+attack_cooldown = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1454538766]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=903139932 groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=111306396]
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="VisualPivot" type="Node2D" parent="." unique_id=2033946745]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="VisualPivot" unique_id=278305096]
+material = SubResource("ShaderMaterial_hit_flash")
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_drone")
+animation = &"idle_flying"
+autoplay = "idle_flying"
+
+[node name="GrenadeSpawnPoint" type="Marker2D" parent="VisualPivot" unique_id=2099262645]
+position = Vector2(0, 26)
+
+[node name="SearchConePivot" type="Node2D" parent="." unique_id=197262937]
+position = Vector2(-9.5, 3.5)
+
+[node name="ConeLight" type="PointLight2D" parent="SearchConePivot" unique_id=1450635742]
+position = Vector2(3.249999, 314)
+scale = Vector2(1.459, 0.34545892)
+color = Color(1, 0.035, 0.018, 1)
+energy = 1.86
+shadow_enabled = true
+shadow_filter = 1
+texture = ExtResource("16_7cjew")
+
+[node name="FrontDotGlow" type="PointLight2D" parent="SearchConePivot" unique_id=883994485]
+scale = Vector2(0.2, 0.2)
+color = Color(1, 0.03, 0.015, 1)
+energy = 0.9
+texture = SubResource("GradientTexture2D_front_dot")
+
+[node name="DetectionArea" type="Area2D" parent="SearchConePivot" unique_id=1383894958]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SearchConePivot/DetectionArea" unique_id=692211832]
+position = Vector2(0.5000038, 34.575237)
+scale = Vector2(0.3977273, 1.381482)
+polygon = PackedVector2Array(-7.7, 16, 7.7, 16, 88.628555, 375.74246, -99.942856, 375.74246)
+
+[node name="TurnPauseTimer" type="Timer" parent="." unique_id=1160956562]
+wait_time = 0.45
+one_shot = true
+
+[node name="AttackCooldownTimer" type="Timer" parent="." unique_id=388518907]
+wait_time = 3.0
+one_shot = true
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=817681489]
+stream = ExtResource("3_hit_sound")

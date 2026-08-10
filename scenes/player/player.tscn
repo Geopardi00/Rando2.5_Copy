@@ -827,15 +827,15 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"stealth_walk"
-frame_progress = 0.3374754
+animation = &"landing"
+frame = 7
+frame_progress = 1.0
 
 [node name="StealthHighlight" type="AnimatedSprite2D" parent="AnimatedSprite2D" unique_id=223827841]
 visible = false
 material = SubResource("ShaderMaterial_stealth_outline")
 sprite_frames = SubResource("SpriteFrames_ioxgp")
 animation = &"landing"
-frame = 7
 frame_progress = 1.0
 
 [node name="MuzzleMarker" type="Marker2D" parent="." unique_id=1906425802]

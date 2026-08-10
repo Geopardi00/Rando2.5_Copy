@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://7w8bbsxen832"]
+
+[ext_resource type="PackedScene" path="res://scenes/projectiles/enemy_grenade.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://ctkq5cgtxh2j5" path="res://art/enemies/animations/drone/release/drone_grenade.png" id="2_grenade"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xx67i"]
+resource_local_to_scene = true
+radius = 92.0
+
+[node name="DroneGrenade" unique_id=522568875 instance=ExtResource("1_base")]
+fuse_enabled = false
+explode_on_first_impact = true
+vertical_drop_only = true
+max_fall_speed = 650.0
+safety_lifetime = 6.0
+max_bounces = 0
+explosion_radius = 72.0
+debug_draw_damage_radius = false
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_grenade")
+
+[node name="ExplosionArea" parent="." index="2"]
+position = Vector2(0, -1)
+
+[node name="CollisionShape2D" parent="ExplosionArea" index="0"]
+shape = SubResource("CircleShape2D_xx67i")
