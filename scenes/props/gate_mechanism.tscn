@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bnvxfv8k2jjl7"]
+
+[ext_resource type="Script" path="res://scripts/props/gate_mechanism.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/gate_vertical_clip.gdshader" id="2_clip"]
+[ext_resource type="Texture2D" uid="uid://bxa8tcof5e1yy" path="res://art/props/gate/gateleft.png" id="3_left"]
+[ext_resource type="Texture2D" uid="uid://bnp8fetqbdth7" path="res://art/props/gate/gateright.png" id="4_right"]
+[ext_resource type="Texture2D" uid="uid://bf2a2vba46axp" path="res://art/props/gate/gate.png" id="5_gate"]
+[ext_resource type="Texture2D" uid="uid://c4a5gxoagjqq8" path="res://art/props/lever.png" id="6_lever"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gate_clip"]
+resource_local_to_scene = true
+shader = ExtResource("2_clip")
+shader_parameter/clip_uv_y = 0.2265625
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
+resource_local_to_scene = true
+size = Vector2(70.588234, 333.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lever"]
+resource_local_to_scene = true
+size = Vector2(52, 38)
+
+[node name="Gates" type="Node2D" unique_id=1929275249]
+script = ExtResource("1_script")
+
+[node name="GateAssembly" type="Node2D" parent="." unique_id=1584510027]
+scale = Vector2(0.17, 0.18)
+
+[node name="MovingGate" type="Node2D" parent="GateAssembly" unique_id=385417778]
+z_index = 1
+
+[node name="Gate" type="Sprite2D" parent="GateAssembly/MovingGate" unique_id=1642984440]
+material = SubResource("ShaderMaterial_gate_clip")
+texture = ExtResource("5_gate")
+
+[node name="GateBody" type="StaticBody2D" parent="GateAssembly/MovingGate" unique_id=35328425]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateAssembly/MovingGate/GateBody" unique_id=1526730139]
+position = Vector2(11.764705, 16.750006)
+shape = SubResource("RectangleShape2D_gate")
+
+[node name="GateLeft" type="Sprite2D" parent="GateAssembly" unique_id=2052390506]
+z_index = 2
+texture = ExtResource("3_left")
+
+[node name="GateRight" type="Sprite2D" parent="GateAssembly" unique_id=834391749]
+z_index = 2
+texture = ExtResource("4_right")
+
+[node name="ClipLine" type="Node2D" parent="GateAssembly" unique_id=1199703347]
+position = Vector2(0, -140)
+
+[node name="EditorGuide" type="Line2D" parent="GateAssembly/ClipLine" unique_id=456784]
+points = PackedVector2Array(-358.82352, 6.6666718, 358.82352, -60)
+width = 4.0
+default_color = Color(1, 0.15, 0.75, 0.9)
+
+[node name="LeverVisualPivot" type="Node2D" parent="." unique_id=1519034528]
+position = Vector2(-225, -100)
+
+[node name="LeverSprite" type="Sprite2D" parent="LeverVisualPivot" unique_id=2125149753]
+position = Vector2(0, -10)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_lever")
+
+[node name="LeverHitArea" type="Area2D" parent="." unique_id=2050034254 groups=["slap_interactable"]]
+position = Vector2(-225, -110)
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeverHitArea" unique_id=28822599]
+shape = SubResource("RectangleShape2D_lever")

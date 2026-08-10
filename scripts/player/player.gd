@@ -1055,6 +1055,13 @@ func spawn_slap_hitbox() -> void:
 
 
 func _on_slap_hitbox_area_entered(area: Area2D, hit_enemies: Array[Node]) -> void:
+	if area.is_in_group("slap_interactable"):
+		var interactable := area.get_parent()
+		if interactable != null and not hit_enemies.has(interactable) and interactable.has_method("slapped"):
+			hit_enemies.append(interactable)
+			interactable.slapped()
+		return
+
 	if not area.is_in_group("enemy_hurtbox"):
 		return
 

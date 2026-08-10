@@ -35,7 +35,6 @@
 [ext_resource type="Texture2D" uid="uid://bx1sob7xrdmha" path="res://art/level02/props/Cable01.png" id="27_4dyjh"]
 [ext_resource type="Shader" uid="uid://cdhsmt4wykdjb" path="res://shaders/underwaterplants.gdshader" id="27_05g6j"]
 [ext_resource type="Texture2D" uid="uid://c2p86ucprb3l3" path="res://art/level02/ver2.0/seaweed01.png" id="27_urdbc"]
-[ext_resource type="Texture2D" uid="uid://cwipahkpl3leh" path="res://art/props/gate2.png" id="27_vchln"]
 [ext_resource type="Texture2D" uid="uid://cx633qnoq0dav" path="res://art/level02/props/dirtpile01.png" id="28_gcwyd"]
 [ext_resource type="Texture2D" uid="uid://3rb0eho3fs0p" path="res://art/level02/ver2.0/seaweed02.png" id="29_jgcx6"]
 [ext_resource type="Texture2D" uid="uid://b0fb4ua4rben7" path="res://art/level02/props/woodpile01.png" id="29_vchln"]
@@ -76,6 +75,7 @@
 [ext_resource type="Texture2D" uid="uid://bqamgnka1iu0e" path="res://art/level02/ver2.0/pipe01.png" id="53_ylovr"]
 [ext_resource type="Texture2D" uid="uid://dm7snr7yffnxj" path="res://art/level02/ver2.0/pipe02.png" id="54_grbw7"]
 [ext_resource type="PackedScene" uid="uid://c7tikl5ek55li" path="res://scenes/water/water_body_2d.tscn" id="56_mhych"]
+[ext_resource type="PackedScene" uid="uid://bnvxfv8k2jjl7" path="res://scenes/props/gate_mechanism.tscn" id="77_gate_mechanism"]
 
 [sub_resource type="Environment" id="Environment_dd7cg"]
 background_mode = 3
@@ -690,17 +690,6 @@ shader_parameter/tint_strength = 0.56400002679
 shader_parameter/shimmer_strength = 0.226000010735
 shader_parameter/shimmer_frequency = 20.3490009190775
 shader_parameter/shimmer_speed = 3.0850001465375
-shader_parameter/wobble_strength = 0.0
-shader_parameter/wobble_frequency = 0.035
-shader_parameter/wobble_speed = 2.8
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3oc8j"]
-shader = ExtResource("27_05g6j")
-shader_parameter/underwater_tint = Color(0.57649314, 0.80420965, 0.9714169, 1)
-shader_parameter/tint_strength = 0.4800000228
-shader_parameter/shimmer_strength = 0.24800001178
-shader_parameter/shimmer_frequency = 19.442000875995
-shader_parameter/shimmer_speed = 4.4030002091425
 shader_parameter/wobble_strength = 0.0
 shader_parameter/wobble_frequency = 0.035
 shader_parameter/wobble_speed = 2.8
@@ -2201,12 +2190,6 @@ position = Vector2(2966.9998, -443.99997)
 [node name="DroneEnemy2" parent="Enemies" unique_id=1160644882 instance=ExtResource("39_28gp1")]
 position = Vector2(3359, -444.00003)
 
-[node name="Gate" type="Sprite2D" parent="." unique_id=779951612]
-material = SubResource("ShaderMaterial_3oc8j")
-position = Vector2(5626.0005, -32.500004)
-scale = Vector2(0.06283438, 0.06633381)
-texture = ExtResource("27_vchln")
-
 [node name="Props" type="Node2D" parent="." unique_id=381500026]
 
 [node name="Cable01" type="Sprite2D" parent="Props" unique_id=2051010800]
@@ -2788,6 +2771,9 @@ occluder = SubResource("OccluderPolygon2D_um5if")
 [node name="LightOccluder2D2" type="LightOccluder2D" parent="LightOccluders" unique_id=1607887261]
 position = Vector2(2572, -164)
 occluder = SubResource("OccluderPolygon2D_3oc8j")
+
+[node name="Gates" parent="." instance=ExtResource("77_gate_mechanism")]
+position = Vector2(5626, -33)
 
 [editable path="WaterBodies/WaterBody2D"]
 [editable path="WaterBodies/WaterBody2D2"]
