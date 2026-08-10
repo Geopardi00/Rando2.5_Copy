@@ -245,6 +245,21 @@ func run_test() -> void:
 
 	wave_pool.configure_ripple()
 	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, 180.0)
+	var rounded_center_velocity: float = absf(wave_pool.ripple_velocities[center_index])
+	var rounded_near_velocity: float = absf(wave_pool.ripple_velocities[center_index + 1])
+	var rounded_edge_velocity: float = absf(
+		wave_pool.ripple_velocities[center_index + wave_pool.ripple_impact_radius]
+	)
+	var outside_impact_velocity: float = absf(
+		wave_pool.ripple_velocities[center_index + wave_pool.ripple_impact_radius + 1]
+	)
+	check(
+		rounded_center_velocity > rounded_near_velocity
+		and rounded_near_velocity > rounded_edge_velocity
+		and rounded_edge_velocity > 0.0,
+		"Initial ripple impulse should use a rounded center-to-edge falloff."
+	)
+	check(is_zero_approx(outside_impact_velocity), "Initial ripple footprint should stop outside its configured radius.")
 	wave_pool.update_ripple(1.0 / 60.0)
 	var localized_height: float = absf(wave_pool.ripple_heights[center_index])
 	check(localized_height > 1.0, "A surface impact should visibly displace the nearest spring by more than one pixel.")

@@ -72,6 +72,7 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 @export_range(0.0, 30.0, 0.1) var ripple_spread: float = 8.0
 @export_range(1, 16, 1) var ripple_propagation_passes: int = 8
 @export_range(0.0, 20.0, 0.01) var ripple_impact_scale: float = 0.65
+@export_range(1, 10, 1) var ripple_impact_radius: int = 4
 @export var ripple_maximum_impact_speed: float = 220.0
 @export var ripple_maximum_height: float = 24.0
 
@@ -355,8 +356,24 @@ func apply_ripple_impulse(world_x: float, impact_velocity: float, mass: float = 
 	var maximum_impact := maxf(ripple_maximum_impact_speed, 0.0)
 	var impulse := clampf(impact_velocity * maxf(mass, 0.0) * ripple_impact_scale, -maximum_impact, maximum_impact)
 	var previous_velocity := ripple_velocities[index]
-	ripple_velocities[index] = clampf(previous_velocity + impulse, -maximum_impact, maximum_impact)
-	ripple_is_active = ripple_is_active or not is_zero_approx(ripple_velocities[index])
+	var impact_radius := maxi(ripple_impact_radius, 1)
+
+	# Spread the initial impact across a cosine-shaped footprint. The centre
+	# receives the full impulse while progressively smaller neighbouring
+	# impulses produce a broad first wave and seed outward secondary ripples.
+	for offset in range(-impact_radius, impact_radius + 1):
+		var target_index := index + offset
+		if target_index < 0 or target_index >= ripple_velocities.size():
+			continue
+		var distance_ratio := absf(float(offset)) / float(impact_radius + 1)
+		var weight := pow(cos(distance_ratio * PI * 0.5), 2.0)
+		ripple_velocities[target_index] = clampf(
+			ripple_velocities[target_index] + impulse * weight,
+			-maximum_impact,
+			maximum_impact
+		)
+
+	ripple_is_active = ripple_is_active or not is_zero_approx(impulse)
 	return ripple_velocities[index] - previous_velocity
 
 

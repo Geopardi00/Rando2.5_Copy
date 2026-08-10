@@ -33,9 +33,11 @@ enum State {
 @export var flame_width: float = 28.0
 @export var firing_duration: float = 2.0
 @export var flame_damage: int = 1
-@export var damage_interval: float = 0.8
+@export var damage_interval: float = 0.15
 @export var attack_cooldown: float = 1.5
 @export var flame_particle_speed: float = 360.0
+@export var flame_damage_initial_range: float = 16.0
+@export_range(0.1, 2.0, 0.05) var flame_damage_growth_speed_multiplier: float = 1.0
 
 @export_group("Burning Ground")
 @export var burning_ground_scene: PackedScene = preload("res://scenes/Hazards/burning_ground.tscn")
@@ -72,6 +74,7 @@ var patrol_origin_x: float = 0.0
 var state_time_remaining: float = 0.0
 var locked_fire_direction: int = 1
 var effective_flame_range: float = 0.0
+var current_flame_damage_range: float = 0.0
 var ground_fire_spawn_timer: float = 0.0
 var ground_patches_spawned_this_burst: int = 0
 var is_dying: bool = false
@@ -181,6 +184,7 @@ func run_firing(delta: float) -> void:
 		enter_cooldown()
 		return
 
+	update_flame_damage_reach(delta)
 	state_time_remaining -= delta
 	ground_fire_spawn_timer -= delta
 	if ground_patches_spawned_this_burst < maxi(max_ground_patches_per_burst, 0) and ground_fire_spawn_timer <= 0.0:
@@ -323,6 +327,8 @@ func enter_firing() -> void:
 	velocity.x = 0.0
 	update_facing_visual()
 	calculate_effective_flame_range()
+	current_flame_damage_range = minf(maxf(flame_damage_initial_range, 1.0), maxf(effective_flame_range, 1.0))
+	update_flame_damage_geometry(current_flame_damage_range)
 	play_animation_safe(&"fire", &"idle")
 	set_nozzle_glow(true)
 	set_flame_active(true)
@@ -367,15 +373,29 @@ func calculate_effective_flame_range() -> void:
 
 func update_attack_geometry(attack_range: float) -> void:
 	var safe_range := maxf(attack_range, 1.0)
-	if flame_damage_rectangle != null:
-		flame_damage_rectangle.size = Vector2(safe_range, maxf(flame_width, 1.0))
-	flame_damage_shape.position = Vector2(safe_range * 0.5, 0.0)
+	update_flame_damage_geometry(safe_range)
 
 	ground_ray_far.position = Vector2(safe_range * 0.82, ground_ray_base_y)
 	ground_ray_far.target_position = Vector2(0.0, maxf(ground_probe_depth, 1.0))
 
 	var safe_particle_speed := maxf(flame_particle_speed, 1.0)
 	flame_particles.lifetime = clampf(safe_range / safe_particle_speed, 0.08, 2.0)
+
+
+func update_flame_damage_reach(delta: float) -> void:
+	var growth_speed := maxf(flame_particle_speed, 1.0) * maxf(flame_damage_growth_speed_multiplier, 0.1)
+	current_flame_damage_range = minf(
+		current_flame_damage_range + growth_speed * maxf(delta, 0.0),
+		maxf(effective_flame_range, 1.0)
+	)
+	update_flame_damage_geometry(current_flame_damage_range)
+
+
+func update_flame_damage_geometry(damage_range: float) -> void:
+	var safe_range := maxf(damage_range, 1.0)
+	if flame_damage_rectangle != null:
+		flame_damage_rectangle.size = Vector2(safe_range, maxf(flame_width, 1.0))
+	flame_damage_shape.position = Vector2(safe_range * 0.5, 0.0)
 
 
 func set_flame_active(active: bool, immediate: bool = false) -> void:

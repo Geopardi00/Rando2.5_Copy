@@ -212,6 +212,18 @@ func check_attack_states(enemy: Variant, player: Variant) -> void:
 	var particles := enemy.get_node("FlamePivot/FlameOrigin/FlameParticles") as GPUParticles2D
 	check(flame_area.monitoring and not flame_shape.disabled, "Entering FIRING should enable flame monitoring and collision.")
 	check(particles.emitting, "Entering FIRING should enable flame particles.")
+	var initial_damage_range: float = float(enemy.get("current_flame_damage_range"))
+	var effective_range: float = float(enemy.get("effective_flame_range"))
+	check(initial_damage_range > 0.0 and initial_damage_range < effective_range, "Flame damage should begin near the nozzle instead of at full range.")
+	var rectangle := flame_shape.shape as RectangleShape2D
+	check(is_equal_approx(rectangle.size.x, initial_damage_range), "The initial collision should match the configured starting reach.")
+	check(is_equal_approx(flame_shape.position.x, initial_damage_range * 0.5), "The growing collision should remain anchored at the nozzle.")
+	var growth_delta := 0.1
+	enemy.call("update_flame_damage_reach", growth_delta)
+	var grown_damage_range: float = float(enemy.get("current_flame_damage_range"))
+	var expected_growth: float = float(enemy.get("flame_particle_speed")) * float(enemy.get("flame_damage_growth_speed_multiplier")) * growth_delta
+	check(is_equal_approx(grown_damage_range, minf(initial_damage_range + expected_growth, effective_range)), "Flame collision should grow at the configured visual-flame speed.")
+	check(is_equal_approx(flame_shape.position.x, grown_damage_range * 0.5), "Collision growth should extend only away from the nozzle.")
 
 	var locked_direction: int = int(enemy.get("locked_fire_direction"))
 	var pivot_scale_x: float = enemy.get_node("FlamePivot").scale.x
@@ -247,7 +259,9 @@ func check_flame_wall_clamp_and_left_facing(test_root: Node2D, enemy: Variant, p
 	check(effective_range > 0.0 and effective_range < authored_range, "World geometry should clamp the effective flame reach.")
 	var flame_shape := enemy.get_node("FlamePivot/FlameOrigin/FlameDamageArea/CollisionShape2D") as CollisionShape2D
 	var rectangle := flame_shape.shape as RectangleShape2D
-	check(is_equal_approx(rectangle.size.x, effective_range), "The flame collision length should match the wall-clamped reach.")
+	check(rectangle.size.x < effective_range, "The flame collision should start shorter than its wall-clamped maximum reach.")
+	enemy.call("update_flame_damage_reach", 10.0)
+	check(is_equal_approx(rectangle.size.x, effective_range), "The growing flame collision should stop at the wall-clamped reach.")
 	enemy.call("enter_cooldown")
 	await physics_frame
 	wall_body.queue_free()
@@ -256,6 +270,7 @@ func check_flame_wall_clamp_and_left_facing(test_root: Node2D, enemy: Variant, p
 	enemy.set("locked_fire_direction", -1)
 	enemy.call("enter_firing")
 	await physics_frame
+	enemy.call("update_flame_damage_reach", 10.0)
 	var pivot := enemy.get_node("FlamePivot") as Node2D
 	var flame_origin := enemy.get_node("FlamePivot/FlameOrigin") as Node2D
 	check(pivot.scale.x < 0.0, "A left-facing burst should mirror the entire flame pivot.")

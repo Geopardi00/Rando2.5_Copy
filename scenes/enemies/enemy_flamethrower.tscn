@@ -178,6 +178,7 @@ collision_layer = 4
 script = ExtResource("1_script")
 flame_range = 360.0
 flame_width = 16.0
+damage_interval = 0.15
 ground_fire_spawn_delay = 0.8
 ground_patch_duplicate_radius = 600.0
 max_ground_patches_per_burst = 2
@@ -265,7 +266,7 @@ position = Vector2(270, 0)
 target_position = Vector2(0, 72)
 
 [node name="DamageTickTimer" type="Timer" parent="." unique_id=618540057]
-wait_time = 0.8
+wait_time = 0.15
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=1923613399]
 stream = ExtResource("3_hit_sound")
