@@ -16,7 +16,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1wo3g"]
 shader = ExtResource("2_kinmo")
-shader_parameter/radius = 0.0
+shader_parameter/radius = 0.1090000051775
 shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/width = 0.007000000332500001
 shader_parameter/strength = 0.02000000095
@@ -84,6 +84,7 @@ script = ExtResource("1_script")
 flash_on_duration = 0.18
 flash_off_duration = 0.18
 warning_color = Color(0.7695717, 0, 0.14274472, 1)
+warning_white_color = Color(1.9107511, 1.9107512, 1.9107511, 1)
 explosion_radius = 78.0
 shockwave_material = SubResource("ShaderMaterial_1wo3g")
 shockwave_strength = 0.015

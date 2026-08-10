@@ -484,7 +484,7 @@ shader_parameter/tint_strength = 0.6310000299725
 shader_parameter/shimmer_strength = 0.1030000048925
 shader_parameter/shimmer_frequency = 6.7430002727925
 shader_parameter/shimmer_speed = 3.278000155705
-shader_parameter/wobble_strength = 0.8370000397575
+shader_parameter/wobble_strength = 2.6970001281075
 shader_parameter/wobble_frequency = 0.07100000302324
 shader_parameter/wobble_speed = 2.1790001035025
 
