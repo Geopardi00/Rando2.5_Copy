@@ -16,7 +16,14 @@ amplitude = 4.0
 frequency = 8.0
 positional_multiplier_x = 0.35
 
-[node name="CameraRig" type="Node" unique_id=520503879]
+[sub_resource type="Resource" id="Resource_gate_shake"]
+resource_local_to_scene = true
+script = ExtResource("6_shake_noise")
+amplitude = 3.5
+frequency = 12.0
+positional_multiplier_x = 0.45
+
+[node name="CameraRig" type="Node" unique_id=520503879 groups=["camera_rig"]]
 script = ExtResource("1_5u8vw")
 landing_shake_amplitude = 18.1
 landing_shake_frequency = 6.4
@@ -54,4 +61,11 @@ script = ExtResource("5_shake_emitter")
 noise = SubResource("Resource_landing_shake")
 duration = 0.145
 decay_time = 0.12
+metadata/_custom_type_script = "uid://bhd4nuiu23e7l"
+
+[node name="GateShakeEmitter" type="Node2D" parent="."]
+script = ExtResource("5_shake_emitter")
+noise = SubResource("Resource_gate_shake")
+duration = 1.0
+decay_time = 0.2
 metadata/_custom_type_script = "uid://bhd4nuiu23e7l"

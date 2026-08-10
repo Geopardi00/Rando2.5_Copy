@@ -59,8 +59,9 @@ func check_scene_contract(gate: Variant) -> void:
 	var gate_body := gate.get_node("GateAssembly/MovingGate/GateBody") as StaticBody2D
 	var lever_area := gate.get_node("LeverHitArea") as Area2D
 	var clip_guide := gate.get_node("GateAssembly/ClipLine/EditorGuide") as Line2D
-	check(moving_gate.z_index < (gate.get_node("GateAssembly/GateRight") as Sprite2D).z_index, "Moving gate should render behind GateRight.")
-	check(moving_gate.z_index < (gate.get_node("GateAssembly/GateLeft") as Sprite2D).z_index, "Moving gate should render behind GateLeft.")
+	var moving_gate_art_z := moving_gate.z_index + gate_sprite.z_index
+	check(moving_gate_art_z <= (gate.get_node("GateAssembly/GateRight") as Sprite2D).z_index, "Moving gate should render behind GateRight.")
+	check(moving_gate_art_z <= (gate.get_node("GateAssembly/GateLeft") as Sprite2D).z_index, "Moving gate should render behind GateLeft.")
 	check(gate_body.collision_layer == 1 and gate_body.collision_mask == 2, "Closed gate should be World collision that blocks the player.")
 	check(lever_area.collision_layer == 16 and lever_area.collision_mask == 0, "Lever should occupy layer 5 only for slap overlap.")
 	check(lever_area.is_in_group("slap_interactable"), "Lever hit area should use the generic slap-interactable group.")
@@ -70,6 +71,10 @@ func check_scene_contract(gate: Variant) -> void:
 	var clip_material := gate_sprite.material as ShaderMaterial
 	check(clip_material != null and clip_material.get_shader_parameter(&"clip_uv_y") != null, "Moving gate should have an adjustable vertical clip shader.")
 	check(gate.has_signal(&"lever_activated") and gate.has_signal(&"opening_started") and gate.has_signal(&"opened"), "Reusable gate should publish its activation lifecycle.")
+	check(bool(gate.get("camera_effect_enabled")), "Gate camera feedback should be enabled by default.")
+	check(float(gate.get("camera_shake_amplitude")) > 0.0, "Gate should expose an adjustable camera shake amplitude.")
+	check(float(gate.get("camera_shake_duration")) == 0.0, "Gate shake should follow the authored opening duration by default.")
+	check(float(gate.get("camera_zoom_multiplier")) > 1.0, "Gate should expose a subtle camera zoom multiplier.")
 
 
 func check_clip_progression(gate: Variant) -> void:

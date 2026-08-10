@@ -15,9 +15,14 @@ extends Node
 
 @onready var phantom_camera_2d: Node2D = $PhantomCamera2D
 @onready var landing_shake_emitter: Node2D = $LandingShakeEmitter
+@onready var gate_shake_emitter: Node2D = $GateShakeEmitter
+
+var authored_zoom: Vector2 = Vector2.ONE
+var gate_zoom_tween: Tween
 
 
 func _ready() -> void:
+	authored_zoom = phantom_camera_2d.get("zoom")
 	_configure_landing_shake()
 	_bind_follow_target.call_deferred()
 
@@ -64,3 +69,48 @@ func _configure_landing_shake() -> void:
 func _on_follow_target_hard_landed() -> void:
 	if landing_shake_enabled and landing_shake_emitter.has_method("emit"):
 		landing_shake_emitter.call("emit")
+
+
+func play_gate_opening_effect(
+	duration: float,
+	shake_amplitude: float,
+	shake_frequency: float,
+	zoom_multiplier: float,
+	zoom_in_duration: float,
+	zoom_out_duration: float
+) -> void:
+	_configure_gate_shake(duration, shake_amplitude, shake_frequency)
+	if shake_amplitude > 0.0 and gate_shake_emitter.has_method("emit"):
+		gate_shake_emitter.call("emit")
+
+	if gate_zoom_tween != null and gate_zoom_tween.is_valid():
+		gate_zoom_tween.kill()
+	phantom_camera_2d.set("zoom", authored_zoom)
+
+	var zoom_in_time := maxf(zoom_in_duration, 0.01)
+	var zoom_out_time := maxf(zoom_out_duration, 0.01)
+	var hold_time := maxf(duration - zoom_in_time - zoom_out_time, 0.0)
+	var target_zoom := authored_zoom * maxf(zoom_multiplier, 1.0)
+	gate_zoom_tween = create_tween()
+	gate_zoom_tween.tween_property(phantom_camera_2d, "zoom", target_zoom, zoom_in_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if hold_time > 0.0:
+		gate_zoom_tween.tween_interval(hold_time)
+	gate_zoom_tween.tween_property(phantom_camera_2d, "zoom", authored_zoom, zoom_out_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+func _configure_gate_shake(duration: float, amplitude: float, frequency: float) -> void:
+	gate_shake_emitter.set("continuous", false)
+	gate_shake_emitter.set("growth_time", 0.04)
+	gate_shake_emitter.set("duration", maxf(duration - 0.2, 0.01))
+	gate_shake_emitter.set("decay_time", minf(0.2, maxf(duration * 0.35, 0.01)))
+
+	var noise := gate_shake_emitter.get("noise") as Resource
+	if noise == null:
+		push_warning("CameraRig gate shake emitter has no noise resource.")
+		return
+	noise.set("amplitude", maxf(amplitude, 0.0))
+	noise.set("frequency", maxf(frequency, 0.0))
+	noise.set("positional_noise", true)
+	noise.set("rotational_noise", false)
+	noise.set("positional_multiplier_x", 0.45)
+	noise.set("positional_multiplier_y", 1.0)

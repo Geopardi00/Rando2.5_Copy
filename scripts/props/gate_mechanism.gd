@@ -16,6 +16,15 @@ signal opened
 @export var lever_active_angle_degrees: float = 45.0
 @export var lever_animation_duration: float = 0.25
 
+@export_group("Camera Effect")
+@export var camera_effect_enabled: bool = true
+@export_range(0.0, 20.0, 0.1) var camera_shake_amplitude: float = 3.5
+@export_range(0.0, 30.0, 0.1) var camera_shake_frequency: float = 12.0
+@export_range(0.0, 5.0, 0.05, "suffix:s") var camera_shake_duration: float = 0.0 ## Zero matches the gate opening duration.
+@export_range(1.0, 1.3, 0.005) var camera_zoom_multiplier: float = 1.06
+@export_range(0.01, 2.0, 0.01, "suffix:s") var camera_zoom_in_duration: float = 0.18
+@export_range(0.01, 2.0, 0.01, "suffix:s") var camera_zoom_out_duration: float = 0.35
+
 @onready var gate_assembly: Node2D = $GateAssembly
 @onready var moving_gate: Node2D = $GateAssembly/MovingGate
 @onready var gate_sprite: Sprite2D = $GateAssembly/MovingGate/Gate
@@ -74,6 +83,7 @@ func open_gate(immediate: bool = false) -> void:
 	_disable_lever_interaction()
 	is_opening = true
 	opening_started.emit()
+	_trigger_camera_effect()
 
 	var target_rotation := closed_lever_rotation + deg_to_rad(lever_active_angle_degrees)
 	if immediate or opening_duration <= 0.0:
@@ -118,6 +128,24 @@ func _disable_lever_interaction() -> void:
 	lever_hit_area.collision_layer = 0
 	lever_hit_area.monitorable = false
 	lever_hit_shape.set_deferred("disabled", true)
+
+
+func _trigger_camera_effect() -> void:
+	if not camera_effect_enabled:
+		return
+	var camera_rig := get_tree().get_first_node_in_group(&"camera_rig")
+	if camera_rig == null or not camera_rig.has_method("play_gate_opening_effect"):
+		return
+	var effect_duration := camera_shake_duration if camera_shake_duration > 0.0 else opening_duration
+	camera_rig.call(
+		"play_gate_opening_effect",
+		effect_duration,
+		camera_shake_amplitude,
+		camera_shake_frequency,
+		camera_zoom_multiplier,
+		camera_zoom_in_duration,
+		camera_zoom_out_duration
+	)
 
 
 func _finish_opening() -> void:

@@ -10,7 +10,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gate_clip"]
 resource_local_to_scene = true
 shader = ExtResource("2_clip")
-shader_parameter/clip_uv_y = 0.2265625
+shader_parameter/clip_uv_y = 0.19726563
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 resource_local_to_scene = true
@@ -22,6 +22,7 @@ size = Vector2(52, 38)
 
 [node name="Gates" type="Node2D" unique_id=1929275249]
 script = ExtResource("1_script")
+opening_duration = 3.5
 
 [node name="GateAssembly" type="Node2D" parent="." unique_id=1584510027]
 scale = Vector2(0.17, 0.18)
@@ -30,6 +31,7 @@ scale = Vector2(0.17, 0.18)
 z_index = 1
 
 [node name="Gate" type="Sprite2D" parent="GateAssembly/MovingGate" unique_id=1642984440]
+z_index = -1
 material = SubResource("ShaderMaterial_gate_clip")
 texture = ExtResource("5_gate")
 
@@ -41,7 +43,6 @@ position = Vector2(11.764705, 16.750006)
 shape = SubResource("RectangleShape2D_gate")
 
 [node name="GateLeft" type="Sprite2D" parent="GateAssembly" unique_id=2052390506]
-z_index = 2
 texture = ExtResource("3_left")
 
 [node name="GateRight" type="Sprite2D" parent="GateAssembly" unique_id=834391749]
@@ -49,10 +50,11 @@ z_index = 2
 texture = ExtResource("4_right")
 
 [node name="ClipLine" type="Node2D" parent="GateAssembly" unique_id=1199703347]
-position = Vector2(0, -140)
+position = Vector2(0, -155)
+rotation = -0.08552113
 
 [node name="EditorGuide" type="Line2D" parent="GateAssembly/ClipLine" unique_id=456784]
-points = PackedVector2Array(-358.82352, 6.6666718, 358.82352, -60)
+points = PackedVector2Array(-358.82352, 6.6666718, 364.70587, 6.6666718)
 width = 4.0
 default_color = Color(1, 0.15, 0.75, 0.9)
 

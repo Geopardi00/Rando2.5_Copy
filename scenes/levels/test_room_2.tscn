@@ -75,6 +75,7 @@
 [ext_resource type="Texture2D" uid="uid://bqamgnka1iu0e" path="res://art/level02/ver2.0/pipe01.png" id="53_ylovr"]
 [ext_resource type="Texture2D" uid="uid://dm7snr7yffnxj" path="res://art/level02/ver2.0/pipe02.png" id="54_grbw7"]
 [ext_resource type="PackedScene" uid="uid://c7tikl5ek55li" path="res://scenes/water/water_body_2d.tscn" id="56_mhych"]
+[ext_resource type="Shader" uid="uid://bt3vj6v5mkpty" path="res://shaders/gate_vertical_clip.gdshader" id="64_um5if"]
 [ext_resource type="PackedScene" uid="uid://bnvxfv8k2jjl7" path="res://scenes/props/gate_mechanism.tscn" id="77_gate_mechanism"]
 
 [sub_resource type="Environment" id="Environment_dd7cg"]
@@ -697,22 +698,35 @@ shader_parameter/wobble_speed = 2.8
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g84t8"]
 polygon = PackedVector2Array(-39, 23, 38, 23, 38, -19, -39, -19, -39, 23)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3oc8j"]
+resource_local_to_scene = true
+shader = ExtResource("64_um5if")
+shader_parameter/clip_uv_y = 0.1972656
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_51vvj"]
+resource_local_to_scene = true
+size = Vector2(70.588234, 333.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uukdy"]
+resource_local_to_scene = true
+size = Vector2(52, 38)
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dd7cg"]
 polygon = PackedVector2Array(3, 18, 1, 21, 4, 25, 7, 25, 10, 21, 7, 18)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_grbw7"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qf87o"]
 resource_local_to_scene = true
 size = Vector2(800, 360)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_um5if"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qtoku"]
 resource_local_to_scene = true
 size = Vector2(800, 360)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3oc8j"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qe3vf"]
 resource_local_to_scene = true
 size = Vector2(1800, 180)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_51vvj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s1kl3"]
 resource_local_to_scene = true
 size = Vector2(1800, 180)
 
@@ -780,7 +794,7 @@ tile_map_data = PackedByteArray("AAABAP//AAAAAAAAAAABAP7/AAAAAAAAAAACAP7/AAAAAAA
 tile_set = SubResource("TileSet_ya6n0")
 
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=373639691]
-position = Vector2(3850, -381)
+position = Vector2(417, -354)
 
 [node name="Goal" type="Area2D" parent="." unique_id=1193094583]
 position = Vector2(1441, 1419)
@@ -2228,6 +2242,18 @@ occluder = SubResource("OccluderPolygon2D_g84t8")
 [node name="PushableCrate02" parent="PushableProps" unique_id=893672911 instance=ExtResource("6_k553b")]
 position = Vector2(5577, 1153)
 
+[node name="Gates" parent="." unique_id=1437668018 instance=ExtResource("77_gate_mechanism")]
+position = Vector2(5626, -33)
+
+[node name="Gate" parent="Gates/GateAssembly/MovingGate" parent_id_path=PackedInt32Array(1437668018, 385417778) index="0" unique_id=1642984440]
+material = SubResource("ShaderMaterial_3oc8j")
+
+[node name="CollisionShape2D" parent="Gates/GateAssembly/MovingGate/GateBody" parent_id_path=PackedInt32Array(1437668018, 35328425) index="0" unique_id=1526730139]
+shape = SubResource("RectangleShape2D_51vvj")
+
+[node name="CollisionShape2D" parent="Gates/LeverHitArea" parent_id_path=PackedInt32Array(1437668018, 2050034254) index="0" unique_id=28822599]
+shape = SubResource("RectangleShape2D_uukdy")
+
 [node name="Player" parent="." unique_id=1487025887 groups=["player"] instance=ExtResource("2_pw5fa")]
 position = Vector2(506, -352)
 bullet_scene = ExtResource("5_7ptk6")
@@ -2249,7 +2275,6 @@ energy = 3.41
 shadow_enabled = true
 
 [node name="World" type="Node2D" parent="." unique_id=2019977510]
-visible = false
 
 [node name="ForegroundSoft" type="Parallax2D" parent="World" unique_id=1370545178]
 z_index = 8
@@ -2704,11 +2729,11 @@ ripple_maximum_height = 180.0
 
 [node name="CollisionShape2D" parent="WaterBodies/WaterBody2D/WaterArea" parent_id_path=PackedInt32Array(1721704375, 1003098927) index="0" unique_id=1994384253]
 position = Vector2(0, 180)
-shape = SubResource("RectangleShape2D_grbw7")
+shape = SubResource("RectangleShape2D_qf87o")
 
 [node name="CollisionShape2D" parent="WaterBodies/WaterBody2D/WaterHeadArea" parent_id_path=PackedInt32Array(1721704375, 65933640) index="0" unique_id=813532039]
 position = Vector2(0, 180)
-shape = SubResource("RectangleShape2D_um5if")
+shape = SubResource("RectangleShape2D_qtoku")
 
 [node name="WaterFill" parent="WaterBodies/WaterBody2D" index="2" unique_id=806794729]
 polygon = PackedVector2Array(-400, 0, -390.36145, 0, -380.7229, 0, -371.08435, 0, -361.44577, 0, -351.80722, 0, -342.16867, 0, -332.53012, 0, -322.89157, 0, -313.25302, 0, -303.61447, 0, -293.9759, 0, -284.33734, 0, -274.6988, 0, -265.06024, 0, -255.42169, 0, -245.78313, 0, -236.14458, 0, -226.50603, 0, -216.86748, 0, -207.22891, 0, -197.59036, 0, -187.95181, 0, -178.31325, 0, -168.6747, 0, -159.03615, 0, -149.39758, 0, -139.75903, 0, -130.12048, 0, -120.481926, 0, -110.843376, 0, -101.20482, 0, -91.56626, 0, -81.92771, 0, -72.289154, 0, -62.650604, 0, -53.012047, 0, -43.373493, 0, -33.73494, 0, -24.096386, 0, -14.457831, 0, -4.8192773, 0, 4.8192773, 0, 14.457831, 0, 24.096386, 0, 33.73494, 0, 43.373493, 0, 53.012047, 0, 62.650604, 0, 72.289154, 0, 81.92771, 0, 91.56626, 0, 101.20482, 0, 110.843376, 0, 120.481926, 0, 130.12048, 0, 139.75903, 0, 149.39758, 0, 159.03615, 0, 168.6747, 0, 178.31325, 0, 187.95181, 0, 197.59036, 0, 207.22891, 0, 216.86748, 0, 226.50603, 0, 236.14458, 0, 245.78313, 0, 255.42169, 0, 265.06024, 0, 274.6988, 0, 284.33734, 0, 293.9759, 0, 303.61447, 0, 313.25302, 0, 322.89157, 0, 332.53012, 0, 342.16867, 0, 351.80722, 0, 361.44577, 0, 371.08435, 0, 380.7229, 0, 390.36145, 0, 400, 0, 400, 360, -400, 360)
@@ -2739,11 +2764,11 @@ ripple_maximum_height = 180.0
 
 [node name="CollisionShape2D" parent="WaterBodies/WaterBody2D2/WaterArea" parent_id_path=PackedInt32Array(774745936, 1003098927) index="0" unique_id=1994384253]
 position = Vector2(0, 90)
-shape = SubResource("RectangleShape2D_3oc8j")
+shape = SubResource("RectangleShape2D_qe3vf")
 
 [node name="CollisionShape2D" parent="WaterBodies/WaterBody2D2/WaterHeadArea" parent_id_path=PackedInt32Array(774745936, 65933640) index="0" unique_id=813532039]
 position = Vector2(0, 90)
-shape = SubResource("RectangleShape2D_51vvj")
+shape = SubResource("RectangleShape2D_s1kl3")
 
 [node name="WaterFill" parent="WaterBodies/WaterBody2D2" index="2" unique_id=806794729]
 polygon = PackedVector2Array(-900, 0, -890.3743, 0, -880.74866, 0, -871.123, 0, -861.4973, 0, -851.87164, 0, -842.246, 0, -832.6203, 0, -822.9946, 0, -813.36896, 0, -803.7433, 0, -794.1177, 0, -784.492, 0, -774.86633, 0, -765.24066, 0, -755.615, 0, -745.9893, 0, -736.36365, 0, -726.738, 0, -717.1123, 0, -707.48663, 0, -697.86096, 0, -688.2353, 0, -678.6096, 0, -668.98395, 0, -659.3583, 0, -649.7326, 0, -640.10693, 0, -630.48126, 0, -620.8556, 0, -611.2299, 0, -601.60425, 0, -591.97864, 0, -582.35297, 0, -572.7273, 0, -563.1016, 0, -553.47595, 0, -543.8503, 0, -534.2246, 0, -524.59894, 0, -514.97327, 0, -505.3476, 0, -495.72192, 0, -486.09625, 0, -476.47058, 0, -466.8449, 0, -457.21924, 0, -447.5936, 0, -437.96793, 0, -428.34225, 0, -418.71658, 0, -409.0909, 0, -399.46524, 0, -389.83957, 0, -380.2139, 0, -370.58823, 0, -360.96255, 0, -351.33688, 0, -341.71124, 0, -332.08557, 0, -322.4599, 0, -312.83423, 0, -303.20856, 0, -293.5829, 0, -283.9572, 0, -274.33154, 0, -264.70587, 0, -255.08022, 0, -245.45454, 0, -235.82887, 0, -226.2032, 0, -216.57755, 0, -206.95187, 0, -197.3262, 0, -187.70053, 0, -178.07486, 0, -168.4492, 0, -158.82353, 0, -149.19786, 0, -139.57219, 0, -129.94652, 0, -120.320854, 0, -110.69519, 0, -101.06952, 0, -91.44385, 0, -81.818184, 0, -72.19251, 0, -62.566845, 0, -52.941177, 0, -43.31551, 0, -33.68984, 0, -24.06417, 0, -14.438502, 0, -4.8128343, 0, 4.8128343, 0, 14.438502, 0, 24.06417, 0, 33.68984, 0, 43.31551, 0, 52.941177, 0, 62.566845, 0, 72.19251, 0, 81.818184, 0, 91.44385, 0, 101.06952, 0, 110.69519, 0, 120.320854, 0, 129.94652, 0, 139.57219, 0, 149.19786, 0, 158.82353, 0, 168.4492, 0, 178.07486, 0, 187.70053, 0, 197.3262, 0, 206.95187, 0, 216.57755, 0, 226.2032, 0, 235.82887, 0, 245.45454, 0, 255.08022, 0, 264.70587, 0, 274.33154, 0, 283.9572, 0, 293.5829, 0, 303.20856, 0, 312.83423, 0, 322.4599, 0, 332.08557, 0, 341.71124, 0, 351.33688, 0, 360.96255, 0, 370.58823, 0, 380.2139, 0, 389.83957, 0, 399.46524, 0, 409.0909, 0, 418.71658, 0, 428.34225, 0, 437.96793, 0, 447.5936, 0, 457.21924, 0, 466.8449, 0, 476.47058, 0, 486.09625, 0, 495.72192, 0, 505.3476, 0, 514.97327, 0, 524.59894, 0, 534.2246, 0, 543.8503, 0, 553.47595, 0, 563.1016, 0, 572.7273, 0, 582.35297, 0, 591.97864, 0, 601.60425, 0, 611.2299, 0, 620.8556, 0, 630.48126, 0, 640.10693, 0, 649.7326, 0, 659.3583, 0, 668.98395, 0, 678.6096, 0, 688.2353, 0, 697.86096, 0, 707.48663, 0, 717.1123, 0, 726.738, 0, 736.36365, 0, 745.9893, 0, 755.615, 0, 765.24066, 0, 774.86633, 0, 784.492, 0, 794.1177, 0, 803.7433, 0, 813.36896, 0, 822.9946, 0, 832.6203, 0, 842.246, 0, 851.87164, 0, 861.4973, 0, 871.123, 0, 880.74866, 0, 890.3743, 0, 900, 0, 900, 180, -900, 180)
@@ -2772,8 +2797,6 @@ occluder = SubResource("OccluderPolygon2D_um5if")
 position = Vector2(2572, -164)
 occluder = SubResource("OccluderPolygon2D_3oc8j")
 
-[node name="Gates" parent="." instance=ExtResource("77_gate_mechanism")]
-position = Vector2(5626, -33)
-
+[editable path="Gates"]
 [editable path="WaterBodies/WaterBody2D"]
 [editable path="WaterBodies/WaterBody2D2"]
