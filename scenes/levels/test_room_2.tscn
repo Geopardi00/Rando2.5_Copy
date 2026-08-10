@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b0ka34mljyuk6" path="res://scripts/props/stone.tscn" id="6_k553b"]
 [ext_resource type="Texture2D" uid="uid://do8qbcy4nc10v" path="res://art/level02/ver2.0/platform03.png" id="7_2re1w"]
 [ext_resource type="PackedScene" uid="uid://4nug12t66own" path="res://scenes/enemies/enemy_flamethrower.tscn" id="7_trw33"]
+[ext_resource type="PackedScene" path="res://scenes/Hazards/underwater_mine.tscn" id="7_underwater_mine"]
 [ext_resource type="Texture2D" uid="uid://bv3c8xaii8qr8" path="res://art/level02/ver2.0/platform09.png" id="8_ywt2b"]
 [ext_resource type="Texture2D" uid="uid://snecux62dsto" path="res://art/level02/ver2.0/platform07.png" id="9_3qhov"]
 [ext_resource type="Texture2D" uid="uid://cpgshgvf5jybe" path="res://art/level02/ver2.0/Stone08.png" id="9_pdtp8"]
@@ -46,7 +47,6 @@
 [ext_resource type="Texture2D" uid="uid://diqke8fvpp7hb" path="res://art/level02/ver2.0/animatedsprites/frame0004.png" id="34_28gp1"]
 [ext_resource type="Texture2D" uid="uid://c4gynx3sgqste" path="res://art/level02/ver2.0/animatedsprites/frame0005.png" id="35_w883a"]
 [ext_resource type="Texture2D" uid="uid://d108du86rjdhd" path="res://art/level02/ver2.0/brokenbox.png" id="36_mhych"]
-[ext_resource type="Texture2D" uid="uid://dpu1i3llqnje" path="res://art/level02/ver2.0/mine.png" id="37_28gp1"]
 [ext_resource type="Texture2D" uid="uid://deyjvt3fgjpml" path="res://art/level02/ver2.0/animatedsprites/coral0000.png" id="38_k2bnk"]
 [ext_resource type="PackedScene" uid="uid://cgmxhkl5lqc0c" path="res://scenes/enemies/drone_enemy.tscn" id="39_28gp1"]
 [ext_resource type="Texture2D" uid="uid://bcdp2dapkm2e2" path="res://art/level02/ver2.0/animatedsprites/coral0001.png" id="39_xmqcf"]
@@ -75,15 +75,7 @@
 [ext_resource type="Texture2D" uid="uid://cgkgvp46nh5xs" path="res://art/level02/ver2.0/animatedsprites/shell0004.png" id="52_3oc8j"]
 [ext_resource type="Texture2D" uid="uid://bqamgnka1iu0e" path="res://art/level02/ver2.0/pipe01.png" id="53_ylovr"]
 [ext_resource type="Texture2D" uid="uid://dm7snr7yffnxj" path="res://art/level02/ver2.0/pipe02.png" id="54_grbw7"]
-[ext_resource type="Texture2D" uid="uid://dayrws7v2hhtt" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0000.png" id="55_s1kl3"]
-[ext_resource type="Texture2D" uid="uid://bgjwtqskdxfqn" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0001.png" id="56_hcodc"]
 [ext_resource type="PackedScene" uid="uid://c7tikl5ek55li" path="res://scenes/water/water_body_2d.tscn" id="56_mhych"]
-[ext_resource type="Texture2D" uid="uid://deti1ns3bvo45" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0002.png" id="57_khgfn"]
-[ext_resource type="Texture2D" uid="uid://cgst7oxopq16h" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0003.png" id="58_mxynm"]
-[ext_resource type="Texture2D" uid="uid://blpu4grve8asi" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0004.png" id="59_5dja0"]
-[ext_resource type="Texture2D" uid="uid://b7tvr54dqnh5s" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0005.png" id="60_ichaf"]
-[ext_resource type="Texture2D" uid="uid://dltt2i2ejnei5" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0006.png" id="61_ekgnv"]
-[ext_resource type="Texture2D" uid="uid://byt8cudls5q16" path="res://art/level02/ver2.0/animatedsprites/underwaterexplosion0007.png" id="62_7w7s7"]
 
 [sub_resource type="Environment" id="Environment_dd7cg"]
 background_mode = 3
@@ -593,17 +585,6 @@ shader_parameter/wobble_strength = 0.6470000307325
 shader_parameter/wobble_frequency = 0.05000000202574
 shader_parameter/wobble_speed = 1.7350000824125
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_28gp1"]
-shader = ExtResource("27_05g6j")
-shader_parameter/underwater_tint = Color(0.72345245, 0.24666178, 0.15700886, 1)
-shader_parameter/tint_strength = 0.6490000308275
-shader_parameter/shimmer_strength = 0.14800000703
-shader_parameter/shimmer_frequency = 10.674000459515
-shader_parameter/shimmer_speed = 2.6970001281075
-shader_parameter/wobble_strength = 1.7290000821275
-shader_parameter/wobble_frequency = 0.02200000069574
-shader_parameter/wobble_speed = 1.7150000814625002
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_51vvj"]
 shader = ExtResource("27_05g6j")
 shader_parameter/underwater_tint = Color(0.53, 0.82, 0.95, 1)
@@ -712,38 +693,6 @@ shader_parameter/shimmer_speed = 3.0850001465375
 shader_parameter/wobble_strength = 0.0
 shader_parameter/wobble_frequency = 0.035
 shader_parameter/wobble_speed = 2.8
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_gkyw0"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("55_s1kl3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("56_hcodc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("57_khgfn")
-}, {
-"duration": 1.0,
-"texture": ExtResource("58_mxynm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("59_5dja0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("60_ichaf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("61_ekgnv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("62_7w7s7")
-}],
-"loop": true,
-"name": &"default",
-"speed": 19.0
-}]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3oc8j"]
 shader = ExtResource("27_05g6j")
@@ -2182,25 +2131,16 @@ position = Vector2(4889, -16)
 scale = Vector2(0.24, 0.24)
 texture = ExtResource("27_urdbc")
 
-[node name="Mine" type="Sprite2D" parent="UnderwaterProps" unique_id=1749747773]
-material = SubResource("ShaderMaterial_28gp1")
+[node name="UnderwaterMine" parent="UnderwaterProps" instance=ExtResource("7_underwater_mine")]
 position = Vector2(4876, -48)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("37_28gp1")
 
-[node name="Mine3" type="Sprite2D" parent="UnderwaterProps" unique_id=1428751211]
-material = SubResource("ShaderMaterial_28gp1")
+[node name="UnderwaterMine3" parent="UnderwaterProps" instance=ExtResource("7_underwater_mine")]
 position = Vector2(5087, -46)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("37_28gp1")
 
-[node name="Mine2" type="Sprite2D" parent="UnderwaterProps" unique_id=430643070]
-material = SubResource("ShaderMaterial_28gp1")
+[node name="UnderwaterMine2" parent="UnderwaterProps" instance=ExtResource("7_underwater_mine")]
 position = Vector2(4986, -12)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("37_28gp1")
-flip_h = true
-flip_v = true
+mine_flip_h = true
+mine_flip_v = true
 
 [node name="Coral01" type="AnimatedSprite2D" parent="UnderwaterProps" unique_id=974574423]
 material = SubResource("ShaderMaterial_51vvj")
@@ -2249,13 +2189,6 @@ rotation = 0.17278759
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("54_grbw7")
 flip_h = true
-
-[node name="Explsoion01" type="AnimatedSprite2D" parent="UnderwaterProps" unique_id=63949823]
-position = Vector2(4877, -39)
-scale = Vector2(0.4, 0.4)
-sprite_frames = SubResource("SpriteFrames_gkyw0")
-autoplay = "default"
-frame_progress = 0.053121798
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1414294706]
 
