@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bnvxfv8k2jjl7"]
 
-[ext_resource type="Script" path="res://scripts/props/gate_mechanism.gd" id="1_script"]
-[ext_resource type="Shader" path="res://shaders/gate_vertical_clip.gdshader" id="2_clip"]
+[ext_resource type="Script" uid="uid://d3njshlspigpn" path="res://scripts/props/gate_mechanism.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://bt3vj6v5mkpty" path="res://shaders/gate_vertical_clip.gdshader" id="2_clip"]
 [ext_resource type="Texture2D" uid="uid://bxa8tcof5e1yy" path="res://art/props/gate/gateleft.png" id="3_left"]
 [ext_resource type="Texture2D" uid="uid://bnp8fetqbdth7" path="res://art/props/gate/gateright.png" id="4_right"]
 [ext_resource type="Texture2D" uid="uid://bf2a2vba46axp" path="res://art/props/gate/gate.png" id="5_gate"]
@@ -23,6 +23,8 @@ size = Vector2(52, 38)
 [node name="Gates" type="Node2D" unique_id=1929275249]
 script = ExtResource("1_script")
 opening_duration = 3.5
+camera_shake_amplitude = 5.6
+camera_shake_frequency = 6.7
 
 [node name="GateAssembly" type="Node2D" parent="." unique_id=1584510027]
 scale = Vector2(0.17, 0.18)
