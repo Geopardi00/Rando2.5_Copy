@@ -871,7 +871,7 @@ shader_parameter/wobble_speed = 2.8
 size = Vector2(33, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5dja0"]
-size = Vector2(23, 19)
+size = Vector2(23, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ichaf"]
 size = Vector2(31, 5)
@@ -2536,7 +2536,7 @@ shape = SubResource("RectangleShape2D_5dja0")
 position = Vector2(6304, -10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sewers/RightCollision3" unique_id=958496283]
-position = Vector2(49.5, 13.5)
+position = Vector2(49.5, 15)
 shape = SubResource("RectangleShape2D_5dja0")
 
 [node name="RightCollision4" type="StaticBody2D" parent="Sewers" unique_id=1046392749]
