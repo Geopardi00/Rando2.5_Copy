@@ -13,6 +13,7 @@ signal opened
 @export var opening_ease: Tween.EaseType = Tween.EASE_IN_OUT
 
 @export_group("Lever Feedback")
+@export var lever_activation_animation: StringName = &"default"
 @export var lever_active_angle_degrees: float = 45.0
 @export var lever_animation_duration: float = 0.25
 
@@ -33,6 +34,7 @@ signal opened
 @onready var clip_line: Node2D = $GateAssembly/ClipLine
 @onready var clip_guide: Line2D = $GateAssembly/ClipLine/EditorGuide
 @onready var lever_visual_pivot: Node2D = $LeverVisualPivot
+@onready var lever_animation: AnimatedSprite2D = get_node_or_null("LeverVisualPivot/AnimatedSprite2D") as AnimatedSprite2D
 @onready var lever_hit_area: Area2D = $LeverHitArea
 @onready var lever_hit_shape: CollisionShape2D = $LeverHitArea/CollisionShape2D
 
@@ -49,6 +51,7 @@ func _ready() -> void:
 	closed_gate_position = moving_gate.position
 	closed_lever_rotation = lever_visual_pivot.rotation
 	clip_guide.visible = Engine.is_editor_hint()
+	_reset_lever_animation()
 
 	if not Engine.is_editor_hint():
 		var authored_material := gate_sprite.material as ShaderMaterial
@@ -85,16 +88,19 @@ func open_gate(immediate: bool = false) -> void:
 	opening_started.emit()
 	_trigger_camera_effect()
 
+	var uses_animated_lever := _play_lever_animation(immediate)
 	var target_rotation := closed_lever_rotation + deg_to_rad(lever_active_angle_degrees)
 	if immediate or opening_duration <= 0.0:
-		lever_visual_pivot.rotation = target_rotation
+		if not uses_animated_lever:
+			lever_visual_pivot.rotation = target_rotation
 		_set_open_progress(1.0)
 		_finish_opening()
 		return
 
 	gate_tween = create_tween().set_parallel(true)
 	gate_tween.tween_method(_set_open_progress, open_progress, 1.0, opening_duration).set_trans(opening_transition).set_ease(opening_ease)
-	gate_tween.tween_property(lever_visual_pivot, "rotation", target_rotation, maxf(lever_animation_duration, 0.01)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if not uses_animated_lever:
+		gate_tween.tween_property(lever_visual_pivot, "rotation", target_rotation, maxf(lever_animation_duration, 0.01)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await gate_tween.finished
 	_finish_opening()
 
@@ -128,6 +134,33 @@ func _disable_lever_interaction() -> void:
 	lever_hit_area.collision_layer = 0
 	lever_hit_area.monitorable = false
 	lever_hit_shape.set_deferred("disabled", true)
+
+
+func _reset_lever_animation() -> void:
+	if lever_animation == null or lever_animation.sprite_frames == null:
+		return
+	if not lever_animation.sprite_frames.has_animation(lever_activation_animation):
+		return
+	lever_animation.stop()
+	lever_animation.animation = lever_activation_animation
+	lever_animation.frame = 0
+	lever_animation.frame_progress = 0.0
+
+
+func _play_lever_animation(immediate: bool) -> bool:
+	if lever_animation == null or lever_animation.sprite_frames == null:
+		return false
+	if not lever_animation.sprite_frames.has_animation(lever_activation_animation):
+		return false
+
+	lever_animation.animation = lever_activation_animation
+	if immediate:
+		lever_animation.stop()
+		lever_animation.frame = lever_animation.sprite_frames.get_frame_count(lever_activation_animation) - 1
+		lever_animation.frame_progress = 0.0
+	else:
+		lever_animation.play(lever_activation_animation)
+	return true
 
 
 func _trigger_camera_effect() -> void:

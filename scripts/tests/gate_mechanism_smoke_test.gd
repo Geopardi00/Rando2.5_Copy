@@ -58,6 +58,7 @@ func check_scene_contract(gate: Variant) -> void:
 	var gate_sprite := gate.get_node("GateAssembly/MovingGate/Gate") as Sprite2D
 	var gate_body := gate.get_node("GateAssembly/MovingGate/GateBody") as StaticBody2D
 	var lever_area := gate.get_node("LeverHitArea") as Area2D
+	var lever_animation := gate.get_node("LeverVisualPivot/AnimatedSprite2D") as AnimatedSprite2D
 	var clip_guide := gate.get_node("GateAssembly/ClipLine/EditorGuide") as Line2D
 	var moving_gate_art_z := moving_gate.z_index + gate_sprite.z_index
 	check(moving_gate_art_z <= (gate.get_node("GateAssembly/GateRight") as Sprite2D).z_index, "Moving gate should render behind GateRight.")
@@ -67,6 +68,9 @@ func check_scene_contract(gate: Variant) -> void:
 	check(lever_area.is_in_group("slap_interactable"), "Lever hit area should use the generic slap-interactable group.")
 	check(not lever_area.is_in_group("enemy_hurtbox"), "Lever should not masquerade as an enemy hurtbox.")
 	check(not lever_area.is_in_group("destroyable_prop_hurtbox"), "Machete logic should ignore the lever.")
+	check(lever_animation.sprite_frames.has_animation(&"default"), "Lever should provide its authored activation animation.")
+	check(not lever_animation.sprite_frames.get_animation_loop(&"default"), "Lever activation animation should play only once.")
+	check(lever_animation.frame == 0 and not lever_animation.is_playing(), "Lever animation should wait on its first frame before activation.")
 	check(not clip_guide.visible, "Clip guide should remain editor-only during gameplay.")
 	var clip_material := gate_sprite.material as ShaderMaterial
 	check(clip_material != null and clip_material.get_shader_parameter(&"clip_uv_y") != null, "Moving gate should have an adjustable vertical clip shader.")
@@ -119,6 +123,8 @@ func check_attack_filtering_and_opening(test_root: Node2D, gate: Variant, player
 	var slap_targets: Array[Node] = []
 	player.call("_on_slap_hitbox_area_entered", lever_area, slap_targets)
 	check(bool(gate.get("activated")) and bool(gate.get("is_opening")), "A slap should activate the lever and begin opening immediately.")
+	var lever_animation := gate.get_node("LeverVisualPivot/AnimatedSprite2D") as AnimatedSprite2D
+	check(lever_animation.is_playing(), "The first slap should start the lever animation.")
 	await create_timer(0.1).timeout
 	await physics_frame
 	check(bool(gate.call("is_gate_open")), "The gate should reach its permanent open state.")
@@ -126,12 +132,14 @@ func check_attack_filtering_and_opening(test_root: Node2D, gate: Variant, player
 	check((gate.get_node("GateAssembly/MovingGate/GateBody") as StaticBody2D).collision_layer == 0, "Fully open gate should stop blocking the player.")
 	check((gate.get_node("GateAssembly/MovingGate/GateBody/CollisionShape2D") as CollisionShape2D).disabled, "Fully open gate collision shape should be disabled.")
 	check(not (gate.get_node("GateAssembly/MovingGate/Gate") as Sprite2D).visible, "Fully clipped moving gate should be hidden after opening.")
-	var expected_rotation := deg_to_rad(float(gate.get("lever_active_angle_degrees")))
-	check(is_equal_approx((gate.get_node("LeverVisualPivot") as Node2D).rotation, expected_rotation), "Current lever sprite should rotate around its base into the active position.")
+	check(lever_animation.frame > 0, "Lever animation should advance after activation.")
+	check(is_zero_approx((gate.get_node("LeverVisualPivot") as Node2D).rotation), "Animated lever frames should replace the legacy pivot rotation.")
 	check(lever_signal_count[0] == 1 and opening_signal_count[0] == 1 and opened_signal_count[0] == 1, "One slap should emit each gate lifecycle signal exactly once.")
 
+	var frame_before_repeat := lever_animation.frame
 	gate.call("slapped")
 	await process_frame
+	check(lever_animation.frame >= frame_before_repeat, "Repeated slaps should not restart the lever animation.")
 	check(lever_signal_count[0] == 1 and opening_signal_count[0] == 1 and opened_signal_count[0] == 1, "Repeated slaps should not replay a one-shot gate.")
 	if is_instance_valid(bullet):
 		bullet.queue_free()
