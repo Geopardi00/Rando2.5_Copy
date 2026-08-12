@@ -57,6 +57,9 @@ const DAMAGE_SOURCE_GENERIC: StringName = &"generic"
 @export var melee_attack_duration: float = 0.32
 @export var melee_hitbox_start_time: float = 0.08
 @export var melee_hitbox_duration: float = 0.10
+@export var swim_melee_attack_duration: float = 0.625
+@export var swim_melee_hitbox_start_time: float = 0.20
+@export var swim_melee_hitbox_duration: float = 0.12
 
 @export_group("Hard Landing")
 @export var hard_landing_min_fall_speed: float = 520.0
@@ -117,6 +120,7 @@ var melee_attack_timer: float = 0.0
 var melee_ground_stop_timer: float = 0.0
 var melee_hitbox_active: bool = false
 var melee_started_on_floor: bool = false
+var melee_started_in_water: bool = false
 var melee_hit_targets: Array[Node] = []
 var drop_through_timer: float = 0.0
 var drop_through_floor_y: float = 0.0
@@ -567,10 +571,8 @@ func update_swimming(delta: float) -> void:
 	jump_buffer_timer = 0.0
 	max_fall_speed = 0.0
 
-	if Input.is_action_just_pressed("shoot"):
-		try_shoot()
-	if Input.is_action_just_pressed("slap"):
-		try_slap()
+	if Input.is_action_just_pressed("melee_attack"):
+		try_melee_attack()
 
 
 func try_capture_water_surface() -> bool:
@@ -970,7 +972,7 @@ func update_animation() -> void:
 
 
 func try_shoot() -> void:
-	if is_swatting or is_melee_attacking:
+	if is_swatting or is_melee_attacking or is_in_water():
 		return
 
 	if bullet_scene == null:
@@ -1019,7 +1021,7 @@ func add_ammo(amount: int) -> void:
 
 
 func try_slap() -> void:
-	if is_dead or is_swatting or is_melee_attacking or slap_cooldown_timer > 0.0:
+	if is_dead or is_swatting or is_melee_attacking or is_in_water() or slap_cooldown_timer > 0.0:
 		return
 
 	cancel_stealth()
@@ -1089,7 +1091,8 @@ func start_melee_attack() -> void:
 	is_melee_attacking = true
 	melee_attack_timer = 0.0
 	melee_hitbox_active = false
-	melee_started_on_floor = is_on_floor()
+	melee_started_in_water = is_in_water()
+	melee_started_on_floor = is_on_floor() and not melee_started_in_water
 	melee_hit_targets.clear()
 	update_melee_hitbox_geometry()
 
@@ -1109,13 +1112,16 @@ func update_melee_attack(delta: float) -> void:
 
 	melee_attack_timer += delta
 
-	var hitbox_end_time := melee_hitbox_start_time + melee_hitbox_duration
-	if not melee_hitbox_active and melee_attack_timer >= melee_hitbox_start_time and melee_attack_timer < hitbox_end_time:
+	var hitbox_start_time := swim_melee_hitbox_start_time if melee_started_in_water else melee_hitbox_start_time
+	var hitbox_duration := swim_melee_hitbox_duration if melee_started_in_water else melee_hitbox_duration
+	var attack_duration := swim_melee_attack_duration if melee_started_in_water else melee_attack_duration
+	var hitbox_end_time := hitbox_start_time + hitbox_duration
+	if not melee_hitbox_active and melee_attack_timer >= hitbox_start_time and melee_attack_timer < hitbox_end_time:
 		enable_melee_hitbox()
 	elif melee_hitbox_active and melee_attack_timer >= hitbox_end_time:
 		disable_melee_hitbox()
 
-	if melee_attack_timer >= melee_attack_duration:
+	if melee_attack_timer >= attack_duration:
 		finish_melee_attack()
 
 
@@ -1140,6 +1146,7 @@ func finish_melee_attack() -> void:
 	is_melee_attacking = false
 	melee_attack_timer = 0.0
 	melee_ground_stop_timer = 0.0
+	melee_started_in_water = false
 	melee_hit_targets.clear()
 
 
@@ -1148,6 +1155,7 @@ func cancel_melee_attack() -> void:
 	is_melee_attacking = false
 	melee_attack_timer = 0.0
 	melee_ground_stop_timer = 0.0
+	melee_started_in_water = false
 	melee_hit_targets.clear()
 
 
@@ -1199,6 +1207,9 @@ func find_melee_target(area: Area2D, is_destroyable_hurtbox: bool) -> Node:
 
 
 func play_melee_animation() -> void:
+	if melee_started_in_water and play_animation_if_available(&"swim_melee"):
+		return
+
 	if melee_started_on_floor:
 		if play_animation_if_available(&"melee_ground"):
 			return

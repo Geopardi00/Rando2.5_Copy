@@ -172,6 +172,21 @@
 [ext_resource type="Texture2D" uid="uid://q8jv6l1ckk5o" path="res://art/characters/animations/swim/frame0012.png" id="swim_12"]
 [ext_resource type="Texture2D" uid="uid://b7wsvikjsh5yr" path="res://art/characters/animations/swim/frame0013.png" id="swim_13"]
 [ext_resource type="Texture2D" uid="uid://qtipxdbrbb12" path="res://art/characters/animations/swim/frame0014.png" id="swim_14"]
+[ext_resource type="Texture2D" uid="uid://dx3cw0jqjui8w" path="res://art/characters/animations/swim_melee/frame0000.png" id="swim_melee_00"]
+[ext_resource type="Texture2D" uid="uid://px28g1bt466a" path="res://art/characters/animations/swim_melee/frame0001.png" id="swim_melee_01"]
+[ext_resource type="Texture2D" uid="uid://dmj7k65qvyng7" path="res://art/characters/animations/swim_melee/frame0002.png" id="swim_melee_02"]
+[ext_resource type="Texture2D" uid="uid://bdadypudsk35j" path="res://art/characters/animations/swim_melee/frame0003.png" id="swim_melee_03"]
+[ext_resource type="Texture2D" uid="uid://b23mm1fw48h6w" path="res://art/characters/animations/swim_melee/frame0004.png" id="swim_melee_04"]
+[ext_resource type="Texture2D" uid="uid://37xba5lc8nu1" path="res://art/characters/animations/swim_melee/frame0005.png" id="swim_melee_05"]
+[ext_resource type="Texture2D" uid="uid://dp6fsdampmdy0" path="res://art/characters/animations/swim_melee/frame0006.png" id="swim_melee_06"]
+[ext_resource type="Texture2D" uid="uid://dviedueunnomo" path="res://art/characters/animations/swim_melee/frame0007.png" id="swim_melee_07"]
+[ext_resource type="Texture2D" uid="uid://cg1p2o2wxon5a" path="res://art/characters/animations/swim_melee/frame0008.png" id="swim_melee_08"]
+[ext_resource type="Texture2D" uid="uid://dp2h028are274" path="res://art/characters/animations/swim_melee/frame0009.png" id="swim_melee_09"]
+[ext_resource type="Texture2D" uid="uid://wo82cydsbi17" path="res://art/characters/animations/swim_melee/frame0010.png" id="swim_melee_10"]
+[ext_resource type="Texture2D" uid="uid://ikex40ck4mw5" path="res://art/characters/animations/swim_melee/frame0011.png" id="swim_melee_11"]
+[ext_resource type="Texture2D" uid="uid://5gdp8ydmp3en" path="res://art/characters/animations/swim_melee/frame0012.png" id="swim_melee_12"]
+[ext_resource type="Texture2D" uid="uid://dfb8ssbmw8e5j" path="res://art/characters/animations/swim_melee/frame0013.png" id="swim_melee_13"]
+[ext_resource type="Texture2D" uid="uid://cqgl74xfo3y7v" path="res://art/characters/animations/swim_melee/frame0014.png" id="swim_melee_14"]
 [ext_resource type="Texture2D" uid="uid://nwaqi01lno4l" path="res://art/characters/animations/zipline/frame0000.png" id="zipline_00"]
 [ext_resource type="Texture2D" uid="uid://mcn6guo67sg" path="res://art/characters/animations/zipline/frame0001.png" id="zipline_01"]
 [ext_resource type="Texture2D" uid="uid://c5pokvbe7b355" path="res://art/characters/animations/zipline/frame0002.png" id="zipline_02"]
@@ -661,6 +676,56 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("swim_melee_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_09")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_12")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("swim_melee_14")
+}],
+"loop": false,
+"name": &"swim_melee",
+"speed": 32.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("74_vy876")
 }, {
 "duration": 1.0,
@@ -827,8 +892,8 @@ shape = SubResource("RectangleShape2D_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1001658057]
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_ioxgp")
-animation = &"landing"
-frame = 7
+animation = &"swim_melee"
+frame = 14
 frame_progress = 1.0
 
 [node name="StealthHighlight" type="AnimatedSprite2D" parent="AnimatedSprite2D" unique_id=223827841]
