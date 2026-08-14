@@ -2,8 +2,39 @@
 
 [ext_resource type="Script" uid="uid://cn5wnswb7nkoh" path="res://scripts/enemies/enemy_sentry_sniper.gd" id="1_0i3bv"]
 [ext_resource type="Texture2D" uid="uid://yd41en13whfp" path="res://art/enemies/animations/Sniper/sniper.png" id="2_0i3bv"]
+[ext_resource type="Texture2D" uid="uid://cvodol84wltc7" path="res://art/enemies/animations/Sniper/shoot/frame0000.png" id="3_jb8fo"]
 [ext_resource type="Texture2D" uid="uid://b2r5a5grqc058" path="res://art/vfx/light_stream4.png" id="3_qpir4"]
+[ext_resource type="Texture2D" uid="uid://de2n8g7mejd1q" path="res://art/enemies/animations/Sniper/shoot/frame0001.png" id="4_bxrsm"]
 [ext_resource type="Texture2D" uid="uid://cn0getqodjnp6" path="res://art/level03/watchtowerlight.png" id="4_qpir4"]
+[ext_resource type="Texture2D" uid="uid://bqbey152epi5h" path="res://art/enemies/animations/Sniper/shoot/frame0002.png" id="5_xywii"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2sq40"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0i3bv")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_jb8fo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bxrsm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xywii")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0i3bv")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 22.0
+}]
 
 [node name="EnemySentrySniper" type="Node2D" unique_id=1066812968]
 script = ExtResource("1_0i3bv")
@@ -21,10 +52,19 @@ player_detection_offsets = Array[Vector2]([Vector2(0, -16), Vector2(0, 8), Vecto
 bullet_speed = 1500.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=992719069]
+visible = false
 position = Vector2(0, -8)
 rotation = -0.25830874
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_0i3bv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1921426501]
+position = Vector2(0, -8)
+rotation = -0.25830874
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_2sq40")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="ShootPoint" type="Marker2D" parent="." unique_id=745651685]
 position = Vector2(-25, 6)

@@ -27,6 +27,7 @@ enum State { SCAN, ALERT, TRACK, HOLD }
 @onready var shoot_point: Marker2D = $ShootPoint
 @onready var vision_pivot: Node2D = $VisionPivot
 @onready var spotlight: PointLight2D = get_node_or_null("VisionPivot/Spotlight")
+@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
 @onready var fire_cooldown_timer: Timer = $FireCooldownTimer
 @onready var alert_sound: AudioStreamPlayer2D = get_node_or_null("AlertSound")
 @onready var shout_sound: AudioStreamPlayer2D = get_node_or_null("ShoutSound")
@@ -43,6 +44,9 @@ func _ready() -> void:
 	add_to_group("enemy")
 	if spotlight != null:
 		base_spotlight_energy = spotlight.energy
+	if animated_sprite != null:
+		animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
+		animated_sprite.play(&"idle")
 
 	vision_pivot.rotation = deg_to_rad(max_scan_angle_degrees)
 	fire_cooldown_timer.wait_time = fire_cooldown
@@ -223,6 +227,9 @@ func shoot_at_player() -> void:
 	if bullet_scene == null or not is_player_detectable():
 		return
 
+	if animated_sprite != null:
+		animated_sprite.play(&"shoot")
+
 	var bullet := bullet_scene.instantiate()
 	get_tree().current_scene.add_child(bullet)
 
@@ -243,6 +250,11 @@ func shoot_at_player() -> void:
 
 func _on_fire_cooldown_timeout() -> void:
 	pass
+
+
+func _on_animated_sprite_animation_finished() -> void:
+	if animated_sprite != null and animated_sprite.animation == &"shoot":
+		animated_sprite.play(&"idle")
 
 
 func is_player_detectable() -> bool:
