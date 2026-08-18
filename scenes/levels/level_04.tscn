@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://bdxmljs75qtyq"]
+
+[ext_resource type="PackedScene" uid="uid://cg4lleagqmgil" path="res://scenes/ui/game_ui.tscn" id="1_ypi4k"]
+[ext_resource type="Texture2D" uid="uid://ctkj2324i204o" path="res://art/level04/parallax/gameplay01.png" id="3_76vq8"]
+[ext_resource type="Texture2D" uid="uid://cm5trco7i74j8" path="res://art/level04/props/self01.png" id="3_a0uur"]
+[ext_resource type="PackedScene" uid="uid://ceifui4sii3jr" path="res://scenes/player/player.tscn" id="3_gkpor"]
+[ext_resource type="Texture2D" uid="uid://2qi7frctbpxi" path="res://art/level04/parallax/gameplay02.png" id="3_tdc43"]
+[ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="4_a0uur"]
+[ext_resource type="Shader" uid="uid://bs5uwl67c0isx" path="res://shaders/player_stealth_outline.gdshader" id="4_cw75u"]
+[ext_resource type="Texture2D" uid="uid://d0pxjaci8c55e" path="res://art/level04/props/self02.png" id="4_yy4na"]
+[ext_resource type="Texture2D" uid="uid://q8i7kspr6qos" path="res://art/level04/parallax/background.png" id="5_yy4na"]
+[ext_resource type="Texture2D" uid="uid://c7lx3a85t2n6t" path="res://art/level04/parallax/foregroundfloor.png" id="6_07dqf"]
+[ext_resource type="Texture2D" uid="uid://c7xsijf1cie8j" path="res://art/level04/props/truck01.png" id="9_07dqf"]
+[ext_resource type="Script" uid="uid://dimvdouy8g0sv" path="res://addons/phantom_camera/scripts/resources/phantom_camera_noise_2d.gd" id="9_tdc43"]
+[ext_resource type="Texture2D" uid="uid://rw12ry3idutv" path="res://art/level04/props/block01.png" id="9_yy4na"]
+
+[sub_resource type="Environment" id="Environment_76vq8"]
+glow_enabled = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tdc43"]
+size = Vector2(2349.75, 26)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gkpor"]
+resource_local_to_scene = true
+shader = ExtResource("4_cw75u")
+shader_parameter/outline_color_start = Color(0.07646953, 0.42688474, 0.3983916, 0.84705883)
+shader_parameter/outline_color_end = Color(0.08429777, 0.35527438, 0.26959315, 0.8156863)
+shader_parameter/outline_width = 6.5
+shader_parameter/color_cycle_seconds = 2.5
+shader_parameter/alpha_threshold = 0.05600000266
+
+[sub_resource type="Resource" id="Resource_03g8n"]
+resource_local_to_scene = true
+script = ExtResource("9_tdc43")
+amplitude = 3.5
+frequency = 12.0
+positional_multiplier_x = 0.45
+
+[node name="Level04" type="Node2D" unique_id=725205474]
+
+[node name="GameUI" parent="." unique_id=1670715133 instance=ExtResource("1_ypi4k")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1328368082]
+environment = SubResource("Environment_76vq8")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=723116107]
+position = Vector2(-5, -93)
+
+[node name="Platform01" type="Sprite2D" parent="Platforms" unique_id=317145179]
+position = Vector2(-2, 264)
+texture = ExtResource("3_76vq8")
+
+[node name="Platform02" type="Sprite2D" parent="Platforms" unique_id=1278570870]
+position = Vector2(636, 264)
+texture = ExtResource("3_76vq8")
+
+[node name="Platform03" type="Sprite2D" parent="Platforms" unique_id=608880668]
+position = Vector2(1266, 263)
+texture = ExtResource("3_tdc43")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Platforms" unique_id=1545220055]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D" unique_id=1773522877]
+position = Vector2(422.125, 213)
+shape = SubResource("RectangleShape2D_tdc43")
+
+[node name="Props" type="Node2D" parent="." unique_id=800178847]
+position = Vector2(9, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Props" unique_id=483183202]
+modulate = Color(0.59326357, 0.615992, 0.7236385, 1)
+position = Vector2(-53, -7)
+texture = ExtResource("3_a0uur")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Props" unique_id=1224887277]
+modulate = Color(0.51217645, 0.62743676, 0.67239344, 1)
+position = Vector2(122, 32)
+texture = ExtResource("4_yy4na")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1772321099]
+position = Vector2(-596, 102)
+
+[node name="Player" parent="." unique_id=1487025887 instance=ExtResource("3_gkpor")]
+
+[node name="StealthHighlight" parent="Player/AnimatedSprite2D" parent_id_path=PackedInt32Array(1487025887, 1001658057) index="0" unique_id=223827841]
+material = SubResource("ShaderMaterial_gkpor")
+
+[node name="Camera2D" parent="Player" index="3" unique_id=2029278347]
+visible = true
+zoom = Vector2(1, 1)
+
+[node name="CameraRig" parent="." unique_id=520503879 instance=ExtResource("4_a0uur")]
+
+[node name="Camera2D" parent="CameraRig" index="0" unique_id=2087987625]
+zoom = Vector2(1.4, 1.4)
+
+[node name="PhantomCamera2D" parent="CameraRig" index="1" unique_id=766862386]
+zoom = Vector2(1.4, 1.4)
+
+[node name="GateShakeEmitter" parent="CameraRig" index="3"]
+noise = SubResource("Resource_03g8n")
+
+[node name="World" type="Node2D" parent="." unique_id=240005102]
+
+[node name="BackgroundFar" type="Parallax2D" parent="World" unique_id=478711690]
+z_index = -8
+scroll_scale = Vector2(0.9, 1)
+scroll_offset = Vector2(-28, -84)
+repeat_size = Vector2(1920, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="World/BackgroundFar" unique_id=887786827]
+texture = ExtResource("5_yy4na")
+
+[node name="Sprite2D2" type="Sprite2D" parent="World/BackgroundFar" unique_id=1122999580]
+modulate = Color(0.44291076, 0.44291076, 0.44291073, 1)
+position = Vector2(389, 53)
+texture = ExtResource("4_yy4na")
+
+[node name="Sprite2D3" type="Sprite2D" parent="World/BackgroundFar" unique_id=325515378]
+modulate = Color(0.47902274, 0.57231563, 0.67049116, 1)
+position = Vector2(513, 91)
+rotation = 0.052359883
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("9_07dqf")
+
+[node name="BackgroundMid" type="Parallax2D" parent="World" unique_id=1058023522]
+z_index = -7
+scroll_scale = Vector2(0.93, 1)
+scroll_offset = Vector2(0, -10)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/BackgroundMid" unique_id=1256082055]
+modulate = Color(0.5211406, 0.5211406, 0.5211405, 1)
+position = Vector2(-74.999985, 13.999999)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_yy4na")
+
+[node name="BackgroundNear" type="Parallax2D" parent="World" unique_id=314845736]
+z_index = -6
+scroll_scale = Vector2(0.95, 1)
+scroll_offset = Vector2(-22, -23)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/BackgroundNear" unique_id=823934572]
+modulate = Color(0.5135456, 0.5419857, 0.5635112, 1)
+position = Vector2(-51.000008, 11.999998)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_a0uur")
+flip_h = true
+
+[node name="Sprite2D3" type="Sprite2D" parent="World/BackgroundNear" unique_id=1423616833]
+modulate = Color(0.5135456, 0.5419857, 0.5635112, 1)
+position = Vector2(436.99997, 13)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_a0uur")
+flip_h = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="World/BackgroundNear" unique_id=1273853582]
+modulate = Color(0.641934, 0.641934, 0.641934, 1)
+position = Vector2(188, 83)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_yy4na")
+
+[node name="ForegroundFar" type="Parallax2D" parent="World" unique_id=309867920]
+z_index = 6
+scroll_scale = Vector2(1.1, 1)
+scroll_offset = Vector2(-1922, -93)
+repeat_size = Vector2(1920, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="World/ForegroundFar" unique_id=52317890]
+texture = ExtResource("6_07dqf")
+offset = Vector2(0, -1)
+
+[editable path="Player"]
+[editable path="CameraRig"]

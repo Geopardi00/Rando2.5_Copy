@@ -3,6 +3,27 @@
 [ext_resource type="Script" uid="uid://dixoev14rc2cf" path="res://scripts/enemies/enemy.gd" id="1_8e3ao"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_fcftc"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_fcftc"]
+[ext_resource type="Texture2D" uid="uid://drcwjge8qay4m" path="res://art/enemies/animations/soldier2/melee/frame0000.png" id="4_wv2ah"]
+[ext_resource type="Texture2D" uid="uid://b8r4kl6dci06f" path="res://art/enemies/animations/soldier2/melee/frame0001.png" id="5_crryk"]
+[ext_resource type="Texture2D" uid="uid://cs80mr2nfecyq" path="res://art/enemies/animations/soldier2/melee/frame0002.png" id="6_whns1"]
+[ext_resource type="Texture2D" uid="uid://dxtjuqrd4cptl" path="res://art/enemies/animations/soldier2/melee/frame0003.png" id="7_nai4k"]
+[ext_resource type="Texture2D" uid="uid://bq72apyl0tpm8" path="res://art/enemies/animations/soldier2/melee/frame0004.png" id="8_uequj"]
+[ext_resource type="Texture2D" uid="uid://c1tnysikmps8p" path="res://art/enemies/animations/soldier2/melee/frame0005.png" id="9_il2t1"]
+[ext_resource type="Texture2D" uid="uid://chqgqnvcpw075" path="res://art/enemies/animations/soldier2/melee/frame0006.png" id="10_gjlvt"]
+[ext_resource type="Texture2D" uid="uid://c426w2w2gkigx" path="res://art/enemies/animations/soldier2/melee/frame0007.png" id="11_hlcki"]
+[ext_resource type="Texture2D" uid="uid://cnqx8l5ibpha3" path="res://art/enemies/animations/soldier2/melee/frame0008.png" id="12_0mj1o"]
+[ext_resource type="Texture2D" uid="uid://eteom6c2yqec" path="res://art/enemies/animations/soldier2/melee/frame0009.png" id="13_rvkh2"]
+[ext_resource type="Texture2D" uid="uid://bfpehfpr7x7xh" path="res://art/enemies/animations/soldier2/melee/frame0010.png" id="14_b0hgk"]
+[ext_resource type="Texture2D" uid="uid://djq5qfsgts1yv" path="res://art/enemies/animations/soldier2/melee/frame0011.png" id="15_bx18g"]
+[ext_resource type="Texture2D" uid="uid://x0jr0c0gaxif" path="res://art/enemies/animations/soldier2/melee/frame0012.png" id="16_13gim"]
+[ext_resource type="Texture2D" uid="uid://clnsj30xdm1vt" path="res://art/enemies/animations/soldier2/melee/frame0013.png" id="17_g6aog"]
+[ext_resource type="Texture2D" uid="uid://d02u1owgxyxbh" path="res://art/enemies/animations/soldier2/melee/frame0014.png" id="18_432g3"]
+[ext_resource type="Texture2D" uid="uid://b2ssthqd78bxf" path="res://art/enemies/animations/soldier2/melee/frame0015.png" id="19_lu5de"]
+[ext_resource type="Texture2D" uid="uid://dgqvgjlkx1jv5" path="res://art/enemies/animations/soldier2/melee/frame0016.png" id="20_qnxos"]
+[ext_resource type="Texture2D" uid="uid://c5jkpledscp05" path="res://art/enemies/animations/soldier2/melee/frame0017.png" id="21_hevyg"]
+[ext_resource type="Texture2D" uid="uid://bqe0jsryk5r8l" path="res://art/enemies/animations/soldier2/melee/frame0018.png" id="22_1koe2"]
+[ext_resource type="Texture2D" uid="uid://bio44u1sktl82" path="res://art/enemies/animations/soldier2/melee/frame0019.png" id="23_n2rgm"]
+[ext_resource type="Texture2D" uid="uid://cpweh5vynjuo" path="res://art/enemies/animations/soldier2/melee/frame0020.png" id="24_r1bjw"]
 [ext_resource type="Texture2D" uid="uid://1c7y1c7u7353" path="res://art/enemies/animations/soldier2/walk/frame0000.png" id="24_wv2ah"]
 [ext_resource type="Texture2D" uid="uid://chevj7hvp41np" path="res://art/enemies/animations/soldier2/walk/frame0001.png" id="25_crryk"]
 [ext_resource type="Texture2D" uid="uid://b3vje61rygl5m" path="res://art/enemies/animations/soldier2/walk/frame0002.png" id="26_whns1"]
@@ -42,6 +63,74 @@ animations = [{
 "loop": false,
 "name": &"head_turn",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 0.9,
+"texture": ExtResource("4_wv2ah")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_crryk")
+}, {
+"duration": 1.1,
+"texture": ExtResource("6_whns1")
+}, {
+"duration": 1.2,
+"texture": ExtResource("7_nai4k")
+}, {
+"duration": 1.2,
+"texture": ExtResource("8_uequj")
+}, {
+"duration": 1.2,
+"texture": ExtResource("9_il2t1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_gjlvt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_hlcki")
+}, {
+"duration": 0.8,
+"texture": ExtResource("12_0mj1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_rvkh2")
+}, {
+"duration": 0.6,
+"texture": ExtResource("14_b0hgk")
+}, {
+"duration": 0.5,
+"texture": ExtResource("15_bx18g")
+}, {
+"duration": 0.4,
+"texture": ExtResource("16_13gim")
+}, {
+"duration": 0.5,
+"texture": ExtResource("17_g6aog")
+}, {
+"duration": 0.5,
+"texture": ExtResource("18_432g3")
+}, {
+"duration": 0.7,
+"texture": ExtResource("19_lu5de")
+}, {
+"duration": 0.8,
+"texture": ExtResource("20_qnxos")
+}, {
+"duration": 0.9,
+"texture": ExtResource("21_hevyg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_1koe2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_n2rgm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_r1bjw")
+}],
+"loop": true,
+"name": &"melee",
+"speed": 28.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -134,8 +223,8 @@ material = SubResource("ShaderMaterial_lu5c6")
 position = Vector2(0, 6)
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_walk")
-animation = &"head_turn"
-frame_progress = 1.0
+animation = &"melee"
+frame_progress = 0.3466909
 flip_h = true
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=819948242 groups=["enemy_hurtbox"]]

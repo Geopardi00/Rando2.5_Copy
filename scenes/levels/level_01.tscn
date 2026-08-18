@@ -150,7 +150,7 @@ sources/0 = SubResource("TileSetAtlasSource_yj8ph")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lswbx"]
 size = Vector2(63, 61)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxe6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfhwr"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
@@ -183,17 +183,17 @@ hue_variation_min = -2.2351742e-08
 hue_variation_max = -2.2351742e-08
 anim_offset_max = 1.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxe6"]
+resource_local_to_scene = true
+shader = ExtResource("43_uuyc6")
+shader_parameter/flash_amount = 0.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_amtgl"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bevd5"]
-resource_local_to_scene = true
-shader = ExtResource("43_uuyc6")
-shader_parameter/flash_amount = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_70c2i"]
 resource_local_to_scene = true
 shader = ExtResource("43_uuyc6")
 shader_parameter/flash_amount = 0.0
@@ -1127,7 +1127,7 @@ texture = ExtResource("54_3jppf")
 position = Vector2(614, 258)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox05" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_wkxe6")
+material = SubResource("ShaderMaterial_bfhwr")
 position = Vector2(43, 75)
 scale = Vector2(0.2, 0.2)
 
@@ -1150,7 +1150,7 @@ position = Vector2(1985.0001, 239)
 scale = Vector2(1.2, 1.2)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox06" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_amtgl")
+material = SubResource("ShaderMaterial_wkxe6")
 position = Vector2(43, 75)
 scale = Vector2(0.2, 0.2)
 
@@ -1172,7 +1172,7 @@ process_material = SubResource("ParticleProcessMaterial_hit")
 position = Vector2(5214, 8)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableProp" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_bevd5")
+material = SubResource("ShaderMaterial_amtgl")
 
 [node name="PhysicalCollision" parent="DestroyableProps/DestroyableProp" index="1" unique_id=302057026]
 position = Vector2(3.5, 11.5)
@@ -1182,7 +1182,7 @@ position = Vector2(3311, 298)
 scale = Vector2(0.2, 0.2)
 
 [node name="Sprite2D" parent="DestroyableProps/DestroyableCrateBox07" index="0" unique_id=858243829]
-material = SubResource("ShaderMaterial_70c2i")
+material = SubResource("ShaderMaterial_bevd5")
 
 [node name="PhysicalCollision" parent="DestroyableProps/DestroyableCrateBox07" index="1" unique_id=302057026]
 position = Vector2(0, 25)

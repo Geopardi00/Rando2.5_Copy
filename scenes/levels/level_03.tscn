@@ -12,13 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://6faw201wnxh4" path="res://art/level03/mud_platform01.png" id="5_kapun"]
 [ext_resource type="Texture2D" uid="uid://p6osd558cybx" path="res://art/level03/mud_platform02.png" id="5_tipwo"]
 [ext_resource type="Texture2D" uid="uid://wcf5q1o2bgrr" path="res://art/level03/watchtower.png" id="5_watchtower"]
-[ext_resource type="Texture2D" uid="uid://b7nmvlow8lpri" path="res://art/vfx/light_stream3.png" id="6_8w8tq"]
-[ext_resource type="Script" uid="uid://cn5wnswb7nkoh" path="res://scripts/enemies/enemy_sentry_sniper.gd" id="6_sniper_script"]
 [ext_resource type="Texture2D" uid="uid://dnul8agn2ga4k" path="res://art/level03/mud_platform03.png" id="7_tipwo"]
 [ext_resource type="Texture2D" uid="uid://o3btl30gtaef" path="res://art/level03/mud_platform04.png" id="8_kapun"]
 [ext_resource type="Texture2D" uid="uid://dh20pju2r7g8e" path="res://art/level03/oilbarrel.png" id="9_1uqhn"]
 [ext_resource type="Texture2D" uid="uid://54iwwjded7ed" path="res://art/level01/ver2.0/poleshort.png" id="9_b7kj7"]
-[ext_resource type="Texture2D" uid="uid://cxqtyr0osq71f" path="res://art/enemies/Enemy2.png" id="9_sniper_sprite"]
 [ext_resource type="Texture2D" uid="uid://bg7vmefvqju3o" path="res://art/parallax/background_near.png" id="10_8w8tq"]
 [ext_resource type="Texture2D" uid="uid://dgvv6ipi6eif" path="res://art/props/rope02.png" id="10_x00nx"]
 [ext_resource type="Texture2D" uid="uid://b50aqbtaf4gn0" path="res://art/props/box01.png" id="10_yrube"]
@@ -60,12 +57,14 @@
 [ext_resource type="Texture2D" uid="uid://c8eymm3lvfin7" path="res://art/props/animations/waterfall/frame0001.png" id="43_ck4x5"]
 [ext_resource type="PackedScene" uid="uid://d3g1clqub8sis" path="res://scenes/props/zipline_2d.tscn" id="43_jy88k"]
 [ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="43_ka027"]
+[ext_resource type="PackedScene" uid="uid://cw8l3gp4uslbg" path="res://scenes/enemies/enemy_sentry_sniper.tscn" id="43_pdvk4"]
 [ext_resource type="PackedScene" uid="uid://c8hpa3dy0fosg" path="res://scenes/enemies/enemy_mosquito.tscn" id="43_v0by6"]
 [ext_resource type="PackedScene" uid="uid://dxau7e3ddsbqg" path="res://scenes/Non_lethal/mosquito_swarm.tscn" id="44_uqjib"]
 [ext_resource type="Texture2D" uid="uid://b37rsqdvtlhhv" path="res://art/props/animations/waterfall/frame0002.png" id="44_wqvu7"]
 [ext_resource type="Texture2D" uid="uid://c72521vcxoyj3" path="res://art/props/animations/waterfall/frame0003.png" id="45_31wr4"]
 [ext_resource type="Texture2D" uid="uid://j11nuohmqbsq" path="res://art/props/animations/waterfall/frame0004.png" id="46_5vlru"]
 [ext_resource type="Texture2D" uid="uid://chc1x226ouew8" path="res://art/props/animations/waterfall/frame0005.png" id="47_odj57"]
+[ext_resource type="Texture2D" uid="uid://bga1mjpo7r4fn" path="res://art/level03/watchtowervisualpart.png" id="47_ydp56"]
 [ext_resource type="Texture2D" uid="uid://bo2uvt0uqxs3f" path="res://art/props/animations/waterfall/frame0006.png" id="48_5x2cs"]
 [ext_resource type="Texture2D" uid="uid://c4yffiey00s3w" path="res://art/props/animations/waterfall/frame0007.png" id="49_dnaj0"]
 [ext_resource type="Texture2D" uid="uid://dqlcktv4xw6ot" path="res://art/props/animations/waterfall/frame0008.png" id="50_uq4pb"]
@@ -80,6 +79,7 @@
 [ext_resource type="Texture2D" uid="uid://bxly5c1wdhvq3" path="res://art/level01/ver2.0/foregroundplant01.png" id="54_a10ds"]
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="54_vsw2t"]
 [ext_resource type="Shader" uid="uid://cl61tsloa7ei0" path="res://shaders/foreground_wind.tres" id="56_66fwr"]
+[ext_resource type="Shader" uid="uid://bs5uwl67c0isx" path="res://shaders/player_stealth_outline.gdshader" id="56_xgl3s"]
 [ext_resource type="Texture2D" uid="uid://c10wgxk5bjuly" path="res://art/props/animations/waterfall/stonewall.png" id="57_31wr4"]
 [ext_resource type="Texture2D" uid="uid://cttfni15wqepf" path="res://art/props/animations/waterfall/stonewall03.png" id="57_odj57"]
 [ext_resource type="Texture2D" uid="uid://d0eb8h5wny1ec" path="res://art/props/animations/waterfall/stonewall02.png" id="58_5x2cs"]
@@ -245,6 +245,15 @@ polygon = PackedVector2Array(-132.85718, -65.714264, 90, -65.714264, 141.42847, 
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_py8xv"]
 size = Vector2(48, 33)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4wl77"]
+resource_local_to_scene = true
+shader = ExtResource("56_xgl3s")
+shader_parameter/outline_color_start = Color(0.07646953, 0.42688474, 0.3983916, 0.84705883)
+shader_parameter/outline_color_end = Color(0.08429777, 0.35527438, 0.26959315, 0.8156863)
+shader_parameter/outline_width = 6.5
+shader_parameter/color_cycle_seconds = 2.5
+shader_parameter/alpha_threshold = 0.05600000266
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qsts2"]
 polygon = PackedVector2Array(-4, 2, 2, 2, 4, 1, 4, -1, 0, -3, -3, -3, -5, 0)
@@ -1197,19 +1206,39 @@ position = Vector2(3814, 215)
 position = Vector2(1, 1.5)
 shape = SubResource("RectangleShape2D_py8xv")
 
-[node name="Watchtower" type="Sprite2D" parent="." unique_id=2109420169]
+[node name="Snipertowers" type="Node2D" parent="." unique_id=175064944]
+
+[node name="Watchtower" type="Sprite2D" parent="Snipertowers" unique_id=2109420169]
 z_index = -1
 position = Vector2(964.00006, 89)
 rotation = -0.015707964
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("5_watchtower")
 
-[node name="Watchtower2" type="Sprite2D" parent="." unique_id=1309991456]
+[node name="Watchtower2" type="Sprite2D" parent="Snipertowers" unique_id=1309991456]
 z_index = -1
 position = Vector2(2777, 87)
 rotation = -0.015707964
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("5_watchtower")
+
+[node name="EnemySentrySniper" parent="Snipertowers" unique_id=1066812968 instance=ExtResource("43_pdvk4")]
+position = Vector2(946, -27)
+
+[node name="Sprite2D" type="Sprite2D" parent="Snipertowers" unique_id=347268327]
+position = Vector2(962, -38)
+rotation = -0.015707964
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("47_ydp56")
+
+[node name="EnemySentrySniper2" parent="Snipertowers" unique_id=2129608701 instance=ExtResource("43_pdvk4")]
+position = Vector2(2758, -32)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Snipertowers" unique_id=745428585]
+position = Vector2(2775, -40.999996)
+rotation = -0.015707964
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("47_ydp56")
 
 [node name="Ziplines" type="Node2D" parent="." unique_id=740466148]
 
@@ -1292,102 +1321,15 @@ position = Vector2(366.00003, 66)
 [node name="EnemyMosquito3" parent="Enemies/MosquitoSwarm2" index="2" unique_id=853250256]
 position = Vector2(564, 26)
 
-[node name="EnemySentrySniper" type="Node2D" parent="." unique_id=185439143]
-position = Vector2(946, -27)
-script = ExtResource("6_sniper_script")
-min_vision_range = 380.0
-vision_range = 850.0
-cone_half_angle_degrees = 8.0
-min_scan_angle_degrees = 125.0
-max_scan_angle_degrees = 170.0
-scan_speed_degrees = 21.0
-alert_delay = 0.01
-fire_cooldown = 1.0
-hold_last_seen_time = 1.8
-player_aim_offset = Vector2(0, 15)
-player_detection_offsets = Array[Vector2]([Vector2(0, -16), Vector2(0, 8), Vector2(0, 24)])
-bullet_speed = 1500.0
-
-[node name="Sprite2D" type="Sprite2D" parent="EnemySentrySniper" unique_id=123011001]
-position = Vector2(0, -8)
-scale = Vector2(0.08, 0.08)
-texture = ExtResource("9_sniper_sprite")
-
-[node name="ShootPoint" type="Marker2D" parent="EnemySentrySniper" unique_id=195592615]
-position = Vector2(4, -13)
-
-[node name="VisionPivot" type="Node2D" parent="EnemySentrySniper" unique_id=824167460]
-position = Vector2(-13, -14)
-rotation = -0.773796
-
-[node name="VisionRay" type="RayCast2D" parent="EnemySentrySniper/VisionPivot" unique_id=701431480]
-position = Vector2(24, 21)
-enabled = false
-target_position = Vector2(-74, 0)
-
-[node name="Spotlight" type="PointLight2D" parent="EnemySentrySniper/VisionPivot" unique_id=1528459422]
-position = Vector2(-5.6400642, 1.4797499)
-rotation = -1.5692862
-scale = Vector2(-0.1836587, 3.6311138)
-color = Color(0.99999946, 0.9068846, 0.6475957, 1)
-energy = 1.44
-shadow_enabled = true
-texture = ExtResource("6_8w8tq")
-
-[node name="FireCooldownTimer" type="Timer" parent="EnemySentrySniper" unique_id=1700382644]
-one_shot = true
-
-[node name="EnemySentrySniper2" type="Node2D" parent="." unique_id=1369264298]
-position = Vector2(2764, -30)
-script = ExtResource("6_sniper_script")
-min_vision_range = 380.0
-vision_range = 850.0
-cone_half_angle_degrees = 8.0
-min_scan_angle_degrees = 125.0
-max_scan_angle_degrees = 170.0
-scan_speed_degrees = 21.0
-alert_delay = 0.01
-fire_cooldown = 1.0
-hold_last_seen_time = 1.8
-player_aim_offset = Vector2(0, 15)
-player_detection_offsets = Array[Vector2]([Vector2(0, -16), Vector2(0, 8), Vector2(0, 24)])
-bullet_speed = 1500.0
-
-[node name="Sprite2D" type="Sprite2D" parent="EnemySentrySniper2" unique_id=1509148419]
-position = Vector2(0, -8)
-scale = Vector2(0.08, 0.08)
-texture = ExtResource("9_sniper_sprite")
-
-[node name="ShootPoint" type="Marker2D" parent="EnemySentrySniper2" unique_id=1260424547]
-position = Vector2(4, -13)
-
-[node name="VisionPivot" type="Node2D" parent="EnemySentrySniper2" unique_id=263593684]
-position = Vector2(-13, -14)
-rotation = -0.773796
-
-[node name="VisionRay" type="RayCast2D" parent="EnemySentrySniper2/VisionPivot" unique_id=2006363692]
-position = Vector2(24, 21)
-enabled = false
-target_position = Vector2(-74, 0)
-
-[node name="Spotlight" type="PointLight2D" parent="EnemySentrySniper2/VisionPivot" unique_id=552427870]
-position = Vector2(-5.6400642, 1.4797499)
-rotation = -1.5692862
-scale = Vector2(-0.1836587, 3.6311138)
-color = Color(0.99999946, 0.9068846, 0.6475957, 1)
-energy = 1.44
-shadow_enabled = true
-texture = ExtResource("6_8w8tq")
-
-[node name="FireCooldownTimer" type="Timer" parent="EnemySentrySniper2" unique_id=1384348577]
-one_shot = true
-
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1053503551]
-position = Vector2(-1586, 210)
+position = Vector2(-48, 197)
 
 [node name="Player" parent="." unique_id=1198226646 groups=["player"] instance=ExtResource("2_player")]
 position = Vector2(140, 260)
 bullet_scene = ExtResource("4_player_bullet")
+
+[node name="StealthHighlight" parent="Player/AnimatedSprite2D" parent_id_path=PackedInt32Array(1198226646, 1001658057) index="0" unique_id=223827841]
+material = SubResource("ShaderMaterial_4wl77")
 
 [node name="Camera2D" parent="Player" index="3" unique_id=2029278347]
 position = Vector2(258, -189)
