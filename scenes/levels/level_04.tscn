@@ -13,6 +13,12 @@
 [ext_resource type="Texture2D" uid="uid://c7xsijf1cie8j" path="res://art/level04/props/truck01.png" id="9_07dqf"]
 [ext_resource type="Script" uid="uid://dimvdouy8g0sv" path="res://addons/phantom_camera/scripts/resources/phantom_camera_noise_2d.gd" id="9_tdc43"]
 [ext_resource type="Texture2D" uid="uid://rw12ry3idutv" path="res://art/level04/props/block01.png" id="9_yy4na"]
+[ext_resource type="Texture2D" uid="uid://b3u562uahu0np" path="res://art/level04/props/truck02.png" id="12_03g8n"]
+[ext_resource type="Texture2D" uid="uid://bdil5b56t46te" path="res://art/level04/props/door01.png" id="12_d1lip"]
+[ext_resource type="Texture2D" uid="uid://m6al15b5tyiv" path="res://art/level04/props/eletrical/electricbox.png" id="13_o3rdr"]
+[ext_resource type="Texture2D" uid="uid://cbq62hsb84e35" path="res://art/level04/props/eletrical/pipe01.png" id="13_vmerw"]
+[ext_resource type="Texture2D" uid="uid://c1geq5emmvywt" path="res://art/level04/props/eletrical/redlight01.png" id="15_sibhc"]
+[ext_resource type="Texture2D" uid="uid://dearw3ly545a5" path="res://art/level04/props/eletrical/pipeangle01.png" id="15_x1re1"]
 
 [sub_resource type="Environment" id="Environment_76vq8"]
 glow_enabled = true
@@ -112,17 +118,88 @@ repeat_times = 5
 [node name="Sprite2D" type="Sprite2D" parent="World/BackgroundFar" unique_id=887786827]
 texture = ExtResource("5_yy4na")
 
-[node name="Sprite2D2" type="Sprite2D" parent="World/BackgroundFar" unique_id=1122999580]
+[node name="BackgroundObjectsFar" type="Parallax2D" parent="World" unique_id=1376690587]
+z_index = -8
+scroll_scale = Vector2(0.9, 1)
+
+[node name="Sprite2D2" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=1122999580]
 modulate = Color(0.44291076, 0.44291076, 0.44291073, 1)
-position = Vector2(389, 53)
+position = Vector2(361, -31)
 texture = ExtResource("4_yy4na")
 
-[node name="Sprite2D3" type="Sprite2D" parent="World/BackgroundFar" unique_id=325515378]
+[node name="Sprite2D3" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=325515378]
 modulate = Color(0.47902274, 0.57231563, 0.67049116, 1)
-position = Vector2(513, 91)
+position = Vector2(485, 7)
 rotation = 0.052359883
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("9_07dqf")
+
+[node name="Door01" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=769928465]
+modulate = Color(0.5340865, 0.54992604, 0.49407274, 1)
+position = Vector2(670, -3)
+texture = ExtResource("12_d1lip")
+
+[node name="ElecPipe03" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=1976986767]
+modulate = Color(0.20784314, 0.20784314, 0.20784314, 1)
+position = Vector2(649.057, -157)
+rotation = 3.1415925
+scale = Vector2(0.12287425, 0.2)
+texture = ExtResource("13_vmerw")
+
+[node name="ElecPipe02" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=1486867429]
+modulate = Color(0.20784314, 0.20784314, 0.20784314, 1)
+position = Vector2(627.8009, -157)
+rotation = 3.1415925
+scale = Vector2(0.12132134, 0.2)
+texture = ExtResource("13_vmerw")
+
+[node name="PipeAngle01" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=1009149276]
+modulate = Color(0.20871013, 0.20871016, 0.20871007, 1)
+position = Vector2(612, -164.00002)
+rotation = -1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("15_x1re1")
+
+[node name="PipeAngle02" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=123143610]
+modulate = Color(0.20871013, 0.20871016, 0.20871007, 1)
+position = Vector2(665, -150)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("15_x1re1")
+
+[node name="ElecPipe01" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=1998964103]
+modulate = Color(0.20784314, 0.20784314, 0.20784314, 1)
+position = Vector2(607, -190)
+rotation = -1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_vmerw")
+
+[node name="ElecPipe04" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=622485139]
+modulate = Color(0.20784314, 0.20784314, 0.20784314, 1)
+position = Vector2(670, -123.99999)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_vmerw")
+
+[node name="RedLight01" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=593607953]
+modulate = Color(0.49747366, 0.49747366, 0.49747366, 1)
+position = Vector2(670, -62.999996)
+rotation = 3.1415925
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("15_sibhc")
+
+[node name="ElecPipe05" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=503383059]
+modulate = Color(0.20784314, 0.20784314, 0.20784314, 1)
+position = Vector2(670, -87.999985)
+rotation = 1.5707964
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_vmerw")
+
+[node name="ElecBox01" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=877520959]
+modulate = Color(0.34520602, 0.3440739, 0.34098852, 1)
+position = Vector2(607, -215)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_o3rdr")
 
 [node name="BackgroundMid" type="Parallax2D" parent="World" unique_id=1058023522]
 z_index = -7
@@ -131,9 +208,15 @@ scroll_offset = Vector2(0, -10)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BackgroundMid" unique_id=1256082055]
 modulate = Color(0.5211406, 0.5211406, 0.5211405, 1)
-position = Vector2(-74.999985, 13.999999)
+position = Vector2(287, 27)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_yy4na")
+
+[node name="Sprite2D2" type="Sprite2D" parent="World/BackgroundMid" unique_id=2133750977]
+modulate = Color(0.5370113, 0.5370113, 0.5370113, 1)
+position = Vector2(342, 57)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("12_03g8n")
 
 [node name="BackgroundNear" type="Parallax2D" parent="World" unique_id=314845736]
 z_index = -6
@@ -149,7 +232,7 @@ flip_h = true
 
 [node name="Sprite2D3" type="Sprite2D" parent="World/BackgroundNear" unique_id=1423616833]
 modulate = Color(0.5135456, 0.5419857, 0.5635112, 1)
-position = Vector2(436.99997, 13)
+position = Vector2(435.00003, 20)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("3_a0uur")
 flip_h = true
