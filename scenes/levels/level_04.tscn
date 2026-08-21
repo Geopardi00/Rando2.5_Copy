@@ -7,8 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://cerqskuqipgla" path="res://scenes/Camera/camera_rig.tscn" id="4_a0uur"]
 [ext_resource type="Shader" uid="uid://bs5uwl67c0isx" path="res://shaders/player_stealth_outline.gdshader" id="4_cw75u"]
 [ext_resource type="Texture2D" uid="uid://d0pxjaci8c55e" path="res://art/level04/props/self02.png" id="4_yy4na"]
+[ext_resource type="Texture2D" uid="uid://cvcyw7qqs40bd" path="res://art/level04/props/lamp01.png" id="5_vwuh2"]
 [ext_resource type="Texture2D" uid="uid://q8i7kspr6qos" path="res://art/level04/parallax/background.png" id="5_yy4na"]
 [ext_resource type="Texture2D" uid="uid://c7lx3a85t2n6t" path="res://art/level04/parallax/foregroundfloor.png" id="6_07dqf"]
+[ext_resource type="Texture2D" uid="uid://c631r7jp80ocu" path="res://art/vfx/light_stream.jpg" id="6_ec0pt"]
 [ext_resource type="Texture2D" uid="uid://c7xsijf1cie8j" path="res://art/level04/props/truck01.png" id="9_07dqf"]
 [ext_resource type="Script" uid="uid://dimvdouy8g0sv" path="res://addons/phantom_camera/scripts/resources/phantom_camera_noise_2d.gd" id="9_tdc43"]
 [ext_resource type="Texture2D" uid="uid://rw12ry3idutv" path="res://art/level04/props/block01.png" id="9_yy4na"]
@@ -24,6 +26,9 @@
 [ext_resource type="Texture2D" uid="uid://d2x0qn8onfora" path="res://art/level04/props/self05.png" id="21_vdcoq"]
 [ext_resource type="Texture2D" uid="uid://crpd2waa3c2m2" path="res://art/level04/props/winch01.png" id="22_fy4m5"]
 [ext_resource type="Texture2D" uid="uid://3u3g7cv0i64o" path="res://art/level04/props/trashbin01.png" id="23_axo1c"]
+[ext_resource type="Shader" uid="uid://b8pfy5vr6mhry" path="res://shaders/atmospheric_fog.gdshader" id="24_atmosphere"]
+[ext_resource type="Texture2D" path="res://shaders/atmosphere_noise.tres" id="25_noise"]
+[ext_resource type="Texture2D" uid="uid://dyr2yxitkmdyl" path="res://art/level04/vfx/dust_mote.png" id="26_dust"]
 
 [sub_resource type="Environment" id="Environment_76vq8"]
 glow_enabled = true
@@ -31,7 +36,7 @@ glow_enabled = true
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tdc43"]
 size = Vector2(2349.75, 26)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_sibhc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_47boq"]
 resource_local_to_scene = true
 shader = ExtResource("4_cw75u")
 shader_parameter/outline_color_start = Color(0.07646953, 0.42688474, 0.3983916, 0.84705883)
@@ -40,12 +45,69 @@ shader_parameter/outline_width = 6.5
 shader_parameter/color_cycle_seconds = 2.5
 shader_parameter/alpha_threshold = 0.05600000266
 
-[sub_resource type="Resource" id="Resource_vdcoq"]
+[sub_resource type="Resource" id="Resource_8m3pt"]
 resource_local_to_scene = true
 script = ExtResource("9_tdc43")
 amplitude = 3.5
 frequency = 12.0
 positional_multiplier_x = 0.45
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fog_far"]
+resource_local_to_scene = true
+shader = ExtResource("24_atmosphere")
+shader_parameter/fog_tint = Color(0.62743896, 0.462102, 0.33220887, 1)
+shader_parameter/opacity = 0.23499999474728
+shader_parameter/uv_scale = Vector2(0.285, 0.675)
+shader_parameter/scroll_velocity = Vector2(0.007, 0.01)
+shader_parameter/distortion_strength = 0.08800000418
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fog_mid"]
+resource_local_to_scene = true
+shader = ExtResource("24_atmosphere")
+shader_parameter/fog_tint = Color(0.76953804, 0.6812644, 0.7189144, 1)
+shader_parameter/opacity = 0.11999999731776
+shader_parameter/uv_scale = Vector2(0.8, 1.905)
+shader_parameter/scroll_velocity = Vector2(-0.002, -0.01)
+shader_parameter/distortion_strength = 0.028
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dust"]
+
+[sub_resource type="Curve" id="Curve_dust_alpha"]
+_data = [Vector2(0, 0), 0.0, 5.0, 0, 0, Vector2(0.12, 1), 0.0, 0.0, 0, 0, Vector2(0.82, 0.88), 0.0, -1.5, 0, 0, Vector2(1, 0), -4.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_dust_alpha"]
+curve = SubResource("Curve_dust_alpha")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dust_mid"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(2400, 420, 1)
+direction = Vector3(1, -0.16, 0)
+spread = 35.0
+initial_velocity_min = 2.0
+initial_velocity_max = 8.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.02
+scale_max = 0.049999997
+color = Color(0.9764706, 0.94509804, 0.92941177, 0.06666667)
+alpha_curve = SubResource("CurveTexture_dust_alpha")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dust_near"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(2400, 450, 1)
+direction = Vector3(-1, -0.08, 0)
+spread = 42.0
+initial_velocity_min = 7.0
+initial_velocity_max = 16.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.14999999
+scale_max = 0.29999998
+color = Color(0.8178193, 0.7547446, 0.75927854, 0.12941177)
+alpha_curve = SubResource("CurveTexture_dust_alpha")
+hue_variation_min = -2.2351742e-08
+hue_variation_max = 0.039999977
 
 [node name="Level04" type="Node2D" unique_id=725205474]
 
@@ -53,6 +115,9 @@ positional_multiplier_x = 0.45
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1328368082]
 environment = SubResource("Environment_76vq8")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1703080045]
+color = Color(0.8019818, 0.8349077, 0.87249357, 1)
 
 [node name="Platforms" type="Node2D" parent="." unique_id=723116107]
 position = Vector2(-5, -93)
@@ -84,13 +149,30 @@ modulate = Color(0.51217645, 0.62743676, 0.67239344, 1)
 position = Vector2(122, 32)
 texture = ExtResource("4_yy4na")
 
+[node name="Lights" type="Node2D" parent="." unique_id=977550829]
+
+[node name="Light01" type="Node2D" parent="Lights" unique_id=1723688075]
+position = Vector2(324, -264)
+
+[node name="Sprite2D" type="Sprite2D" parent="Lights/Light01" unique_id=114677487]
+modulate = Color(0.5529556, 0.55295557, 0.55295557, 1)
+texture = ExtResource("5_vwuh2")
+
+[node name="PointLight2D" type="PointLight2D" parent="Lights/Light01" unique_id=1366152946]
+position = Vector2(0, 243)
+scale = Vector2(1, 2.5117188)
+color = Color(0.91266626, 0.8134266, 0.4825219, 1)
+energy = 3.63
+texture = ExtResource("6_ec0pt")
+texture_scale = 0.2
+
 [node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1772321099]
 position = Vector2(-596, 102)
 
 [node name="Player" parent="." unique_id=1487025887 instance=ExtResource("3_gkpor")]
 
 [node name="StealthHighlight" parent="Player/AnimatedSprite2D" parent_id_path=PackedInt32Array(1487025887, 1001658057) index="0" unique_id=223827841]
-material = SubResource("ShaderMaterial_sibhc")
+material = SubResource("ShaderMaterial_47boq")
 
 [node name="Camera2D" parent="Player" index="3" unique_id=2029278347]
 visible = true
@@ -105,7 +187,7 @@ zoom = Vector2(1.4, 1.4)
 zoom = Vector2(1.4, 1.4)
 
 [node name="GateShakeEmitter" parent="CameraRig" index="3"]
-noise = SubResource("Resource_vdcoq")
+noise = SubResource("Resource_8m3pt")
 
 [node name="World" type="Node2D" parent="." unique_id=240005102]
 
@@ -202,6 +284,15 @@ position = Vector2(607, -215)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("13_o3rdr")
 
+[node name="FogFar" type="Sprite2D" parent="World/BackgroundObjectsFar" unique_id=1435960006]
+light_mask = 0
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fog_far")
+position = Vector2(1400, 0)
+texture = ExtResource("25_noise")
+region_enabled = true
+region_rect = Rect2(0, 0, 4800, 1080)
+
 [node name="BackgroundMid" type="Parallax2D" parent="World" unique_id=1058023522]
 z_index = -7
 scroll_scale = Vector2(0.93, 1)
@@ -218,6 +309,27 @@ modulate = Color(0.5370113, 0.5370113, 0.5370113, 1)
 position = Vector2(342, 57)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("12_03g8n")
+
+[node name="FogMid" type="Sprite2D" parent="World/BackgroundMid" unique_id=477368999]
+light_mask = 2
+texture_repeat = 2
+material = SubResource("ShaderMaterial_fog_mid")
+position = Vector2(1400, 0)
+texture = ExtResource("25_noise")
+region_enabled = true
+region_rect = Rect2(0, 0, 4800, 1080)
+
+[node name="DustMid" type="GPUParticles2D" parent="World/BackgroundMid" unique_id=184188112]
+light_mask = 2
+material = SubResource("CanvasItemMaterial_dust")
+position = Vector2(1400, 0)
+amount = 60
+texture = ExtResource("26_dust")
+lifetime = 15.0
+preprocess = 15.0
+randomness = 0.65
+visibility_rect = Rect2(-2500, -700, 5000, 1400)
+process_material = SubResource("ParticleProcessMaterial_dust_mid")
 
 [node name="BackgroundNear" type="Parallax2D" parent="World" unique_id=314845736]
 z_index = -6
@@ -256,6 +368,18 @@ modulate = Color(0.67481464, 0.67481464, 0.6748146, 1)
 position = Vector2(5, -15)
 texture = ExtResource("6_07dqf")
 offset = Vector2(0, -1)
+
+[node name="DustNear" type="GPUParticles2D" parent="World/ForegroundFar" unique_id=556395113]
+light_mask = 2
+material = SubResource("CanvasItemMaterial_dust")
+position = Vector2(3322, 0)
+amount = 13
+texture = ExtResource("26_dust")
+lifetime = 10.0
+preprocess = 10.0
+randomness = 0.72
+visibility_rect = Rect2(-2500, -700, 5000, 1400)
+process_material = SubResource("ParticleProcessMaterial_dust_near")
 
 [node name="ForegroundMid" type="Parallax2D" parent="World" unique_id=1945740588]
 z_index = 7
