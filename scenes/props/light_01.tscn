@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bins1g033mpqp"]
+
+[ext_resource type="Texture2D" uid="uid://cvcyw7qqs40bd" path="res://art/level04/props/lamp01.png" id="1_tr2v6"]
+[ext_resource type="Texture2D" path="res://art/vfx/ligthstream6.png" id="2_k04i5"]
+
+[sub_resource type="Gradient" id="Gradient_vwuh2"]
+offsets = PackedFloat32Array(0, 0.11111111, 0.35390946)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ec0pt"]
+gradient = SubResource("Gradient_vwuh2")
+fill = 1
+fill_from = Vector2(0.47863248, 0.47435898)
+
+[node name="Light01" type="Node2D" unique_id=811768548]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=148752441]
+modulate = Color(0.5529556, 0.55295557, 0.55295557, 1)
+texture = ExtResource("1_tr2v6")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1525020816]
+position = Vector2(3.0000124, 112.99999)
+scale = Vector2(1.8833333, 4.9160733)
+color = Color(0.93333334, 0.80784315, 0.35686275, 0.7176471)
+energy = 2.16
+shadow_enabled = true
+range_item_cull_mask = 3
+shadow_color = Color(0.09239707, 0.09239706, 0.09239706, 0)
+shadow_item_cull_mask = 8195
+texture = ExtResource("2_k04i5")
+texture_scale = 0.2
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=223565414]
+position = Vector2(0, 122)
+color = Color(0.64030457, 0.56987464, 0.24276829, 1)
+energy = 4.09
+range_item_cull_mask = 3
+texture = SubResource("GradientTexture2D_ec0pt")

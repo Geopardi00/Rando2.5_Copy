@@ -17,21 +17,21 @@ World
 │   └── DustMid
 ├── BackgroundNear (0.95, z -6)
 ├── Gameplay (z 0)
-└── ForegroundFar (1.10, z 6)
+└── ForegroundNear (1.20, z 8)
     └── DustNear
 ```
 
 - `FogFar` is broad, cool, slow, low-opacity haze that ignores 2D lights.
 - `FogMid` is slightly denser, moves in the opposing direction, and accepts atmosphere lights.
 - `DustMid` uses 60 small, slow motes over a warehouse-sized box emitter.
-- `DustNear` uses 20 larger, softer motes with quicker apparent motion.
+- `DustNear` uses 23 larger, softer motes with quicker apparent motion.
 - Near fog and extreme-foreground atmosphere are omitted to protect gameplay readability.
 
 ## Shared resources and tuning
 
 Both fog sprites use `atmosphere_noise.tres` and separate local materials backed by `atmospheric_fog.gdshader`. The five intended tuning controls are `fog_tint`, `opacity`, `uv_scale`, `scroll_velocity`, and `distortion_strength`. Dust uses the shared 64×64 `dust_mote.png` texture and inspector-authored `ParticleProcessMaterial` resources.
 
-The fog shader uses normal CanvasItem lighting and deliberately has no custom `light()` function. Broad fog coverage is limited to two sprites. Ambient particle simulation is limited to 80 particles total and runs at a fixed 30 FPS.
+The fog shader uses normal CanvasItem lighting and deliberately has no custom `light()` function. Broad fog coverage is limited to two sprites. Ambient particle simulation is limited to 83 particles total and runs at a fixed 30 FPS.
 
 ## Lighting convention
 
@@ -51,4 +51,4 @@ Visible warehouse beams should use the project's textured `PointLight2D` techniq
 - With a temporary mask-2 light, confirm that mid fog and dust brighten while far fog does not.
 - Check for seams, camera-edge gaps, obvious repetition, or particle spawning gaps.
 - Compare the 1920×1080 profiler baseline with atmosphere enabled and disabled; target less than a 5% frame-rate change and no new spikes.
-- Keep at most two broad transparent fog surfaces and 80 ambient particles active.
+- Keep at most two broad transparent fog surfaces and 83 ambient particles active.

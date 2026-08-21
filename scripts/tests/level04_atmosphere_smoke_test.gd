@@ -2,7 +2,7 @@ extends SceneTree
 
 const LEVEL_PATH := "res://scenes/levels/level_04.tscn"
 const FOG_SHADER_PATH := "res://shaders/atmospheric_fog.gdshader"
-const MAX_AMBIENT_PARTICLES := 80
+const MAX_AMBIENT_PARTICLES := 83
 
 var failures := 0
 
@@ -25,12 +25,15 @@ func _run_test() -> void:
 	var fog_far := level.get_node_or_null("World/BackgroundObjectsFar/FogFar") as Sprite2D
 	var fog_mid := level.get_node_or_null("World/BackgroundMid/FogMid") as Sprite2D
 	var dust_mid := level.get_node_or_null("World/BackgroundMid/DustMid") as GPUParticles2D
-	var dust_near := level.get_node_or_null("World/ForegroundFar/DustNear") as GPUParticles2D
+	var dust_near := level.get_node_or_null("World/ForegroundNear/DustNear") as GPUParticles2D
+	var warehouse_light := level.get_node_or_null("Lights/Light01/PointLight2D") as PointLight2D
 
 	check(fog_far != null, "Level04 should provide far background fog.")
 	check(fog_mid != null, "Level04 should provide mid background fog.")
 	check(dust_mid != null, "Level04 should provide mid-depth dust.")
 	check(dust_near != null, "Level04 should provide near foreground dust.")
+	check(warehouse_light != null, "Level04 should instance the reusable warehouse light.")
+	check(warehouse_light != null and warehouse_light.range_item_cull_mask == 3, "Warehouse light should illuminate gameplay and atmosphere masks.")
 
 	if fog_far != null and fog_mid != null:
 		var far_material := fog_far.material as ShaderMaterial
