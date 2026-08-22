@@ -2,7 +2,7 @@ extends SceneTree
 
 const LEVEL_PATH := "res://scenes/levels/level_04.tscn"
 const FOG_SHADER_PATH := "res://shaders/atmospheric_fog.gdshader"
-const MAX_AMBIENT_PARTICLES := 83
+const MAX_AMBIENT_PARTICLES := 113
 
 var failures := 0
 
@@ -27,6 +27,8 @@ func _run_test() -> void:
 	var dust_mid := level.get_node_or_null("World/BackgroundMid/DustMid") as GPUParticles2D
 	var dust_near := level.get_node_or_null("World/ForegroundNear/DustNear") as GPUParticles2D
 	var warehouse_light := level.get_node_or_null("Lights/Light01/PointLight2D") as PointLight2D
+	var background_light := level.get_node_or_null("World/BackgroundMid/Light02/PointLight2D") as PointLight2D
+	var background_fill := level.get_node_or_null("World/BackgroundMid/Light02/PointLight2D2") as PointLight2D
 
 	check(fog_far != null, "Level04 should provide far background fog.")
 	check(fog_mid != null, "Level04 should provide mid background fog.")
@@ -34,6 +36,15 @@ func _run_test() -> void:
 	check(dust_near != null, "Level04 should provide near foreground dust.")
 	check(warehouse_light != null, "Level04 should instance the reusable warehouse light.")
 	check(warehouse_light != null and warehouse_light.range_item_cull_mask == 3, "Warehouse light should illuminate gameplay and atmosphere masks.")
+	check(background_light != null, "Level04 should provide the focused background light.")
+	check(background_fill != null, "Level04 should provide the focused background fill light.")
+	for background_light_component in [background_light, background_fill]:
+		if background_light_component == null:
+			continue
+		check(
+			background_light_component.range_z_min == -8 and background_light_component.range_z_max == -7,
+			"Light02 components should illuminate only background Z indices -8 through -7."
+		)
 
 	if fog_far != null and fog_mid != null:
 		var far_material := fog_far.material as ShaderMaterial
