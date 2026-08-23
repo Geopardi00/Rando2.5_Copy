@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dojx67eo6f8b8" path="res://scripts/enemies/enemy_drone.gd" id="1_script"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_shader"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="3_hit_sound"]
+[ext_resource type="AudioStream" uid="uid://06cdh5cflgwv" path="res://audio/sfx/enemies/drone/drone_wizz.wav" id="4_drone_wizz"]
 [ext_resource type="Texture2D" uid="uid://raj5b2nx02fq" path="res://art/enemies/animations/drone/idle_flying/frame0000.png" id="5_idle_0"]
 [ext_resource type="Texture2D" uid="uid://t7aptsj3rm87" path="res://art/enemies/animations/drone/idle_flying/frame0001.png" id="6_idle_1"]
 [ext_resource type="Texture2D" uid="uid://ckghalu182e2t" path="res://art/enemies/animations/drone/idle_flying/frame0002.png" id="7_idle_2"]
@@ -92,7 +93,7 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
 [node name="DroneEnemy" type="CharacterBody2D" unique_id=2076150378 groups=["enemy"]]
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.7, 0.7)
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_script")
@@ -162,3 +163,12 @@ one_shot = true
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=817681489]
 stream = ExtResource("3_hit_sound")
+
+[node name="FlightLoopSound" type="AudioStreamPlayer2D" parent="." unique_id=925052600]
+stream = ExtResource("4_drone_wizz")
+volume_db = -14.211
+pitch_scale = 1.08
+autoplay = true
+max_distance = 900.0
+attenuation = 1.7
+bus = &"Sound Effects"

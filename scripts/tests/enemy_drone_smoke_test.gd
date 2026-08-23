@@ -130,6 +130,15 @@ func check_drone_scene_contract(drone: Variant) -> void:
 	check(drone.get_node_or_null("TurnPauseTimer") is Timer, "Drone should have a TurnPauseTimer.")
 	check(drone.get_node_or_null("AttackCooldownTimer") is Timer, "Drone should have an AttackCooldownTimer.")
 	check(drone.get_node_or_null("HitSound") is AudioStreamPlayer2D, "Drone should have enemy hit audio.")
+	var flight_loop_sound := drone.get_node_or_null("FlightLoopSound") as AudioStreamPlayer2D
+	check(flight_loop_sound != null, "Drone should have positional flight-loop audio.")
+	if flight_loop_sound != null:
+		check(flight_loop_sound.autoplay, "Drone flight audio should start automatically.")
+		check(flight_loop_sound.stream is AudioStreamWAV, "Drone flight audio should use the authored WAV stream.")
+		if flight_loop_sound.stream is AudioStreamWAV:
+			check(flight_loop_sound.stream.loop_mode == AudioStreamWAV.LOOP_FORWARD, "Drone flight audio should loop continuously.")
+		check(is_equal_approx(flight_loop_sound.max_distance, 900.0), "Drone flight audio should fade out over its authored range.")
+		check(flight_loop_sound.bus == &"Sound Effects", "Drone flight audio should use the Sound Effects bus.")
 	for property_name in [
 		&"patrol_speed", &"patrol_distance", &"turn_pause_duration", &"move_direction",
 		&"max_lean_angle_degrees", &"lean_speed_degrees", &"cone_move_offset_degrees", &"cone_turn_speed_degrees",
