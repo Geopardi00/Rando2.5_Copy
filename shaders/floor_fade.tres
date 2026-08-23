@@ -1,0 +1,64 @@
+[gd_resource type="Shader" format=3 uid="uid://dh3weam8yd7jd"]
+
+[resource]
+code = "shader_type canvas_item;
+
+uniform vec4 fade_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+
+// BOTTOM
+uniform bool bottom_enabled = true;
+uniform float bottom_start : hint_range(0.0, 1.0) = 0.60;
+uniform float bottom_end : hint_range(0.0, 1.0) = 0.95;
+uniform float bottom_power : hint_range(0.25, 4.0) = 1.4;
+
+// TOP
+uniform bool top_enabled = false;
+uniform float top_start : hint_range(0.0, 1.0) = 0.40;
+uniform float top_end : hint_range(0.0, 1.0) = 0.05;
+uniform float top_power : hint_range(0.25, 4.0) = 1.4;
+
+// LEFT
+uniform bool left_enabled = false;
+uniform float left_start : hint_range(0.0, 1.0) = 0.25;
+uniform float left_end : hint_range(0.0, 1.0) = 0.02;
+uniform float left_power : hint_range(0.25, 4.0) = 1.4;
+
+// RIGHT
+uniform bool right_enabled = false;
+uniform float right_start : hint_range(0.0, 1.0) = 0.75;
+uniform float right_end : hint_range(0.0, 1.0) = 0.98;
+uniform float right_power : hint_range(0.25, 4.0) = 1.4;
+
+void fragment() {
+    vec4 tex = texture(TEXTURE, UV);
+
+    float fade = 0.0;
+
+    // Bottom: artwork -> black
+    if (bottom_enabled) {
+        float f = smoothstep(bottom_start, bottom_end, UV.y);
+        fade = max(fade, pow(f, bottom_power));
+    }
+
+    // Top: artwork -> black
+    if (top_enabled) {
+        float f = 1.0 - smoothstep(top_end, top_start, UV.y);
+        fade = max(fade, pow(f, top_power));
+    }
+
+    // Left: artwork -> black
+    if (left_enabled) {
+        float f = 1.0 - smoothstep(left_end, left_start, UV.x);
+        fade = max(fade, pow(f, left_power));
+    }
+
+    // Right: artwork -> black
+    if (right_enabled) {
+        float f = smoothstep(right_start, right_end, UV.x);
+        fade = max(fade, pow(f, right_power));
+    }
+
+    tex.rgb = mix(tex.rgb, fade_color.rgb, clamp(fade, 0.0, 1.0));
+
+    COLOR = tex;
+}"

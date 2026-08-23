@@ -4,7 +4,8 @@ const BLOOD_BURST_SCENE := preload("res://scenes/fx/blood_burst.tscn")
 
 enum State {
 	PATROL,
-	CHASE
+	CHASE,
+	BARK
 }
 
 @export var patrol_speed: float = 60.0
@@ -59,6 +60,8 @@ func _physics_process(delta: float) -> void:
 			run_patrol()
 		State.CHASE:
 			run_chase()
+		State.BARK:
+			run_bark()
 
 	move_and_slide()
 	update_visual()
@@ -73,12 +76,36 @@ func apply_gravity(delta: float) -> void:
 
 
 func refresh_player_reference() -> void:
-	if not is_instance_valid(player):
-		player = get_tree().get_first_node_in_group("player") as Node2D
+	if is_player_targetable():
+		return
+
+	player = null
+	for candidate in get_tree().get_nodes_in_group("player"):
+		var candidate_player := candidate as Node2D
+		if is_candidate_detectable(candidate_player):
+			player = candidate_player
+			return
+
+
+func is_player_targetable() -> bool:
+	return is_candidate_detectable(player)
+
+
+func is_candidate_detectable(candidate: Node2D) -> bool:
+	if not is_instance_valid(candidate) or bool(candidate.get("is_dead")):
+		return false
+
+	if candidate.has_method("is_detectable_by_enemies"):
+		return bool(candidate.call("is_detectable_by_enemies"))
+
+	return true
 
 
 func update_state() -> void:
-	if not is_instance_valid(player):
+	if state == State.BARK:
+		return
+
+	if not is_player_targetable():
 		state = State.PATROL
 		return
 
@@ -103,9 +130,9 @@ func run_patrol() -> void:
 
 
 func run_chase() -> void:
-	if not is_instance_valid(player):
+	if not is_player_targetable():
 		state = State.PATROL
-		velocity.x = 0.0
+		velocity.x = move_direction * patrol_speed
 		return
 
 	var dx: float = player.global_position.x - global_position.x
@@ -123,6 +150,22 @@ func run_chase() -> void:
 		return
 
 	velocity.x = move_direction * chase_speed
+
+
+func run_bark() -> void:
+	velocity.x = 0.0
+
+
+func on_player_killed(victim: Node2D) -> void:
+	var dx := victim.global_position.x - global_position.x
+	if not is_zero_approx(dx):
+		move_direction = 1 if dx > 0.0 else -1
+
+	player = victim
+	state = State.BARK
+	velocity.x = 0.0
+	update_visual()
+	update_animation()
 
 
 func should_turn_around() -> bool:
@@ -153,12 +196,16 @@ func update_visual() -> void:
 
 
 func update_animation() -> void:
-	if state == State.CHASE:
-		if animated_sprite.animation != "charge":
-			animated_sprite.play("charge")
-	else:
-		if animated_sprite.animation != "walk":
-			animated_sprite.play("walk")
+	match state:
+		State.CHASE:
+			if animated_sprite.animation != &"charge":
+				animated_sprite.play(&"charge")
+		State.BARK:
+			if animated_sprite.animation != &"bark":
+				animated_sprite.play(&"bark")
+		_:
+			if animated_sprite.animation != &"walk":
+				animated_sprite.play(&"walk")
 
 
 func take_damage(amount: int = 1) -> void:
@@ -216,6 +263,7 @@ func spawn_hit_sound() -> void:
 	sfx.stream = hit_sound.stream
 	sfx.volume_db = hit_sound.volume_db
 	sfx.pitch_scale = hit_sound.pitch_scale
+	sfx.bus = hit_sound.bus
 	sfx.global_position = global_position
 
 	get_tree().current_scene.add_child(sfx)

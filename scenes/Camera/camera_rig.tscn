@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://cerqskuqipgla"]
+
+[ext_resource type="Script" uid="uid://3vlutmeacs6v" path="res://scripts/camera_rig.gd" id="1_5u8vw"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_i5al1"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="3_wi13f"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_v7oiw"]
+[ext_resource type="Script" uid="uid://bhd4nuiu23e7l" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_noise_emitter_2d.gd" id="5_shake_emitter"]
+[ext_resource type="Script" uid="uid://dimvdouy8g0sv" path="res://addons/phantom_camera/scripts/resources/phantom_camera_noise_2d.gd" id="6_shake_noise"]
+
+[sub_resource type="Resource" id="Resource_bfhwr"]
+script = ExtResource("4_v7oiw")
+
+[sub_resource type="Resource" id="Resource_landing_shake"]
+script = ExtResource("6_shake_noise")
+amplitude = 4.0
+frequency = 8.0
+positional_multiplier_x = 0.35
+
+[sub_resource type="Resource" id="Resource_gate_shake"]
+resource_local_to_scene = true
+script = ExtResource("6_shake_noise")
+amplitude = 3.5
+frequency = 12.0
+positional_multiplier_x = 0.45
+
+[node name="CameraRig" type="Node" unique_id=520503879 groups=["camera_rig"]]
+script = ExtResource("1_5u8vw")
+landing_shake_amplitude = 18.1
+landing_shake_frequency = 6.4
+landing_shake_duration = 0.088
+landing_shake_horizontal_strength = 0.46
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2087987625]
+top_level = true
+zoom = Vector2(1.5, 1.5)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D" unique_id=992114408]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_i5al1")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera2D" type="Node2D" parent="." unique_id=766862386]
+top_level = true
+script = ExtResource("3_wi13f")
+priority = 10
+follow_mode = 5
+zoom = Vector2(1.5, 1.5)
+tween_resource = SubResource("Resource_bfhwr")
+tween_on_load = false
+follow_offset = Vector2(52, -137)
+follow_damping = true
+follow_damping_value = Vector2(0.2, 0.05)
+dead_zone_width = 0.098
+dead_zone_height = 0.015
+noise_emitter_layer = 1
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
+[node name="LandingShakeEmitter" type="Node2D" parent="." unique_id=1253996963]
+script = ExtResource("5_shake_emitter")
+noise = SubResource("Resource_landing_shake")
+duration = 0.145
+decay_time = 0.12
+metadata/_custom_type_script = "uid://bhd4nuiu23e7l"
+
+[node name="GateShakeEmitter" type="Node2D" parent="."]
+script = ExtResource("5_shake_emitter")
+noise = SubResource("Resource_gate_shake")
+duration = 1.0
+decay_time = 0.2
+metadata/_custom_type_script = "uid://bhd4nuiu23e7l"

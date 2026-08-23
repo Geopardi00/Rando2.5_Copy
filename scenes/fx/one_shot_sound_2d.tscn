@@ -10,7 +10,9 @@ stereo = true
 [node name="HitSound" type="AudioStreamPlayer2D" unique_id=1059604468]
 stream = SubResource("AudioStreamWAV_214t5")
 volume_db = -11.965
+bus = &"Sound Effects"
 
 [node name="Bullethitenemy" type="AudioStreamPlayer" parent="." unique_id=153170430]
 stream = ExtResource("1_yjb8q")
 volume_db = -21.168
+bus = &"Sound Effects"

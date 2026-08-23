@@ -1,7 +1,11 @@
 extends CharacterBody2D
 
 signal health_changed(current_hp: int, max_hp: int)
+signal damage_taken(amount: int, source_category: StringName, underwater: bool)
 signal ammo_changed(current_ammo: int, max_ammo: int)
+signal hard_landed
+signal stealth_availability_changed(available: bool)
+signal stealth_changed(active: bool)
 
 @export var move_speed: float = 220.0
 @export var jump_velocity: float = -400.0
@@ -10,6 +14,10 @@ signal ammo_changed(current_ammo: int, max_ammo: int)
 const PUSH_FORCE = 100
 const BLOCK_MAX_VELOCITY = 180
 const ONE_WAY_PLATFORM_LAYER = 14
+const PLAYER_UNDERWATER_SHADER: Shader = preload("res://shaders/player_underwater.gdshader")
+const DAMAGE_SOURCE_ENEMY: StringName = &"enemy"
+const DAMAGE_SOURCE_ENVIRONMENT: StringName = &"environment"
+const DAMAGE_SOURCE_GENERIC: StringName = &"generic"
 
 @export var coyote_time: float = 0.10
 @export var jump_buffer_time: float = 0.10
@@ -35,6 +43,10 @@ const ONE_WAY_PLATFORM_LAYER = 14
 @export var slap_cooldown: float = 0.25
 @export var mosquito_immunity_time: float = 1.0
 
+@export_group("Stealth")
+@export var stealth_tint: Color = Color(0.35, 0.42, 0.5, 1.0)
+@export_range(0.1, 1.0, 0.05) var stealth_walk_speed_multiplier: float = 0.5
+
 @export_group("Melee Attack")
 @export var melee_damage: int = 2
 @export var melee_range: float = 52.0
@@ -45,6 +57,9 @@ const ONE_WAY_PLATFORM_LAYER = 14
 @export var melee_attack_duration: float = 0.32
 @export var melee_hitbox_start_time: float = 0.08
 @export var melee_hitbox_duration: float = 0.10
+@export var swim_melee_attack_duration: float = 0.625
+@export var swim_melee_hitbox_start_time: float = 0.20
+@export var swim_melee_hitbox_duration: float = 0.12
 
 @export_group("Hard Landing")
 @export var hard_landing_min_fall_speed: float = 520.0
@@ -75,6 +90,7 @@ const ONE_WAY_PLATFORM_LAYER = 14
 @onready var body_collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var melee_hitbox: Area2D = $MeleeHitbox
 @onready var melee_hitbox_shape: CollisionShape2D = $MeleeHitbox/CollisionShape2D
+@onready var stealth_highlight: AnimatedSprite2D = $AnimatedSprite2D/StealthHighlight
 
 var facing: int = 1
 var coyote_timer: float = 0.0
@@ -104,6 +120,7 @@ var melee_attack_timer: float = 0.0
 var melee_ground_stop_timer: float = 0.0
 var melee_hitbox_active: bool = false
 var melee_started_on_floor: bool = false
+var melee_started_in_water: bool = false
 var melee_hit_targets: Array[Node] = []
 var drop_through_timer: float = 0.0
 var drop_through_floor_y: float = 0.0
@@ -120,6 +137,14 @@ var surface_recovery_water_body: Node = null
 var surface_recovery_timer: float = 0.0
 var surface_jump_exit_timer: float = 0.0
 var debug_surface_water_body: Node = null
+var default_animated_sprite_material: Material = null
+var player_underwater_material: ShaderMaterial = null
+var player_underwater_shader_active: bool = false
+var active_shadow_areas: Array[Area2D] = []
+var stealth_active: bool = false
+var stealth_available_cached: bool = false
+var default_player_self_modulate: Color = Color.WHITE
+var stealth_enemy_render_restore: Dictionary = {}
 
 
 func _ready() -> void:
@@ -138,10 +163,19 @@ func _ready() -> void:
 	update_melee_hitbox_geometry()
 
 	air_jumps_left = extra_jumps
+	setup_player_underwater_shader()
 	setup_water_debug_display()
-
+	default_player_self_modulate = animated_sprite.self_modulate
+	apply_stealth_visual()
+	sync_stealth_highlight()
 
 func _physics_process(delta: float) -> void:
+	prune_shadow_areas()
+	if not is_dead and Input.is_action_just_pressed("toggle_stealth"):
+		set_stealth_active(not stealth_active)
+	if stealth_active:
+		refresh_stealth_enemy_render_order()
+
 	update_invulnerability(delta)
 	update_mosquito_immunity(delta)
 	update_slap_timers(delta)
@@ -167,6 +201,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	reconcile_water_overlaps()
+	update_player_underwater_shader()
 
 	if is_riding_zipline:
 		if Input.is_action_just_pressed("jump"):
@@ -191,6 +226,7 @@ func _physics_process(delta: float) -> void:
 
 	if is_in_water() and not surface_jump_active:
 		update_swimming(delta)
+		update_player_underwater_shader()
 		move_and_slide()
 		update_animation()
 		return
@@ -216,10 +252,11 @@ func _physics_process(delta: float) -> void:
 	update_melee_hitbox_geometry()
 
 	# Horizontal movement
+	var horizontal_move_speed := get_horizontal_move_speed(was_on_floor)
 	if landing_stop_timer > 0.0 or melee_ground_stop_timer > 0.0:
 		velocity.x = 0.0
 	elif input_axis != 0.0:
-		velocity.x = input_axis * move_speed
+		velocity.x = input_axis * horizontal_move_speed
 	else:
 		velocity.x = 0.0
 
@@ -353,12 +390,14 @@ func enter_water(water_body: Node) -> void:
 			surface_recovery_water_body = null
 			surface_recovery_timer = 0.0
 		try_capture_water_surface()
+		update_player_underwater_shader()
 		return
 
 	var was_dry := active_water_bodies.is_empty()
 	active_water_bodies.append(water_body)
 	if not was_dry:
 		try_capture_water_surface()
+		update_player_underwater_shader()
 		return
 
 	surface_jump_active = false
@@ -380,6 +419,7 @@ func enter_water(water_body: Node) -> void:
 	velocity.x = clampf(velocity.x, -entry_speed_limit, entry_speed_limit)
 	velocity.y = clampf(velocity.y, -vertical_speed * 1.4, max_fall)
 	try_capture_water_surface()
+	update_player_underwater_shader()
 
 
 func exit_water(water_body: Node, _surface_y: float, exited_through_surface: bool) -> void:
@@ -413,6 +453,7 @@ func finish_water_exit(water_body: Node) -> void:
 		surface_recovery_water_body = null
 		surface_recovery_timer = 0.0
 	prune_water_bodies()
+	update_player_underwater_shader()
 	if not active_water_bodies.is_empty():
 		return
 
@@ -425,10 +466,11 @@ func finish_water_exit(water_body: Node) -> void:
 func set_head_submerged(water_body: Node, submerged: bool) -> void:
 	if submerged:
 		if not submerged_head_water_bodies.has(water_body):
+			var was_breathing_air := submerged_head_water_bodies.is_empty()
 			submerged_head_water_bodies.append(water_body)
-		if submerged_head_water_bodies.size() == 1:
-			breath_elapsed = 0.0
-			next_drowning_damage_time = get_water_float_from(water_body, &"breath_duration", 5.0)
+			if was_breathing_air:
+				breath_elapsed = 0.0
+				next_drowning_damage_time = get_water_float_from(water_body, &"breath_duration", 5.0)
 	else:
 		submerged_head_water_bodies.erase(water_body)
 		prune_water_bodies()
@@ -529,10 +571,8 @@ func update_swimming(delta: float) -> void:
 	jump_buffer_timer = 0.0
 	max_fall_speed = 0.0
 
-	if Input.is_action_just_pressed("shoot"):
-		try_shoot()
-	if Input.is_action_just_pressed("slap"):
-		try_slap()
+	if Input.is_action_just_pressed("melee_attack"):
+		try_melee_attack()
 
 
 func try_capture_water_surface() -> bool:
@@ -657,7 +697,7 @@ func update_water_breath(delta: float) -> void:
 	while breath_elapsed >= next_drowning_damage_time and not is_dead:
 		var water_body := get_active_head_water()
 		var damage := roundi(get_water_float_from(water_body, &"damage_amount", 1.0))
-		take_damage(maxi(damage, 1), true)
+		take_damage(maxi(damage, 1), true, DAMAGE_SOURCE_ENVIRONMENT)
 		next_drowning_damage_time += maxf(get_water_float_from(water_body, &"damage_interval", 3.0), 0.1)
 
 
@@ -678,6 +718,7 @@ func reset_water_state() -> void:
 	surface_recovery_timer = 0.0
 	debug_surface_water_body = null
 	reset_breath_timers()
+	update_player_underwater_shader()
 
 
 func prune_water_bodies() -> void:
@@ -695,6 +736,40 @@ func prune_water_bodies() -> void:
 func get_active_water() -> Node:
 	prune_water_bodies()
 	return active_water_bodies.back() if not active_water_bodies.is_empty() else null
+
+
+func setup_player_underwater_shader() -> void:
+	default_animated_sprite_material = animated_sprite.material
+	player_underwater_material = ShaderMaterial.new()
+	player_underwater_material.shader = PLAYER_UNDERWATER_SHADER
+
+
+func update_player_underwater_shader() -> void:
+	if animated_sprite == null or player_underwater_material == null:
+		return
+
+	var water_body := get_active_water()
+	var should_enable := (
+		water_body != null
+		and bool(water_body.get("player_underwater_shader_enabled"))
+		and not is_surface_swimming
+		and not surface_jump_active
+	)
+	if should_enable:
+		player_underwater_material.set_shader_parameter(&"underwater_tint", water_body.get("player_underwater_tint"))
+		player_underwater_material.set_shader_parameter(&"tint_strength", water_body.get("player_underwater_tint_strength"))
+		player_underwater_material.set_shader_parameter(&"shimmer_strength", water_body.get("player_underwater_shimmer_strength"))
+		player_underwater_material.set_shader_parameter(&"shimmer_frequency", water_body.get("player_underwater_shimmer_frequency"))
+		player_underwater_material.set_shader_parameter(&"shimmer_speed", water_body.get("player_underwater_shimmer_speed"))
+		player_underwater_material.set_shader_parameter(&"wobble_strength", water_body.get("player_underwater_wobble_strength"))
+		player_underwater_material.set_shader_parameter(&"wobble_frequency", water_body.get("player_underwater_wobble_frequency"))
+		player_underwater_material.set_shader_parameter(&"wobble_speed", water_body.get("player_underwater_wobble_speed"))
+		if animated_sprite.material != player_underwater_material:
+			animated_sprite.material = player_underwater_material
+	elif animated_sprite.material == player_underwater_material:
+		animated_sprite.material = default_animated_sprite_material
+
+	player_underwater_shader_active = should_enable
 
 
 func get_active_head_water() -> Node:
@@ -733,6 +808,7 @@ func setup_water_debug_display() -> void:
 
 
 func _process(_delta: float) -> void:
+	sync_stealth_highlight()
 	if water_debug_enabled and water_state_debug_lines:
 		queue_redraw()
 	if water_debug_label == null:
@@ -825,6 +901,17 @@ func play_animation_safe(name: StringName, fallback: StringName = &"idle") -> vo
 			animated_sprite.play(fallback)
 
 
+func get_horizontal_move_speed(on_floor: bool) -> float:
+	if stealth_active and on_floor:
+		return move_speed * stealth_walk_speed_multiplier
+
+	return move_speed
+
+
+func get_ground_walk_animation() -> StringName:
+	return &"stealth_walk" if stealth_active else &"walk"
+
+
 func update_animation() -> void:
 	if is_dead:
 		animated_sprite.speed_scale = 1.0
@@ -857,8 +944,13 @@ func update_animation() -> void:
 		return
 
 	if is_in_water() and not surface_jump_active:
-		animated_sprite.speed_scale = 0.75
-		play_animation_safe(&"swim", &"jump")
+		var swim_input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		if not swim_input.is_zero_approx():
+			animated_sprite.speed_scale = 0.75
+			play_animation_safe(&"swim", &"idle")
+		else:
+			animated_sprite.speed_scale = 1.0
+			play_animation_safe(&"swim_idle", &"idle")
 		return
 
 	if not is_on_floor():
@@ -871,15 +963,16 @@ func update_animation() -> void:
 		return
 
 	if abs(velocity.x) > 5.0:
-		play_animation_safe(&"walk", &"idle")
-		animated_sprite.speed_scale = clamp(abs(velocity.x) / move_speed, 0.85, 1.15)
+		play_animation_safe(get_ground_walk_animation(), &"walk")
+		var ground_move_speed := maxf(get_horizontal_move_speed(true), 1.0)
+		animated_sprite.speed_scale = clamp(abs(velocity.x) / ground_move_speed, 0.85, 1.15)
 	else:
 		play_animation_safe(&"idle")
 		animated_sprite.speed_scale = 1.0
 
 
 func try_shoot() -> void:
-	if is_swatting or is_melee_attacking:
+	if is_swatting or is_melee_attacking or is_in_water():
 		return
 
 	if bullet_scene == null:
@@ -891,6 +984,7 @@ func try_shoot() -> void:
 	if not fire_timer.is_stopped():
 		return
 
+	cancel_stealth()
 	fire_timer.start()
 	consume_ammo(1)
 	fire_bullet()
@@ -927,9 +1021,10 @@ func add_ammo(amount: int) -> void:
 
 
 func try_slap() -> void:
-	if is_dead or is_swatting or is_melee_attacking or slap_cooldown_timer > 0.0:
+	if is_dead or is_swatting or is_melee_attacking or is_in_water() or slap_cooldown_timer > 0.0:
 		return
 
+	cancel_stealth()
 	slap_cooldown_timer = slap_cooldown
 	slap_animation_timer = slap_duration
 	play_animation_safe(&"slap", &"idle")
@@ -962,6 +1057,13 @@ func spawn_slap_hitbox() -> void:
 
 
 func _on_slap_hitbox_area_entered(area: Area2D, hit_enemies: Array[Node]) -> void:
+	if area.is_in_group("slap_interactable"):
+		var interactable := area.get_parent()
+		if interactable != null and not hit_enemies.has(interactable) and interactable.has_method("slapped"):
+			hit_enemies.append(interactable)
+			interactable.slapped()
+		return
+
 	if not area.is_in_group("enemy_hurtbox"):
 		return
 
@@ -985,10 +1087,12 @@ func try_melee_attack() -> void:
 
 
 func start_melee_attack() -> void:
+	cancel_stealth()
 	is_melee_attacking = true
 	melee_attack_timer = 0.0
 	melee_hitbox_active = false
-	melee_started_on_floor = is_on_floor()
+	melee_started_in_water = is_in_water()
+	melee_started_on_floor = is_on_floor() and not melee_started_in_water
 	melee_hit_targets.clear()
 	update_melee_hitbox_geometry()
 
@@ -1008,13 +1112,16 @@ func update_melee_attack(delta: float) -> void:
 
 	melee_attack_timer += delta
 
-	var hitbox_end_time := melee_hitbox_start_time + melee_hitbox_duration
-	if not melee_hitbox_active and melee_attack_timer >= melee_hitbox_start_time and melee_attack_timer < hitbox_end_time:
+	var hitbox_start_time := swim_melee_hitbox_start_time if melee_started_in_water else melee_hitbox_start_time
+	var hitbox_duration := swim_melee_hitbox_duration if melee_started_in_water else melee_hitbox_duration
+	var attack_duration := swim_melee_attack_duration if melee_started_in_water else melee_attack_duration
+	var hitbox_end_time := hitbox_start_time + hitbox_duration
+	if not melee_hitbox_active and melee_attack_timer >= hitbox_start_time and melee_attack_timer < hitbox_end_time:
 		enable_melee_hitbox()
 	elif melee_hitbox_active and melee_attack_timer >= hitbox_end_time:
 		disable_melee_hitbox()
 
-	if melee_attack_timer >= melee_attack_duration:
+	if melee_attack_timer >= attack_duration:
 		finish_melee_attack()
 
 
@@ -1039,6 +1146,7 @@ func finish_melee_attack() -> void:
 	is_melee_attacking = false
 	melee_attack_timer = 0.0
 	melee_ground_stop_timer = 0.0
+	melee_started_in_water = false
 	melee_hit_targets.clear()
 
 
@@ -1047,6 +1155,7 @@ func cancel_melee_attack() -> void:
 	is_melee_attacking = false
 	melee_attack_timer = 0.0
 	melee_ground_stop_timer = 0.0
+	melee_started_in_water = false
 	melee_hit_targets.clear()
 
 
@@ -1098,6 +1207,9 @@ func find_melee_target(area: Area2D, is_destroyable_hurtbox: bool) -> Node:
 
 
 func play_melee_animation() -> void:
+	if melee_started_in_water and play_animation_if_available(&"swim_melee"):
+		return
+
 	if melee_started_on_floor:
 		if play_animation_if_available(&"melee_ground"):
 			return
@@ -1155,14 +1267,21 @@ func _on_hurtbox_body_entered(body: Node) -> void:
 	if body.get("contact_damage") != null:
 		damage = int(body.get("contact_damage"))
 
-	take_damage(damage)
+	var was_alive := not is_dead
+	take_damage(damage, false, DAMAGE_SOURCE_ENEMY)
+	if was_alive and is_dead and body.has_method("on_player_killed"):
+		body.call("on_player_killed", self)
 
 
-func take_damage(amount: int = 1, ignore_invulnerability: bool = false) -> void:
+func take_damage(amount: int = 1, ignore_invulnerability: bool = false, source_category: StringName = DAMAGE_SOURCE_GENERIC) -> void:
+	if stealth_active and source_category == DAMAGE_SOURCE_ENEMY:
+		return
+
 	if is_dead or (invulnerability_timer > 0.0 and not ignore_invulnerability):
 		return
 
 	current_hp -= amount
+	damage_taken.emit(amount, source_category, is_head_submerged())
 
 	if debug_enabled:
 		print("Player damage received: ", amount, " HP: ", current_hp, "/", max_hp)
@@ -1381,6 +1500,7 @@ func start_hard_landing() -> void:
 	landing_animation_timer = hard_landing_animation_time
 	landing_stop_timer = hard_landing_stop_time
 	velocity.x = 0.0
+	hard_landed.emit()
 
 
 func cancel_landing() -> void:
@@ -1389,7 +1509,7 @@ func cancel_landing() -> void:
 
 
 func mosquito_attack() -> void:
-	if is_dead or is_swatting or mosquito_immunity_timer > 0.0:
+	if is_dead or stealth_active or is_swatting or mosquito_immunity_timer > 0.0:
 		return
 
 	force_detach_from_zipline()
@@ -1420,6 +1540,8 @@ func die() -> void:
 	if is_dead:
 		return
 
+	cancel_stealth()
+	clear_shadow_areas()
 	force_detach_from_zipline()
 	cancel_melee_attack()
 	reset_water_state()
@@ -1438,9 +1560,158 @@ func die() -> void:
 
 
 func respawn_after_delay() -> void:
+	if get_tree().current_scene == null:
+		return
+
 	await get_tree().create_timer(1.5).timeout
 	respawn()
 
 
 func respawn() -> void:
 	get_tree().reload_current_scene()
+
+
+func register_shadow_area(area: Area2D) -> void:
+	if area == null or not is_instance_valid(area) or active_shadow_areas.has(area):
+		return
+
+	active_shadow_areas.append(area)
+	refresh_stealth_availability()
+
+
+func unregister_shadow_area(area: Area2D) -> void:
+	if not active_shadow_areas.has(area):
+		return
+
+	active_shadow_areas.erase(area)
+	refresh_stealth_availability()
+
+
+func prune_shadow_areas() -> void:
+	var removed_area := false
+	for index in range(active_shadow_areas.size() - 1, -1, -1):
+		if not is_instance_valid(active_shadow_areas[index]):
+			active_shadow_areas.remove_at(index)
+			removed_area = true
+
+	if removed_area:
+		refresh_stealth_availability()
+
+
+func clear_shadow_areas() -> void:
+	if active_shadow_areas.is_empty() and not stealth_available_cached:
+		return
+
+	active_shadow_areas.clear()
+	refresh_stealth_availability()
+
+
+func refresh_stealth_availability() -> void:
+	var available := not active_shadow_areas.is_empty() and not is_dead
+	if not available:
+		cancel_stealth()
+
+	if available == stealth_available_cached:
+		return
+
+	stealth_available_cached = available
+	stealth_availability_changed.emit(available)
+
+
+func is_stealth_available() -> bool:
+	return stealth_available_cached and not is_dead
+
+
+func is_stealth_active() -> bool:
+	return stealth_active
+
+
+func is_detectable_by_enemies() -> bool:
+	return not is_dead and not stealth_active
+
+
+func set_stealth_active(enabled: bool) -> void:
+	var next_active := enabled and is_stealth_available()
+	if next_active == stealth_active:
+		return
+
+	stealth_active = next_active
+	apply_stealth_visual()
+	if stealth_active:
+		refresh_stealth_enemy_render_order()
+	else:
+		restore_enemy_render_order()
+	stealth_changed.emit(stealth_active)
+
+
+func cancel_stealth() -> void:
+	set_stealth_active(false)
+
+
+func apply_stealth_visual() -> void:
+	if animated_sprite != null:
+		animated_sprite.self_modulate = stealth_tint if stealth_active else default_player_self_modulate
+
+	if stealth_highlight != null:
+		stealth_highlight.visible = stealth_active
+
+
+func sync_stealth_highlight() -> void:
+	if animated_sprite == null or stealth_highlight == null:
+		return
+
+	if stealth_highlight.sprite_frames != animated_sprite.sprite_frames:
+		stealth_highlight.sprite_frames = animated_sprite.sprite_frames
+	if stealth_highlight.animation != animated_sprite.animation:
+		stealth_highlight.animation = animated_sprite.animation
+
+	stealth_highlight.set_frame_and_progress(animated_sprite.frame, animated_sprite.frame_progress)
+	stealth_highlight.flip_h = animated_sprite.flip_h
+	stealth_highlight.flip_v = animated_sprite.flip_v
+	stealth_highlight.centered = animated_sprite.centered
+	stealth_highlight.offset = animated_sprite.offset
+
+
+func refresh_stealth_enemy_render_order() -> void:
+	if not stealth_active:
+		return
+
+	var foreground_z := mini(z_index + 1, 4096)
+	for candidate in get_tree().get_nodes_in_group("enemy"):
+		var enemy := candidate as CanvasItem
+		if not is_stealth_render_enemy(enemy):
+			continue
+
+		var instance_id := enemy.get_instance_id()
+		if not stealth_enemy_render_restore.has(instance_id):
+			stealth_enemy_render_restore[instance_id] = {
+				"enemy": weakref(enemy),
+				"z_index": enemy.z_index,
+				"z_as_relative": enemy.z_as_relative,
+			}
+
+		enemy.z_as_relative = false
+		enemy.z_index = maxi(enemy.z_index, foreground_z)
+
+
+func is_stealth_render_enemy(candidate: CanvasItem) -> bool:
+	if candidate == null or candidate == self or not is_instance_valid(candidate):
+		return false
+
+	return candidate.has_method("take_damage") or candidate.has_method("is_player_detectable")
+
+
+func restore_enemy_render_order() -> void:
+	for entry in stealth_enemy_render_restore.values():
+		var enemy_reference := entry.get("enemy") as WeakRef
+		if enemy_reference == null:
+			continue
+
+		var enemy := enemy_reference.get_ref() as CanvasItem
+		if not is_instance_valid(enemy):
+			continue
+
+		enemy.z_index = int(entry.get("z_index", enemy.z_index))
+		enemy.z_as_relative = bool(entry.get("z_as_relative", enemy.z_as_relative))
+
+	stealth_enemy_render_restore.clear()

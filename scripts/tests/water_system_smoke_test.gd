@@ -14,15 +14,21 @@ func run_test() -> void:
 	var water_scene := load("res://scenes/water/water_body_2d.tscn") as PackedScene
 	var level_scene := load("res://scenes/levels/test_room_water.tscn") as PackedScene
 	var crate_scene := load("res://scenes/props/push_crate.tscn") as PackedScene
+	var game_ui_scene := load("res://scenes/ui/game_ui.tscn") as PackedScene
 	check(player_scene != null, "Player scene should load.")
 	check(water_scene != null, "Reusable water scene should load.")
 	check(level_scene != null, "Water test room should load.")
 	check(crate_scene != null, "Push crate scene should load.")
-	if player_scene == null or water_scene == null or level_scene == null or crate_scene == null:
+	check(game_ui_scene != null, "Game UI scene should load.")
+	if player_scene == null or water_scene == null or level_scene == null or crate_scene == null or game_ui_scene == null:
 		finish_test()
 		return
 
 	var player := player_scene.instantiate()
+	var game_ui := game_ui_scene.instantiate()
+	game_ui.underwater_vignette_color = Color(0.02, 0.25, 0.95, 0.6)
+	game_ui.underwater_vignette_pulse_count = 2
+	game_ui.underwater_vignette_pulse_duration = 0.05
 	var pool := water_scene.instantiate()
 	var tunnel := water_scene.instantiate()
 	tunnel.has_visible_surface = false
@@ -31,17 +37,87 @@ func run_test() -> void:
 	add_child(pool)
 	add_child(tunnel)
 	add_child(player)
+	add_child(game_ui)
 	await get_tree().process_frame
 	player.set_physics_process(false)
+	game_ui.bind_player(player)
 
 	check(pool.water_area.collision_mask == 2, "Water body detection should scan the player layer.")
 	check(pool.water_head_area.collision_mask == 256, "Water head detection should scan only the head-sensor layer.")
 	check(pool.water_shape.position.y == pool.water_size.y * 0.5, "Water volume should extend downward from its surface origin.")
+	check(pool.water_fill.position == Vector2.ZERO and pool.water_fill.scale == Vector2.ONE, "Water fill should use generated geometry without inherited transform distortion.")
+	check(pool.water_surface.position == Vector2.ZERO and pool.water_surface.scale == Vector2.ONE, "Water surface should use generated geometry without inherited transform distortion.")
+	var shader_texture_size: Vector2 = pool.shader_rectangle.texture.get_size()
+	check(pool.shader_rectangle.position == Vector2(0.0, pool.water_size.y * 0.5), "Underwater shader rectangle should remain centered below the surface.")
+	check(pool.shader_rectangle.scale.is_equal_approx(pool.water_size / shader_texture_size), "Underwater shader rectangle should match Water Size.")
+	var original_water_size: Vector2 = pool.water_size
+	pool.water_size = Vector2(640.0, 240.0)
+	check((pool.water_shape.shape as RectangleShape2D).size == pool.water_size, "Changing Water Size should resize the body collision immediately.")
+	check((pool.water_head_shape.shape as RectangleShape2D).size == pool.water_size, "Changing Water Size should resize the head-sensor collision immediately.")
+	check(pool.water_fill.polygon[-1] == Vector2(-320.0, 240.0), "Changing Water Size should regenerate the fill geometry immediately.")
+	check(pool.water_surface.points[0].x == -320.0 and pool.water_surface.points[-1].x == 320.0, "Changing Water Size should regenerate the ripple surface immediately.")
+	check(pool.shader_rectangle.position == Vector2(0.0, 120.0), "Changing Water Size should reposition the shader rectangle immediately.")
+	check(pool.shader_rectangle.scale.is_equal_approx(pool.water_size / shader_texture_size), "Changing Water Size should resize the shader rectangle immediately.")
+	pool.water_size = original_water_size
 	check(not tunnel.water_surface.visible, "Flooded tunnel should not draw a false surface.")
 	check(pool.is_in_group("water_body"), "Reusable water bodies should register for geometric overlap reconciliation.")
 	check(not pool.splash_particles.emitting, "Legacy splash particles should remain inactive.")
 	check(pool.splash_particles.process_mode == Node.PROCESS_MODE_DISABLED, "Legacy splash particles should remain disabled.")
 	check(pool.bubble_particles != null and pool.bubble_particles.texture != null, "Underwater bubble particles should remain available.")
+	var original_player_material: Material = player.animated_sprite.material
+	player.reset_water_state()
+	pool.player_underwater_shader_enabled = true
+	player.enter_water(pool)
+	var player_frames: SpriteFrames = player.animated_sprite.sprite_frames
+	check(player_frames.has_animation(&"swim"), "Player sprite frames should include the swim animation.")
+	check(player_frames.get_frame_count(&"swim") == 15, "Swim animation should include all 15 imported frames.")
+	check(player_frames.get_animation_loop(&"swim"), "Swim animation should loop while movement input is held.")
+	check(player_frames.has_animation(&"swim_idle"), "Player sprite frames should include the water-idle pose.")
+	check(player_frames.get_frame_count(&"swim_idle") == 1, "Water idle should use one swim frame.")
+	check(player_frames.get_frame_texture(&"swim_idle", 0) == player_frames.get_frame_texture(&"swim", 0), "Water idle should use the first swim frame.")
+	check(player_frames.has_animation(&"swim_melee"), "Player sprite frames should include the underwater melee animation.")
+	check(player_frames.get_frame_count(&"swim_melee") == 15, "Underwater melee should include all 15 imported frames.")
+	check(not player_frames.get_animation_loop(&"swim_melee"), "Underwater melee should play once per attack.")
+	var ammo_before_underwater_shot: int = player.current_ammo
+	player.fire_timer.stop()
+	player.try_shoot()
+	check(player.current_ammo == ammo_before_underwater_shot and player.fire_timer.is_stopped(), "Shooting in water should not consume ammo or start its cooldown.")
+	player.slap_cooldown_timer = 0.0
+	player.slap_animation_timer = 0.0
+	player.try_slap()
+	check(is_zero_approx(player.slap_cooldown_timer) and is_zero_approx(player.slap_animation_timer), "Slapping in water should not start its cooldown or animation.")
+	Input.action_press("melee_attack")
+	player.update_swimming(1.0 / 60.0)
+	Input.action_release("melee_attack")
+	player.update_animation()
+	check(player.is_melee_attacking and player.melee_started_in_water, "Melee input in water should begin an underwater attack.")
+	check(player.animated_sprite.animation == &"swim_melee", "Underwater melee should play the authored swim_melee animation.")
+	player.update_melee_attack(player.swim_melee_hitbox_start_time + 0.01)
+	check(player.melee_hitbox_active, "Underwater melee should enable the existing melee hitbox during its strike window.")
+	player.update_melee_attack(player.swim_melee_attack_duration)
+	check(not player.is_melee_attacking and not player.melee_hitbox_active, "Underwater melee should finish and disable its hitbox after one animation.")
+	Input.action_press("move_right")
+	player.update_animation()
+	Input.action_release("move_right")
+	check(player.animated_sprite.animation == &"swim", "Directional input in water should play the swim animation.")
+	player.update_animation()
+	check(player.animated_sprite.animation == &"swim_idle", "Neutral input in water should use the first swim frame.")
+	check(player.player_underwater_shader_active, "An enabled water body should activate the player-only underwater shader.")
+	check(player.animated_sprite.material == player.player_underwater_material, "The underwater effect should apply only to the animated player sprite.")
+	check(is_equal_approx(float(player.player_underwater_material.get_shader_parameter(&"wobble_strength")), pool.player_underwater_wobble_strength), "The player shader should use the active water body's wobble tuning.")
+	player.is_surface_swimming = true
+	player.update_player_underwater_shader()
+	check(not player.player_underwater_shader_active, "Reaching the swimming surface should disable the player shader before becoming airborne.")
+	check(player.animated_sprite.material == original_player_material, "Surface swimming should restore the player's original sprite material.")
+	player.is_surface_swimming = false
+	player.surface_jump_active = true
+	player.update_player_underwater_shader()
+	check(not player.player_underwater_shader_active, "A surface jump should keep the player shader disabled while leaving the water collider.")
+	player.surface_jump_active = false
+	player.finish_water_exit(pool)
+	check(not player.player_underwater_shader_active, "Leaving the last affected water body should disable the player shader.")
+	check(player.animated_sprite.material == original_player_material, "Leaving water should restore the player's original sprite material.")
+	pool.player_underwater_shader_enabled = false
 	pool.submerged_players.append(player)
 	player.global_position = pool.global_position + Vector2(0.0, 100.0)
 	pool.update_bubbles(0.1)
@@ -111,6 +187,9 @@ func run_test() -> void:
 	player.set_head_submerged(tunnel, true)
 	player.set_head_submerged(pool, false)
 	check(player.is_head_submerged(), "Leaving one overlapping head volume should not reset breath.")
+	player.breath_elapsed = 1.25
+	player.set_head_submerged(tunnel, true)
+	check(is_equal_approx(player.breath_elapsed, 1.25), "Repeated submerged overlap reports should not reset elapsed breath.")
 
 	player.current_hp = player.max_hp
 	var configured_breath: float = tunnel.breath_duration
@@ -121,10 +200,15 @@ func run_test() -> void:
 	check(player.current_hp == player.max_hp, "Drowning should not damage before the configured breath duration.")
 	player.update_water_breath(0.02)
 	check(player.current_hp == player.max_hp - 1, "First drowning damage should occur at the configured breath duration.")
+	check(game_ui.damage_vignette.color.is_equal_approx(game_ui.underwater_vignette_color), "Drowning damage should use the configured underwater vignette color.")
+	check(game_ui.damage_vignette_tween != null, "Drowning damage should start the underwater vignette pulse sequence.")
 	player.update_water_breath(configured_damage_interval - 0.02)
 	check(player.current_hp == player.max_hp - 1, "Repeat drowning damage should wait for the configured interval.")
 	player.update_water_breath(0.02)
 	check(player.current_hp == player.max_hp - 2, "Drowning should bypass unrelated invulnerability on its configured cycle.")
+	await get_tree().create_timer(0.14).timeout
+	check(game_ui.damage_vignette.modulate.a <= 0.001, "Underwater vignette should fade out after the configured pulse count and duration.")
+	check(game_ui.damage_vignette.color.is_equal_approx(game_ui.default_damage_vignette_color), "Underwater vignette should restore the normal damage color after pulsing.")
 
 	player.velocity = Vector2.ZERO
 	Input.action_press("move_right")
@@ -182,6 +266,21 @@ func run_test() -> void:
 
 	wave_pool.configure_ripple()
 	wave_pool.apply_ripple_impulse(wave_pool.global_position.x, 180.0)
+	var rounded_center_velocity: float = absf(wave_pool.ripple_velocities[center_index])
+	var rounded_near_velocity: float = absf(wave_pool.ripple_velocities[center_index + 1])
+	var rounded_edge_velocity: float = absf(
+		wave_pool.ripple_velocities[center_index + wave_pool.ripple_impact_radius]
+	)
+	var outside_impact_velocity: float = absf(
+		wave_pool.ripple_velocities[center_index + wave_pool.ripple_impact_radius + 1]
+	)
+	check(
+		rounded_center_velocity > rounded_near_velocity
+		and rounded_near_velocity > rounded_edge_velocity
+		and rounded_edge_velocity > 0.0,
+		"Initial ripple impulse should use a rounded center-to-edge falloff."
+	)
+	check(is_zero_approx(outside_impact_velocity), "Initial ripple footprint should stop outside its configured radius.")
 	wave_pool.update_ripple(1.0 / 60.0)
 	var localized_height: float = absf(wave_pool.ripple_heights[center_index])
 	check(localized_height > 1.0, "A surface impact should visibly displace the nearest spring by more than one pixel.")
@@ -368,6 +467,10 @@ func run_test() -> void:
 	check(is_equal_approx(surface_player.get_applied_gravity(), surface_player.water_gravity * tunnel.gravity_multiplier), "Swimming should report the effective configured water gravity.")
 	surface_player.exit_water(tunnel, tunnel.global_position.y, false)
 
+	var original_pool_breath_duration: float = pool.breath_duration
+	var original_pool_damage_interval: float = pool.damage_interval
+	pool.breath_duration = 0.05
+	pool.damage_interval = 0.05
 	var overlap_player := player_scene.instantiate()
 	overlap_player.position = Vector2(520.0, -100.0)
 	add_child(overlap_player)
@@ -377,10 +480,13 @@ func run_test() -> void:
 	await get_tree().create_timer(0.12).timeout
 	check(overlap_player.is_in_water(), "WaterArea body overlap should enter swimming automatically.")
 	check(overlap_player.is_head_submerged(), "WaterArea head-sensor overlap should start breath tracking automatically.")
+	check(overlap_player.current_hp < overlap_player.max_hp, "Continuous submerged overlap reconciliation should allow breath to expire and deal drowning damage.")
 	overlap_player.global_position = Vector2(520.0, -100.0)
 	await get_tree().create_timer(0.12).timeout
 	check(not overlap_player.is_in_water(), "Leaving the WaterArea should exit swimming automatically.")
 	check(not overlap_player.is_head_submerged(), "Leaving the WaterArea should reset head submersion automatically.")
+	pool.breath_duration = original_pool_breath_duration
+	pool.damage_interval = original_pool_damage_interval
 
 	finish_test()
 

@@ -39,6 +39,12 @@
 [ext_resource type="Texture2D" uid="uid://6d04hgh524dk" path="res://art/enemies/animations/finaldogwalk/frame0010.png" id="37_35tqs"]
 [ext_resource type="Texture2D" uid="uid://kwyvoagvby4x" path="res://art/enemies/animations/finaldogwalk/frame0011.png" id="38_y2lnn"]
 [ext_resource type="Texture2D" uid="uid://ha55xyf68htj" path="res://art/enemies/animations/finaldogwalk/frame0012.png" id="39_pa7ii"]
+[ext_resource type="Texture2D" uid="uid://d0lnpupsv3vgv" path="res://art/enemies/animations/finaldogbark/frame0000.png" id="bark_00"]
+[ext_resource type="Texture2D" uid="uid://dqm4e8l22t1pp" path="res://art/enemies/animations/finaldogbark/frame0001.png" id="bark_01"]
+[ext_resource type="Texture2D" uid="uid://bwrpgyh3nj51y" path="res://art/enemies/animations/finaldogbark/frame0002.png" id="bark_02"]
+[ext_resource type="Texture2D" uid="uid://bh64jn28nagdo" path="res://art/enemies/animations/finaldogbark/frame0003.png" id="bark_03"]
+[ext_resource type="Texture2D" uid="uid://b40pku6jq0rly" path="res://art/enemies/animations/finaldogbark/frame0004.png" id="bark_04"]
+[ext_resource type="Texture2D" uid="uid://obmakjcdo0o6" path="res://art/enemies/animations/finaldogbark/frame0005.png" id="bark_05"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hibgo"]
 size = Vector2(50.88889, 31)
@@ -52,6 +58,29 @@ shader_parameter/flash_amount = 0.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mo3q2"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("bark_00")
+}, {
+"duration": 1.0,
+"texture": ExtResource("bark_01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("bark_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("bark_03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("bark_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("bark_05")
+}],
+"loop": true,
+"name": &"bark",
+"speed": 10.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_bmb5r")
@@ -192,6 +221,7 @@ shape = SubResource("RectangleShape2D_a3t4t")
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=896312044]
 stream = ExtResource("4_vrqf2")
 volume_db = -21.585
+bus = &"Sound Effects"
 
 [node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=1351524003]
 position = Vector2(-20, 0)

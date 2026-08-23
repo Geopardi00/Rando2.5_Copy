@@ -66,6 +66,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	refresh_player_reference()
 	bob_time += delta
+	if not is_player_detectable() and (state == State.CHARGE or state == State.ATTACH):
+		start_escape()
 
 	match state:
 		State.PATROL:
@@ -100,11 +102,14 @@ func run_patrol(delta: float) -> void:
 
 	global_position.y = patrol_origin.y + sin(bob_time * bob_speed) * bob_height
 
-	if is_instance_valid(player) and global_position.distance_to(player.global_position) <= detection_range:
+	if is_player_detectable() and global_position.distance_to(player.global_position) <= detection_range:
 		start_charge()
 
 
 func start_charge() -> void:
+	if not is_player_detectable():
+		return
+
 	state = State.CHARGE
 	charge_time = 0.0
 	hit_player_this_charge = false
@@ -258,6 +263,7 @@ func spawn_hit_sound() -> void:
 	sfx.stream = hit_sound.stream
 	sfx.volume_db = hit_sound.volume_db
 	sfx.pitch_scale = hit_sound.pitch_scale
+	sfx.bus = hit_sound.bus
 	sfx.global_position = global_position
 
 	get_tree().current_scene.add_child(sfx)
@@ -280,6 +286,9 @@ func try_hit_player(body: Node) -> void:
 
 	if not body.is_in_group("player") or not body.has_method("mosquito_attack"):
 		return
+	if body.has_method("is_detectable_by_enemies") and not bool(body.call("is_detectable_by_enemies")):
+		start_escape()
+		return
 
 	hit_player_this_charge = true
 	body.mosquito_attack()
@@ -288,6 +297,16 @@ func try_hit_player(body: Node) -> void:
 	attach_timer = attach_duration
 	attach_offset = global_position - body.global_position
 	velocity = Vector2.ZERO
+
+
+func is_player_detectable() -> bool:
+	if not is_instance_valid(player) or bool(player.get("is_dead")):
+		return false
+
+	if player.has_method("is_detectable_by_enemies"):
+		return bool(player.call("is_detectable_by_enemies"))
+
+	return true
 
 
 func _draw() -> void:

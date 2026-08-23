@@ -3,27 +3,49 @@
 [ext_resource type="Script" uid="uid://dixoev14rc2cf" path="res://scripts/enemies/enemy.gd" id="1_8e3ao"]
 [ext_resource type="Shader" uid="uid://c0m5nn85kid3v" path="res://shaders/hit_flash.gdshader" id="2_fcftc"]
 [ext_resource type="AudioStream" uid="uid://d010lrpk42deq" path="res://audio/sfx/bullethitenemy.wav" id="4_fcftc"]
-[ext_resource type="Texture2D" uid="uid://c68qtoe7q3sbp" path="res://art/enemies/animations/soldier/head_turn/frame0000.png" id="head_00"]
-[ext_resource type="Texture2D" uid="uid://if1n8emk8ub7" path="res://art/enemies/animations/soldier/head_turn/frame0001.png" id="head_01"]
-[ext_resource type="Texture2D" uid="uid://by26dc0oe2mf7" path="res://art/enemies/animations/soldier/head_turn/frame0002.png" id="head_02"]
-[ext_resource type="Texture2D" uid="uid://cq758d0nxwiwc" path="res://art/enemies/animations/soldier/head_turn/frame0003.png" id="head_03"]
-[ext_resource type="Texture2D" uid="uid://byswsv6v5icn0" path="res://art/enemies/animations/soldier/head_turn/frame0004.png" id="head_04"]
-[ext_resource type="Texture2D" uid="uid://b1uay1hxkoopp" path="res://art/enemies/animations/soldier/head_turn/frame0005.png" id="head_05"]
-[ext_resource type="Texture2D" uid="uid://kf22v73avs4t" path="res://art/enemies/animations/soldier/head_turn/frame0006.png" id="head_06"]
-[ext_resource type="Texture2D" uid="uid://b8rxht53bf14p" path="res://art/enemies/animations/soldier/walk/frame0000.png" id="walk_10"]
-[ext_resource type="Texture2D" uid="uid://g54fn8400ak1" path="res://art/enemies/animations/soldier/walk/frame0001.png" id="walk_11"]
-[ext_resource type="Texture2D" uid="uid://boavcbyj0j1hp" path="res://art/enemies/animations/soldier/walk/frame0002.png" id="walk_12"]
-[ext_resource type="Texture2D" uid="uid://cb0m65wqdp2eq" path="res://art/enemies/animations/soldier/walk/frame0003.png" id="walk_13"]
-[ext_resource type="Texture2D" uid="uid://cffquoosfp5ln" path="res://art/enemies/animations/soldier/walk/frame0004.png" id="walk_14"]
-[ext_resource type="Texture2D" uid="uid://b0etnns7m26pq" path="res://art/enemies/animations/soldier/walk/frame0005.png" id="walk_15"]
-[ext_resource type="Texture2D" uid="uid://blmr65sy4ifgf" path="res://art/enemies/animations/soldier/walk/frame0006.png" id="walk_16"]
-[ext_resource type="Texture2D" uid="uid://clolb2jj1h6mj" path="res://art/enemies/animations/soldier/walk/frame0007.png" id="walk_17"]
-[ext_resource type="Texture2D" uid="uid://josom4hejioc" path="res://art/enemies/animations/soldier/walk/frame0008.png" id="walk_18"]
-[ext_resource type="Texture2D" uid="uid://b3t05povc35b2" path="res://art/enemies/animations/soldier/walk/frame0009.png" id="walk_19"]
-[ext_resource type="Texture2D" uid="uid://c8nk2ngq0vum2" path="res://art/enemies/animations/soldier/walk/frame0010.png" id="walk_20"]
-[ext_resource type="Texture2D" uid="uid://dslc8jaq4qkw5" path="res://art/enemies/animations/soldier/walk/frame0011.png" id="walk_21"]
-[ext_resource type="Texture2D" uid="uid://24yc2amhyn2d" path="res://art/enemies/animations/soldier/walk/frame0012.png" id="walk_22"]
-[ext_resource type="Texture2D" uid="uid://c4m7nlvuvon0o" path="res://art/enemies/animations/soldier/walk/frame0013.png" id="walk_23"]
+[ext_resource type="Texture2D" uid="uid://drcwjge8qay4m" path="res://art/enemies/animations/soldier2/melee/frame0000.png" id="4_wv2ah"]
+[ext_resource type="Texture2D" uid="uid://b8r4kl6dci06f" path="res://art/enemies/animations/soldier2/melee/frame0001.png" id="5_crryk"]
+[ext_resource type="Texture2D" uid="uid://cs80mr2nfecyq" path="res://art/enemies/animations/soldier2/melee/frame0002.png" id="6_whns1"]
+[ext_resource type="Texture2D" uid="uid://dxtjuqrd4cptl" path="res://art/enemies/animations/soldier2/melee/frame0003.png" id="7_nai4k"]
+[ext_resource type="Texture2D" uid="uid://bq72apyl0tpm8" path="res://art/enemies/animations/soldier2/melee/frame0004.png" id="8_uequj"]
+[ext_resource type="Texture2D" uid="uid://c1tnysikmps8p" path="res://art/enemies/animations/soldier2/melee/frame0005.png" id="9_il2t1"]
+[ext_resource type="Texture2D" uid="uid://chqgqnvcpw075" path="res://art/enemies/animations/soldier2/melee/frame0006.png" id="10_gjlvt"]
+[ext_resource type="Texture2D" uid="uid://c426w2w2gkigx" path="res://art/enemies/animations/soldier2/melee/frame0007.png" id="11_hlcki"]
+[ext_resource type="Texture2D" uid="uid://cnqx8l5ibpha3" path="res://art/enemies/animations/soldier2/melee/frame0008.png" id="12_0mj1o"]
+[ext_resource type="Texture2D" uid="uid://eteom6c2yqec" path="res://art/enemies/animations/soldier2/melee/frame0009.png" id="13_rvkh2"]
+[ext_resource type="Texture2D" uid="uid://bfpehfpr7x7xh" path="res://art/enemies/animations/soldier2/melee/frame0010.png" id="14_b0hgk"]
+[ext_resource type="Texture2D" uid="uid://djq5qfsgts1yv" path="res://art/enemies/animations/soldier2/melee/frame0011.png" id="15_bx18g"]
+[ext_resource type="Texture2D" uid="uid://x0jr0c0gaxif" path="res://art/enemies/animations/soldier2/melee/frame0012.png" id="16_13gim"]
+[ext_resource type="Texture2D" uid="uid://clnsj30xdm1vt" path="res://art/enemies/animations/soldier2/melee/frame0013.png" id="17_g6aog"]
+[ext_resource type="Texture2D" uid="uid://d02u1owgxyxbh" path="res://art/enemies/animations/soldier2/melee/frame0014.png" id="18_432g3"]
+[ext_resource type="Texture2D" uid="uid://b2ssthqd78bxf" path="res://art/enemies/animations/soldier2/melee/frame0015.png" id="19_lu5de"]
+[ext_resource type="Texture2D" uid="uid://dgqvgjlkx1jv5" path="res://art/enemies/animations/soldier2/melee/frame0016.png" id="20_qnxos"]
+[ext_resource type="Texture2D" uid="uid://c5jkpledscp05" path="res://art/enemies/animations/soldier2/melee/frame0017.png" id="21_hevyg"]
+[ext_resource type="Texture2D" uid="uid://bqe0jsryk5r8l" path="res://art/enemies/animations/soldier2/melee/frame0018.png" id="22_1koe2"]
+[ext_resource type="Texture2D" uid="uid://bio44u1sktl82" path="res://art/enemies/animations/soldier2/melee/frame0019.png" id="23_n2rgm"]
+[ext_resource type="Texture2D" uid="uid://cpweh5vynjuo" path="res://art/enemies/animations/soldier2/melee/frame0020.png" id="24_r1bjw"]
+[ext_resource type="Texture2D" uid="uid://1c7y1c7u7353" path="res://art/enemies/animations/soldier2/walk/frame0000.png" id="24_wv2ah"]
+[ext_resource type="Texture2D" uid="uid://chevj7hvp41np" path="res://art/enemies/animations/soldier2/walk/frame0001.png" id="25_crryk"]
+[ext_resource type="Texture2D" uid="uid://b3vje61rygl5m" path="res://art/enemies/animations/soldier2/walk/frame0002.png" id="26_whns1"]
+[ext_resource type="Texture2D" uid="uid://drkeee3dodwha" path="res://art/enemies/animations/soldier2/walk/frame0003.png" id="27_nai4k"]
+[ext_resource type="Texture2D" uid="uid://j11hawukrqp3" path="res://art/enemies/animations/soldier2/walk/frame0004.png" id="28_uequj"]
+[ext_resource type="Texture2D" uid="uid://f8ma0gsdml7u" path="res://art/enemies/animations/soldier2/walk/frame0005.png" id="29_il2t1"]
+[ext_resource type="Texture2D" uid="uid://cfhxecs7yhect" path="res://art/enemies/animations/soldier2/walk/frame0006.png" id="30_gjlvt"]
+[ext_resource type="Texture2D" uid="uid://baemifolvwyjb" path="res://art/enemies/animations/soldier2/walk/frame0007.png" id="31_hlcki"]
+[ext_resource type="Texture2D" uid="uid://eyh3bat51vgw" path="res://art/enemies/animations/soldier2/walk/frame0008.png" id="32_0mj1o"]
+[ext_resource type="Texture2D" uid="uid://b0erldigucbo5" path="res://art/enemies/animations/soldier2/walk/frame0009.png" id="33_rvkh2"]
+[ext_resource type="Texture2D" uid="uid://c0b73ulcd7ss7" path="res://art/enemies/animations/soldier2/walk/frame0010.png" id="34_b0hgk"]
+[ext_resource type="Texture2D" uid="uid://c6lrvnddxkxxd" path="res://art/enemies/animations/soldier2/walk/frame0011.png" id="35_bx18g"]
+[ext_resource type="Texture2D" uid="uid://djy0wwevxgh7a" path="res://art/enemies/animations/soldier2/walk/frame0012.png" id="36_13gim"]
+[ext_resource type="Texture2D" uid="uid://bilm1irhofeog" path="res://art/enemies/animations/soldier2/walk/frame0013.png" id="37_g6aog"]
+[ext_resource type="Texture2D" uid="uid://bruly601typmu" path="res://art/enemies/animations/soldier2/walk/frame0014.png" id="38_432g3"]
+[ext_resource type="Texture2D" uid="uid://ddnu6cfovw5vj" path="res://art/enemies/animations/soldier2/walk/frame0015.png" id="39_lu5de"]
+[ext_resource type="Texture2D" uid="uid://wd52onghq71c" path="res://art/enemies/animations/soldier2/walk/frame0016.png" id="40_qnxos"]
+[ext_resource type="Texture2D" uid="uid://bbod8hvbqr22n" path="res://art/enemies/animations/soldier2/walk/frame0017.png" id="41_hevyg"]
+[ext_resource type="Texture2D" uid="uid://dgpkshtm5xm6f" path="res://art/enemies/animations/soldier2/walk/frame0018.png" id="42_1koe2"]
+[ext_resource type="Texture2D" uid="uid://dc8ovmpymibn0" path="res://art/enemies/animations/soldier2/walk/frame0019.png" id="43_n2rgm"]
+[ext_resource type="Texture2D" uid="uid://dvvckprlvbbqs" path="res://art/enemies/animations/soldier2/walk/frame0020.png" id="44_r1bjw"]
+[ext_resource type="Texture2D" uid="uid://b42n0ucwlqbhv" path="res://art/enemies/animations/soldier2/walk/frame0021.png" id="45_desjx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fcftc"]
 size = Vector2(20, 36)
@@ -35,77 +57,151 @@ shader_parameter/flash_amount = 0.0
 [sub_resource type="SpriteFrames" id="SpriteFrames_walk"]
 animations = [{
 "frames": [{
-"duration": 0.2,
-"texture": ExtResource("head_00")
-}, {
-"duration": 0.2,
-"texture": ExtResource("head_01")
-}, {
-"duration": 0.2,
-"texture": ExtResource("head_02")
-}, {
-"duration": 0.4,
-"texture": ExtResource("head_03")
-}, {
-"duration": 0.4,
-"texture": ExtResource("head_04")
-}, {
-"duration": 0.4,
-"texture": ExtResource("head_05")
-}, {
-"duration": 0.4,
-"texture": ExtResource("head_06")
+"duration": 1.0,
+"texture": ExtResource("24_wv2ah")
 }],
 "loop": false,
 "name": &"head_turn",
 "speed": 12.0
 }, {
 "frames": [{
-"duration": 1.0,
-"texture": ExtResource("walk_10")
+"duration": 0.9,
+"texture": ExtResource("4_wv2ah")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_11")
+"texture": ExtResource("5_crryk")
+}, {
+"duration": 1.1,
+"texture": ExtResource("6_whns1")
+}, {
+"duration": 1.2,
+"texture": ExtResource("7_nai4k")
+}, {
+"duration": 1.2,
+"texture": ExtResource("8_uequj")
+}, {
+"duration": 1.2,
+"texture": ExtResource("9_il2t1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_12")
+"texture": ExtResource("10_gjlvt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_13")
+"texture": ExtResource("11_hlcki")
+}, {
+"duration": 0.8,
+"texture": ExtResource("12_0mj1o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_14")
+"texture": ExtResource("13_rvkh2")
+}, {
+"duration": 0.6,
+"texture": ExtResource("14_b0hgk")
+}, {
+"duration": 0.5,
+"texture": ExtResource("15_bx18g")
+}, {
+"duration": 0.4,
+"texture": ExtResource("16_13gim")
+}, {
+"duration": 0.5,
+"texture": ExtResource("17_g6aog")
+}, {
+"duration": 0.5,
+"texture": ExtResource("18_432g3")
+}, {
+"duration": 0.7,
+"texture": ExtResource("19_lu5de")
+}, {
+"duration": 0.8,
+"texture": ExtResource("20_qnxos")
+}, {
+"duration": 0.9,
+"texture": ExtResource("21_hevyg")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_15")
+"texture": ExtResource("22_1koe2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_16")
+"texture": ExtResource("23_n2rgm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_17")
+"texture": ExtResource("24_r1bjw")
+}],
+"loop": true,
+"name": &"melee",
+"speed": 28.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("24_wv2ah")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_18")
+"texture": ExtResource("25_crryk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_19")
+"texture": ExtResource("26_whns1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_20")
+"texture": ExtResource("27_nai4k")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_21")
+"texture": ExtResource("28_uequj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_22")
+"texture": ExtResource("29_il2t1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("walk_23")
+"texture": ExtResource("30_gjlvt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_hlcki")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_0mj1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_rvkh2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_b0hgk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_bx18g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_13gim")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_g6aog")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_432g3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_lu5de")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_qnxos")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_hevyg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_1koe2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_n2rgm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_r1bjw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_desjx")
 }],
 "loop": true,
 "name": &"walk",
-"speed": 33.0
+"speed": 46.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lu5c6"]
@@ -114,6 +210,7 @@ size = Vector2(18, 33)
 [node name="Enemy" type="CharacterBody2D" unique_id=83899896 groups=["enemy"]]
 collision_layer = 4
 script = ExtResource("1_8e3ao")
+move_speed = 50.0
 slap_knockback_distance = 30.0
 slap_knockback_duration = 0.15
 
@@ -123,11 +220,12 @@ shape = SubResource("RectangleShape2D_fcftc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=939382343]
 material = SubResource("ShaderMaterial_lu5c6")
-scale = Vector2(0.05, 0.05)
+position = Vector2(0, 6)
+scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_walk")
-animation = &"head_turn"
-frame = 6
-frame_progress = 1.0
+animation = &"melee"
+frame_progress = 0.3466909
+flip_h = true
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=819948242 groups=["enemy_hurtbox"]]
 collision_layer = 16
@@ -141,6 +239,7 @@ shape = SubResource("RectangleShape2D_lu5c6")
 stream = ExtResource("4_fcftc")
 volume_db = -21.586
 pitch_scale = 0.99
+bus = &"Sound Effects"
 
 [node name="WallCheckLeft" type="RayCast2D" parent="." unique_id=1976922095]
 position = Vector2(-10, 0)

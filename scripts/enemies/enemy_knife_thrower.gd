@@ -60,6 +60,9 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player") as Node2D
 		return
+	if not is_player_detectable():
+		cancel_pending_throw()
+		return
 
 	var dx: float = player.global_position.x - global_position.x
 	var dy: float = abs(player.global_position.y - global_position.y)
@@ -79,6 +82,9 @@ func update_facing(dir: int) -> void:
 
 
 func start_throw(dir: int) -> void:
+	if not is_player_detectable():
+		return
+
 	is_throwing = true
 	pending_throw_dir = dir
 	knife_spawned_this_throw = false
@@ -88,7 +94,7 @@ func start_throw(dir: int) -> void:
 
 
 func spawn_knife(dir: int) -> void:
-	if knife_scene == null:
+	if knife_scene == null or not is_player_detectable():
 		return
 
 	var knife = knife_scene.instantiate()
@@ -103,6 +109,9 @@ func spawn_knife(dir: int) -> void:
 
 func _on_animated_sprite_frame_changed() -> void:
 	if not is_throwing:
+		return
+	if not is_player_detectable():
+		cancel_pending_throw()
 		return
 
 	if animated_sprite.animation != "throw2":
@@ -125,6 +134,25 @@ func _on_animated_sprite_animation_finished() -> void:
 		spawn_knife(pending_throw_dir)
 
 	is_throwing = false
+	animated_sprite.play("idle")
+
+
+func is_player_detectable() -> bool:
+	if not is_instance_valid(player) or bool(player.get("is_dead")):
+		return false
+
+	if player.has_method("is_detectable_by_enemies"):
+		return bool(player.call("is_detectable_by_enemies"))
+
+	return true
+
+
+func cancel_pending_throw() -> void:
+	if not is_throwing:
+		return
+
+	is_throwing = false
+	knife_spawned_this_throw = true
 	animated_sprite.play("idle")
 
 
@@ -177,6 +205,7 @@ func spawn_hit_sound() -> void:
 	sfx.stream = hit_sound.stream
 	sfx.volume_db = hit_sound.volume_db
 	sfx.pitch_scale = hit_sound.pitch_scale
+	sfx.bus = hit_sound.bus
 	sfx.global_position = global_position
 
 	get_tree().current_scene.add_child(sfx)

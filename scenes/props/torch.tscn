@@ -47,7 +47,7 @@ animations = [{
 }]
 
 [sub_resource type="Gradient" id="Gradient_u6r2k"]
-offsets = PackedFloat32Array(0, 0.5473251, 1)
+offsets = PackedFloat32Array(0, 0.6502058, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_3dyab"]
@@ -76,7 +76,7 @@ frame_progress = 0.8725535
 position = Vector2(-0.9999771, 22.400421)
 scale = Vector2(23.468752, 15.961915)
 color = Color(0.99999994, 0.78632474, 0.1235353, 1)
-energy = 1.12
+energy = 1.67
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_3dyab")
 offset = Vector2(0, -10)

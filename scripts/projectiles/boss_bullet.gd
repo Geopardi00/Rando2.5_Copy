@@ -31,7 +31,7 @@ func setup(new_direction: Vector2, new_damage: int = 1) -> void:
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		if body.has_method("take_damage"):
-			body.take_damage(damage)
+			body.take_damage(damage, false, &"enemy")
 		elif body.has_method("die"):
 			body.die()
 
@@ -42,7 +42,7 @@ func _on_area_entered(area: Area2D) -> void:
 	var owner := area.get_parent()
 	if owner != null and owner.is_in_group("player"):
 		if owner.has_method("take_damage"):
-			owner.take_damage(damage)
+			owner.take_damage(damage, false, &"enemy")
 		queue_free()
 
 

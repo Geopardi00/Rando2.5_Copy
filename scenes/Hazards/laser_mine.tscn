@@ -102,3 +102,4 @@ frame_progress = 1.0
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1994321317]
 stream = ExtResource("14_6jgaj")
+bus = &"Sound Effects"

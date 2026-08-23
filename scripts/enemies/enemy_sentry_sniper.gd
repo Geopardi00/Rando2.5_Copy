@@ -27,6 +27,7 @@ enum State { SCAN, ALERT, TRACK, HOLD }
 @onready var shoot_point: Marker2D = $ShootPoint
 @onready var vision_pivot: Node2D = $VisionPivot
 @onready var spotlight: PointLight2D = get_node_or_null("VisionPivot/Spotlight")
+@onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
 @onready var fire_cooldown_timer: Timer = $FireCooldownTimer
 @onready var alert_sound: AudioStreamPlayer2D = get_node_or_null("AlertSound")
 @onready var shout_sound: AudioStreamPlayer2D = get_node_or_null("ShoutSound")
@@ -43,6 +44,9 @@ func _ready() -> void:
 	add_to_group("enemy")
 	if spotlight != null:
 		base_spotlight_energy = spotlight.energy
+	if animated_sprite != null:
+		animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
+		animated_sprite.play(&"idle")
 
 	vision_pivot.rotation = deg_to_rad(max_scan_angle_degrees)
 	fire_cooldown_timer.wait_time = fire_cooldown
@@ -53,6 +57,11 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player") as Node2D
+	if not is_player_detectable():
+		reset_to_scan_after_target_loss()
+		_update_scan(delta)
+		update_spotlight_ground_fade()
+		return
 
 	match state:
 		State.SCAN:
@@ -107,7 +116,7 @@ func _update_scan(delta: float) -> void:
 
 
 func can_see_player() -> bool:
-	if not is_instance_valid(player):
+	if not is_player_detectable():
 		return false
 
 	var origin := vision_pivot.global_position
@@ -131,7 +140,7 @@ func can_see_player() -> bool:
 
 
 func has_clear_line_to_player() -> bool:
-	if not is_instance_valid(player):
+	if not is_player_detectable():
 		return false
 
 	var origin := vision_pivot.global_position
@@ -148,7 +157,7 @@ func has_clear_line_to_player() -> bool:
 
 
 func aim_vision_at_player() -> void:
-	if not is_instance_valid(player):
+	if not is_player_detectable():
 		return
 
 	var to_player := get_player_aim_point() - vision_pivot.global_position
@@ -195,6 +204,10 @@ func is_blocked_by_cover(origin: Vector2, target: Vector2) -> bool:
 
 
 func _enter_alert() -> void:
+	if not is_player_detectable():
+		reset_to_scan_after_target_loss()
+		return
+
 	state = State.ALERT
 	alert_timer = alert_delay
 	print("Sniper: Hey!")
@@ -211,8 +224,11 @@ func _enter_hold() -> void:
 
 
 func shoot_at_player() -> void:
-	if bullet_scene == null or not is_instance_valid(player):
+	if bullet_scene == null or not is_player_detectable():
 		return
+
+	if animated_sprite != null:
+		animated_sprite.play(&"shoot")
 
 	var bullet := bullet_scene.instantiate()
 	get_tree().current_scene.add_child(bullet)
@@ -234,3 +250,28 @@ func shoot_at_player() -> void:
 
 func _on_fire_cooldown_timeout() -> void:
 	pass
+
+
+func _on_animated_sprite_animation_finished() -> void:
+	if animated_sprite != null and animated_sprite.animation == &"shoot":
+		animated_sprite.play(&"idle")
+
+
+func is_player_detectable() -> bool:
+	if not is_instance_valid(player) or bool(player.get("is_dead")):
+		return false
+
+	if player.has_method("is_detectable_by_enemies"):
+		return bool(player.call("is_detectable_by_enemies"))
+
+	return true
+
+
+func reset_to_scan_after_target_loss() -> void:
+	if state == State.SCAN:
+		return
+
+	state = State.SCAN
+	alert_timer = 0.0
+	hold_timer = 0.0
+	fire_cooldown_timer.stop()

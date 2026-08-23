@@ -1,3 +1,4 @@
+@tool
 class_name WaterBody2D
 extends Node2D
 
@@ -26,6 +27,17 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 		has_visible_surface = value
 		if is_node_ready():
 			configure_ripple()
+
+@export_group("Player Underwater Shader")
+@export var player_underwater_shader_enabled: bool = false
+@export var player_underwater_tint: Color = Color(0.53, 0.82, 0.95, 1.0)
+@export_range(0.0, 1.0, 0.01) var player_underwater_tint_strength: float = 0.3
+@export_range(0.0, 0.25, 0.005) var player_underwater_shimmer_strength: float = 0.04
+@export_range(1.0, 40.0, 0.5) var player_underwater_shimmer_frequency: float = 14.0
+@export_range(0.0, 10.0, 0.1) var player_underwater_shimmer_speed: float = 2.0
+@export_range(0.0, 12.0, 0.1) var player_underwater_wobble_strength: float = 4.0
+@export_range(0.005, 0.1, 0.001) var player_underwater_wobble_frequency: float = 0.035
+@export_range(0.0, 10.0, 0.1) var player_underwater_wobble_speed: float = 2.8
 
 @export_group("Bubbles")
 @export_range(0.05, 1.0, 0.01) var bubble_spawn_interval: float = 0.22
@@ -60,6 +72,7 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 @export_range(0.0, 30.0, 0.1) var ripple_spread: float = 8.0
 @export_range(1, 16, 1) var ripple_propagation_passes: int = 8
 @export_range(0.0, 20.0, 0.01) var ripple_impact_scale: float = 0.65
+@export_range(1, 10, 1) var ripple_impact_radius: int = 4
 @export var ripple_maximum_impact_speed: float = 220.0
 @export var ripple_maximum_height: float = 24.0
 
@@ -69,6 +82,7 @@ signal surface_crossed(body: Node2D, world_position: Vector2, strength: float, e
 @onready var water_head_shape: CollisionShape2D = $WaterHeadArea/CollisionShape2D
 @onready var water_fill: Polygon2D = $WaterFill
 @onready var water_surface: Line2D = $WaterSurface
+@onready var shader_rectangle: Sprite2D = $Shader/Icon
 @onready var splash_particles: GPUParticles2D = $SplashEffects
 @onready var bubble_particles: GPUParticles2D = $BubbleParticles
 @onready var splash_audio: AudioStreamPlayer2D = $AudioStreamPlayer2D
@@ -86,13 +100,17 @@ var tracked_surface_positions: Dictionary = {}
 
 
 func _ready() -> void:
+	configure_volume()
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+		return
+
 	add_to_group("water_body")
 	water_area.body_entered.connect(_on_body_entered)
 	water_area.body_exited.connect(_on_body_exited)
 	water_head_area.area_entered.connect(_on_area_entered)
 	water_head_area.area_exited.connect(_on_area_exited)
 	configure_particles()
-	configure_volume()
 
 
 func contains_body(body: Node2D) -> bool:
@@ -172,8 +190,32 @@ func configure_volume() -> void:
 		water_head_shape.shape = head_rectangle
 	head_rectangle.size = water_size
 	water_head_shape.position = Vector2(0.0, water_size.y * 0.5)
+
+	# Water Size is the single source of truth. Resetting inherited child
+	# transforms prevents level-specific scale overrides from distorting the
+	# generated collision, fill, ripple surface, or shader rectangle.
+	water_fill.position = Vector2.ZERO
+	water_fill.scale = Vector2.ONE
+	water_surface.position = Vector2.ZERO
+	water_surface.scale = Vector2.ONE
+	configure_shader_rectangle()
 	configure_ripple()
 	update_visuals()
+
+
+func configure_shader_rectangle() -> void:
+	if shader_rectangle == null or shader_rectangle.texture == null:
+		return
+
+	var texture_size := shader_rectangle.texture.get_size()
+	if texture_size.x <= 0.0 or texture_size.y <= 0.0:
+		return
+
+	shader_rectangle.position = Vector2(0.0, water_size.y * 0.5)
+	shader_rectangle.scale = Vector2(
+		water_size.x / texture_size.x,
+		water_size.y / texture_size.y
+	)
 
 
 func configure_ripple() -> void:
@@ -314,8 +356,24 @@ func apply_ripple_impulse(world_x: float, impact_velocity: float, mass: float = 
 	var maximum_impact := maxf(ripple_maximum_impact_speed, 0.0)
 	var impulse := clampf(impact_velocity * maxf(mass, 0.0) * ripple_impact_scale, -maximum_impact, maximum_impact)
 	var previous_velocity := ripple_velocities[index]
-	ripple_velocities[index] = clampf(previous_velocity + impulse, -maximum_impact, maximum_impact)
-	ripple_is_active = ripple_is_active or not is_zero_approx(ripple_velocities[index])
+	var impact_radius := maxi(ripple_impact_radius, 1)
+
+	# Spread the initial impact across a cosine-shaped footprint. The centre
+	# receives the full impulse while progressively smaller neighbouring
+	# impulses produce a broad first wave and seed outward secondary ripples.
+	for offset in range(-impact_radius, impact_radius + 1):
+		var target_index := index + offset
+		if target_index < 0 or target_index >= ripple_velocities.size():
+			continue
+		var distance_ratio := absf(float(offset)) / float(impact_radius + 1)
+		var weight := pow(cos(distance_ratio * PI * 0.5), 2.0)
+		ripple_velocities[target_index] = clampf(
+			ripple_velocities[target_index] + impulse * weight,
+			-maximum_impact,
+			maximum_impact
+		)
+
+	ripple_is_active = ripple_is_active or not is_zero_approx(impulse)
 	return ripple_velocities[index] - previous_velocity
 
 

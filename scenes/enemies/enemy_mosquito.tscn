@@ -143,3 +143,4 @@ shape = SubResource("AttackShape")
 [node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=1388071667]
 stream = ExtResource("3_hit")
 volume_db = -21.585
+bus = &"Sound Effects"
